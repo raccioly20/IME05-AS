@@ -1,0 +1,11 @@
+---
+title: "IME05-AS"
+---
+
+Bom dia / Boa tarde / Boa Noite,
+
+Esta é a página principal do site da disciplina Análise de Sobrevivência IME05-12532.
+
+Aqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do R. O objetivo é mostrar as possibilidades de aplicação do R nesta disciplina.
+
+Os códigos apresentados em aula serão colocado por aqui também.

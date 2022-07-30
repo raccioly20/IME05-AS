@@ -1,0 +1,127 @@
+---
+title: "Análise de Sobrevivência"
+subtitle: "Modelos não Paramétricos"
+author: "Ricardo Accioly"
+format: html
+---
+
+### Introdução
+
+Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.
+
+Vamos inicialmente utilizar o pacote `survival` que é a principal referência em modelos de análise de sobrevivência.
+
+Vamos usar neste exemplo dados de pacientes com leucemia. O objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença. Existem dois grupos de pacientes. 21 receberam 6MP que é um medicamento para tratar leucemia e os outros 21 receberam placebo. O evento falha aqui é ocorrer uma recaída na doença.
+
+### Carregando os dados
+
+```{r ex_1}
+library(tidyverse)
+library(survival)
+tempo<- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)
+status<- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0)
+dados <- data.frame(tempos=tempo, status=status)
+ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
+plot(ajusteKM, xlab="Tempo (semanas)",ylab="S(t)", lty=2) 
+legend("topright","6-MP", lty = 2)
+```
+
+### Sumário do ajuste
+
+```{r ex_2}
+summary(ajusteKM)
+```
+
+### Segundo conjunto de dados
+
+```{r ex_3}
+tempo2<- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)
+status2<- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) 
+dados2 <- data.frame(tempos=tempo2, status=status2)
+ajusteKM2 <- survfit(Surv(tempos, status) ~ 1, data=dados2)
+plot(ajusteKM2, xlab="t(semanas)",ylab="S(t)", lty=3) 
+legend("topright","Placebo", lty = 3)
+```
+
+### Sumário do 2° ajuste
+
+```{r ex_4}
+summary(ajusteKM2)
+
+```
+
+### Análise conjunta
+
+```{r ex_5}
+tempo2g <- c(tempo,tempo2)
+status2g <- c(status,status2)
+grupos <- c(rep(1,21),rep(2,21))
+dados3 <- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)
+ajusteKM3 <- survfit(Surv(tempos, status) ~ grupos, data=dados3)
+plot(ajusteKM3, xlab="T(semanas)",ylab="S(t)", lty=1:2, 
+     col=c(1,4), conf.int=0.95) 
+legend("topright",c("6-MP","Placebo"), lty = 1:2, col=c(1,4))
+```
+
+### Sumário do ajuste
+
+```{r ex_6}
+summary(ajusteKM3)
+```
+
+### Intervalos de Confiança - Normal
+
+```{r ex_7}
+ajusteKM4 <- survfit(Surv(tempos, status) ~ grupos, data=dados3,
+                     conf.type="plain")
+# IC Pleno (Aproximação pela Normal)
+summary(ajusteKM4)
+```
+
+### Intervalos de Confiança - Log
+
+```{r ex_8}
+ajusteKM5 <- survfit(Surv(tempos, status) ~ grupos, data=dados3,
+                     conf.type="log")
+# IC log - Padrão do R
+summary(ajusteKM5)
+```
+
+### Intervalos de Confiança - Log-Log
+
+```{r ex_9, include = FALSE}
+ajusteKM6 <- survfit(Surv(tempos, status) ~ grupos, data=dados3,
+                     conf.type="log-log")
+# IC log-log - Kalbfleish-Prentice
+summary(ajusteKM6)
+```
+
+### Usando o pacote survminer
+
+```{r ex_10}
+library(survminer)
+dados <- data.frame(tempo=tempo2g, status=status2g, grupo= grupos)
+ajusteKM4 <- survfit(Surv(tempo2g, status2g) ~ grupo, data= dados, conf.type="log-log")
+ggsurvplot(ajusteKM4, data=dados)
+```
+
+### Melhorando a visualização
+
+```{r ex_11}
+dados <- data.frame(tempo=tempo2g, status=status2g, grupo= grupos)
+fit4 <- survfit(Surv(tempo2g, status2g) ~ grupo, data= dados, conf.type="log-log")
+ggsurvplot(
+  fit4,                   
+  data = dados,           
+  risk.table = TRUE,      
+  pval = FALSE,           
+  conf.int = TRUE,        
+  xlim = c(0,40),         
+  xlab = "Tempo em meses",  
+  ylab = "S(t)",
+  break.time.by = 10,     
+  ggtheme = theme_light(), 
+  risk.table.y.text.col = T, 
+  risk.table.y.text = FALSE  
+)
+```
