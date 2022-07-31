@@ -8,7 +8,7 @@ website:
       - href: index.qmd
         text: Início
       - about.qmd
-      - slide01.qmd
+      - modregpar01.qmd
 
 format:
   html:

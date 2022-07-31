@@ -1,0 +1,47 @@
+---
+title: "Análise de Sobrevivência"
+subtitle: "Modelos de regressão paramétricos"
+author: "Ricardo Accioly"
+format: html
+---
+
+### Introdução
+
+Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.
+
+Os modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).
+
+### Carregando os dados
+
+```{r ex_1}
+library(survival)
+library(readxl)
+dados <- read_xlsx("anderson.xlsx", col_names = TRUE )
+summary(dados)
+
+```
+
+### Ajuste Não Paramétrico
+
+```{r ex_2}
+ekm <- survfit(Surv(tempo,status)~Rx, data=dados)
+tempo <- ekm$time
+st <- ekm$surv
+summary(ekm)
+plot(ekm, xlab="Tempo (meses)",ylab="S(t) estimada")
+```
+
+## Modelo Exponencial
+
+```{r}
+leuc.exp.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = "exponential")
+summary(leuc.exp.comp)
+```
+
+## Automatizando ajuste
+
+```{r}
+library(MASS)
+leuc.exp.sel <- stepAIC(leuc.exp.comp, ditection="backward")
+summary(leuc.exp.sel)
+```

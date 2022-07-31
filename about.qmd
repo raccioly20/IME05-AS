@@ -1,9 +1,7 @@
 ---
-title: "About"
+title: "Sobre"
 ---
 
-About this site
+Bom dia / Boa tarde / Boa Noite,
 
-```{r}
-1 + 1
-```
+Esta é a página principal do site da disciplina Análise de Sobrevivência IME05-12532.
