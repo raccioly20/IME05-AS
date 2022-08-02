@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error in survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados,  : \n  could not find function \"survreg\"\n"}

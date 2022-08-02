@@ -11,6 +11,10 @@ Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.
 
 Os modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).
 
+O conjunto de dados a seguir chamado "anderson.xlsx" consiste em tempos de remissão em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).
+
+Duas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar).
+
 ### Carregando os dados
 
 ```{r ex_1}
@@ -44,4 +48,167 @@ summary(leuc.exp.comp)
 library(MASS)
 leuc.exp.sel <- stepAIC(leuc.exp.comp, ditection="backward")
 summary(leuc.exp.sel)
+```
+
+## Fazendo Previsões
+
+```{r}
+novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
+predict(leuc.exp.sel, type="lp", newdata=novosdados)
+```
+
+## Tempo Mediano
+
+```{r}
+prev1 <-predict(leuc.exp.sel, type="quantile", newdata=novosdados, p=0.5)
+prev1
+prev1[1]/prev1[2]
+```
+
+## Comparando com outro quantil
+
+```{r}
+prev2 <-predict(leuc.exp.sel, type="quantile", newdata=novosdados, p=0.7)
+prev2
+prev2[1]/prev2[2]
+```
+
+## Verificando o modelo
+
+```{r}
+library(car)
+par(mfrow = c(1, 2), cex = 0.6)
+pred.lin <- predict(leuc.exp.sel, type = "lp")[dados$status == 1]
+log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
+plot(pred.lin, log.resid, main = "Grafico TA",
+xlab = "log(valores ajustados)", ylab = "log(residuos)")
+qqPlot(log.resid, dist = "norm", sd=leuc.exp.sel$scale, 
+main = "Grafico Q-Q", xlab = "Quantis teoricos Exponencial", ylab = "Quantis empiricos")
+```
+
+## Modelo Weibull
+
+```{r}
+leuc.wei.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = "weibull")
+summary(leuc.wei.comp)
+```
+
+## Análise de resíduos
+
+```{r}
+##=====================================================================
+qq.reg.resid.r<-function(data,time,status,fit,quantile,xlab){
+##=================================
+## Purpose: For parametric regression models, this constructs a
+##          qq-plot of ordered residuals e_i=(y_i-yhat_i)/sigmahat against
+##          the log-parametric standard quantiles z_i of either the
+##          "weibull", "lognormal", or "loglogistic" distribution.
+##--------------------------------------------------------------------------
+## NOTE:  This can also be used for fitting a single sample of survival
+##        times to a parametric model. Since there are no covariates
+##        remember to type survReg(Surv(...,...)~1,dist="...",data=...) 
+##        in order to estimate the intercept mu.
+##---------------------------------------------------------------------------
+## Arguments:   data = data.frame
+##              time = survival time variable name in data.frame
+##              status = name of status variable in data.frame
+##              fit = a survreg object
+##              quantile = "qweibull" or "qnorm" or "qlogis"  
+##              xlab = "type your label" E.g., "standard extreme value quantiles"
+##------------------------------------------------------------------------------
+## Author: Mara Tableman, Revises: 6 March, 2013
+##==============================================================================
+temp<-data
+temp$time<-time
+temp$status<-status
+temp$ei<-(log(temp$time)-predict(fit,type="lp"))/fit$scale
+temp<-temp[order(temp$ei), ]
+con<-abs(min(temp$ei))+.00001
+temp$ei<-temp$ei+con 
+km.fit<-survfit(Surv(ei,status)~1,data=temp)
+##temp$km.surv<-summary(km.fit,censor=T)$surv
+temp$km.surv<-summary(km.fit, time=temp$ei, extend=T)$surv
+if (quantile == "qweibull") {
+zi<-as.numeric(qweibull(1-temp$km.surv,1,1))
+k<-nrow(temp)
+for (i in 1:k){
+	if (zi[i]!=-Inf && zi[i]!=Inf ) zi[i]<-log(zi[i])
+}
+temp$zi<-zi
+for(i in 1:k){ if (temp$zi[i]==-Inf)
+{	surv.max.1<-max(temp$km.surv[temp$status==1])
+	d<-1-surv.max.1
+	surv.pu<-1-d/2	
+	temp$zi[i]<-log(qweibull(1-surv.pu,1,1))}
+}
+for (i in 1:k){ if (temp$zi[i]==Inf)
+{  d<-min(temp$km.surv[temp$km.surv > 0])
+	surv.pl<-d/2
+	temp$zi[i]<-log(qweibull(1-surv.pl,1,1))}
+}
+}
+if (quantile == "qlogis") {
+zi<-as.numeric(qlogis(1-temp$km.surv,0,1))
+k<-nrow(temp)
+for (i in 1:k){
+	if (zi[i]!=-Inf && zi[i]!=Inf ) zi[i]<-zi[i]
+}
+temp$zi<-zi
+for(i in 1:k){ if (temp$zi[i]==-Inf)
+{	surv.max.1<-max(temp$km.surv[temp$status==1])
+	d<-1-surv.max.1
+	surv.pu<-1-d/2	
+	temp$zi[i]<-qlogis(1-surv.pu,0,1)}
+}
+for (i in 1:k){ if (temp$zi[i]==Inf)
+{  d<-min(temp$km.surv[temp$km.surv > 0])
+	surv.pl<-d/2
+	temp$zi[i]<-qlogis(1-surv.pl,0,1)}
+}
+}
+ if (quantile == "qnorm"){ 
+zi<-as.numeric(qnorm(1-temp$km.surv,0,1))
+k<-nrow(temp)
+for (i in 1:k){
+	if (zi[i]!=-Inf && zi[i]!=Inf ) zi[i]<-zi[i]
+}
+temp$zi<-zi
+for(i in 1:k){ if (temp$zi[i]==-Inf)
+{	surv.max.1<-max(temp$km.surv[temp$status==1])
+	d<-1-surv.max.1
+	surv.pu<-1-d/2	
+	temp$zi[i]<-qnorm(1-surv.pu,0,1)}
+}
+for (i in 1:k){ if (temp$zi[i]==Inf)
+{  d<-min(temp$km.surv[temp$km.surv > 0])
+	surv.pl<-d/2
+	temp$zi[i]<-qnorm(1-surv.pl,0,1)}
+}
+}
+ temp$ei<-temp$ei-con
+##print(temp)
+plot(temp$zi,temp$ei,xlab=xlab,ylab="ordered ei residuals",type="n",xlim=c(min(temp$zi),max(temp$zi)),ylim=c(min(temp$ei),max(temp$ei)+.15))
+points(temp$zi[temp$status==0],temp$ei[temp$status==0],pch=".",cex=3)
+points(temp$zi[temp$status==1],temp$ei[temp$status==1],pch="o",cex=1)
+lines(temp$zi[temp$status==1],temp$ei[temp$status==1],lty=1,lwd=1)
+k<-nrow(temp)
+for(i in 1:k)
+{ if (temp$status[i]==0)
+arrows(temp$zi[i],temp$ei[i],temp$zi[i],temp$ei[i]+.15,code=2,length=.12,lwd=2.01)}
+abline(a=0,b=1,lty=4,lwd=2)
+usr<-par("usr")
+arrows(.9*usr[1]+.1*usr[2],.07*usr[3]+.93*usr[4],.9*usr[1]+.1*usr[2],.07*usr[3]+.93*usr[4]+.15,code=2,length=.12,lwd=2.01)
+text(.8*usr[1]+.2*usr[2],.05*usr[3]+.95*usr[4],"= censored")
+points(.9*usr[1]+.1*usr[2],.11*usr[3]+.89*usr[4],pch="o")
+text(.79*usr[1]+.21*usr[2],.1*usr[3]+.90*usr[4], "= uncensored") 
+on.exit()
+"qq.reg.resid:done"
+}
+
+
+qq.reg.resid.r(dados,dados$tempo,dados$status, leuc.wei.comp,"qweibull","standard extreme value quantiles")
+##Example 2: 
+##fit.weib<-survreg(Surv(weeks,status)~1,dist="weibull",data=aml1)
+##qq.reg.resid.r(aml1,aml1$weeks,aml1$status,fit.weib,"qweibull","standard extreme value quantiles")
+##==================================================
 ```

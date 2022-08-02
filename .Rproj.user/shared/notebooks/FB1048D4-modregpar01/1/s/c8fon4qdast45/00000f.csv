@@ -1,0 +1,4 @@
+"0","leuc.wei.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = ""weibull"")"
+"2","Error in survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados,  : 
+  could not find function ""survreg""
+"
