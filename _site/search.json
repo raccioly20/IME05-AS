@@ -39,7 +39,7 @@
     "href": "modregpar01.html#automatizando-ajuste",
     "title": "Análise de Sobrevivência",
     "section": "Automatizando ajuste",
-    "text": "Automatizando ajuste\n\nlibrary(MASS)\nleuc.exp.sel <- stepAIC(leuc.exp.comp, ditection=\"backward\")\n\nStart:  AIC=209.5\nSurv(tempo, status) ~ sexo + logwbc + Rx\n\n         Df    AIC\n- sexo    1 207.55\n<none>      209.50\n- Rx      1 215.10\n- logwbc  1 222.57\n\nStep:  AIC=207.55\nSurv(tempo, status) ~ logwbc + Rx\n\n         Df    AIC\n<none>      207.55\n- Rx      1 213.22\n- logwbc  1 221.05\n\nsummary(leuc.exp.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"exponential\")\n             Value Std. Error     z       p\n(Intercept)  5.958      0.699  8.52 < 2e-16\nlogwbc      -0.884      0.216 -4.10 4.2e-05\nRx          -1.093      0.413 -2.65  0.0082\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.8   Loglik(intercept only)= -116.8\n    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42"
+    "text": "Automatizando ajuste\n\nlibrary(MASS)\nleuc.exp.sel <- stepAIC(leuc.exp.comp, direction=\"backward\")\n\nStart:  AIC=209.5\nSurv(tempo, status) ~ sexo + logwbc + Rx\n\n         Df    AIC\n- sexo    1 207.55\n<none>      209.50\n- Rx      1 215.10\n- logwbc  1 222.57\n\nStep:  AIC=207.55\nSurv(tempo, status) ~ logwbc + Rx\n\n         Df    AIC\n<none>      207.55\n- Rx      1 213.22\n- logwbc  1 221.05\n\nsummary(leuc.exp.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"exponential\")\n             Value Std. Error     z       p\n(Intercept)  5.958      0.699  8.52 < 2e-16\nlogwbc      -0.884      0.216 -4.10 4.2e-05\nRx          -1.093      0.413 -2.65  0.0082\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.8   Loglik(intercept only)= -116.8\n    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42"
   },
   {
     "objectID": "modregpar01.html#fazendo-previsões",
@@ -67,20 +67,125 @@
     "href": "modregpar01.html#verificando-o-modelo",
     "title": "Análise de Sobrevivência",
     "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\nlibrary(car)\n\nCarregando pacotes exigidos: carData\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.exp.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(log.resid, dist = \"norm\", sd=leuc.exp.sel$scale, \nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Exponencial\", ylab = \"Quantis empiricos\")\n\n\n\n\n[1] 29  7"
+    "text": "Verificando o modelo\n\nlibrary(car)\n\nCarregando pacotes exigidos: carData\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.exp.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1,\nmain = \"Gráfico Q-Q\", xlab = \"Quantis teóricos\", ylab = \"Quantis Empíricos\")\n\n\n\n\n[1] 11 16"
   },
   {
     "objectID": "modregpar01.html#modelo-weibull",
     "href": "modregpar01.html#modelo-weibull",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Weibull",
-    "text": "Modelo Weibull\n\nleuc.wei.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"weibull\")\nsummary(leuc.wei.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"weibull\")\n             Value Std. Error     z       p\n(Intercept)  5.462      0.351 15.58 < 2e-16\nsexo        -0.156      0.179 -0.87 0.38350\nlogwbc      -0.792      0.105 -7.54 4.8e-14\nRx          -0.722      0.201 -3.59 0.00034\nLog(scale)  -0.815      0.144 -5.65 1.6e-08\n\nScale= 0.443 \n\nWeibull distribution\nLoglik(model)= -89.7   Loglik(intercept only)= -116.4\n    Chisq= 53.42 on 3 degrees of freedom, p= 1.5e-11 \nNumber of Newton-Raphson Iterations: 7 \nn= 42"
+    "text": "Modelo Weibull\n\nleuc.wei.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"weibull\")\nsummary(leuc.wei.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"weibull\")\n             Value Std. Error     z       p\n(Intercept)  5.462      0.351 15.58 < 2e-16\nsexo        -0.156      0.179 -0.87 0.38350\nlogwbc      -0.792      0.105 -7.54 4.8e-14\nRx          -0.722      0.201 -3.59 0.00034\nLog(scale)  -0.815      0.144 -5.65 1.6e-08\n\nScale= 0.443 \n\nWeibull distribution\nLoglik(model)= -89.7   Loglik(intercept only)= -116.4\n    Chisq= 53.42 on 3 degrees of freedom, p= 1.5e-11 \nNumber of Newton-Raphson Iterations: 7 \nn= 42 \n\n\n\nleuc.wei.sel <- stepAIC(leuc.wei.comp, direction=\"backward\")\n\nStart:  AIC=189.39\nSurv(tempo, status) ~ sexo + logwbc + Rx\n\n         Df    AIC\n- sexo    1 188.13\n<none>      189.39\n- Rx      1 201.43\n- logwbc  1 220.75\n\nStep:  AIC=188.13\nSurv(tempo, status) ~ logwbc + Rx\n\n         Df    AIC\n<none>      188.13\n- Rx      1 199.80\n- logwbc  1 219.16\n\nsummary(leuc.wei.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"weibull\")\n             Value Std. Error     z       p\n(Intercept)  5.399      0.364 14.84 < 2e-16\nlogwbc      -0.807      0.108 -7.45 9.7e-14\nRx          -0.659      0.189 -3.49 0.00049\nLog(scale)  -0.793      0.142 -5.58 2.5e-08\n\nScale= 0.452 \n\nWeibull distribution\nLoglik(model)= -90.1   Loglik(intercept only)= -116.4\n    Chisq= 52.68 on 2 degrees of freedom, p= 3.6e-12 \nNumber of Newton-Raphson Iterations: 7 \nn= 42"
   },
   {
     "objectID": "modregpar01.html#análise-de-resíduos",
     "href": "modregpar01.html#análise-de-resíduos",
     "title": "Análise de Sobrevivência",
     "section": "Análise de resíduos",
-    "text": "Análise de resíduos\n\n##=====================================================================\nqq.reg.resid.r<-function(data,time,status,fit,quantile,xlab){\n##=================================\n## Purpose: For parametric regression models, this constructs a\n##          qq-plot of ordered residuals e_i=(y_i-yhat_i)/sigmahat against\n##          the log-parametric standard quantiles z_i of either the\n##          \"weibull\", \"lognormal\", or \"loglogistic\" distribution.\n##--------------------------------------------------------------------------\n## NOTE:  This can also be used for fitting a single sample of survival\n##        times to a parametric model. Since there are no covariates\n##        remember to type survReg(Surv(...,...)~1,dist=\"...\",data=...) \n##        in order to estimate the intercept mu.\n##---------------------------------------------------------------------------\n## Arguments:   data = data.frame\n##              time = survival time variable name in data.frame\n##              status = name of status variable in data.frame\n##              fit = a survreg object\n##              quantile = \"qweibull\" or \"qnorm\" or \"qlogis\"  \n##              xlab = \"type your label\" E.g., \"standard extreme value quantiles\"\n##------------------------------------------------------------------------------\n## Author: Mara Tableman, Revises: 6 March, 2013\n##==============================================================================\ntemp<-data\ntemp$time<-time\ntemp$status<-status\ntemp$ei<-(log(temp$time)-predict(fit,type=\"lp\"))/fit$scale\ntemp<-temp[order(temp$ei), ]\ncon<-abs(min(temp$ei))+.00001\ntemp$ei<-temp$ei+con \nkm.fit<-survfit(Surv(ei,status)~1,data=temp)\n##temp$km.surv<-summary(km.fit,censor=T)$surv\ntemp$km.surv<-summary(km.fit, time=temp$ei, extend=T)$surv\nif (quantile == \"qweibull\") {\nzi<-as.numeric(qweibull(1-temp$km.surv,1,1))\nk<-nrow(temp)\nfor (i in 1:k){\n    if (zi[i]!=-Inf && zi[i]!=Inf ) zi[i]<-log(zi[i])\n}\ntemp$zi<-zi\nfor(i in 1:k){ if (temp$zi[i]==-Inf)\n{   surv.max.1<-max(temp$km.surv[temp$status==1])\n    d<-1-surv.max.1\n    surv.pu<-1-d/2  \n    temp$zi[i]<-log(qweibull(1-surv.pu,1,1))}\n}\nfor (i in 1:k){ if (temp$zi[i]==Inf)\n{  d<-min(temp$km.surv[temp$km.surv > 0])\n    surv.pl<-d/2\n    temp$zi[i]<-log(qweibull(1-surv.pl,1,1))}\n}\n}\nif (quantile == \"qlogis\") {\nzi<-as.numeric(qlogis(1-temp$km.surv,0,1))\nk<-nrow(temp)\nfor (i in 1:k){\n    if (zi[i]!=-Inf && zi[i]!=Inf ) zi[i]<-zi[i]\n}\ntemp$zi<-zi\nfor(i in 1:k){ if (temp$zi[i]==-Inf)\n{   surv.max.1<-max(temp$km.surv[temp$status==1])\n    d<-1-surv.max.1\n    surv.pu<-1-d/2  \n    temp$zi[i]<-qlogis(1-surv.pu,0,1)}\n}\nfor (i in 1:k){ if (temp$zi[i]==Inf)\n{  d<-min(temp$km.surv[temp$km.surv > 0])\n    surv.pl<-d/2\n    temp$zi[i]<-qlogis(1-surv.pl,0,1)}\n}\n}\n if (quantile == \"qnorm\"){ \nzi<-as.numeric(qnorm(1-temp$km.surv,0,1))\nk<-nrow(temp)\nfor (i in 1:k){\n    if (zi[i]!=-Inf && zi[i]!=Inf ) zi[i]<-zi[i]\n}\ntemp$zi<-zi\nfor(i in 1:k){ if (temp$zi[i]==-Inf)\n{   surv.max.1<-max(temp$km.surv[temp$status==1])\n    d<-1-surv.max.1\n    surv.pu<-1-d/2  \n    temp$zi[i]<-qnorm(1-surv.pu,0,1)}\n}\nfor (i in 1:k){ if (temp$zi[i]==Inf)\n{  d<-min(temp$km.surv[temp$km.surv > 0])\n    surv.pl<-d/2\n    temp$zi[i]<-qnorm(1-surv.pl,0,1)}\n}\n}\n temp$ei<-temp$ei-con\n##print(temp)\nplot(temp$zi,temp$ei,xlab=xlab,ylab=\"ordered ei residuals\",type=\"n\",xlim=c(min(temp$zi),max(temp$zi)),ylim=c(min(temp$ei),max(temp$ei)+.15))\npoints(temp$zi[temp$status==0],temp$ei[temp$status==0],pch=\".\",cex=3)\npoints(temp$zi[temp$status==1],temp$ei[temp$status==1],pch=\"o\",cex=1)\nlines(temp$zi[temp$status==1],temp$ei[temp$status==1],lty=1,lwd=1)\nk<-nrow(temp)\nfor(i in 1:k)\n{ if (temp$status[i]==0)\narrows(temp$zi[i],temp$ei[i],temp$zi[i],temp$ei[i]+.15,code=2,length=.12,lwd=2.01)}\nabline(a=0,b=1,lty=4,lwd=2)\nusr<-par(\"usr\")\narrows(.9*usr[1]+.1*usr[2],.07*usr[3]+.93*usr[4],.9*usr[1]+.1*usr[2],.07*usr[3]+.93*usr[4]+.15,code=2,length=.12,lwd=2.01)\ntext(.8*usr[1]+.2*usr[2],.05*usr[3]+.95*usr[4],\"= censored\")\npoints(.9*usr[1]+.1*usr[2],.11*usr[3]+.89*usr[4],pch=\"o\")\ntext(.79*usr[1]+.21*usr[2],.1*usr[3]+.90*usr[4], \"= uncensored\") \non.exit()\n\"qq.reg.resid:done\"\n}\n\n\nqq.reg.resid.r(dados,dados$tempo,dados$status, leuc.wei.comp,\"qweibull\",\"standard extreme value quantiles\")\n\n\n\n\n[1] \"qq.reg.resid:done\"\n\n##Example 2: \n##fit.weib<-survreg(Surv(weeks,status)~1,dist=\"weibull\",data=aml1)\n##qq.reg.resid.r(aml1,aml1$weeks,aml1$status,fit.weib,\"qweibull\",\"standard extreme value quantiles\")\n##=================================================="
+    "text": "Análise de resíduos"
+  },
+  {
+    "objectID": "modregpar01.html#fazendo-previsões-1",
+    "href": "modregpar01.html#fazendo-previsões-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Fazendo Previsões",
+    "text": "Fazendo Previsões\n\nnovosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.wei.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n3.784108 3.125137"
+  },
+  {
+    "objectID": "modregpar01.html#tempo-mediano-1",
+    "href": "modregpar01.html#tempo-mediano-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Tempo Mediano",
+    "text": "Tempo Mediano\n\nprev1 <-predict(leuc.wei.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n37.27311 19.28448 \n\nprev1[1]/prev1[2]\n\n       1 \n1.932804"
+  },
+  {
+    "objectID": "modregpar01.html#comparando-com-outro-quantil-1",
+    "href": "modregpar01.html#comparando-com-outro-quantil-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando com outro quantil",
+    "text": "Comparando com outro quantil\n\nprev2 <-predict(leuc.wei.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n47.85133 24.75747 \n\nprev2[1]/prev2[2]\n\n       1 \n1.932804"
+  },
+  {
+    "objectID": "modregpar01.html#verificando-o-modelo-1",
+    "href": "modregpar01.html#verificando-o-modelo-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Verificando o modelo",
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.wei.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1/leuc.wei.sel$scale,\nmain = \"Gráfico Q-Q\", xlab = \"Quantis teóricos\", ylab = \"Quantis Empíricos\")\n\n\n\n\n[1] 11 16"
+  },
+  {
+    "objectID": "modregpar01.html#modelo-lognormal",
+    "href": "modregpar01.html#modelo-lognormal",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelo Lognormal",
+    "text": "Modelo Lognormal\n\nleuc.logn.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"lognormal\")\nsummary(leuc.logn.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"lognormal\")\n              Value Std. Error     z       p\n(Intercept)  4.9975     0.3924 12.74 < 2e-16\nsexo        -0.0947     0.2211 -0.43 0.66862\nlogwbc      -0.7051     0.1251 -5.64 1.7e-08\nRx          -0.8539     0.2311 -3.69 0.00022\nLog(scale)  -0.4424     0.1293 -3.42 0.00062\n\nScale= 0.642 \n\nLog Normal distribution\nLoglik(model)= -93.9   Loglik(intercept only)= -115.4\n    Chisq= 43.08 on 3 degrees of freedom, p= 2.4e-09 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\n\n\nleuc.logn.sel <- stepAIC(leuc.logn.comp, direction=\"backward\")\n\nStart:  AIC=197.7\nSurv(tempo, status) ~ sexo + logwbc + Rx\n\n         Df    AIC\n- sexo    1 195.88\n<none>      197.70\n- Rx      1 208.92\n- logwbc  1 220.36\n\nStep:  AIC=195.88\nSurv(tempo, status) ~ logwbc + Rx\n\n         Df    AIC\n<none>      195.88\n- Rx      1 206.93\n- logwbc  1 219.41\n\nsummary(leuc.logn.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"lognormal\")\n             Value Std. Error     z       p\n(Intercept)  4.982      0.394 12.65 < 2e-16\nlogwbc      -0.716      0.123 -5.80 6.6e-09\nRx          -0.848      0.232 -3.66 0.00025\nLog(scale)  -0.437      0.129 -3.39 0.00070\n\nScale= 0.646 \n\nLog Normal distribution\nLoglik(model)= -93.9   Loglik(intercept only)= -115.4\n    Chisq= 42.9 on 2 degrees of freedom, p= 4.8e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42"
+  },
+  {
+    "objectID": "modregpar01.html#fazendo-previsões-2",
+    "href": "modregpar01.html#fazendo-previsões-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Fazendo Previsões",
+    "text": "Fazendo Previsões\n\nnovosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.logn.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n3.549821 2.702019"
+  },
+  {
+    "objectID": "modregpar01.html#tempo-mediano-2",
+    "href": "modregpar01.html#tempo-mediano-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Tempo Mediano",
+    "text": "Tempo Mediano\n\nprev1 <-predict(leuc.logn.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n34.80708 14.90980 \n\nprev1[1]/prev1[2]\n\n      1 \n2.33451"
+  },
+  {
+    "objectID": "modregpar01.html#comparando-com-outro-quantil-2",
+    "href": "modregpar01.html#comparando-com-outro-quantil-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando com outro quantil",
+    "text": "Comparando com outro quantil\n\nprev2 <-predict(leuc.logn.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n48.83742 20.91977 \n\nprev2[1]/prev2[2]\n\n      1 \n2.33451"
+  },
+  {
+    "objectID": "modregpar01.html#verificando-o-modelo-2",
+    "href": "modregpar01.html#verificando-o-modelo-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Verificando o modelo",
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.logn.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"norm\",\nsd = leuc.logn.sel$scale,\nmain = \"Gráfico Q-Q\", xlab = \"Quantis teóricos\", ylab = \"Quantis Empíricos\")\n\n\n\n\n[1] 11 12"
+  },
+  {
+    "objectID": "modregpar01.html#modelo-loglogistico",
+    "href": "modregpar01.html#modelo-loglogistico",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelo Loglogistico",
+    "text": "Modelo Loglogistico\n\nleuc.logl.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"loglogistic\")\nsummary(leuc.logl.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"loglogistic\")\n              Value Std. Error     z       p\n(Intercept)  5.0190     0.3518 14.27 < 2e-16\nsexo        -0.0408     0.2027 -0.20 0.84065\nlogwbc      -0.7278     0.1098 -6.63 3.4e-11\nRx          -0.7494     0.2133 -3.51 0.00044\nLog(scale)  -1.0894     0.1509 -7.22 5.1e-13\n\nScale= 0.336 \n\nLog logistic distribution\nLoglik(model)= -92.3   Loglik(intercept only)= -115.4\n    Chisq= 46.08 on 3 degrees of freedom, p= 5.5e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\n\n\nleuc.logl.sel <- stepAIC(leuc.logl.comp, direction=\"backward\")\n\nStart:  AIC=194.62\nSurv(tempo, status) ~ sexo + logwbc + Rx\n\n         Df    AIC\n- sexo    1 192.66\n<none>      194.62\n- Rx      1 204.94\n- logwbc  1 222.00\n\nStep:  AIC=192.66\nSurv(tempo, status) ~ logwbc + Rx\n\n         Df    AIC\n<none>      192.66\n- Rx      1 202.99\n- logwbc  1 221.32\n\nsummary(leuc.logl.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"loglogistic\")\n             Value Std. Error     z       p\n(Intercept)  5.008      0.348 14.40 < 2e-16\nlogwbc      -0.733      0.108 -6.81 9.8e-12\nRx          -0.743      0.210 -3.54   4e-04\nLog(scale)  -1.089      0.151 -7.22 5.3e-13\n\nScale= 0.337 \n\nLog logistic distribution\nLoglik(model)= -92.3   Loglik(intercept only)= -115.4\n    Chisq= 46.04 on 2 degrees of freedom, p= 1e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42"
+  },
+  {
+    "objectID": "modregpar01.html#fazendo-previsões-3",
+    "href": "modregpar01.html#fazendo-previsões-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Fazendo Previsões",
+    "text": "Fazendo Previsões\n\nnovosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.logl.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n3.542894 2.800346"
+  },
+  {
+    "objectID": "modregpar01.html#tempo-mediano-3",
+    "href": "modregpar01.html#tempo-mediano-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Tempo Mediano",
+    "text": "Tempo Mediano\n\nprev1 <-predict(leuc.logl.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n34.56680 16.45034 \n\nprev1[1]/prev1[2]\n\n       1 \n2.101282"
+  },
+  {
+    "objectID": "modregpar01.html#comparando-com-outro-quantil-3",
+    "href": "modregpar01.html#comparando-com-outro-quantil-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando com outro quantil",
+    "text": "Comparando com outro quantil\n\nprev2 <-predict(leuc.logl.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n45.97221 21.87818 \n\nprev2[1]/prev2[2]\n\n       1 \n2.101282"
+  },
+  {
+    "objectID": "modregpar01.html#verificando-o-modelo-3",
+    "href": "modregpar01.html#verificando-o-modelo-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Verificando o modelo",
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.logl.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"logis\",\nscale = leuc.logl.sel$scale,\nmain = \"Gráfico Q-Q\", xlab = \"Quantis teóricos\", ylab = \"Quantis Empíricos\")\n\n\n\n\n[1] 11 12"
+  },
+  {
+    "objectID": "modregpar01.html#comparação-dos-modelos",
+    "href": "modregpar01.html#comparação-dos-modelos",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\n\ntab.exp <- summary(leuc.exp.sel)\ntab.exp\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"exponential\")\n             Value Std. Error     z       p\n(Intercept)  5.958      0.699  8.52 < 2e-16\nlogwbc      -0.884      0.216 -4.10 4.2e-05\nRx          -1.093      0.413 -2.65  0.0082\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.8   Loglik(intercept only)= -116.8\n    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42 \n\ntab.wei <- summary(leuc.wei.sel)\ntab.wei\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"weibull\")\n             Value Std. Error     z       p\n(Intercept)  5.399      0.364 14.84 < 2e-16\nlogwbc      -0.807      0.108 -7.45 9.7e-14\nRx          -0.659      0.189 -3.49 0.00049\nLog(scale)  -0.793      0.142 -5.58 2.5e-08\n\nScale= 0.452 \n\nWeibull distribution\nLoglik(model)= -90.1   Loglik(intercept only)= -116.4\n    Chisq= 52.68 on 2 degrees of freedom, p= 3.6e-12 \nNumber of Newton-Raphson Iterations: 7 \nn= 42 \n\nTRV <- 2*(tab.wei$loglik[1] - tab.exp$loglik[1])\npchisq(TRV, 1, lower.tail = F)\n\n[1] 0.3953251\n\ntab.ln <- summary(leuc.logn.sel)\ntab.ln\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"lognormal\")\n             Value Std. Error     z       p\n(Intercept)  4.982      0.394 12.65 < 2e-16\nlogwbc      -0.716      0.123 -5.80 6.6e-09\nRx          -0.848      0.232 -3.66 0.00025\nLog(scale)  -0.437      0.129 -3.39 0.00070\n\nScale= 0.646 \n\nLog Normal distribution\nLoglik(model)= -93.9   Loglik(intercept only)= -115.4\n    Chisq= 42.9 on 2 degrees of freedom, p= 4.8e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\ntab.ll <- summary(leuc.logl.sel)\ntab.ll\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"loglogistic\")\n             Value Std. Error     z       p\n(Intercept)  5.008      0.348 14.40 < 2e-16\nlogwbc      -0.733      0.108 -6.81 9.8e-12\nRx          -0.743      0.210 -3.54   4e-04\nLog(scale)  -1.089      0.151 -7.22 5.3e-13\n\nScale= 0.337 \n\nLog logistic distribution\nLoglik(model)= -92.3   Loglik(intercept only)= -115.4\n    Chisq= 46.04 on 2 degrees of freedom, p= 1e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\naic.exp <- -2*tab.exp$loglik[1] + 2*3\naic.exp\n\n[1] 239.5333\n\naic.wei <- -2*tab.wei$loglik[1] + 2*4\naic.wei\n\n[1] 240.8108\n\naic.ln <- -2*tab.ln$loglik[1] + 2*4\naic.ln\n\n[1] 238.786\n\naic.ll <- -2*tab.ll$loglik[1] + 2*4\naic.ll\n\n[1] 238.7022\n\naic <- c(aic.exp, aic.wei, aic.ln, aic.ll)\ndelta.aic <- aic - min(aic)\ndelta.aic\n\n[1] 0.83108732 2.10858745 0.08373248 0.00000000\n\npeso.aic <- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\nsum(peso.aic)\n\n[1] 1\n\nmodelos <- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      p_Akaike = peso.aic)\ngt::gt(modelos)\n\n\n\n\n\n  \n  \n    \n      modelos\n      p_Akaike\n    \n  \n  \n    Exponencial\n0.2224093\n    Weibull\n0.1174214\n    Lognormal\n0.3231759\n    Loglogistico\n0.3369933"
   }
 ]

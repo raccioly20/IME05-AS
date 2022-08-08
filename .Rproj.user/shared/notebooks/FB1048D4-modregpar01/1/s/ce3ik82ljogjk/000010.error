@@ -1,0 +1,1 @@
+{"frames":[{"func":"stepAIC(leuc.logn.comp, direction = \"backward\")","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0},{"func":"terms(object)","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error in terms(object) : object 'leuc.logn.comp' not found\n"}

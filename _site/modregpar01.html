@@ -170,7 +170,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#comparando-com-outro-quantil" id="toc-comparando-com-outro-quantil" class="nav-link" data-scroll-target="#comparando-com-outro-quantil">Comparando com outro quantil</a></li>
   <li><a href="#verificando-o-modelo" id="toc-verificando-o-modelo" class="nav-link" data-scroll-target="#verificando-o-modelo">Verificando o modelo</a></li>
   <li><a href="#modelo-weibull" id="toc-modelo-weibull" class="nav-link" data-scroll-target="#modelo-weibull">Modelo Weibull</a></li>
-  <li><a href="#análise-de-resíduos" id="toc-análise-de-resíduos" class="nav-link" data-scroll-target="#análise-de-resíduos">Análise de resíduos</a></li>
+  <li><a href="#fazendo-previsões-1" id="toc-fazendo-previsões-1" class="nav-link" data-scroll-target="#fazendo-previsões-1">Fazendo Previsões</a></li>
+  <li><a href="#tempo-mediano-1" id="toc-tempo-mediano-1" class="nav-link" data-scroll-target="#tempo-mediano-1">Tempo Mediano</a></li>
+  <li><a href="#comparando-com-outro-quantil-1" id="toc-comparando-com-outro-quantil-1" class="nav-link" data-scroll-target="#comparando-com-outro-quantil-1">Comparando com outro quantil</a></li>
+  <li><a href="#verificando-o-modelo-1" id="toc-verificando-o-modelo-1" class="nav-link" data-scroll-target="#verificando-o-modelo-1">Verificando o modelo</a></li>
+  <li><a href="#modelo-lognormal" id="toc-modelo-lognormal" class="nav-link" data-scroll-target="#modelo-lognormal">Modelo Lognormal</a></li>
+  <li><a href="#fazendo-previsões-2" id="toc-fazendo-previsões-2" class="nav-link" data-scroll-target="#fazendo-previsões-2">Fazendo Previsões</a></li>
+  <li><a href="#tempo-mediano-2" id="toc-tempo-mediano-2" class="nav-link" data-scroll-target="#tempo-mediano-2">Tempo Mediano</a></li>
+  <li><a href="#comparando-com-outro-quantil-2" id="toc-comparando-com-outro-quantil-2" class="nav-link" data-scroll-target="#comparando-com-outro-quantil-2">Comparando com outro quantil</a></li>
+  <li><a href="#verificando-o-modelo-2" id="toc-verificando-o-modelo-2" class="nav-link" data-scroll-target="#verificando-o-modelo-2">Verificando o modelo</a></li>
+  <li><a href="#modelo-loglogistico" id="toc-modelo-loglogistico" class="nav-link" data-scroll-target="#modelo-loglogistico">Modelo Loglogistico</a></li>
+  <li><a href="#fazendo-previsões-3" id="toc-fazendo-previsões-3" class="nav-link" data-scroll-target="#fazendo-previsões-3">Fazendo Previsões</a></li>
+  <li><a href="#tempo-mediano-3" id="toc-tempo-mediano-3" class="nav-link" data-scroll-target="#tempo-mediano-3">Tempo Mediano</a></li>
+  <li><a href="#comparando-com-outro-quantil-3" id="toc-comparando-com-outro-quantil-3" class="nav-link" data-scroll-target="#comparando-com-outro-quantil-3">Comparando com outro quantil</a></li>
+  <li><a href="#verificando-o-modelo-3" id="toc-verificando-o-modelo-3" class="nav-link" data-scroll-target="#verificando-o-modelo-3">Verificando o modelo</a></li>
+  <li><a href="#comparação-dos-modelos" id="toc-comparação-dos-modelos" class="nav-link" data-scroll-target="#comparação-dos-modelos">Comparação dos modelos</a></li>
   </ul>
 </nav>
     </div>
@@ -303,7 +317,7 @@ n= 42 </code></pre>
 <h2 class="anchored" data-anchor-id="automatizando-ajuste">Automatizando ajuste</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>leuc.exp.sel <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(leuc.exp.comp, <span class="at">ditection=</span><span class="st">"backward"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>leuc.exp.sel <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(leuc.exp.comp, <span class="at">direction=</span><span class="st">"backward"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Start:  AIC=209.5
 Surv(tempo, status) ~ sexo + logwbc + Rx
@@ -398,13 +412,14 @@ n= 42 </code></pre>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>tempo[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">"Grafico TA"</span>,</span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"log(valores ajustados)"</span>, <span class="at">ylab =</span> <span class="st">"log(residuos)"</span>)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(log.resid, <span class="at">dist =</span> <span class="st">"norm"</span>, <span class="at">sd=</span>leuc.exp.sel<span class="sc">$</span>scale, </span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Grafico Q-Q"</span>, <span class="at">xlab =</span> <span class="st">"Quantis teoricos Exponencial"</span>, <span class="at">ylab =</span> <span class="st">"Quantis empiricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">exp</span>(log.resid), <span class="at">dist =</span> <span class="st">"weibull"</span>,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="at">shape =</span> <span class="dv">1</span>,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Gráfico Q-Q"</span>, <span class="at">xlab =</span> <span class="st">"Quantis teóricos"</span>, <span class="at">ylab =</span> <span class="st">"Quantis Empíricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="modregpar01_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 29  7</code></pre>
+<pre><code>[1] 11 16</code></pre>
 </div>
 </div>
 </section>
@@ -434,131 +449,933 @@ Number of Newton-Raphson Iterations: 7
 n= 42 </code></pre>
 </div>
 </div>
-</section>
-<section id="análise-de-resíduos" class="level2">
-<h2 class="anchored" data-anchor-id="análise-de-resíduos">Análise de resíduos</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="do">##=====================================================================</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>qq.reg.resid.r<span class="ot">&lt;-</span><span class="cf">function</span>(data,time,status,fit,quantile,xlab){</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="do">##=================================</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Purpose: For parametric regression models, this constructs a</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="do">##          qq-plot of ordered residuals e_i=(y_i-yhat_i)/sigmahat against</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="do">##          the log-parametric standard quantiles z_i of either the</span></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="do">##          "weibull", "lognormal", or "loglogistic" distribution.</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="do">##--------------------------------------------------------------------------</span></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span><span class="al">NOTE</span><span class="do">:  This can also be used for fitting a single sample of survival</span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="do">##        times to a parametric model. Since there are no covariates</span></span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="do">##        remember to type survReg(Surv(...,...)~1,dist="...",data=...) </span></span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="do">##        in order to estimate the intercept mu.</span></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="do">##---------------------------------------------------------------------------</span></span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Arguments:   data = data.frame</span></span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="do">##              time = survival time variable name in data.frame</span></span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="do">##              status = name of status variable in data.frame</span></span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="do">##              fit = a survreg object</span></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="do">##              quantile = "qweibull" or "qnorm" or "qlogis"  </span></span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="do">##              xlab = "type your label" E.g., "standard extreme value quantiles"</span></span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a><span class="do">##------------------------------------------------------------------------------</span></span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Author: Mara Tableman, Revises: 6 March, 2013</span></span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a><span class="do">##==============================================================================</span></span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>temp<span class="ot">&lt;-</span>data</span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>temp<span class="sc">$</span>time<span class="ot">&lt;-</span>time</span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>temp<span class="sc">$</span>status<span class="ot">&lt;-</span>status</span>
-<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>temp<span class="sc">$</span>ei<span class="ot">&lt;-</span>(<span class="fu">log</span>(temp<span class="sc">$</span>time)<span class="sc">-</span><span class="fu">predict</span>(fit,<span class="at">type=</span><span class="st">"lp"</span>))<span class="sc">/</span>fit<span class="sc">$</span>scale</span>
-<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>temp<span class="ot">&lt;-</span>temp[<span class="fu">order</span>(temp<span class="sc">$</span>ei), ]</span>
-<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>con<span class="ot">&lt;-</span><span class="fu">abs</span>(<span class="fu">min</span>(temp<span class="sc">$</span>ei))<span class="sc">+</span>.<span class="dv">00001</span></span>
-<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>temp<span class="sc">$</span>ei<span class="ot">&lt;-</span>temp<span class="sc">$</span>ei<span class="sc">+</span>con </span>
-<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>km.fit<span class="ot">&lt;-</span><span class="fu">survfit</span>(<span class="fu">Surv</span>(ei,status)<span class="sc">~</span><span class="dv">1</span>,<span class="at">data=</span>temp)</span>
-<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a><span class="do">##temp$km.surv&lt;-summary(km.fit,censor=T)$surv</span></span>
-<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>temp<span class="sc">$</span>km.surv<span class="ot">&lt;-</span><span class="fu">summary</span>(km.fit, <span class="at">time=</span>temp<span class="sc">$</span>ei, <span class="at">extend=</span>T)<span class="sc">$</span>surv</span>
-<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (quantile <span class="sc">==</span> <span class="st">"qweibull"</span>) {</span>
-<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>zi<span class="ot">&lt;-</span><span class="fu">as.numeric</span>(<span class="fu">qweibull</span>(<span class="dv">1</span><span class="sc">-</span>temp<span class="sc">$</span>km.surv,<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>k<span class="ot">&lt;-</span><span class="fu">nrow</span>(temp)</span>
-<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){</span>
-<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (zi[i]<span class="sc">!=-</span><span class="cn">Inf</span> <span class="sc">&amp;&amp;</span> zi[i]<span class="sc">!=</span><span class="cn">Inf</span> ) zi[i]<span class="ot">&lt;-</span><span class="fu">log</span>(zi[i])</span>
-<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>temp<span class="sc">$</span>zi<span class="ot">&lt;-</span>zi</span>
-<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){ <span class="cf">if</span> (temp<span class="sc">$</span>zi[i]<span class="sc">==-</span><span class="cn">Inf</span>)</span>
-<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>{   surv.max<span class="fl">.1</span><span class="ot">&lt;-</span><span class="fu">max</span>(temp<span class="sc">$</span>km.surv[temp<span class="sc">$</span>status<span class="sc">==</span><span class="dv">1</span>])</span>
-<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a>    d<span class="ot">&lt;-</span><span class="dv">1</span><span class="sc">-</span>surv.max<span class="fl">.1</span></span>
-<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>    surv.pu<span class="ot">&lt;-</span><span class="dv">1</span><span class="sc">-</span>d<span class="sc">/</span><span class="dv">2</span>  </span>
-<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a>    temp<span class="sc">$</span>zi[i]<span class="ot">&lt;-</span><span class="fu">log</span>(<span class="fu">qweibull</span>(<span class="dv">1</span><span class="sc">-</span>surv.pu,<span class="dv">1</span>,<span class="dv">1</span>))}</span>
-<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){ <span class="cf">if</span> (temp<span class="sc">$</span>zi[i]<span class="sc">==</span><span class="cn">Inf</span>)</span>
-<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a>{  d<span class="ot">&lt;-</span><span class="fu">min</span>(temp<span class="sc">$</span>km.surv[temp<span class="sc">$</span>km.surv <span class="sc">&gt;</span> <span class="dv">0</span>])</span>
-<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a>    surv.pl<span class="ot">&lt;-</span>d<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>    temp<span class="sc">$</span>zi[i]<span class="ot">&lt;-</span><span class="fu">log</span>(<span class="fu">qweibull</span>(<span class="dv">1</span><span class="sc">-</span>surv.pl,<span class="dv">1</span>,<span class="dv">1</span>))}</span>
-<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (quantile <span class="sc">==</span> <span class="st">"qlogis"</span>) {</span>
-<span id="cb28-53"><a href="#cb28-53" aria-hidden="true" tabindex="-1"></a>zi<span class="ot">&lt;-</span><span class="fu">as.numeric</span>(<span class="fu">qlogis</span>(<span class="dv">1</span><span class="sc">-</span>temp<span class="sc">$</span>km.surv,<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb28-54"><a href="#cb28-54" aria-hidden="true" tabindex="-1"></a>k<span class="ot">&lt;-</span><span class="fu">nrow</span>(temp)</span>
-<span id="cb28-55"><a href="#cb28-55" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){</span>
-<span id="cb28-56"><a href="#cb28-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (zi[i]<span class="sc">!=-</span><span class="cn">Inf</span> <span class="sc">&amp;&amp;</span> zi[i]<span class="sc">!=</span><span class="cn">Inf</span> ) zi[i]<span class="ot">&lt;-</span>zi[i]</span>
-<span id="cb28-57"><a href="#cb28-57" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-58"><a href="#cb28-58" aria-hidden="true" tabindex="-1"></a>temp<span class="sc">$</span>zi<span class="ot">&lt;-</span>zi</span>
-<span id="cb28-59"><a href="#cb28-59" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){ <span class="cf">if</span> (temp<span class="sc">$</span>zi[i]<span class="sc">==-</span><span class="cn">Inf</span>)</span>
-<span id="cb28-60"><a href="#cb28-60" aria-hidden="true" tabindex="-1"></a>{   surv.max<span class="fl">.1</span><span class="ot">&lt;-</span><span class="fu">max</span>(temp<span class="sc">$</span>km.surv[temp<span class="sc">$</span>status<span class="sc">==</span><span class="dv">1</span>])</span>
-<span id="cb28-61"><a href="#cb28-61" aria-hidden="true" tabindex="-1"></a>    d<span class="ot">&lt;-</span><span class="dv">1</span><span class="sc">-</span>surv.max<span class="fl">.1</span></span>
-<span id="cb28-62"><a href="#cb28-62" aria-hidden="true" tabindex="-1"></a>    surv.pu<span class="ot">&lt;-</span><span class="dv">1</span><span class="sc">-</span>d<span class="sc">/</span><span class="dv">2</span>  </span>
-<span id="cb28-63"><a href="#cb28-63" aria-hidden="true" tabindex="-1"></a>    temp<span class="sc">$</span>zi[i]<span class="ot">&lt;-</span><span class="fu">qlogis</span>(<span class="dv">1</span><span class="sc">-</span>surv.pu,<span class="dv">0</span>,<span class="dv">1</span>)}</span>
-<span id="cb28-64"><a href="#cb28-64" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-65"><a href="#cb28-65" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){ <span class="cf">if</span> (temp<span class="sc">$</span>zi[i]<span class="sc">==</span><span class="cn">Inf</span>)</span>
-<span id="cb28-66"><a href="#cb28-66" aria-hidden="true" tabindex="-1"></a>{  d<span class="ot">&lt;-</span><span class="fu">min</span>(temp<span class="sc">$</span>km.surv[temp<span class="sc">$</span>km.surv <span class="sc">&gt;</span> <span class="dv">0</span>])</span>
-<span id="cb28-67"><a href="#cb28-67" aria-hidden="true" tabindex="-1"></a>    surv.pl<span class="ot">&lt;-</span>d<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb28-68"><a href="#cb28-68" aria-hidden="true" tabindex="-1"></a>    temp<span class="sc">$</span>zi[i]<span class="ot">&lt;-</span><span class="fu">qlogis</span>(<span class="dv">1</span><span class="sc">-</span>surv.pl,<span class="dv">0</span>,<span class="dv">1</span>)}</span>
-<span id="cb28-69"><a href="#cb28-69" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-70"><a href="#cb28-70" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-71"><a href="#cb28-71" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> (quantile <span class="sc">==</span> <span class="st">"qnorm"</span>){ </span>
-<span id="cb28-72"><a href="#cb28-72" aria-hidden="true" tabindex="-1"></a>zi<span class="ot">&lt;-</span><span class="fu">as.numeric</span>(<span class="fu">qnorm</span>(<span class="dv">1</span><span class="sc">-</span>temp<span class="sc">$</span>km.surv,<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb28-73"><a href="#cb28-73" aria-hidden="true" tabindex="-1"></a>k<span class="ot">&lt;-</span><span class="fu">nrow</span>(temp)</span>
-<span id="cb28-74"><a href="#cb28-74" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){</span>
-<span id="cb28-75"><a href="#cb28-75" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (zi[i]<span class="sc">!=-</span><span class="cn">Inf</span> <span class="sc">&amp;&amp;</span> zi[i]<span class="sc">!=</span><span class="cn">Inf</span> ) zi[i]<span class="ot">&lt;-</span>zi[i]</span>
-<span id="cb28-76"><a href="#cb28-76" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-77"><a href="#cb28-77" aria-hidden="true" tabindex="-1"></a>temp<span class="sc">$</span>zi<span class="ot">&lt;-</span>zi</span>
-<span id="cb28-78"><a href="#cb28-78" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){ <span class="cf">if</span> (temp<span class="sc">$</span>zi[i]<span class="sc">==-</span><span class="cn">Inf</span>)</span>
-<span id="cb28-79"><a href="#cb28-79" aria-hidden="true" tabindex="-1"></a>{   surv.max<span class="fl">.1</span><span class="ot">&lt;-</span><span class="fu">max</span>(temp<span class="sc">$</span>km.surv[temp<span class="sc">$</span>status<span class="sc">==</span><span class="dv">1</span>])</span>
-<span id="cb28-80"><a href="#cb28-80" aria-hidden="true" tabindex="-1"></a>    d<span class="ot">&lt;-</span><span class="dv">1</span><span class="sc">-</span>surv.max<span class="fl">.1</span></span>
-<span id="cb28-81"><a href="#cb28-81" aria-hidden="true" tabindex="-1"></a>    surv.pu<span class="ot">&lt;-</span><span class="dv">1</span><span class="sc">-</span>d<span class="sc">/</span><span class="dv">2</span>  </span>
-<span id="cb28-82"><a href="#cb28-82" aria-hidden="true" tabindex="-1"></a>    temp<span class="sc">$</span>zi[i]<span class="ot">&lt;-</span><span class="fu">qnorm</span>(<span class="dv">1</span><span class="sc">-</span>surv.pu,<span class="dv">0</span>,<span class="dv">1</span>)}</span>
-<span id="cb28-83"><a href="#cb28-83" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-84"><a href="#cb28-84" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k){ <span class="cf">if</span> (temp<span class="sc">$</span>zi[i]<span class="sc">==</span><span class="cn">Inf</span>)</span>
-<span id="cb28-85"><a href="#cb28-85" aria-hidden="true" tabindex="-1"></a>{  d<span class="ot">&lt;-</span><span class="fu">min</span>(temp<span class="sc">$</span>km.surv[temp<span class="sc">$</span>km.surv <span class="sc">&gt;</span> <span class="dv">0</span>])</span>
-<span id="cb28-86"><a href="#cb28-86" aria-hidden="true" tabindex="-1"></a>    surv.pl<span class="ot">&lt;-</span>d<span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb28-87"><a href="#cb28-87" aria-hidden="true" tabindex="-1"></a>    temp<span class="sc">$</span>zi[i]<span class="ot">&lt;-</span><span class="fu">qnorm</span>(<span class="dv">1</span><span class="sc">-</span>surv.pl,<span class="dv">0</span>,<span class="dv">1</span>)}</span>
-<span id="cb28-88"><a href="#cb28-88" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-89"><a href="#cb28-89" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-90"><a href="#cb28-90" aria-hidden="true" tabindex="-1"></a> temp<span class="sc">$</span>ei<span class="ot">&lt;-</span>temp<span class="sc">$</span>ei<span class="sc">-</span>con</span>
-<span id="cb28-91"><a href="#cb28-91" aria-hidden="true" tabindex="-1"></a><span class="do">##print(temp)</span></span>
-<span id="cb28-92"><a href="#cb28-92" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(temp<span class="sc">$</span>zi,temp<span class="sc">$</span>ei,<span class="at">xlab=</span>xlab,<span class="at">ylab=</span><span class="st">"ordered ei residuals"</span>,<span class="at">type=</span><span class="st">"n"</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="fu">min</span>(temp<span class="sc">$</span>zi),<span class="fu">max</span>(temp<span class="sc">$</span>zi)),<span class="at">ylim=</span><span class="fu">c</span>(<span class="fu">min</span>(temp<span class="sc">$</span>ei),<span class="fu">max</span>(temp<span class="sc">$</span>ei)<span class="sc">+</span>.<span class="dv">15</span>))</span>
-<span id="cb28-93"><a href="#cb28-93" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(temp<span class="sc">$</span>zi[temp<span class="sc">$</span>status<span class="sc">==</span><span class="dv">0</span>],temp<span class="sc">$</span>ei[temp<span class="sc">$</span>status<span class="sc">==</span><span class="dv">0</span>],<span class="at">pch=</span><span class="st">"."</span>,<span class="at">cex=</span><span class="dv">3</span>)</span>
-<span id="cb28-94"><a href="#cb28-94" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(temp<span class="sc">$</span>zi[temp<span class="sc">$</span>status<span class="sc">==</span><span class="dv">1</span>],temp<span class="sc">$</span>ei[temp<span class="sc">$</span>status<span class="sc">==</span><span class="dv">1</span>],<span class="at">pch=</span><span class="st">"o"</span>,<span class="at">cex=</span><span class="dv">1</span>)</span>
-<span id="cb28-95"><a href="#cb28-95" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(temp<span class="sc">$</span>zi[temp<span class="sc">$</span>status<span class="sc">==</span><span class="dv">1</span>],temp<span class="sc">$</span>ei[temp<span class="sc">$</span>status<span class="sc">==</span><span class="dv">1</span>],<span class="at">lty=</span><span class="dv">1</span>,<span class="at">lwd=</span><span class="dv">1</span>)</span>
-<span id="cb28-96"><a href="#cb28-96" aria-hidden="true" tabindex="-1"></a>k<span class="ot">&lt;-</span><span class="fu">nrow</span>(temp)</span>
-<span id="cb28-97"><a href="#cb28-97" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k)</span>
-<span id="cb28-98"><a href="#cb28-98" aria-hidden="true" tabindex="-1"></a>{ <span class="cf">if</span> (temp<span class="sc">$</span>status[i]<span class="sc">==</span><span class="dv">0</span>)</span>
-<span id="cb28-99"><a href="#cb28-99" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(temp<span class="sc">$</span>zi[i],temp<span class="sc">$</span>ei[i],temp<span class="sc">$</span>zi[i],temp<span class="sc">$</span>ei[i]<span class="sc">+</span>.<span class="dv">15</span>,<span class="at">code=</span><span class="dv">2</span>,<span class="at">length=</span>.<span class="dv">12</span>,<span class="at">lwd=</span><span class="fl">2.01</span>)}</span>
-<span id="cb28-100"><a href="#cb28-100" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="dv">0</span>,<span class="at">b=</span><span class="dv">1</span>,<span class="at">lty=</span><span class="dv">4</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb28-101"><a href="#cb28-101" aria-hidden="true" tabindex="-1"></a>usr<span class="ot">&lt;-</span><span class="fu">par</span>(<span class="st">"usr"</span>)</span>
-<span id="cb28-102"><a href="#cb28-102" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(.<span class="dv">9</span><span class="sc">*</span>usr[<span class="dv">1</span>]<span class="sc">+</span>.<span class="dv">1</span><span class="sc">*</span>usr[<span class="dv">2</span>],.<span class="dv">07</span><span class="sc">*</span>usr[<span class="dv">3</span>]<span class="sc">+</span>.<span class="dv">93</span><span class="sc">*</span>usr[<span class="dv">4</span>],.<span class="dv">9</span><span class="sc">*</span>usr[<span class="dv">1</span>]<span class="sc">+</span>.<span class="dv">1</span><span class="sc">*</span>usr[<span class="dv">2</span>],.<span class="dv">07</span><span class="sc">*</span>usr[<span class="dv">3</span>]<span class="sc">+</span>.<span class="dv">93</span><span class="sc">*</span>usr[<span class="dv">4</span>]<span class="sc">+</span>.<span class="dv">15</span>,<span class="at">code=</span><span class="dv">2</span>,<span class="at">length=</span>.<span class="dv">12</span>,<span class="at">lwd=</span><span class="fl">2.01</span>)</span>
-<span id="cb28-103"><a href="#cb28-103" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(.<span class="dv">8</span><span class="sc">*</span>usr[<span class="dv">1</span>]<span class="sc">+</span>.<span class="dv">2</span><span class="sc">*</span>usr[<span class="dv">2</span>],.<span class="dv">05</span><span class="sc">*</span>usr[<span class="dv">3</span>]<span class="sc">+</span>.<span class="dv">95</span><span class="sc">*</span>usr[<span class="dv">4</span>],<span class="st">"= censored"</span>)</span>
-<span id="cb28-104"><a href="#cb28-104" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(.<span class="dv">9</span><span class="sc">*</span>usr[<span class="dv">1</span>]<span class="sc">+</span>.<span class="dv">1</span><span class="sc">*</span>usr[<span class="dv">2</span>],.<span class="dv">11</span><span class="sc">*</span>usr[<span class="dv">3</span>]<span class="sc">+</span>.<span class="dv">89</span><span class="sc">*</span>usr[<span class="dv">4</span>],<span class="at">pch=</span><span class="st">"o"</span>)</span>
-<span id="cb28-105"><a href="#cb28-105" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(.<span class="dv">79</span><span class="sc">*</span>usr[<span class="dv">1</span>]<span class="sc">+</span>.<span class="dv">21</span><span class="sc">*</span>usr[<span class="dv">2</span>],.<span class="dv">1</span><span class="sc">*</span>usr[<span class="dv">3</span>]<span class="sc">+</span>.<span class="dv">90</span><span class="sc">*</span>usr[<span class="dv">4</span>], <span class="st">"= uncensored"</span>) </span>
-<span id="cb28-106"><a href="#cb28-106" aria-hidden="true" tabindex="-1"></a><span class="fu">on.exit</span>()</span>
-<span id="cb28-107"><a href="#cb28-107" aria-hidden="true" tabindex="-1"></a><span class="st">"qq.reg.resid:done"</span></span>
-<span id="cb28-108"><a href="#cb28-108" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb28-109"><a href="#cb28-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-110"><a href="#cb28-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-111"><a href="#cb28-111" aria-hidden="true" tabindex="-1"></a><span class="fu">qq.reg.resid.r</span>(dados,dados<span class="sc">$</span>tempo,dados<span class="sc">$</span>status, leuc.wei.comp,<span class="st">"qweibull"</span>,<span class="st">"standard extreme value quantiles"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>leuc.wei.sel <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(leuc.wei.comp, <span class="at">direction=</span><span class="st">"backward"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=189.39
+Surv(tempo, status) ~ sexo + logwbc + Rx
+
+         Df    AIC
+- sexo    1 188.13
+&lt;none&gt;      189.39
+- Rx      1 201.43
+- logwbc  1 220.75
+
+Step:  AIC=188.13
+Surv(tempo, status) ~ logwbc + Rx
+
+         Df    AIC
+&lt;none&gt;      188.13
+- Rx      1 199.80
+- logwbc  1 219.16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.wei.sel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
+    dist = "weibull")
+             Value Std. Error     z       p
+(Intercept)  5.399      0.364 14.84 &lt; 2e-16
+logwbc      -0.807      0.108 -7.45 9.7e-14
+Rx          -0.659      0.189 -3.49 0.00049
+Log(scale)  -0.793      0.142 -5.58 2.5e-08
+
+Scale= 0.452 
+
+Weibull distribution
+Loglik(model)= -90.1   Loglik(intercept only)= -116.4
+    Chisq= 52.68 on 2 degrees of freedom, p= 3.6e-12 
+Number of Newton-Raphson Iterations: 7 
+n= 42 </code></pre>
+</div>
+</div>
+</section>
+<section id="fazendo-previsões-1" class="level2">
+<h2 class="anchored" data-anchor-id="fazendo-previsões-1">Fazendo Previsões</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>novosdados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">logwbc=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">Rx=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(leuc.wei.sel, <span class="at">type=</span><span class="st">"lp"</span>, <span class="at">newdata=</span>novosdados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2 
+3.784108 3.125137 </code></pre>
+</div>
+</div>
+</section>
+<section id="tempo-mediano-1" class="level2">
+<h2 class="anchored" data-anchor-id="tempo-mediano-1">Tempo Mediano</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>prev1 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.wei.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.5</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>prev1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2 
+37.27311 19.28448 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>prev1[<span class="dv">1</span>]<span class="sc">/</span>prev1[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+1.932804 </code></pre>
+</div>
+</div>
+</section>
+<section id="comparando-com-outro-quantil-1" class="level2">
+<h2 class="anchored" data-anchor-id="comparando-com-outro-quantil-1">Comparando com outro quantil</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>prev2 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.wei.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.7</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>prev2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2 
+47.85133 24.75747 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>prev2[<span class="dv">1</span>]<span class="sc">/</span>prev2[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+1.932804 </code></pre>
+</div>
+</div>
+</section>
+<section id="verificando-o-modelo-1" class="level2">
+<h2 class="anchored" data-anchor-id="verificando-o-modelo-1">Verificando o modelo</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(leuc.wei.sel, <span class="at">type =</span> <span class="st">"lp"</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>tempo[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">"Grafico TA"</span>,</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"log(valores ajustados)"</span>, <span class="at">ylab =</span> <span class="st">"log(residuos)"</span>)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">exp</span>(log.resid), <span class="at">dist =</span> <span class="st">"weibull"</span>,</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="at">shape =</span> <span class="dv">1</span><span class="sc">/</span>leuc.wei.sel<span class="sc">$</span>scale,</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Gráfico Q-Q"</span>, <span class="at">xlab =</span> <span class="st">"Quantis teóricos"</span>, <span class="at">ylab =</span> <span class="st">"Quantis Empíricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="modregpar01_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<p><img src="modregpar01_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "qq.reg.resid:done"</code></pre>
+<pre><code>[1] 11 16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">##Example 2: </span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="do">##fit.weib&lt;-survreg(Surv(weeks,status)~1,dist="weibull",data=aml1)</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="do">##qq.reg.resid.r(aml1,aml1$weeks,aml1$status,fit.weib,"qweibull","standard extreme value quantiles")</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="do">##==================================================</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="modelo-lognormal" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-lognormal">Modelo Lognormal</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>leuc.logn.comp <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> sexo <span class="sc">+</span> logwbc <span class="sc">+</span> Rx, <span class="at">data =</span> dados, <span class="at">dist =</span> <span class="st">"lognormal"</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.logn.comp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, 
+    dist = "lognormal")
+              Value Std. Error     z       p
+(Intercept)  4.9975     0.3924 12.74 &lt; 2e-16
+sexo        -0.0947     0.2211 -0.43 0.66862
+logwbc      -0.7051     0.1251 -5.64 1.7e-08
+Rx          -0.8539     0.2311 -3.69 0.00022
+Log(scale)  -0.4424     0.1293 -3.42 0.00062
+
+Scale= 0.642 
+
+Log Normal distribution
+Loglik(model)= -93.9   Loglik(intercept only)= -115.4
+    Chisq= 43.08 on 3 degrees of freedom, p= 2.4e-09 
+Number of Newton-Raphson Iterations: 6 
+n= 42 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>leuc.logn.sel <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(leuc.logn.comp, <span class="at">direction=</span><span class="st">"backward"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=197.7
+Surv(tempo, status) ~ sexo + logwbc + Rx
+
+         Df    AIC
+- sexo    1 195.88
+&lt;none&gt;      197.70
+- Rx      1 208.92
+- logwbc  1 220.36
+
+Step:  AIC=195.88
+Surv(tempo, status) ~ logwbc + Rx
+
+         Df    AIC
+&lt;none&gt;      195.88
+- Rx      1 206.93
+- logwbc  1 219.41</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.logn.sel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
+    dist = "lognormal")
+             Value Std. Error     z       p
+(Intercept)  4.982      0.394 12.65 &lt; 2e-16
+logwbc      -0.716      0.123 -5.80 6.6e-09
+Rx          -0.848      0.232 -3.66 0.00025
+Log(scale)  -0.437      0.129 -3.39 0.00070
+
+Scale= 0.646 
+
+Log Normal distribution
+Loglik(model)= -93.9   Loglik(intercept only)= -115.4
+    Chisq= 42.9 on 2 degrees of freedom, p= 4.8e-10 
+Number of Newton-Raphson Iterations: 6 
+n= 42 </code></pre>
+</div>
+</div>
+</section>
+<section id="fazendo-previsões-2" class="level2">
+<h2 class="anchored" data-anchor-id="fazendo-previsões-2">Fazendo Previsões</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>novosdados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">logwbc=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">Rx=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(leuc.logn.sel, <span class="at">type=</span><span class="st">"lp"</span>, <span class="at">newdata=</span>novosdados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2 
+3.549821 2.702019 </code></pre>
+</div>
+</div>
+</section>
+<section id="tempo-mediano-2" class="level2">
+<h2 class="anchored" data-anchor-id="tempo-mediano-2">Tempo Mediano</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>prev1 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logn.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.5</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>prev1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2 
+34.80708 14.90980 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>prev1[<span class="dv">1</span>]<span class="sc">/</span>prev1[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      1 
+2.33451 </code></pre>
+</div>
+</div>
+</section>
+<section id="comparando-com-outro-quantil-2" class="level2">
+<h2 class="anchored" data-anchor-id="comparando-com-outro-quantil-2">Comparando com outro quantil</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>prev2 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logn.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.7</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>prev2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2 
+48.83742 20.91977 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>prev2[<span class="dv">1</span>]<span class="sc">/</span>prev2[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      1 
+2.33451 </code></pre>
+</div>
+</div>
+</section>
+<section id="verificando-o-modelo-2" class="level2">
+<h2 class="anchored" data-anchor-id="verificando-o-modelo-2">Verificando o modelo</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(leuc.logn.sel, <span class="at">type =</span> <span class="st">"lp"</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>tempo[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">"Grafico TA"</span>,</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"log(valores ajustados)"</span>, <span class="at">ylab =</span> <span class="st">"log(residuos)"</span>)</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">exp</span>(log.resid), <span class="at">dist =</span> <span class="st">"norm"</span>,</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="at">sd =</span> leuc.logn.sel<span class="sc">$</span>scale,</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Gráfico Q-Q"</span>, <span class="at">xlab =</span> <span class="st">"Quantis teóricos"</span>, <span class="at">ylab =</span> <span class="st">"Quantis Empíricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="modregpar01_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11 12</code></pre>
+</div>
+</div>
+</section>
+<section id="modelo-loglogistico" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-loglogistico">Modelo Loglogistico</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>leuc.logl.comp <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> sexo <span class="sc">+</span> logwbc <span class="sc">+</span> Rx, <span class="at">data =</span> dados, <span class="at">dist =</span> <span class="st">"loglogistic"</span>)</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.logl.comp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, 
+    dist = "loglogistic")
+              Value Std. Error     z       p
+(Intercept)  5.0190     0.3518 14.27 &lt; 2e-16
+sexo        -0.0408     0.2027 -0.20 0.84065
+logwbc      -0.7278     0.1098 -6.63 3.4e-11
+Rx          -0.7494     0.2133 -3.51 0.00044
+Log(scale)  -1.0894     0.1509 -7.22 5.1e-13
+
+Scale= 0.336 
+
+Log logistic distribution
+Loglik(model)= -92.3   Loglik(intercept only)= -115.4
+    Chisq= 46.08 on 3 degrees of freedom, p= 5.5e-10 
+Number of Newton-Raphson Iterations: 6 
+n= 42 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>leuc.logl.sel <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(leuc.logl.comp, <span class="at">direction=</span><span class="st">"backward"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=194.62
+Surv(tempo, status) ~ sexo + logwbc + Rx
+
+         Df    AIC
+- sexo    1 192.66
+&lt;none&gt;      194.62
+- Rx      1 204.94
+- logwbc  1 222.00
+
+Step:  AIC=192.66
+Surv(tempo, status) ~ logwbc + Rx
+
+         Df    AIC
+&lt;none&gt;      192.66
+- Rx      1 202.99
+- logwbc  1 221.32</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.logl.sel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
+    dist = "loglogistic")
+             Value Std. Error     z       p
+(Intercept)  5.008      0.348 14.40 &lt; 2e-16
+logwbc      -0.733      0.108 -6.81 9.8e-12
+Rx          -0.743      0.210 -3.54   4e-04
+Log(scale)  -1.089      0.151 -7.22 5.3e-13
+
+Scale= 0.337 
+
+Log logistic distribution
+Loglik(model)= -92.3   Loglik(intercept only)= -115.4
+    Chisq= 46.04 on 2 degrees of freedom, p= 1e-10 
+Number of Newton-Raphson Iterations: 6 
+n= 42 </code></pre>
+</div>
+</div>
+</section>
+<section id="fazendo-previsões-3" class="level2">
+<h2 class="anchored" data-anchor-id="fazendo-previsões-3">Fazendo Previsões</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>novosdados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">logwbc=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">Rx=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(leuc.logl.sel, <span class="at">type=</span><span class="st">"lp"</span>, <span class="at">newdata=</span>novosdados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2 
+3.542894 2.800346 </code></pre>
+</div>
+</div>
+</section>
+<section id="tempo-mediano-3" class="level2">
+<h2 class="anchored" data-anchor-id="tempo-mediano-3">Tempo Mediano</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>prev1 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logl.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.5</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>prev1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2 
+34.56680 16.45034 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>prev1[<span class="dv">1</span>]<span class="sc">/</span>prev1[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+2.101282 </code></pre>
+</div>
+</div>
+</section>
+<section id="comparando-com-outro-quantil-3" class="level2">
+<h2 class="anchored" data-anchor-id="comparando-com-outro-quantil-3">Comparando com outro quantil</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>prev2 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logl.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.7</span>)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>prev2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2 
+45.97221 21.87818 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>prev2[<span class="dv">1</span>]<span class="sc">/</span>prev2[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1 
+2.101282 </code></pre>
+</div>
+</div>
+</section>
+<section id="verificando-o-modelo-3" class="level2">
+<h2 class="anchored" data-anchor-id="verificando-o-modelo-3">Verificando o modelo</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(leuc.logl.sel, <span class="at">type =</span> <span class="st">"lp"</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>tempo[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">"Grafico TA"</span>,</span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"log(valores ajustados)"</span>, <span class="at">ylab =</span> <span class="st">"log(residuos)"</span>)</span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">exp</span>(log.resid), <span class="at">dist =</span> <span class="st">"logis"</span>,</span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a><span class="at">scale =</span> leuc.logl.sel<span class="sc">$</span>scale,</span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Gráfico Q-Q"</span>, <span class="at">xlab =</span> <span class="st">"Quantis teóricos"</span>, <span class="at">ylab =</span> <span class="st">"Quantis Empíricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="modregpar01_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11 12</code></pre>
+</div>
+</div>
+</section>
+<section id="comparação-dos-modelos" class="level2">
+<h2 class="anchored" data-anchor-id="comparação-dos-modelos">Comparação dos modelos</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>tab.exp <span class="ot">&lt;-</span> <span class="fu">summary</span>(leuc.exp.sel)</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>tab.exp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
+    dist = "exponential")
+             Value Std. Error     z       p
+(Intercept)  5.958      0.699  8.52 &lt; 2e-16
+logwbc      -0.884      0.216 -4.10 4.2e-05
+Rx          -1.093      0.413 -2.65  0.0082
+
+Scale fixed at 1 
+
+Exponential distribution
+Loglik(model)= -100.8   Loglik(intercept only)= -116.8
+    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 
+Number of Newton-Raphson Iterations: 4 
+n= 42 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>tab.wei <span class="ot">&lt;-</span> <span class="fu">summary</span>(leuc.wei.sel)</span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>tab.wei</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
+    dist = "weibull")
+             Value Std. Error     z       p
+(Intercept)  5.399      0.364 14.84 &lt; 2e-16
+logwbc      -0.807      0.108 -7.45 9.7e-14
+Rx          -0.659      0.189 -3.49 0.00049
+Log(scale)  -0.793      0.142 -5.58 2.5e-08
+
+Scale= 0.452 
+
+Weibull distribution
+Loglik(model)= -90.1   Loglik(intercept only)= -116.4
+    Chisq= 52.68 on 2 degrees of freedom, p= 3.6e-12 
+Number of Newton-Raphson Iterations: 7 
+n= 42 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>TRV <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>(tab.wei<span class="sc">$</span>loglik[<span class="dv">1</span>] <span class="sc">-</span> tab.exp<span class="sc">$</span>loglik[<span class="dv">1</span>])</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(TRV, <span class="dv">1</span>, <span class="at">lower.tail =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3953251</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>tab.ln <span class="ot">&lt;-</span> <span class="fu">summary</span>(leuc.logn.sel)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>tab.ln</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
+    dist = "lognormal")
+             Value Std. Error     z       p
+(Intercept)  4.982      0.394 12.65 &lt; 2e-16
+logwbc      -0.716      0.123 -5.80 6.6e-09
+Rx          -0.848      0.232 -3.66 0.00025
+Log(scale)  -0.437      0.129 -3.39 0.00070
+
+Scale= 0.646 
+
+Log Normal distribution
+Loglik(model)= -93.9   Loglik(intercept only)= -115.4
+    Chisq= 42.9 on 2 degrees of freedom, p= 4.8e-10 
+Number of Newton-Raphson Iterations: 6 
+n= 42 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>tab.ll <span class="ot">&lt;-</span> <span class="fu">summary</span>(leuc.logl.sel)</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>tab.ll</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
+    dist = "loglogistic")
+             Value Std. Error     z       p
+(Intercept)  5.008      0.348 14.40 &lt; 2e-16
+logwbc      -0.733      0.108 -6.81 9.8e-12
+Rx          -0.743      0.210 -3.54   4e-04
+Log(scale)  -1.089      0.151 -7.22 5.3e-13
+
+Scale= 0.337 
+
+Log logistic distribution
+Loglik(model)= -92.3   Loglik(intercept only)= -115.4
+    Chisq= 46.04 on 2 degrees of freedom, p= 1e-10 
+Number of Newton-Raphson Iterations: 6 
+n= 42 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>aic.exp <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>tab.exp<span class="sc">$</span>loglik[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="dv">3</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>aic.exp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 239.5333</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>aic.wei <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>tab.wei<span class="sc">$</span>loglik[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="dv">4</span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>aic.wei</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 240.8108</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>aic.ln <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>tab.ln<span class="sc">$</span>loglik[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="dv">4</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>aic.ln</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 238.786</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>aic.ll <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>tab.ll<span class="sc">$</span>loglik[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="dv">4</span></span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>aic.ll</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 238.7022</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>aic <span class="ot">&lt;-</span> <span class="fu">c</span>(aic.exp, aic.wei, aic.ln, aic.ll)</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>delta.aic <span class="ot">&lt;-</span> aic <span class="sc">-</span> <span class="fu">min</span>(aic)</span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>delta.aic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.83108732 2.10858745 0.08373248 0.00000000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>peso.aic <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>delta.aic)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>delta.aic))</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(peso.aic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>modelos <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">modelos=</span><span class="fu">c</span>(<span class="st">"Exponencial"</span>, <span class="st">"Weibull"</span>,</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Lognormal"</span>, <span class="st">"Loglogistico"</span>),</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">p_Akaike =</span> peso.aic)</span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>gt<span class="sc">::</span><span class="fu">gt</span>(modelos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="nmuemydvqq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#nmuemydvqq .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#nmuemydvqq .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nmuemydvqq .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#nmuemydvqq .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#nmuemydvqq .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nmuemydvqq .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nmuemydvqq .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#nmuemydvqq .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#nmuemydvqq .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#nmuemydvqq .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#nmuemydvqq .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#nmuemydvqq .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#nmuemydvqq .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#nmuemydvqq .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#nmuemydvqq .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#nmuemydvqq .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#nmuemydvqq .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nmuemydvqq .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#nmuemydvqq .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#nmuemydvqq .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nmuemydvqq .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#nmuemydvqq .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#nmuemydvqq .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nmuemydvqq .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nmuemydvqq .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#nmuemydvqq .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#nmuemydvqq .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nmuemydvqq .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nmuemydvqq .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nmuemydvqq .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nmuemydvqq .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nmuemydvqq .gt_left {
+  text-align: left;
+}
+
+#nmuemydvqq .gt_center {
+  text-align: center;
+}
+
+#nmuemydvqq .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#nmuemydvqq .gt_font_normal {
+  font-weight: normal;
+}
+
+#nmuemydvqq .gt_font_bold {
+  font-weight: bold;
+}
+
+#nmuemydvqq .gt_font_italic {
+  font-style: italic;
+}
+
+#nmuemydvqq .gt_super {
+  font-size: 65%;
+}
+
+#nmuemydvqq .gt_two_val_uncert {
+  display: inline-block;
+  line-height: 1em;
+  text-align: right;
+  font-size: 60%;
+  vertical-align: -0.25em;
+  margin-left: 0.1em;
+}
+
+#nmuemydvqq .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#nmuemydvqq .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#nmuemydvqq .gt_slash_mark {
+  font-size: 0.7em;
+  line-height: 0.7em;
+  vertical-align: 0.15em;
+}
+
+#nmuemydvqq .gt_fraction_numerator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: 0.45em;
+}
+
+#nmuemydvqq .gt_fraction_denominator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: -0.05em;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">modelos</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">p_Akaike</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Exponencial</td>
+<td class="gt_row gt_right">0.2224093</td></tr>
+    <tr><td class="gt_row gt_left">Weibull</td>
+<td class="gt_row gt_right">0.1174214</td></tr>
+    <tr><td class="gt_row gt_left">Lognormal</td>
+<td class="gt_row gt_right">0.3231759</td></tr>
+    <tr><td class="gt_row gt_left">Loglogistico</td>
+<td class="gt_row gt_right">0.3369933</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
 </div>
 
 
