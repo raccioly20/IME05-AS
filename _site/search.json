@@ -25,7 +25,7 @@
     "href": "modregpar01.html",
     "title": "Análise de Sobrevivência",
     "section": "",
-    "text": "Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.\nOs modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).\nO conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).\nDuas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar)."
+    "text": "Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.\nOs modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).\nO conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).\nDuas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar)."
   },
   {
     "objectID": "modregpar01.html#modelo-exponencial",
