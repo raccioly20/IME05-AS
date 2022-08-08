@@ -32,7 +32,8 @@ ekm <- survfit(Surv(tempo,status)~Rx, data=dados)
 tempo <- ekm$time
 st <- ekm$surv
 summary(ekm)
-plot(ekm, xlab="Tempo (semanas)",ylab="S(t) estimada")
+plot(ekm, xlab="T(semanas)",ylab="S(t)", lty=2:3)
+legend("topright",c("Rx=0","Rx=1"), lty = 2:3)
 ```
 
 ## Modelo Exponencial
