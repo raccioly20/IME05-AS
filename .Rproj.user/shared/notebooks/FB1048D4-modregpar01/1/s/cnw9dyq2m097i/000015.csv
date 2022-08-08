@@ -1,0 +1,8 @@
+"0","qqPlot(exp(log.resid), dist = ""weibull"","
+"0","shape = 1,"
+"0","main = ""Grafico Q-Q"", xlab = ""Quantis teoricos"", ylab = ""Quantis Empiricos"")"
+"1","[1]"
+"1"," 11"
+"1"," 16"
+"1","
+"

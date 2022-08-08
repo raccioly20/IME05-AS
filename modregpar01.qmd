@@ -85,7 +85,7 @@ plot(pred.lin, log.resid, main = "Grafico TA",
 xlab = "log(valores ajustados)", ylab = "log(residuos)")
 qqPlot(exp(log.resid), dist = "weibull",
 shape = 1,
-main = "Gráfico Q-Q", xlab = "Quantis teóricos", ylab = "Quantis Empíricos")
+main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
 
 ```
 
@@ -134,7 +134,7 @@ plot(pred.lin, log.resid, main = "Grafico TA",
 xlab = "log(valores ajustados)", ylab = "log(residuos)")
 qqPlot(exp(log.resid), dist = "weibull",
 shape = 1/leuc.wei.sel$scale,
-main = "Gráfico Q-Q", xlab = "Quantis teóricos", ylab = "Quantis Empíricos")
+main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
 
 ```
 
@@ -183,7 +183,7 @@ plot(pred.lin, log.resid, main = "Grafico TA",
 xlab = "log(valores ajustados)", ylab = "log(residuos)")
 qqPlot(exp(log.resid), dist = "norm",
 sd = leuc.logn.sel$scale,
-main = "Gráfico Q-Q", xlab = "Quantis teóricos", ylab = "Quantis Empíricos")
+main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
 
 ```
 
@@ -232,7 +232,7 @@ plot(pred.lin, log.resid, main = "Grafico TA",
 xlab = "log(valores ajustados)", ylab = "log(residuos)")
 qqPlot(exp(log.resid), dist = "logis",
 scale = leuc.logl.sel$scale,
-main = "Gráfico Q-Q", xlab = "Quantis teóricos", ylab = "Quantis Empíricos")
+main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
 
 ```
 

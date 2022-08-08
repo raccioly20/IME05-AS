@@ -67,7 +67,7 @@
     "href": "modregpar01.html#verificando-o-modelo",
     "title": "Análise de Sobrevivência",
     "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\nlibrary(car)\n\nCarregando pacotes exigidos: carData\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.exp.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1,\nmain = \"Gráfico Q-Q\", xlab = \"Quantis teóricos\", ylab = \"Quantis Empíricos\")\n\n\n\n\n[1] 11 16"
+    "text": "Verificando o modelo\n\nlibrary(car)\n\nCarregando pacotes exigidos: carData\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.exp.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 16"
   },
   {
     "objectID": "modregpar01.html#modelo-weibull",
@@ -109,7 +109,7 @@
     "href": "modregpar01.html#verificando-o-modelo-1",
     "title": "Análise de Sobrevivência",
     "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.wei.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1/leuc.wei.sel$scale,\nmain = \"Gráfico Q-Q\", xlab = \"Quantis teóricos\", ylab = \"Quantis Empíricos\")\n\n\n\n\n[1] 11 16"
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.wei.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1/leuc.wei.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 16"
   },
   {
     "objectID": "modregpar01.html#modelo-lognormal",
@@ -144,7 +144,7 @@
     "href": "modregpar01.html#verificando-o-modelo-2",
     "title": "Análise de Sobrevivência",
     "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.logn.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"norm\",\nsd = leuc.logn.sel$scale,\nmain = \"Gráfico Q-Q\", xlab = \"Quantis teóricos\", ylab = \"Quantis Empíricos\")\n\n\n\n\n[1] 11 12"
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.logn.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"norm\",\nsd = leuc.logn.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 12"
   },
   {
     "objectID": "modregpar01.html#modelo-loglogistico",
@@ -179,7 +179,7 @@
     "href": "modregpar01.html#verificando-o-modelo-3",
     "title": "Análise de Sobrevivência",
     "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.logl.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"logis\",\nscale = leuc.logl.sel$scale,\nmain = \"Gráfico Q-Q\", xlab = \"Quantis teóricos\", ylab = \"Quantis Empíricos\")\n\n\n\n\n[1] 11 12"
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.logl.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nqqPlot(exp(log.resid), dist = \"logis\",\nscale = leuc.logl.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 12"
   },
   {
     "objectID": "modregpar01.html#comparação-dos-modelos",

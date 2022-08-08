@@ -1,0 +1,6 @@
+"0","library(car)"
+"0","par(mfrow = c(1, 2), cex = 0.6)"
+"0","pred.lin <- predict(leuc.exp.sel, type = ""lp"")[dados$status == 1]"
+"0","log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin"
+"0","plot(pred.lin, log.resid, main = ""Grafico TA"","
+"0","xlab = ""log(valores ajustados)"", ylab = ""log(residuos)"")"
