@@ -255,3 +255,6 @@
 [1,"\u001B[1mpandoc \u001B[22m\n  to: html\n  output-file: index.html\n  standalone: true\n  title-prefix: IME05-12532\n  section-divs: true\n  html-math-method: mathjax\n  wrap: none\n  default-image-extension: png\n  toc: true\n  \n\u001B[1mmetadata\u001B[22m\n  document-css: false\n  link-citations: true\n  date-format: long\n  lang: en\n  editor: visual\n  theme:\n    light:\n      - cosmo\n      - theme.scss\n    dark:\n      - cosmo\n      - theme-dark.scss\n  mainfont: Atkinson Hyperlegible\n  code-copy: true\n  title: IME05-Análise de Sobrevivência\n  \n"]
 [1,"Output created: _site\\index.html\n\n"]
 [1,"\u001B[32mGET: /\u001B[39m\n"]
+[1,"\u001B[1mpandoc \u001B[22m\n  to: html\n  output-file: index.html\n  standalone: true\n  title-prefix: IME05-12532\n  section-divs: true\n  html-math-method: mathjax\n  wrap: none\n  default-image-extension: png\n  toc: true\n  \n\u001B[1mmetadata\u001B[22m\n  document-css: false\n  link-citations: true\n  date-format: long\n  lang: en\n  editor: visual\n  theme:\n    light:\n      - cosmo\n      - theme.scss\n    dark:\n      - cosmo\n      - theme-dark.scss\n  mainfont: Atkinson Hyperlegible\n  code-copy: true\n  title: IME05-Análise de Sobrevivência\n  \n"]
+[1,"Output created: _site\\index.html\n\n"]
+[1,"\u001B[32mGET: /\u001B[39m\n"]
