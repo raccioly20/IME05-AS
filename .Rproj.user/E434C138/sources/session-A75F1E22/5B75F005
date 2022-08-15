@@ -10,15 +10,15 @@
     "source_on_save": false,
     "relative_order": 2,
     "properties": {
-        "rmdVisualMode": "true",
+        "rmdVisualMode": "false",
         "rmdVisualWrapConfigured": "true",
         "source_window_id": "",
         "Source": "Source",
         "docOutlineVisible": "1",
         "rmdVisualCollapsedChunks": "",
-        "cursorPosition": "6,71",
+        "cursorPosition": "7,0",
         "scrollLine": "0",
-        "rmdVisualModeLocation": "138:0"
+        "rmdVisualModeLocation": "140:0"
     },
     "folds": "",
     "lastKnownWriteTime": 1660583071,
