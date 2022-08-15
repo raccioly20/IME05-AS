@@ -1,3 +1,0 @@
-"0","leuc.logn.sel <- stepAIC(leuc.logn.comp, direction=""backward"")"
-"2","Error in terms(object) : object 'leuc.logn.comp' not found
-"
