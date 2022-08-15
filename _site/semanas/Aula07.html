@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.0.37">
+<meta name="generator" content="quarto-1.0.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -234,6 +234,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#informações-do-ajuste" id="toc-informações-do-ajuste" class="nav-link" data-scroll-target="#informações-do-ajuste">Informações do Ajuste</a></li>
   <li><a href="#avaliando-ajuste" id="toc-avaliando-ajuste" class="nav-link" data-scroll-target="#avaliando-ajuste">Avaliando Ajuste</a></li>
   <li><a href="#avaliando-ajuste-2" id="toc-avaliando-ajuste-2" class="nav-link" data-scroll-target="#avaliando-ajuste-2">Avaliando Ajuste 2</a></li>
+  <li><a href="#curva-de-sobrevivência" id="toc-curva-de-sobrevivência" class="nav-link" data-scroll-target="#curva-de-sobrevivência">Curva de Sobrevivência</a></li>
   </ul>
 </nav>
     </div>
@@ -435,6 +436,21 @@ logwbc     2.73</code></pre>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="at">loglog =</span> <span class="cn">TRUE</span>, <span class="at">logt=</span><span class="cn">TRUE</span>, <span class="at">xlab =</span> <span class="st">"Tempo"</span>, <span class="at">ylab =</span> <span class="st">"log(-log(S))"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aula07_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="curva-de-sobrevivência" class="level2">
+<h2 class="anchored" data-anchor-id="curva-de-sobrevivência">Curva de Sobrevivência</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>amostra <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="at">Rx =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">logwbc =</span> <span class="fu">rep</span>(<span class="fu">mean</span>(dados<span class="sc">$</span>logwbc), <span class="dv">2</span>))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>amostra.surv <span class="ot">&lt;-</span> <span class="fu">survfit</span>(leuc.cox2, <span class="at">newdata =</span> amostra)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(amostra.surv, <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"Tempo"</span>, <span class="at">ylab =</span> <span class="st">"S(t)"</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomleft"</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="at">legend =</span> <span class="fu">sprintf</span>(<span class="st">"Rx %d"</span>, <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula07_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 

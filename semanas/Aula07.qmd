@@ -76,3 +76,15 @@ survplot(npsurv(Surv(tempo, status) ~ grupolwbc, data = dados),
 loglog = TRUE, logt=TRUE, xlab = "Tempo", ylab = "log(-log(S))")
 
 ```
+
+## Curva de Sobrevivência
+
+```{r}
+amostra <- data.frame(
+Rx = c(0, 1), logwbc = rep(mean(dados$logwbc), 2))
+amostra.surv <- survfit(leuc.cox2, newdata = amostra)
+plot(amostra.surv, col = c(1, 2), conf.int = TRUE,
+xlab = "Tempo", ylab = "S(t)")
+legend("bottomleft", bty = "n", lty = 1, col = 1:2,
+legend = sprintf("Rx %d", 0:1))
+```

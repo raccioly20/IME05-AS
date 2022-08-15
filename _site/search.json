@@ -768,5 +768,12 @@
     "title": "Análise de Sobrevivência",
     "section": "Avaliando Ajuste 2",
     "text": "Avaliando Ajuste 2\n\nlibrary(survminer)\nponto <- surv_cutpoint(dados, time = \"tempo\", event = \"status\", variables = \"logwbc\")\nponto$cutpoint[1]\n\n       cutpoint\nlogwbc     2.73\n\ndados$grupolwbc <- cut(dados$logwbc,ponto$cutpoint[1])\nsurvplot(npsurv(Surv(tempo, status) ~ grupolwbc, data = dados),\nloglog = TRUE, logt=TRUE, xlab = \"Tempo\", ylab = \"log(-log(S))\")"
+  },
+  {
+    "objectID": "semanas/Aula07.html#curva-de-sobrevivência",
+    "href": "semanas/Aula07.html#curva-de-sobrevivência",
+    "title": "Análise de Sobrevivência",
+    "section": "Curva de Sobrevivência",
+    "text": "Curva de Sobrevivência\n\namostra <- data.frame(\nRx = c(0, 1), logwbc = rep(mean(dados$logwbc), 2))\namostra.surv <- survfit(leuc.cox2, newdata = amostra)\nplot(amostra.surv, col = c(1, 2), conf.int = TRUE,\nxlab = \"Tempo\", ylab = \"S(t)\")\nlegend(\"bottomleft\", bty = \"n\", lty = 1, col = 1:2,\nlegend = sprintf(\"Rx %d\", 0:1))"
   }
 ]
