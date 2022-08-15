@@ -1,0 +1,13 @@
+---
+title: "Análise de Sobrevivência"
+---
+
+Introdução e conceitos básicos em Análise de Sobrevivência.
+
+Estimativa não paramétrica da função de sobrevivência.
+
+Comparação de curvas de sobrevivência.
+
+Distribuições paramétricas do tempo e vida.
+
+Modelos de regressão.

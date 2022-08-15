@@ -1,0 +1,78 @@
+---
+title: "Análise de Sobrevivência"
+subtitle: "Modelos semi-paramétrico de Cox"
+author: "Ricardo Accioly"
+format: html
+---
+
+### Introdução
+
+Nesta etapa vamos começar a trabalhar com o modelo semi-paramétrico de Cox
+
+O conjunto de dados a seguir chamado "anderson.xlsx" consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).
+
+Duas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar).
+
+### Carregando os dados
+
+```{r ex_1}
+library(survival)
+library(readxl)
+dados <- read_xlsx("anderson.xlsx", col_names = TRUE )
+summary(dados)
+
+```
+
+### Ajuste Não Paramétrico
+
+```{r ex_2}
+ekm <- survfit(Surv(tempo,status)~Rx, data=dados)
+tempo <- ekm$time
+st <- ekm$surv
+summary(ekm)
+plot(ekm, xlab="T(semanas)",ylab="S(t)", lty=2:3)
+legend("topright",c("Rx=0","Rx=1"), lty = 2:3)
+```
+
+## Modelo Semi-paramétrico de Cox
+
+```{r}
+leuc.cox1 <- coxph(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados)
+summary(leuc.cox1)
+```
+
+## Automatizando ajuste
+
+```{r}
+library(MASS)
+leuc.cox2 <- stepAIC(leuc.cox1, direction="backward", trace=FALSE)
+summary(leuc.cox2)
+```
+
+## Informações do Ajuste
+
+```{r}
+coef(leuc.cox2)
+logLik(leuc.cox2)
+```
+
+## Avaliando Ajuste
+
+```{r, message=FALSE}
+library(rms)
+survplot(npsurv(Surv(tempo, status) ~ Rx, data = dados),
+loglog = TRUE, logt=TRUE, xlab = "Tempo", ylab = "log(-log(S))")
+
+```
+
+## Avaliando Ajuste 2
+
+```{r, message=FALSE}
+library(survminer)
+ponto <- surv_cutpoint(dados, time = "tempo", event = "status", variables = "logwbc")
+ponto$cutpoint[1]
+dados$grupolwbc <- cut(dados$logwbc,ponto$cutpoint[1])
+survplot(npsurv(Surv(tempo, status) ~ grupolwbc, data = dados),
+loglog = TRUE, logt=TRUE, xlab = "Tempo", ylab = "log(-log(S))")
+
+```

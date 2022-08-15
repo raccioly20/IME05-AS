@@ -1,0 +1,7 @@
+---
+title: "RStudio Cloud"
+---
+
+Para acessar as tarefas no RStudio Cloud, abra uma conta gratuita no mesmo e acesse o link abaixo
+
+[RStudio]( https://rstudio.cloud/spaces/267322/content/all?sort=name_asc)
