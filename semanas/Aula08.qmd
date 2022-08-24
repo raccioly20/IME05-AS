@@ -21,7 +21,7 @@ Os dados são de sobrevivência de pacientes com cancer de pulmão em estágio a
 
 \- sex: 1=Homem 2 = Mulher
 
-\- ph.ecog: escore de ECOG definido pelo médico. 0=assintomático, 1= sintomático e no ambulatório, 2= na cama \<50% do dia, 3= na cama \> 50% do dia mas não atada a cama, 4 = atado a cama
+\- ph.ecog: escore ecog 0=bom 5=morto
 
 \- ph.karno: escore de Karnofsky (ruim=0-bom=100) definido pelo médico
 
@@ -54,7 +54,7 @@ summary(dados)
 
 ```{r}
 ajuste1 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +
-                   ph.karno + pat.karno + meal.cal, data = dados)
+                   ph.karno + pat.karno + meal.cal + wt.loss, data = dados)
 summary(ajuste1)
 logLik(ajuste1)
 
@@ -68,7 +68,7 @@ Vamos eliminar somente meat.cal e fazer o teste da razão de verossimilhança pa
 
 ```{r}
 ajuste2 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +
-                   ph.karno + pat.karno, data = dados)
+                   ph.karno + pat.karno + wt.loss, data = dados)
 logLik(ajuste2)
 
 TRV <- 2*(logLik(ajuste1) - logLik(ajuste2))
@@ -85,28 +85,39 @@ ajuste3 <- stepAIC(ajuste1, direction="backward", trace=FALSE)
 summary(ajuste3)
 ```
 
-Veja que ph.karno é marginalmente significativa, pois seu p-valor é maior que 0,10, o maior nível de significância usualmente adotado.
+Veja que wt.loss e ph.karno são marginalmente significativas.
+pat.karno tem p-valor acima de 0,10 o que normalmente indicaria sua retirada do modelo.
+
+## Usando o BIC
+
+```{r}
+library(MASS)
+n_eventos <- sum(dados$status)
+ajuste4 <- stepAIC(ajuste1, direction="backward", k= log(n_eventos), trace=FALSE)
+summary(ajuste4)
+```
+
 
 ## Informações do Ajuste
 
 ```{r}
-coef(ajuste3)
-logLik(ajuste3)
+coef(ajuste4)
+logLik(ajuste4)
 ```
 
 ## Tempos Idênticos
 
 ```{r}
-ajuste4 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
+ajuste5 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , 
                  ties= "efron", 
                  data=dados)
-ajuste5 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
+ajuste6 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , 
                  ties= "breslow", 
                  data=dados)
-ajuste6 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
+ajuste7 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , 
                  ties= "exact", 
                  data=dados)
-dif_met <- rbind(coef(ajuste4), coef(ajuste5), coef(ajuste6))
+dif_met <- rbind(coef(ajuste5), coef(ajuste6), coef(ajuste7))
 row.names(dif_met) <- c("Efron", "Breslow", "Exact")
 knitr::kable(dif_met)
 ```
@@ -126,8 +137,8 @@ av2.tab <- summary(av2)
 plot(av2.tab$time,log(-log(av2.tab$surv)),
 col = av2.tab$strata, xlab = "log(t)", ylab = "log(-log(S))",
 pch = 20)
-legend("bottomright", bty = "n", lty = 1, col = c(1,2,3),
-legend = sprintf("Ecog %d", 0:2))
+legend("bottomright", bty = "n", lty = 1, col = c(1,2,3,4),
+legend = sprintf("Ecog %d", 0:3))
 
 ```
 
@@ -151,13 +162,13 @@ plot(resid.sch)
 ## Modelo de Cox Estratificado
 
 ```{r}
-ajuste4_E <- coxph(Surv(time, status) ~ sex + ph.ecog + strata(ph.karno), data=dados)
+ajuste4_E <- coxph(Surv(time, status) ~ sex + strata(ph.ecog), data=dados)
 summary(ajuste4_E)
 ```
 
 ```{r}
 ajuste_aux <- survfit(ajuste4_E)
-plot(ajuste_aux, mark.time=FALSE, col=c(1:6), lwd=3, las=1, bty='n', xlab="Tempo (dias)", ylab="S(t)")
-niveis <- sort(unique(dados$ph.karno))
+plot(ajuste_aux, mark.time=FALSE, col=c(1:4), lwd=3, las=1, bty='n', xlab="Tempo (dias)", ylab="S(t)")
+niveis <- sort(unique(dados$ph.ecog))
 legend("topright", levels(factor(niveis)), lwd=3, col=c(1:6))
 ```
