@@ -809,7 +809,7 @@
     "href": "semanas/Aula08.html#avaliando-ajuste",
     "title": "Análise de Sobrevivência",
     "section": "Avaliando Ajuste",
-    "text": "Avaliando Ajuste\n\nav1 <- survfit(Surv(time, status) ~ sex, data = dados)\nav1.tab <- summary(av1)\nplot(av1.tab$time,log(-log(av1.tab$surv)),\ncol = av1.tab$strata, xlab = \"log(t)\", ylab = \"log(-log(S))\",\npch = 20)\nlegend(\"bottomright\", bty = \"n\", lty = 1, col = c(1:2),\nlegend = sprintf(\"Sexo %d\", 1:2))\n\n\n\nav2 <- survfit(Surv(time, status) ~ ph.ecog, data = dados)\nav2.tab <- summary(av2)\nplot(av2.tab$time,log(-log(av2.tab$surv)),\ncol = av2.tab$strata, xlab = \"log(t)\", ylab = \"log(-log(S))\",\npch = 20)\nlegend(\"bottomright\", bty = \"n\", lty = 1, col = c(1,2,3,4),\nlegend = sprintf(\"Ecog %d\", 0:3))"
+    "text": "Avaliando Ajuste\n\nav1 <- survfit(Surv(time, status) ~ sex, data = dados)\nav1.tab <- summary(av1)\nplot(log(av1.tab$time),log(-log(av1.tab$surv)),\ncol = av1.tab$strata, xlab = \"log(t)\", ylab = \"log(-log(S))\",\npch = 20)\nlegend(\"bottomright\", bty = \"n\", lty = 1, col = c(1:2),\nlegend = sprintf(\"Sexo %d\", 1:2))\n\n\n\nav2 <- survfit(Surv(time, status) ~ ph.ecog, data = dados)\nav2.tab <- summary(av2)\nplot(log(av2.tab$time),log(-log(av2.tab$surv)),\ncol = av2.tab$strata, xlab = \"log(t)\", ylab = \"log(-log(S))\",\npch = 20)\nlegend(\"bottomright\", bty = \"n\", lty = 1, col = c(1,2,3,4),\nlegend = sprintf(\"Ecog %d\", 0:3))"
   },
   {
     "objectID": "semanas/Aula08.html#resíduos-de-cox-snell",

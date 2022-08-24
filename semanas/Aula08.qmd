@@ -85,8 +85,7 @@ ajuste3 <- stepAIC(ajuste1, direction="backward", trace=FALSE)
 summary(ajuste3)
 ```
 
-Veja que wt.loss e ph.karno são marginalmente significativas.
-pat.karno tem p-valor acima de 0,10 o que normalmente indicaria sua retirada do modelo.
+Veja que wt.loss e ph.karno são marginalmente significativas. pat.karno tem p-valor acima de 0,10 o que normalmente indicaria sua retirada do modelo.
 
 ## Usando o BIC
 
@@ -96,7 +95,6 @@ n_eventos <- sum(dados$status)
 ajuste4 <- stepAIC(ajuste1, direction="backward", k= log(n_eventos), trace=FALSE)
 summary(ajuste4)
 ```
-
 
 ## Informações do Ajuste
 
@@ -127,14 +125,14 @@ knitr::kable(dif_met)
 ```{r, message=FALSE}
 av1 <- survfit(Surv(time, status) ~ sex, data = dados)
 av1.tab <- summary(av1)
-plot(av1.tab$time,log(-log(av1.tab$surv)),
+plot(log(av1.tab$time),log(-log(av1.tab$surv)),
 col = av1.tab$strata, xlab = "log(t)", ylab = "log(-log(S))",
 pch = 20)
 legend("bottomright", bty = "n", lty = 1, col = c(1:2),
 legend = sprintf("Sexo %d", 1:2))
 av2 <- survfit(Surv(time, status) ~ ph.ecog, data = dados)
 av2.tab <- summary(av2)
-plot(av2.tab$time,log(-log(av2.tab$surv)),
+plot(log(av2.tab$time),log(-log(av2.tab$surv)),
 col = av2.tab$strata, xlab = "log(t)", ylab = "log(-log(S))",
 pch = 20)
 legend("bottomright", bty = "n", lty = 1, col = c(1,2,3,4),
