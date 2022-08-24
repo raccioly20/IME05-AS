@@ -8,6 +8,8 @@ Aqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do 
 
 Os códigos apresentados em aula serão colocado por aqui também.
 
-\[📖\] <a href="./semanas/Aula06.html" class="link">1ª Semana</a>
+\[📖\] <a href="./semanas/Aula06.html" class="link">TFA</a>
 
-\[📖\] <a href="./semanas/Aula07.html" class="link">2ª Semana</a>
+\[📖\] <a href="./semanas/Aula07.html" class="link">Cox 1</a>
+
+\[📖\] <a href="./semanas/Aula08.html" class="link">Cox 2</a>

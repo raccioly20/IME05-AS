@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "IME05-12532 - Análise de Sobrevivência",
     "section": "",
-    "text": "Aqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do R. O objetivo é mostrar as possibilidades de aplicação do R nesta disciplina.\nOs códigos apresentados em aula serão colocado por aqui também.\n[📖] 1ª Semana\n[📖] 2ª Semana"
+    "text": "Aqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do R. O objetivo é mostrar as possibilidades de aplicação do R nesta disciplina.\nOs códigos apresentados em aula serão colocado por aqui também.\n[📖] TFA\n[📖] Cox 1\n[📖] Cox 2"
   },
   {
     "objectID": "slide01.html",
@@ -585,7 +585,7 @@
     "href": "semanas/Aula08.html",
     "title": "Análise de Sobrevivência",
     "section": "",
-    "text": "Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.\nOs modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).\nO conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).\nDuas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar)."
+    "text": "Vamos usar neste exemplo dados da biblioteca survival.\nOs dados são de sobrevivência de pacientes com cancer de pulmão em estágio avançado do North Central Cancer Treatment Group.\n- inst: Códico da Intituição\n- time: Tempo de sobrevivência em dias\n- status: 1=censurado, 2=morto\n- age: Idade em anos\n- sex: 1=Homem 2 = Mulher\n- ph.ecog: escore de ECOG definido pelo médico. 0=assintomático, 1= sintomático e no ambulatório, 2= na cama <50% do dia, 3= na cama > 50% do dia mas não atada a cama, 4 = atado a cama\n- ph.karno: escore de Karnofsky (ruim=0-bom=100) definido pelo médico\n- pat.karno: escore de Karnofsky definido pelo paciente\n- meal.cal: Calorias consumidas nas refeições\n- wt.loss: Perda de peso nos últimos seis meses (libras)"
   },
   {
     "objectID": "semanas/Aula08.html#modelo-exponencial",
@@ -599,7 +599,7 @@
     "href": "semanas/Aula08.html#automatizando-ajuste",
     "title": "Análise de Sobrevivência",
     "section": "Automatizando ajuste",
-    "text": "Automatizando ajuste\n\nlibrary(MASS)\nleuc.exp.sel <- stepAIC(leuc.exp.comp, direction=\"backward\", trace=FALSE)\nsummary(leuc.exp.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"exponential\")\n             Value Std. Error     z       p\n(Intercept)  5.958      0.699  8.52 < 2e-16\nlogwbc      -0.884      0.216 -4.10 4.2e-05\nRx          -1.093      0.413 -2.65  0.0082\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.8   Loglik(intercept only)= -116.8\n    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42"
+    "text": "Automatizando ajuste\n\nlibrary(MASS)\n\n\nAttaching package: 'MASS'\n\n\nThe following object is masked from 'package:dplyr':\n\n    select\n\najuste3 <- stepAIC(ajuste1, direction=\"backward\", trace=FALSE)\nsummary(ajuste3)\n\nCall:\ncoxph(formula = Surv(time, status) ~ sex + ph.ecog + ph.karno, \n    data = dados)\n\n  n= 167, number of events= 120 \n\n             coef exp(coef) se(coef)      z Pr(>|z|)    \nsex      -0.53142   0.58777  0.19735 -2.693 0.007085 ** \nph.ecog   0.74917   2.11524  0.21182  3.537 0.000405 ***\nph.karno  0.01778   1.01794  0.01112  1.598 0.110009    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n         exp(coef) exp(-coef) lower .95 upper .95\nsex         0.5878     1.7013    0.3992    0.8653\nph.ecog     2.1152     0.4728    1.3965    3.2038\nph.karno    1.0179     0.9824    0.9960    1.0404\n\nConcordance= 0.637  (se = 0.031 )\nLikelihood ratio test= 22.16  on 3 df,   p=6e-05\nWald test            = 21.94  on 3 df,   p=7e-05\nScore (logrank) test = 22.28  on 3 df,   p=6e-05\n\n\nVeja que ph.karno é marginalmente significativa, pois seu p-valor é maior que 0,10, o maior nível de significância usualmente adotado."
   },
   {
     "objectID": "semanas/Aula08.html#fazendo-previsões",
@@ -775,5 +775,61 @@
     "title": "Análise de Sobrevivência",
     "section": "Curva de Sobrevivência",
     "text": "Curva de Sobrevivência\n\namostra <- data.frame(\nRx = c(0, 1), logwbc = rep(mean(dados$logwbc), 2))\namostra.surv <- survfit(leuc.cox2, newdata = amostra)\nplot(amostra.surv, col = c(1, 2), conf.int = TRUE,\nxlab = \"Tempo\", ylab = \"S(t)\")\nlegend(\"bottomleft\", bty = \"n\", lty = 1, col = 1:2,\nlegend = sprintf(\"Rx %d\", 0:1))"
+  },
+  {
+    "objectID": "semanas/Aula08.html#modelo-semi-paramétrico-de-cox",
+    "href": "semanas/Aula08.html#modelo-semi-paramétrico-de-cox",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelo Semi-paramétrico de Cox",
+    "text": "Modelo Semi-paramétrico de Cox\n\najuste1 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +\n                   ph.karno + pat.karno + meal.cal, data = dados)\nsummary(ajuste1)\n\nCall:\ncoxph(formula = Surv(time, status) ~ age + sex + ph.ecog + ph.karno + \n    pat.karno + meal.cal, data = dados)\n\n  n= 167, number of events= 120 \n\n                coef  exp(coef)   se(coef)      z Pr(>|z|)   \nage        1.220e-02  1.012e+00  1.166e-02  1.046  0.29542   \nsex       -5.096e-01  6.007e-01  2.007e-01 -2.539  0.01113 * \nph.ecog    6.583e-01  1.932e+00  2.223e-01  2.962  0.00305 **\nph.karno   2.195e-02  1.022e+00  1.147e-02  1.913  0.05576 . \npat.karno -8.609e-03  9.914e-01  7.988e-03 -1.078  0.28114   \nmeal.cal   8.125e-06  1.000e+00  2.369e-04  0.034  0.97264   \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n          exp(coef) exp(-coef) lower .95 upper .95\nage          1.0123     0.9879    0.9894    1.0357\nsex          0.6007     1.6647    0.4053    0.8903\nph.ecog      1.9316     0.5177    1.2495    2.9860\nph.karno     1.0222     0.9783    0.9995    1.0454\npat.karno    0.9914     1.0086    0.9760    1.0071\nmeal.cal     1.0000     1.0000    0.9995    1.0005\n\nConcordance= 0.644  (se = 0.03 )\nLikelihood ratio test= 24.63  on 6 df,   p=4e-04\nWald test            = 24.6  on 6 df,   p=4e-04\nScore (logrank) test = 25.25  on 6 df,   p=3e-04\n\nlogLik(ajuste1)\n\n'log Lik.' -495.7996 (df=6)"
+  },
+  {
+    "objectID": "semanas/Aula08.html#usando-o-teste-de-wald-e-da-razão-de-verossimilhança",
+    "href": "semanas/Aula08.html#usando-o-teste-de-wald-e-da-razão-de-verossimilhança",
+    "title": "Análise de Sobrevivência",
+    "section": "Usando o teste de Wald e da razão de verossimilhança",
+    "text": "Usando o teste de Wald e da razão de verossimilhança\nO teste de Wald avalia a estatística z, que no caso acima indica que diversas variáveis não são significativas, por exemplo, meat.cal, age, pat.karno.\nVamos eliminar somente meat.cal e fazer o teste da razão de verossimilhança para confirmarmos que ela não é estatísticamente significativa.\n\najuste2 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +\n                   ph.karno + pat.karno, data = dados)\nlogLik(ajuste2)\n\n'log Lik.' -495.8002 (df=5)\n\nTRV <- 2*(logLik(ajuste1) - logLik(ajuste2))\npchisq(TRV[1],1, lower.tail = FALSE)\n\n[1] 0.9726601\n\n\nO resultado acima confirma que o modelo não é afetado pela retirada de meat.cal, ou seja, ela não é estatísticamente significativa."
+  },
+  {
+    "objectID": "semanas/Aula08.html#informações-do-ajuste",
+    "href": "semanas/Aula08.html#informações-do-ajuste",
+    "title": "Análise de Sobrevivência",
+    "section": "Informações do Ajuste",
+    "text": "Informações do Ajuste\n\ncoef(ajuste3)\n\n        sex     ph.ecog    ph.karno \n-0.53141941  0.74916725  0.01777643 \n\nlogLik(ajuste3)\n\n'log Lik.' -497.0362 (df=3)"
+  },
+  {
+    "objectID": "semanas/Aula08.html#tempos-idênticos",
+    "href": "semanas/Aula08.html#tempos-idênticos",
+    "title": "Análise de Sobrevivência",
+    "section": "Tempos Idênticos",
+    "text": "Tempos Idênticos\n\najuste4 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , \n                 ties= \"efron\", \n                 data=dados)\najuste5 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , \n                 ties= \"breslow\", \n                 data=dados)\najuste6 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , \n                 ties= \"exact\", \n                 data=dados)\ndif_met <- rbind(coef(ajuste4), coef(ajuste5), coef(ajuste6))\nrow.names(dif_met) <- c(\"Efron\", \"Breslow\", \"Exact\")\nknitr::kable(dif_met)\n\n\n\n\n\nsex\nph.ecog\nph.karno\n\n\n\n\nEfron\n-0.5314194\n0.7491673\n0.0177764\n\n\nBreslow\n-0.5306768\n0.7487334\n0.0177595\n\n\nExact\n-0.5316889\n0.7502275\n0.0177955"
+  },
+  {
+    "objectID": "semanas/Aula08.html#avaliando-ajuste",
+    "href": "semanas/Aula08.html#avaliando-ajuste",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliando Ajuste",
+    "text": "Avaliando Ajuste\n\nav1 <- survfit(Surv(time, status) ~ sex, data = dados)\nav1.tab <- summary(av1)\nplot(av1.tab$time,log(-log(av1.tab$surv)),\ncol = av1.tab$strata, xlab = \"log(t)\", ylab = \"log(-log(S))\",\npch = 20)\nlegend(\"bottomright\", bty = \"n\", lty = 1, col = c(1:2),\nlegend = sprintf(\"Sexo %d\", 1:2))\n\n\n\nav2 <- survfit(Surv(time, status) ~ ph.ecog, data = dados)\nav2.tab <- summary(av2)\nplot(av2.tab$time,log(-log(av2.tab$surv)),\ncol = av2.tab$strata, xlab = \"log(t)\", ylab = \"log(-log(S))\",\npch = 20)\nlegend(\"bottomright\", bty = \"n\", lty = 1, col = c(1,2,3),\nlegend = sprintf(\"Ecog %d\", 0:2))"
+  },
+  {
+    "objectID": "semanas/Aula08.html#resíduos-de-cox-snell",
+    "href": "semanas/Aula08.html#resíduos-de-cox-snell",
+    "title": "Análise de Sobrevivência",
+    "section": "Resíduos de Cox-Snell",
+    "text": "Resíduos de Cox-Snell\n\nlibrary(car)\ncox.snell <- abs(dados$status - ajuste4$residuals)\nqqPlot(cox.snell, dist = \"exp\", rate = mean(cox.snell))\n\n\n\n\n37 18 \n25 11"
+  },
+  {
+    "objectID": "semanas/Aula08.html#resíduos-de-schoenfeld",
+    "href": "semanas/Aula08.html#resíduos-de-schoenfeld",
+    "title": "Análise de Sobrevivência",
+    "section": "Resíduos de Schoenfeld",
+    "text": "Resíduos de Schoenfeld\n\ncox.zph(ajuste4)\n\n         chisq df      p\nsex      0.875  1 0.3496\nph.ecog  4.998  1 0.0254\nph.karno 7.366  1 0.0066\nGLOBAL   7.969  3 0.0467\n\nresid.sch <- cox.zph(ajuste4)\npar(mfrow=c(1,3))\nplot(resid.sch)"
+  },
+  {
+    "objectID": "semanas/Aula08.html#modelo-de-cox-estratificado",
+    "href": "semanas/Aula08.html#modelo-de-cox-estratificado",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelo de Cox Estratificado",
+    "text": "Modelo de Cox Estratificado\n\najuste4_E <- coxph(Surv(time, status) ~ sex + ph.ecog + strata(ph.karno), data=dados)\nsummary(ajuste4_E)\n\nCall:\ncoxph(formula = Surv(time, status) ~ sex + ph.ecog + strata(ph.karno), \n    data = dados)\n\n  n= 167, number of events= 120 \n\n           coef exp(coef) se(coef)      z Pr(>|z|)   \nsex     -0.5785    0.5607   0.2023 -2.859  0.00425 **\nph.ecog  0.5504    1.7339   0.2412  2.282  0.02251 * \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n        exp(coef) exp(-coef) lower .95 upper .95\nsex        0.5607     1.7834    0.3772    0.8337\nph.ecog    1.7339     0.5767    1.0807    2.7821\n\nConcordance= 0.606  (se = 0.03 )\nLikelihood ratio test= 13.79  on 2 df,   p=0.001\nWald test            = 13.25  on 2 df,   p=0.001\nScore (logrank) test = 13.55  on 2 df,   p=0.001\n\n\n\najuste_aux <- survfit(ajuste4_E)\nplot(ajuste_aux, mark.time=FALSE, col=c(1:6), lwd=3, las=1, bty='n', xlab=\"Tempo (dias)\", ylab=\"S(t)\")\nniveis <- sort(unique(dados$ph.karno))\nlegend(\"topright\", levels(factor(niveis)), lwd=3, col=c(1:6))"
   }
 ]

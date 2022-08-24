@@ -1,3 +1,0 @@
-"0","library(survminer)"
-"0","ponto <- surv_cutpoint(dados, time = ""tempo"", event = ""status"", variables = ""logwbc"")"
-"0","ponto"

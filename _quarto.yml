@@ -45,9 +45,12 @@ website:
       - section: "Conteúdo Semanal"
         contents:
           - href: semanas/Aula06.qmd
-            text: "1ª Semana"
+            text: "TFA"
           - href: semanas/Aula07.qmd
-            text: "2ª Semana"
+            text: "Cox 1"
+          - href: semanas/Aula08.qmd
+            text: "Cox 2"
+ 
  
 format:
   html:

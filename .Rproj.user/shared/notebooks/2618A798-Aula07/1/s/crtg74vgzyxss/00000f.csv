@@ -1,4 +1,0 @@
-"0","library(rms)"
-"0","survplot(npsurv(Surv(tempo, status) ~ Rx, data = dados),"
-"0","loglog = TRUE, logt=TRUE, xlab = ""Tempo"", ylab = ""log(-log(S))"")"
-"0",""

@@ -1,270 +1,163 @@
 ---
 title: "Análise de Sobrevivência"
-subtitle: "Modelos de regressão paramétricos"
+subtitle: "Modelos semi-paramétrico de Cox"
 author: "Ricardo Accioly"
 format: html
 ---
 
 ### Introdução
 
-Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.
+Vamos usar neste exemplo dados da biblioteca survival.
 
-Os modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).
+Os dados são de sobrevivência de pacientes com cancer de pulmão em estágio avançado do North Central Cancer Treatment Group.
 
-O conjunto de dados a seguir chamado "anderson.xlsx" consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).
+\- inst: Códico da Intituição
 
-Duas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar).
+\- time: Tempo de sobrevivência em dias
+
+\- status: 1=censurado, 2=morto
+
+\- age: Idade em anos
+
+\- sex: 1=Homem 2 = Mulher
+
+\- ph.ecog: escore de ECOG definido pelo médico. 0=assintomático, 1= sintomático e no ambulatório, 2= na cama \<50% do dia, 3= na cama \> 50% do dia mas não atada a cama, 4 = atado a cama
+
+\- ph.karno: escore de Karnofsky (ruim=0-bom=100) definido pelo médico
+
+\- pat.karno: escore de Karnofsky definido pelo paciente
+
+\- meal.cal: Calorias consumidas nas refeições
+
+\- wt.loss: Perda de peso nos últimos seis meses (libras)
 
 ### Carregando os dados
 
 ```{r ex_1}
 library(survival)
-library(readxl)
-dados <- read_xlsx("anderson.xlsx", col_names = TRUE )
+dados <- lung
+str(dados)
 summary(dados)
 
 ```
 
-### Ajuste Não Paramétrico
+### Verificação de dados faltantes
 
 ```{r ex_2}
-ekm <- survfit(Surv(tempo,status)~Rx, data=dados)
-tempo <- ekm$time
-st <- ekm$surv
-summary(ekm)
-plot(ekm, xlab="T(semanas)",ylab="S(t)", lty=2:3)
-legend("topright",c("Rx=0","Rx=1"), lty = 2:3)
+sum(complete.cases(lung))
+library(dplyr)
+dados <- dados %>% na.omit(dados)
+summary(dados)
 ```
 
-## Modelo Exponencial
+## Modelo Semi-paramétrico de Cox
 
 ```{r}
-leuc.exp.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = "exponential")
-summary(leuc.exp.comp)
+ajuste1 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +
+                   ph.karno + pat.karno + meal.cal, data = dados)
+summary(ajuste1)
+logLik(ajuste1)
+
 ```
+
+## Usando o teste de Wald e da razão de verossimilhança
+
+O teste de Wald avalia a estatística z, que no caso acima indica que diversas variáveis não são significativas, por exemplo, meat.cal, age, pat.karno.
+
+Vamos eliminar somente meat.cal e fazer o teste da razão de verossimilhança para confirmarmos que ela não é estatísticamente significativa.
+
+```{r}
+ajuste2 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +
+                   ph.karno + pat.karno, data = dados)
+logLik(ajuste2)
+
+TRV <- 2*(logLik(ajuste1) - logLik(ajuste2))
+pchisq(TRV[1],1, lower.tail = FALSE)
+```
+
+O resultado acima confirma que o modelo não é afetado pela retirada de meat.cal, ou seja, ela não é estatísticamente significativa.
 
 ## Automatizando ajuste
 
 ```{r}
 library(MASS)
-leuc.exp.sel <- stepAIC(leuc.exp.comp, direction="backward", trace=FALSE)
-summary(leuc.exp.sel)
+ajuste3 <- stepAIC(ajuste1, direction="backward", trace=FALSE)
+summary(ajuste3)
 ```
 
-## Fazendo Previsões
+Veja que ph.karno é marginalmente significativa, pois seu p-valor é maior que 0,10, o maior nível de significância usualmente adotado.
+
+## Informações do Ajuste
 
 ```{r}
-novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
-predict(leuc.exp.sel, type="lp", newdata=novosdados)
+coef(ajuste3)
+logLik(ajuste3)
 ```
 
-## Tempo Mediano
+## Tempos Idênticos
 
 ```{r}
-prev1 <-predict(leuc.exp.sel, type="quantile", newdata=novosdados, p=0.5)
-prev1
-prev1[1]/prev1[2]
+ajuste4 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
+                 ties= "efron", 
+                 data=dados)
+ajuste5 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
+                 ties= "breslow", 
+                 data=dados)
+ajuste6 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
+                 ties= "exact", 
+                 data=dados)
+dif_met <- rbind(coef(ajuste4), coef(ajuste5), coef(ajuste6))
+row.names(dif_met) <- c("Efron", "Breslow", "Exact")
+knitr::kable(dif_met)
 ```
 
-## Comparando com outro quantil
+## Avaliando Ajuste
 
-```{r}
-prev2 <-predict(leuc.exp.sel, type="quantile", newdata=novosdados, p=0.7)
-prev2
-prev2[1]/prev2[2]
+```{r, message=FALSE}
+av1 <- survfit(Surv(time, status) ~ sex, data = dados)
+av1.tab <- summary(av1)
+plot(av1.tab$time,log(-log(av1.tab$surv)),
+col = av1.tab$strata, xlab = "log(t)", ylab = "log(-log(S))",
+pch = 20)
+legend("bottomright", bty = "n", lty = 1, col = c(1:2),
+legend = sprintf("Sexo %d", 1:2))
+av2 <- survfit(Surv(time, status) ~ ph.ecog, data = dados)
+av2.tab <- summary(av2)
+plot(av2.tab$time,log(-log(av2.tab$surv)),
+col = av2.tab$strata, xlab = "log(t)", ylab = "log(-log(S))",
+pch = 20)
+legend("bottomright", bty = "n", lty = 1, col = c(1,2,3),
+legend = sprintf("Ecog %d", 0:2))
+
 ```
 
-## Verificando o modelo
+## Resíduos de Cox-Snell
 
-```{r}
+```{r, message=FALSE}
 library(car)
-par(mfrow = c(1, 2), cex = 0.6)
-pred.lin <- predict(leuc.exp.sel, type = "lp")[dados$status == 1]
-log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
-plot(pred.lin, log.resid, main = "Grafico TA",
-xlab = "log(valores ajustados)", ylab = "log(residuos)")
-qqPlot(exp(log.resid), dist = "weibull",
-shape = 1,
-main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
-
+cox.snell <- abs(dados$status - ajuste4$residuals)
+qqPlot(cox.snell, dist = "exp", rate = mean(cox.snell))
 ```
 
-## Modelo Weibull
+## Resíduos de Schoenfeld
 
 ```{r}
-leuc.wei.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = "weibull")
-summary(leuc.wei.comp)
+cox.zph(ajuste4)
+resid.sch <- cox.zph(ajuste4)
+par(mfrow=c(1,3))
+plot(resid.sch)
 ```
 
-```{r}
-leuc.wei.sel <- stepAIC(leuc.wei.comp, direction="backward", trace=FALSE)
-summary(leuc.wei.sel)
-```
-
-## Fazendo Previsões
+## Modelo de Cox Estratificado
 
 ```{r}
-novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
-predict(leuc.wei.sel, type="lp", newdata=novosdados)
-```
-
-## Tempo Mediano
-
-```{r}
-prev1 <-predict(leuc.wei.sel, type="quantile", newdata=novosdados, p=0.5)
-prev1
-prev1[1]/prev1[2]
-```
-
-## Comparando com outro quantil
-
-```{r}
-prev2 <-predict(leuc.wei.sel, type="quantile", newdata=novosdados, p=0.7)
-prev2
-prev2[1]/prev2[2]
-```
-
-## Verificando o modelo
-
-```{r}
-par(mfrow = c(1, 2), cex = 0.6)
-pred.lin <- predict(leuc.wei.sel, type = "lp")[dados$status == 1]
-log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
-plot(pred.lin, log.resid, main = "Grafico TA",
-xlab = "log(valores ajustados)", ylab = "log(residuos)")
-qqPlot(exp(log.resid), dist = "weibull",
-shape = 1/leuc.wei.sel$scale,
-main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
-
-```
-
-## Modelo Lognormal
-
-```{r}
-leuc.logn.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = "lognormal")
-summary(leuc.logn.comp)
+ajuste4_E <- coxph(Surv(time, status) ~ sex + ph.ecog + strata(ph.karno), data=dados)
+summary(ajuste4_E)
 ```
 
 ```{r}
-leuc.logn.sel <- stepAIC(leuc.logn.comp, direction="backward", trace=FALSE)
-summary(leuc.logn.sel)
-```
-
-## Fazendo Previsões
-
-```{r}
-novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
-predict(leuc.logn.sel, type="lp", newdata=novosdados)
-```
-
-## Tempo Mediano
-
-```{r}
-prev1 <-predict(leuc.logn.sel, type="quantile", newdata=novosdados, p=0.5)
-prev1
-prev1[1]/prev1[2]
-```
-
-## Comparando com outro quantil
-
-```{r}
-prev2 <-predict(leuc.logn.sel, type="quantile", newdata=novosdados, p=0.7)
-prev2
-prev2[1]/prev2[2]
-```
-
-## Verificando o modelo
-
-```{r}
-par(mfrow = c(1, 2), cex = 0.6)
-pred.lin <- predict(leuc.logn.sel, type = "lp")[dados$status == 1]
-log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
-plot(pred.lin, log.resid, main = "Grafico TA",
-xlab = "log(valores ajustados)", ylab = "log(residuos)")
-qqPlot(exp(log.resid), dist = "norm",
-sd = leuc.logn.sel$scale,
-main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
-
-```
-
-## Modelo Loglogistico
-
-```{r}
-leuc.logl.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = "loglogistic")
-summary(leuc.logl.comp)
-```
-
-```{r}
-leuc.logl.sel <- stepAIC(leuc.logl.comp, direction="backward", trace=FALSE)
-summary(leuc.logl.sel)
-```
-
-## Fazendo Previsões
-
-```{r}
-novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
-predict(leuc.logl.sel, type="lp", newdata=novosdados)
-```
-
-## Tempo Mediano
-
-```{r}
-prev1 <-predict(leuc.logl.sel, type="quantile", newdata=novosdados, p=0.5)
-prev1
-prev1[1]/prev1[2]
-```
-
-## Comparando com outro quantil
-
-```{r}
-prev2 <-predict(leuc.logl.sel, type="quantile", newdata=novosdados, p=0.7)
-prev2
-prev2[1]/prev2[2]
-```
-
-## Verificando o modelo
-
-```{r}
-par(mfrow = c(1, 2), cex = 0.6)
-pred.lin <- predict(leuc.logl.sel, type = "lp")[dados$status == 1]
-log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
-plot(pred.lin, log.resid, main = "Grafico TA",
-xlab = "log(valores ajustados)", ylab = "log(residuos)")
-qqPlot(exp(log.resid), dist = "logis",
-scale = leuc.logl.sel$scale,
-main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
-
-```
-
-## Comparação dos modelos
-
-```{r}
-tab.exp <- summary(leuc.exp.sel)
-tab.exp
-tab.wei <- summary(leuc.wei.sel)
-tab.wei
-TRV <- 2*(tab.wei$loglik[1] - tab.exp$loglik[1])
-pchisq(TRV, 1, lower.tail = F)
-tab.ln <- summary(leuc.logn.sel)
-tab.ln
-tab.ll <- summary(leuc.logl.sel)
-tab.ll
-aic.exp <- -2*tab.exp$loglik[1] + 2*3
-aic.exp
-aic.wei <- -2*tab.wei$loglik[1] + 2*4
-aic.wei
-aic.ln <- -2*tab.ln$loglik[1] + 2*4
-aic.ln
-aic.ll <- -2*tab.ll$loglik[1] + 2*4
-aic.ll
-aic <- c(aic.exp, aic.wei, aic.ln, aic.ll)
-delta.aic <- aic - min(aic)
-delta.aic
-peso.aic <- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))
-sum(peso.aic)
-modelos <- data.frame(modelos=c("Exponencial", "Weibull",
-                                "Lognormal", "Loglogistico"),
-                      p_Akaike = peso.aic)
-gt::gt(modelos)
-
+ajuste_aux <- survfit(ajuste4_E)
+plot(ajuste_aux, mark.time=FALSE, col=c(1:6), lwd=3, las=1, bty='n', xlab="Tempo (dias)", ylab="S(t)")
+niveis <- sort(unique(dados$ph.karno))
+legend("topright", levels(factor(niveis)), lwd=3, col=c(1:6))
 ```
