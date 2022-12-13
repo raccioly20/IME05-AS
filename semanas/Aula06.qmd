@@ -77,15 +77,34 @@ prev2[1]/prev2[2]
 ## Verificando o modelo
 
 ```{r}
+smoothSEcurve <- function(yy, xx) {
+# usar depois de chamr um grafico
+# Ajusta um curva lowess curve com IC de 95%
+xx.list <- min(xx) + ((0:100)/100)*(max(xx) - min(xx))
+# Then fit loess function through the points (xx, yy)
+# at the listed values
+yy.xx <- predict(loess(yy ~ xx), se=T,
+newdata=data.frame(xx=xx.list))
+lines(yy.xx$fit ~ xx.list, lwd=2)
+lines(yy.xx$fit -
+qt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)
+lines(yy.xx$fit +
+qt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)
+}
+```
+
+```{r}
 library(car)
 par(mfrow = c(1, 2), cex = 0.6)
 pred.lin <- predict(leuc.exp.sel, type = "lp")[dados$status == 1]
 log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
 plot(pred.lin, log.resid, main = "Grafico TA",
 xlab = "log(valores ajustados)", ylab = "log(residuos)")
+smoothSEcurve(log.resid, pred.lin)
 qqPlot(exp(log.resid), dist = "weibull",
 shape = 1,
 main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
+
 
 ```
 
@@ -132,6 +151,7 @@ pred.lin <- predict(leuc.wei.sel, type = "lp")[dados$status == 1]
 log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
 plot(pred.lin, log.resid, main = "Grafico TA",
 xlab = "log(valores ajustados)", ylab = "log(residuos)")
+smoothSEcurve(log.resid, pred.lin)
 qqPlot(exp(log.resid), dist = "weibull",
 shape = 1/leuc.wei.sel$scale,
 main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
@@ -181,6 +201,7 @@ pred.lin <- predict(leuc.logn.sel, type = "lp")[dados$status == 1]
 log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
 plot(pred.lin, log.resid, main = "Grafico TA",
 xlab = "log(valores ajustados)", ylab = "log(residuos)")
+smoothSEcurve(log.resid, pred.lin)
 qqPlot(exp(log.resid), dist = "norm",
 sd = leuc.logn.sel$scale,
 main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
@@ -230,6 +251,7 @@ pred.lin <- predict(leuc.logl.sel, type = "lp")[dados$status == 1]
 log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
 plot(pred.lin, log.resid, main = "Grafico TA",
 xlab = "log(valores ajustados)", ylab = "log(residuos)")
+smoothSEcurve(log.resid, pred.lin)
 qqPlot(exp(log.resid), dist = "logis",
 scale = leuc.logl.sel$scale,
 main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
