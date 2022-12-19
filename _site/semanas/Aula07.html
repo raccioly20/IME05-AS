@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.0.38">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -54,7 +59,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -67,7 +72,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -147,7 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header">
-      <a href="../" class="sidebar-logo-link">
+      <a href="../index.html" class="sidebar-logo-link">
       <img src="../images/anasobre.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
       <div class="sidebar-tools-main tools-wide">
@@ -228,7 +233,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -238,8 +243,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#modelo-semi-paramétrico-de-cox" id="toc-modelo-semi-paramétrico-de-cox" class="nav-link" data-scroll-target="#modelo-semi-paramétrico-de-cox">Modelo Semi-paramétrico de Cox</a></li>
   <li><a href="#automatizando-ajuste" id="toc-automatizando-ajuste" class="nav-link" data-scroll-target="#automatizando-ajuste">Automatizando ajuste</a></li>
   <li><a href="#informações-do-ajuste" id="toc-informações-do-ajuste" class="nav-link" data-scroll-target="#informações-do-ajuste">Informações do Ajuste</a></li>
-  <li><a href="#avaliando-ajuste" id="toc-avaliando-ajuste" class="nav-link" data-scroll-target="#avaliando-ajuste">Avaliando Ajuste</a></li>
-  <li><a href="#avaliando-ajuste-2" id="toc-avaliando-ajuste-2" class="nav-link" data-scroll-target="#avaliando-ajuste-2">Avaliando Ajuste 2</a></li>
+  <li><a href="#avaliando-o-ajuste-1" id="toc-avaliando-o-ajuste-1" class="nav-link" data-scroll-target="#avaliando-o-ajuste-1">Avaliando o ajuste 1</a></li>
+  <li><a href="#avaliando-o-ajuste-2" id="toc-avaliando-o-ajuste-2" class="nav-link" data-scroll-target="#avaliando-o-ajuste-2">Avaliando o ajuste 2</a></li>
+  <li><a href="#avaliando-o-ajuste-3" id="toc-avaliando-o-ajuste-3" class="nav-link" data-scroll-target="#avaliando-o-ajuste-3">Avaliando o ajuste 3</a></li>
+  <li><a href="#avaliando-o-ajuste-4" id="toc-avaliando-o-ajuste-4" class="nav-link" data-scroll-target="#avaliando-o-ajuste-4">Avaliando o ajuste 4</a></li>
   <li><a href="#curva-de-sobrevivência" id="toc-curva-de-sobrevivência" class="nav-link" data-scroll-target="#curva-de-sobrevivência">Curva de Sobrevivência</a></li>
   </ul>
 </nav>
@@ -264,20 +271,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
   </div>
     
+  
     
   </div>
   
 
 </header>
 
-<section id="introdução" class="level3">
-<h3 class="anchored" data-anchor-id="introdução">Introdução</h3>
+<section id="introdução" class="level2">
+<h2 class="anchored" data-anchor-id="introdução">Introdução</h2>
 <p>Nesta etapa vamos começar a trabalhar com o modelo semi-paramétrico de Cox</p>
 <p>O conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).</p>
 <p>Duas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar).</p>
 </section>
-<section id="carregando-os-dados" class="level3">
-<h3 class="anchored" data-anchor-id="carregando-os-dados">Carregando os dados</h3>
+<section id="carregando-os-dados" class="level2">
+<h2 class="anchored" data-anchor-id="carregando-os-dados">Carregando os dados</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
@@ -301,8 +309,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </section>
-<section id="ajuste-não-paramétrico" class="level3">
-<h3 class="anchored" data-anchor-id="ajuste-não-paramétrico">Ajuste Não Paramétrico</h3>
+<section id="ajuste-não-paramétrico" class="level2">
+<h2 class="anchored" data-anchor-id="ajuste-não-paramétrico">Ajuste Não Paramétrico</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ekm <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempo,status)<span class="sc">~</span>Rx, <span class="at">data=</span>dados)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>tempo <span class="ot">&lt;-</span> ekm<span class="sc">$</span>time</span>
@@ -416,8 +424,8 @@ Score (logrank) test = 46.07  on 2 df,   p=1e-10</code></pre>
 </div>
 </div>
 </section>
-<section id="avaliando-ajuste" class="level2">
-<h2 class="anchored" data-anchor-id="avaliando-ajuste">Avaliando Ajuste</h2>
+<section id="avaliando-o-ajuste-1" class="level2">
+<h2 class="anchored" data-anchor-id="avaliando-o-ajuste-1">Avaliando o ajuste 1</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rms)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">survplot</span>(<span class="fu">npsurv</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx, <span class="at">data =</span> dados),</span>
@@ -427,8 +435,8 @@ Score (logrank) test = 46.07  on 2 df,   p=1e-10</code></pre>
 </div>
 </div>
 </section>
-<section id="avaliando-ajuste-2" class="level2">
-<h2 class="anchored" data-anchor-id="avaliando-ajuste-2">Avaliando Ajuste 2</h2>
+<section id="avaliando-o-ajuste-2" class="level2">
+<h2 class="anchored" data-anchor-id="avaliando-o-ajuste-2">Avaliando o ajuste 2</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>ponto <span class="ot">&lt;-</span> <span class="fu">surv_cutpoint</span>(dados, <span class="at">time =</span> <span class="st">"tempo"</span>, <span class="at">event =</span> <span class="st">"status"</span>, <span class="at">variables =</span> <span class="st">"logwbc"</span>)</span>
@@ -445,18 +453,61 @@ logwbc     2.73</code></pre>
 </div>
 </div>
 </section>
+<section id="avaliando-o-ajuste-3" class="level2">
+<h2 class="anchored" data-anchor-id="avaliando-o-ajuste-3">Avaliando o ajuste 3</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>smoothSEcurve <span class="ot">&lt;-</span> <span class="cf">function</span>(yy, xx) {</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># usar depois de chamr um grafico</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajusta um curva lowess curve com IC de 95%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>xx.list <span class="ot">&lt;-</span> <span class="fu">min</span>(xx) <span class="sc">+</span> ((<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span>)<span class="sc">/</span><span class="dv">100</span>)<span class="sc">*</span>(<span class="fu">max</span>(xx) <span class="sc">-</span> <span class="fu">min</span>(xx))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Then fit loess function through the points (xx, yy)</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># at the listed values</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>yy.xx <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">loess</span>(yy <span class="sc">~</span> xx), <span class="at">se=</span>T,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">xx=</span>xx.list))</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">~</span> xx.list, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">-</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, yy.xx<span class="sc">$</span>df)<span class="sc">*</span>yy.xx<span class="sc">$</span>se.fit <span class="sc">~</span> xx.list, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">+</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, yy.xx<span class="sc">$</span>df)<span class="sc">*</span>yy.xx<span class="sc">$</span>se.fit <span class="sc">~</span> xx.list, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>rr.final <span class="ot">&lt;-</span> <span class="fu">residuals</span>(leuc.cox2 , <span class="at">type=</span><span class="st">"martingale"</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rr.final <span class="sc">~</span> dados<span class="sc">$</span>logwbc)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothSEcurve</span>(rr.final, dados<span class="sc">$</span>logwbc)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Residuos Martingale </span><span class="sc">\n</span><span class="st">versus logwbc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula07_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rr.final <span class="sc">~</span> <span class="fu">factor</span>(dados<span class="sc">$</span>Rx))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Residuos Martingale </span><span class="sc">\n</span><span class="st">versus Rx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula07_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="avaliando-o-ajuste-4" class="level2">
+<h2 class="anchored" data-anchor-id="avaliando-o-ajuste-4">Avaliando o ajuste 4</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>rr.final2 <span class="ot">&lt;-</span> <span class="fu">residuals</span>(leuc.cox2 , <span class="at">type=</span><span class="st">"deviance"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dados<span class="sc">$</span>logwbc, rr.final2, <span class="at">xlab=</span><span class="st">"logwbc"</span>, <span class="at">ylab =</span> <span class="st">"Influencia para logwbc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula07_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rr.final2 &lt;- residuals(leuc.cox2 , type="dfbeta")</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(dados$logwbc, rr.final2[,1], xlab="logwbc", ylab = "Influencia para logwbc")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="curva-de-sobrevivência" class="level2">
 <h2 class="anchored" data-anchor-id="curva-de-sobrevivência">Curva de Sobrevivência</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>amostra <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="at">Rx =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">logwbc =</span> <span class="fu">rep</span>(<span class="fu">mean</span>(dados<span class="sc">$</span>logwbc), <span class="dv">2</span>))</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>amostra.surv <span class="ot">&lt;-</span> <span class="fu">survfit</span>(leuc.cox2, <span class="at">newdata =</span> amostra)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(amostra.surv, <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"Tempo"</span>, <span class="at">ylab =</span> <span class="st">"S(t)"</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomleft"</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="at">legend =</span> <span class="fu">sprintf</span>(<span class="st">"Rx %d"</span>, <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>amostra <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="at">Rx =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">logwbc =</span> <span class="fu">rep</span>(<span class="fu">mean</span>(dados<span class="sc">$</span>logwbc), <span class="dv">2</span>))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>amostra.surv <span class="ot">&lt;-</span> <span class="fu">survfit</span>(leuc.cox2, <span class="at">newdata =</span> amostra)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(amostra.surv, <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"Tempo"</span>, <span class="at">ylab =</span> <span class="st">"S(t)"</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomleft"</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="at">legend =</span> <span class="fu">sprintf</span>(<span class="st">"Rx %d"</span>, <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula07_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="Aula07_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
@@ -535,6 +586,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         }
       }
     }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
   }
   const isFileUrl = () => { 
     return window.location.protocol === 'file:';
@@ -586,7 +647,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   // Switch to dark mode if need be
   if (hasAlternateSentinel()) {
     toggleColorMode(true);
-  } 
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -608,7 +671,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -636,31 +716,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

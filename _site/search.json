@@ -4,21 +4,21 @@
     "href": "about.html",
     "title": "Sobre",
     "section": "",
-    "text": "Esta é a página principal do site da disciplina Análise de Sobrevivência IME05-12532."
+    "text": "Bom dia / Boa tarde / Boa Noite,\nEsta é a página principal do site da disciplina Análise de Sobrevivência IME05-12532."
   },
   {
     "objectID": "acesso-rstudio.html",
     "href": "acesso-rstudio.html",
     "title": "RStudio Cloud",
     "section": "",
-    "text": "RStudio"
+    "text": "Para acessar as tarefas no RStudio Cloud, abra uma conta gratuita no mesmo e acesse o link abaixo\nRStudio"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "IME05-12532 - Análise de Sobrevivência",
     "section": "",
-    "text": "Aqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do R. O objetivo é mostrar as possibilidades de aplicação do R nesta disciplina.\nOs códigos apresentados em aula serão colocado por aqui também.\n[📖] TFA\n[📖] Cox 1\n[📖] Cox 2"
+    "text": "Bom dia / Boa tarde / Boa Noite,\nAqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do R. O objetivo é mostrar as possibilidades de aplicação do R nesta disciplina.\nOs códigos apresentados em aula serão colocado por aqui também.\n[📖] TFA\n[📖] Cox 1\n[📖] Cox 2"
   },
   {
     "objectID": "semanas/Aula06.html",
@@ -189,6 +189,20 @@
     "text": "Nesta etapa vamos começar a trabalhar com o modelo semi-paramétrico de Cox\nO conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).\nDuas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar)."
   },
   {
+    "objectID": "semanas/Aula07.html#carregando-os-dados",
+    "href": "semanas/Aula07.html#carregando-os-dados",
+    "title": "Análise de Sobrevivência",
+    "section": "Carregando os dados",
+    "text": "Carregando os dados\n\nlibrary(survival)\nlibrary(readxl)\ndados <- read_xlsx(\"anderson.xlsx\", col_names = TRUE )\nsummary(dados)\n\n     tempo           status            sexo            logwbc     \n Min.   : 1.00   Min.   :0.0000   Min.   :0.0000   Min.   :1.450  \n 1st Qu.: 6.00   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:2.303  \n Median :10.50   Median :1.0000   Median :0.0000   Median :2.800  \n Mean   :12.88   Mean   :0.7143   Mean   :0.4762   Mean   :2.930  \n 3rd Qu.:18.50   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:3.490  \n Max.   :35.00   Max.   :1.0000   Max.   :1.0000   Max.   :5.000  \n       Rx     \n Min.   :0.0  \n 1st Qu.:0.0  \n Median :0.5  \n Mean   :0.5  \n 3rd Qu.:1.0  \n Max.   :1.0"
+  },
+  {
+    "objectID": "semanas/Aula07.html#ajuste-não-paramétrico",
+    "href": "semanas/Aula07.html#ajuste-não-paramétrico",
+    "title": "Análise de Sobrevivência",
+    "section": "Ajuste Não Paramétrico",
+    "text": "Ajuste Não Paramétrico\n\nekm <- survfit(Surv(tempo,status)~Rx, data=dados)\ntempo <- ekm$time\nst <- ekm$surv\nsummary(ekm)\n\nCall: survfit(formula = Surv(tempo, status) ~ Rx, data = dados)\n\n                Rx=0 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807\n\n                Rx=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA\n\nplot(ekm, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=2:3)\nlegend(\"topright\",c(\"Rx=0\",\"Rx=1\"), lty = 2:3)"
+  },
+  {
     "objectID": "semanas/Aula07.html#modelo-semi-paramétrico-de-cox",
     "href": "semanas/Aula07.html#modelo-semi-paramétrico-de-cox",
     "title": "Análise de Sobrevivência",
@@ -210,18 +224,32 @@
     "text": "Informações do Ajuste\n\ncoef(leuc.cox2)\n\n  logwbc       Rx \n1.690890 1.386076 \n\nlogLik(leuc.cox2)\n\n'log Lik.' -69.8281 (df=2)"
   },
   {
-    "objectID": "semanas/Aula07.html#avaliando-ajuste",
-    "href": "semanas/Aula07.html#avaliando-ajuste",
+    "objectID": "semanas/Aula07.html#avaliando-o-ajuste-1",
+    "href": "semanas/Aula07.html#avaliando-o-ajuste-1",
     "title": "Análise de Sobrevivência",
-    "section": "Avaliando Ajuste",
-    "text": "Avaliando Ajuste\n\nlibrary(rms)\nsurvplot(npsurv(Surv(tempo, status) ~ Rx, data = dados),\nloglog = TRUE, logt=TRUE, xlab = \"Tempo\", ylab = \"log(-log(S))\")"
+    "section": "Avaliando o ajuste 1",
+    "text": "Avaliando o ajuste 1\n\nlibrary(rms)\nsurvplot(npsurv(Surv(tempo, status) ~ Rx, data = dados),\nloglog = TRUE, logt=TRUE, xlab = \"Tempo\", ylab = \"log(-log(S))\")"
   },
   {
-    "objectID": "semanas/Aula07.html#avaliando-ajuste-2",
-    "href": "semanas/Aula07.html#avaliando-ajuste-2",
+    "objectID": "semanas/Aula07.html#avaliando-o-ajuste-2",
+    "href": "semanas/Aula07.html#avaliando-o-ajuste-2",
     "title": "Análise de Sobrevivência",
-    "section": "Avaliando Ajuste 2",
-    "text": "Avaliando Ajuste 2\n\nlibrary(survminer)\nponto <- surv_cutpoint(dados, time = \"tempo\", event = \"status\", variables = \"logwbc\")\nponto$cutpoint[1]\n\n       cutpoint\nlogwbc     2.73\n\ndados$grupolwbc <- cut(dados$logwbc,ponto$cutpoint[1])\nsurvplot(npsurv(Surv(tempo, status) ~ grupolwbc, data = dados),\nloglog = TRUE, logt=TRUE, xlab = \"Tempo\", ylab = \"log(-log(S))\")"
+    "section": "Avaliando o ajuste 2",
+    "text": "Avaliando o ajuste 2\n\nlibrary(survminer)\nponto <- surv_cutpoint(dados, time = \"tempo\", event = \"status\", variables = \"logwbc\")\nponto$cutpoint[1]\n\n       cutpoint\nlogwbc     2.73\n\ndados$grupolwbc <- cut(dados$logwbc,ponto$cutpoint[1])\nsurvplot(npsurv(Surv(tempo, status) ~ grupolwbc, data = dados),\nloglog = TRUE, logt=TRUE, xlab = \"Tempo\", ylab = \"log(-log(S))\")"
+  },
+  {
+    "objectID": "semanas/Aula07.html#avaliando-o-ajuste-3",
+    "href": "semanas/Aula07.html#avaliando-o-ajuste-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliando o ajuste 3",
+    "text": "Avaliando o ajuste 3\n\nsmoothSEcurve <- function(yy, xx) {\n# usar depois de chamr um grafico\n# Ajusta um curva lowess curve com IC de 95%\nxx.list <- min(xx) + ((0:100)/100)*(max(xx) - min(xx))\n# Then fit loess function through the points (xx, yy)\n# at the listed values\nyy.xx <- predict(loess(yy ~ xx), se=T,\nnewdata=data.frame(xx=xx.list))\nlines(yy.xx$fit ~ xx.list, lwd=2)\nlines(yy.xx$fit -\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\nlines(yy.xx$fit +\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\n}\nrr.final <- residuals(leuc.cox2 , type=\"martingale\")\nplot(rr.final ~ dados$logwbc)\nsmoothSEcurve(rr.final, dados$logwbc)\ntitle(\"Residuos Martingale \\nversus logwbc\")\n\n\n\nplot(rr.final ~ factor(dados$Rx))\ntitle(\"Residuos Martingale \\nversus Rx\")"
+  },
+  {
+    "objectID": "semanas/Aula07.html#avaliando-o-ajuste-4",
+    "href": "semanas/Aula07.html#avaliando-o-ajuste-4",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliando o ajuste 4",
+    "text": "Avaliando o ajuste 4\n\nrr.final2 <- residuals(leuc.cox2 , type=\"deviance\")\nplot(dados$logwbc, rr.final2, xlab=\"logwbc\", ylab = \"Influencia para logwbc\")\n\n\n\n# rr.final2 <- residuals(leuc.cox2 , type=\"dfbeta\")\n# plot(dados$logwbc, rr.final2[,1], xlab=\"logwbc\", ylab = \"Influencia para logwbc\")"
   },
   {
     "objectID": "semanas/Aula07.html#curva-de-sobrevivência",
@@ -312,6 +340,6 @@
     "href": "visao-do-curso.html",
     "title": "Análise de Sobrevivência",
     "section": "",
-    "text": "Estimativa não paramétrica da função de sobrevivência.\nComparação de curvas de sobrevivência.\nDistribuições paramétricas do tempo e vida.\nModelos de regressão."
+    "text": "Introdução e conceitos básicos em Análise de Sobrevivência.\nEstimativa não paramétrica da função de sobrevivência.\nComparação de curvas de sobrevivência.\nDistribuições paramétricas do tempo e vida.\nModelos de regressão."
   }
 ]

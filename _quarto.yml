@@ -6,7 +6,6 @@ website:
   title: "IME05-12532"
   description: "Análise de Sobrevivência"
   
-  opengraph: true
   twitter-card:
     creator: "@r_accioly"
     image: "images/anasobre.png"
