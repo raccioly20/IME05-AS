@@ -488,7 +488,8 @@ logwbc     2.73</code></pre>
 <h2 class="anchored" data-anchor-id="avaliando-o-ajuste-4">Avaliando o ajuste 4</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>rr.final2 <span class="ot">&lt;-</span> <span class="fu">residuals</span>(leuc.cox2 , <span class="at">type=</span><span class="st">"deviance"</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dados<span class="sc">$</span>logwbc, rr.final2, <span class="at">xlab=</span><span class="st">"logwbc"</span>, <span class="at">ylab =</span> <span class="st">"Influencia para logwbc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dados<span class="sc">$</span>logwbc, rr.final2, <span class="at">xlab=</span><span class="st">"logwbc"</span>, <span class="at">ylab =</span> <span class="st">"Influencia para logwbc"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothSEcurve</span>(rr.final2, dados<span class="sc">$</span>logwbc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aula07_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>

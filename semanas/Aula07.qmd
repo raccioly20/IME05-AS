@@ -102,17 +102,15 @@ plot(rr.final ~ factor(dados$Rx))
 title("Residuos Martingale \nversus Rx")
 ```
 
-
 ## Avaliando o ajuste 4
 
 ```{r}
 rr.final2 <- residuals(leuc.cox2 , type="deviance")
 plot(dados$logwbc, rr.final2, xlab="logwbc", ylab = "Influencia para logwbc")
+smoothSEcurve(rr.final2, dados$logwbc)
 # rr.final2 <- residuals(leuc.cox2 , type="dfbeta")
 # plot(dados$logwbc, rr.final2[,1], xlab="logwbc", ylab = "Influencia para logwbc")
 ```
-
-
 
 ## Curva de Sobrevivência
 

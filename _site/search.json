@@ -249,7 +249,7 @@
     "href": "semanas/Aula07.html#avaliando-o-ajuste-4",
     "title": "Análise de Sobrevivência",
     "section": "Avaliando o ajuste 4",
-    "text": "Avaliando o ajuste 4\n\nrr.final2 <- residuals(leuc.cox2 , type=\"deviance\")\nplot(dados$logwbc, rr.final2, xlab=\"logwbc\", ylab = \"Influencia para logwbc\")\n\n\n\n# rr.final2 <- residuals(leuc.cox2 , type=\"dfbeta\")\n# plot(dados$logwbc, rr.final2[,1], xlab=\"logwbc\", ylab = \"Influencia para logwbc\")"
+    "text": "Avaliando o ajuste 4\n\nrr.final2 <- residuals(leuc.cox2 , type=\"deviance\")\nplot(dados$logwbc, rr.final2, xlab=\"logwbc\", ylab = \"Influencia para logwbc\")\nsmoothSEcurve(rr.final2, dados$logwbc)\n\n\n\n# rr.final2 <- residuals(leuc.cox2 , type=\"dfbeta\")\n# plot(dados$logwbc, rr.final2[,1], xlab=\"logwbc\", ylab = \"Influencia para logwbc\")"
   },
   {
     "objectID": "semanas/Aula07.html#curva-de-sobrevivência",
