@@ -1,292 +1,147 @@
 ---
 title: "Análise de Sobrevivência"
-subtitle: "Modelos de regressão paramétricos"
+subtitle: "Modelos Paramétricos - Outros Modelos"
 author: "Ricardo Accioly"
-format: html
+format:
+  revealjs:
+    theme: league 
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    css: styles.css
 ---
 
-### Introdução
+```{r setup}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 4.5
+```
 
-Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.
+## Modelos Paramétricos
 
-Os modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).
+Neste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser.
+Aqui vamos utilizar as funções existentes no pacote `survival` e `flexsurv`.
 
-O conjunto de dados a seguir chamado "anderson.xlsx" consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).
+Para ajustar um modelo paramétrico usamos a função `survreg`.
 
-Duas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar).
+## Metodo de Kaplan-Meier
 
-### Carregando os dados
-
-```{r ex_1}
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 4.5
 library(survival)
-library(readxl)
-dados <- read_xlsx("anderson.xlsx", col_names = TRUE )
-summary(dados)
-
-```
-
-### Ajuste Não Paramétrico
-
-```{r ex_2}
-ekm <- survfit(Surv(tempo,status)~Rx, data=dados)
-tempo <- ekm$time
+tempos<-c(3,5,6,7,8,9,10,10,12,15,15,18,19,20,22,25,28,30,40,45)
+cens<-c(1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0)
+dados <- data.frame(tempos=tempos, status=cens)
+ekm <- survfit(Surv(tempos,status)~1, data=dados)
 st <- ekm$surv
-summary(ekm)
-plot(ekm, xlab="T(semanas)",ylab="S(t)", lty=2:3)
-legend("topright",c("Rx=0","Rx=1"), lty = 2:3)
+tempost <- ekm$time
 ```
 
-## Modelo Exponencial
+## Biblioteca Flexsurv - Exponencial
 
 ```{r}
-leuc.exp.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = "exponential")
-summary(leuc.exp.comp)
+library(flexsurv)
+ajuste1 <- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='exponential')
+ajuste1
 ```
 
-## Automatizando ajuste
+## Biblioteca Flexsurv - Weibull
 
 ```{r}
-library(MASS)
-leuc.exp.sel <- stepAIC(leuc.exp.comp, direction="backward", trace=FALSE)
-summary(leuc.exp.sel)
+ajuste2 <- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='weibull')
+ajuste2
 ```
 
-## Fazendo Previsões
+## Biblioteca Flexsurv - Lognormal
 
 ```{r}
-novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
-predict(leuc.exp.sel, type="lp", newdata=novosdados)
+ajuste3 <- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='lognormal')
+ajuste3
 ```
 
-## Tempo Mediano
+## Biblioteca Flexsurv - LogLogística
 
 ```{r}
-prev1 <-predict(leuc.exp.sel, type="quantile", newdata=novosdados, p=0.5)
-prev1
-prev1[1]/prev1[2]
+ajuste4 <- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='llogis')
+ajuste4
 ```
 
-## Comparando com outro quantil
+## Biblioteca Flexsurv - Gama Generalizada
 
 ```{r}
-prev2 <-predict(leuc.exp.sel, type="quantile", newdata=novosdados, p=0.7)
-prev2
-prev2[1]/prev2[2]
+ajuste5 <- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='gengamma')
+ajuste5
 ```
 
-## Verificando o modelo
+## Teste da Razão de Verossimilhança {.smaller}
 
 ```{r}
-smoothSEcurve <- function(yy, xx) {
-# usar depois de chamr um grafico
-# Ajusta um curva lowess curve com IC de 95%
-xx.list <- min(xx) + ((0:100)/100)*(max(xx) - min(xx))
-# Then fit loess function through the points (xx, yy)
-# at the listed values
-yy.xx <- predict(loess(yy ~ xx), se=T,
-newdata=data.frame(xx=xx.list))
-lines(yy.xx$fit ~ xx.list, lwd=2)
-lines(yy.xx$fit -
-qt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)
-lines(yy.xx$fit +
-qt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)
-}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 4.5
+ajuste1$loglik # exponencial
+ajuste2$loglik # Weibull
+ajuste3$loglik # Lognormal
+ajuste4$loglik # LogLogistica
+ajuste5$loglik # Gama Generalizada
+
+# Exponencial q=σ=1
+TRVe <- 2*(ajuste5$loglik - ajuste1$loglik)
+pchisq(TRVe,2, lower.tail = F)
+# Weibull q = 1
+TRVw <- 2*(ajuste5$loglik - ajuste2$loglik)
+pchisq(TRVw,1, lower.tail = F)
+# Lognormal q = 0
+TRVlog <- 2*(ajuste5$loglik - ajuste3$loglik)
+pchisq(TRVlog,1, lower.tail = F)
 ```
 
-```{r}
-library(car)
-par(mfrow = c(1, 2), cex = 0.6)
-pred.lin <- predict(leuc.exp.sel, type = "lp")[dados$status == 1]
-log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
-plot(pred.lin, log.resid, main = "Grafico TA",
-xlab = "log(valores ajustados)", ylab = "log(residuos)")
-smoothSEcurve(log.resid, pred.lin)
-qqPlot(exp(log.resid), dist = "weibull",
-shape = 1,
-main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
-
-
-```
-
-## Modelo Weibull
+## Comparando através do AIC {.smaller}
 
 ```{r}
-leuc.wei.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = "weibull")
-summary(leuc.wei.comp)
-```
-
-```{r}
-leuc.wei.sel <- stepAIC(leuc.wei.comp, direction="backward", trace=FALSE)
-summary(leuc.wei.sel)
-```
-
-## Fazendo Previsões
-
-```{r}
-novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
-predict(leuc.wei.sel, type="lp", newdata=novosdados)
-```
-
-## Tempo Mediano
-
-```{r}
-prev1 <-predict(leuc.wei.sel, type="quantile", newdata=novosdados, p=0.5)
-prev1
-prev1[1]/prev1[2]
-```
-
-## Comparando com outro quantil
-
-```{r}
-prev2 <-predict(leuc.wei.sel, type="quantile", newdata=novosdados, p=0.7)
-prev2
-prev2[1]/prev2[2]
-```
-
-## Verificando o modelo
-
-```{r}
-par(mfrow = c(1, 2), cex = 0.6)
-pred.lin <- predict(leuc.wei.sel, type = "lp")[dados$status == 1]
-log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
-plot(pred.lin, log.resid, main = "Grafico TA",
-xlab = "log(valores ajustados)", ylab = "log(residuos)")
-smoothSEcurve(log.resid, pred.lin)
-qqPlot(exp(log.resid), dist = "weibull",
-shape = 1/leuc.wei.sel$scale,
-main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
-
-```
-
-## Modelo Lognormal
-
-```{r}
-leuc.logn.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = "lognormal")
-summary(leuc.logn.comp)
-```
-
-```{r}
-leuc.logn.sel <- stepAIC(leuc.logn.comp, direction="backward", trace=FALSE)
-summary(leuc.logn.sel)
-```
-
-## Fazendo Previsões
-
-```{r}
-novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
-predict(leuc.logn.sel, type="lp", newdata=novosdados)
-```
-
-## Tempo Mediano
-
-```{r}
-prev1 <-predict(leuc.logn.sel, type="quantile", newdata=novosdados, p=0.5)
-prev1
-prev1[1]/prev1[2]
-```
-
-## Comparando com outro quantil
-
-```{r}
-prev2 <-predict(leuc.logn.sel, type="quantile", newdata=novosdados, p=0.7)
-prev2
-prev2[1]/prev2[2]
-```
-
-## Verificando o modelo
-
-```{r}
-par(mfrow = c(1, 2), cex = 0.6)
-pred.lin <- predict(leuc.logn.sel, type = "lp")[dados$status == 1]
-log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
-plot(pred.lin, log.resid, main = "Grafico TA",
-xlab = "log(valores ajustados)", ylab = "log(residuos)")
-smoothSEcurve(log.resid, pred.lin)
-qqPlot(exp(log.resid), dist = "norm",
-sd = leuc.logn.sel$scale,
-main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
-
-```
-
-## Modelo Loglogistico
-
-```{r}
-leuc.logl.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = "loglogistic")
-summary(leuc.logl.comp)
-```
-
-```{r}
-leuc.logl.sel <- stepAIC(leuc.logl.comp, direction="backward", trace=FALSE)
-summary(leuc.logl.sel)
-```
-
-## Fazendo Previsões
-
-```{r}
-novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
-predict(leuc.logl.sel, type="lp", newdata=novosdados)
-```
-
-## Tempo Mediano
-
-```{r}
-prev1 <-predict(leuc.logl.sel, type="quantile", newdata=novosdados, p=0.5)
-prev1
-prev1[1]/prev1[2]
-```
-
-## Comparando com outro quantil
-
-```{r}
-prev2 <-predict(leuc.logl.sel, type="quantile", newdata=novosdados, p=0.7)
-prev2
-prev2[1]/prev2[2]
-```
-
-## Verificando o modelo
-
-```{r}
-par(mfrow = c(1, 2), cex = 0.6)
-pred.lin <- predict(leuc.logl.sel, type = "lp")[dados$status == 1]
-log.resid <- log(dados$tempo[dados$status == 1]) - pred.lin
-plot(pred.lin, log.resid, main = "Grafico TA",
-xlab = "log(valores ajustados)", ylab = "log(residuos)")
-smoothSEcurve(log.resid, pred.lin)
-qqPlot(exp(log.resid), dist = "logis",
-scale = leuc.logl.sel$scale,
-main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
-
-```
-
-## Comparação dos modelos
-
-```{r}
-tab.exp <- summary(leuc.exp.sel)
-tab.exp
-tab.wei <- summary(leuc.wei.sel)
-tab.wei
-TRV <- 2*(tab.wei$loglik[1] - tab.exp$loglik[1])
-pchisq(TRV, 1, lower.tail = F)
-tab.ln <- summary(leuc.logn.sel)
-tab.ln
-tab.ll <- summary(leuc.logl.sel)
-tab.ll
-aic.exp <- -2*tab.exp$loglik[1] + 2*3
+#| echo: true
+#| fig-width: 10
+#| fig-height: 4.5
+aic.exp <- -2*ajuste1$loglik + 2*1
 aic.exp
-aic.wei <- -2*tab.wei$loglik[1] + 2*4
+aic.wei <- -2*ajuste2$loglik + 2*2
 aic.wei
-aic.ln <- -2*tab.ln$loglik[1] + 2*4
+aic.ln <- -2*ajuste3$loglik + 2*2
 aic.ln
-aic.ll <- -2*tab.ll$loglik[1] + 2*4
+aic.ll <- -2*ajuste4$loglik + 2*2
 aic.ll
-aic <- c(aic.exp, aic.wei, aic.ln, aic.ll)
+aic.gg <- -2*ajuste5$loglik + 2*3
+aic.gg
+aic <- c(aic.exp, aic.wei, aic.ln, aic.ll, aic.gg)
 delta.aic <- aic - min(aic)
 delta.aic
 peso.aic <- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))
 sum(peso.aic)
+```
+
+## Peso de Akaike
+
+```{r}
 modelos <- data.frame(modelos=c("Exponencial", "Weibull",
-                                "Lognormal", "Loglogistico"),
+                                "Lognormal", "Loglogistico", "GG"),
                       p_Akaike = peso.aic)
 gt::gt(modelos)
+```
 
+
+## Curvas de Sobrevivência
+
+```{r}
+plot(tempost, st, ylim=range(c(0.0,1)), xlim=range(c(0,50)), ylab="S(t)", xlab="Tempo (meses)")
+lines(ajuste1, col="blue", ci=FALSE)
+lines(ajuste2, col="green", ci=FALSE)
+lines(ajuste3, col="cyan", ci=FALSE)
+lines(ajuste4,col="red", ci=FALSE)
+lines(ajuste5,col="black", ci=FALSE)
+legend("topright", lty=c(1,1,1,1), lwd=c(2,2,2,2),
+       col=c("blue", "green", "cyan","red", "black"),
+       c("Exponencial","Weibull", "Lognormal" , "LogLogistica", "Gama Generalizada"))
 ```

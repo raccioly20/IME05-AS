@@ -1,0 +1,172 @@
+---
+title: "Análise de Sobrevivência"
+subtitle: "Modelos semi-paramétrico de Cox"
+author: "Ricardo Accioly"
+format: html
+---
+
+### Introdução
+
+Vamos usar neste exemplo dados da biblioteca survival.
+
+Os dados são de sobrevivência de pacientes com cancer de pulmão em estágio avançado do North Central Cancer Treatment Group.
+
+\- inst: Códico da Intituição
+
+\- time: Tempo de sobrevivência em dias
+
+\- status: 1=censurado, 2=morto
+
+\- age: Idade em anos
+
+\- sex: 1=Homem 2 = Mulher
+
+\- ph.ecog: escore ecog 0=bom 5=morto
+
+\- ph.karno: escore de Karnofsky (ruim=0-bom=100) definido pelo médico
+
+\- pat.karno: escore de Karnofsky definido pelo paciente
+
+\- meal.cal: Calorias consumidas nas refeições
+
+\- wt.loss: Perda de peso nos últimos seis meses (libras)
+
+### Carregando os dados
+
+```{r ex_1}
+library(survival)
+dados <- lung
+str(dados)
+summary(dados)
+
+```
+
+### Verificação de dados faltantes
+
+```{r ex_2}
+sum(complete.cases(lung))
+library(dplyr)
+dados <- dados %>% na.omit(dados)
+summary(dados)
+```
+
+## Modelo Semi-paramétrico de Cox
+
+```{r}
+ajuste1 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +
+                   ph.karno + pat.karno + meal.cal + wt.loss, data = dados)
+summary(ajuste1)
+logLik(ajuste1)
+
+```
+
+## Usando o teste de Wald e da razão de verossimilhança
+
+O teste de Wald avalia a estatística z, que no caso acima indica que diversas variáveis não são significativas, por exemplo, meat.cal, age, pat.karno.
+
+Vamos eliminar somente meat.cal e fazer o teste da razão de verossimilhança para confirmarmos que ela não é estatísticamente significativa.
+
+```{r}
+ajuste2 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +
+                   ph.karno + pat.karno + wt.loss, data = dados)
+logLik(ajuste2)
+
+TRV <- 2*(logLik(ajuste1) - logLik(ajuste2))
+pchisq(TRV[1],1, lower.tail = FALSE)
+```
+
+O resultado acima confirma que o modelo não é afetado pela retirada de meat.cal, ou seja, ela não é estatísticamente significativa.
+
+## Automatizando ajuste
+
+```{r}
+library(MASS)
+ajuste3 <- stepAIC(ajuste1, direction="backward", trace=FALSE)
+summary(ajuste3)
+```
+
+Veja que wt.loss e ph.karno são marginalmente significativas. pat.karno tem p-valor acima de 0,10 o que normalmente indicaria sua retirada do modelo.
+
+## Usando o BIC
+
+```{r}
+library(MASS)
+n_eventos <- sum(dados$status)
+ajuste4 <- stepAIC(ajuste1, direction="backward", k= log(n_eventos), trace=FALSE)
+summary(ajuste4)
+```
+
+## Informações do Ajuste
+
+```{r}
+coef(ajuste4)
+logLik(ajuste4)
+```
+
+## Tempos Idênticos
+
+```{r}
+ajuste5 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , 
+                 ties= "efron", 
+                 data=dados)
+ajuste6 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , 
+                 ties= "breslow", 
+                 data=dados)
+ajuste7 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , 
+                 ties= "exact", 
+                 data=dados)
+dif_met <- rbind(coef(ajuste5), coef(ajuste6), coef(ajuste7))
+row.names(dif_met) <- c("Efron", "Breslow", "Exact")
+knitr::kable(dif_met)
+```
+
+## Avaliando Ajuste
+
+```{r, message=FALSE}
+av1 <- survfit(Surv(time, status) ~ sex, data = dados)
+av1.tab <- summary(av1)
+plot(log(av1.tab$time),log(-log(av1.tab$surv)),
+col = av1.tab$strata, xlab = "log(t)", ylab = "log(-log(S))",
+pch = 20)
+legend("bottomright", bty = "n", lty = 1, col = c(1:2),
+legend = sprintf("Sexo %d", 1:2))
+av2 <- survfit(Surv(time, status) ~ ph.ecog, data = dados)
+av2.tab <- summary(av2)
+plot(log(av2.tab$time),log(-log(av2.tab$surv)),
+col = av2.tab$strata, xlab = "log(t)", ylab = "log(-log(S))",
+pch = 20)
+legend("bottomright", bty = "n", lty = 1, col = c(1,2,3,4),
+legend = sprintf("Ecog %d", 0:3))
+
+```
+
+## Resíduos de Cox-Snell
+
+```{r, message=FALSE}
+library(car)
+cox.snell <- abs(dados$status - ajuste4$residuals)
+qqPlot(cox.snell, dist = "exp", rate = mean(cox.snell))
+```
+
+## Resíduos de Schoenfeld
+
+```{r}
+cox.zph(ajuste4)
+resid.sch <- cox.zph(ajuste4)
+par(mfrow=c(1,3))
+plot(resid.sch)
+```
+
+## Modelo de Cox Estratificado
+
+```{r}
+ajuste4_E <- coxph(Surv(time, status) ~ sex + strata(ph.ecog), data=dados)
+summary(ajuste4_E)
+```
+
+```{r}
+ajuste_aux <- survfit(ajuste4_E)
+plot(ajuste_aux, mark.time=FALSE, col=c(1:4), lwd=3, las=1, bty='n', xlab="Tempo (dias)", ylab="S(t)")
+niveis <- sort(unique(dados$ph.ecog))
+legend("topright", levels(factor(niveis)), lwd=3, col=c(1:6))
+```

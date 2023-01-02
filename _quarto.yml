@@ -43,11 +43,23 @@ website:
             text: Acesso
       - section: "Conteúdo Semanal"
         contents:
+          - href: semanas/Aula01.qmd
+            text: "Aula01"
+          - href: semanas/Aula02.qmd
+            text: "Aula02"
+          - href: semanas/Aula03.qmd
+            text: "Aula03"
+          - href: semanas/Aula04.qmd
+            text: "Aula04"
+          - href: semanas/Aula05.qmd
+            text: "Aula05"
           - href: semanas/Aula06.qmd
-            text: "TFA"
+            text: "Aula06"
           - href: semanas/Aula07.qmd
-            text: "Cox 1"
+            text: "TFA"
           - href: semanas/Aula08.qmd
+            text: "Cox 1"
+          - href: semanas/Aula09.qmd
             text: "Cox 2"
  
  

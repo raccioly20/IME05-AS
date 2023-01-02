@@ -5,168 +5,121 @@ author: "Ricardo Accioly"
 format: html
 ---
 
-### Introdução
+## Introdução
 
-Vamos usar neste exemplo dados da biblioteca survival.
+Nesta etapa vamos começar a trabalhar com o modelo semi-paramétrico de Cox
 
-Os dados são de sobrevivência de pacientes com cancer de pulmão em estágio avançado do North Central Cancer Treatment Group.
+O conjunto de dados a seguir chamado "anderson.xlsx" consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).
 
-\- inst: Códico da Intituição
+Duas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar).
 
-\- time: Tempo de sobrevivência em dias
-
-\- status: 1=censurado, 2=morto
-
-\- age: Idade em anos
-
-\- sex: 1=Homem 2 = Mulher
-
-\- ph.ecog: escore ecog 0=bom 5=morto
-
-\- ph.karno: escore de Karnofsky (ruim=0-bom=100) definido pelo médico
-
-\- pat.karno: escore de Karnofsky definido pelo paciente
-
-\- meal.cal: Calorias consumidas nas refeições
-
-\- wt.loss: Perda de peso nos últimos seis meses (libras)
-
-### Carregando os dados
+## Carregando os dados
 
 ```{r ex_1}
 library(survival)
-dados <- lung
-str(dados)
+library(readxl)
+dados <- read_xlsx("anderson.xlsx", col_names = TRUE )
 summary(dados)
 
 ```
 
-### Verificação de dados faltantes
+## Ajuste Não Paramétrico
 
 ```{r ex_2}
-sum(complete.cases(lung))
-library(dplyr)
-dados <- dados %>% na.omit(dados)
-summary(dados)
+ekm <- survfit(Surv(tempo,status)~Rx, data=dados)
+tempo <- ekm$time
+st <- ekm$surv
+summary(ekm)
+plot(ekm, xlab="T(semanas)",ylab="S(t)", lty=2:3)
+legend("topright",c("Rx=0","Rx=1"), lty = 2:3)
 ```
 
 ## Modelo Semi-paramétrico de Cox
 
 ```{r}
-ajuste1 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +
-                   ph.karno + pat.karno + meal.cal + wt.loss, data = dados)
-summary(ajuste1)
-logLik(ajuste1)
-
+leuc.cox1 <- coxph(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados)
+summary(leuc.cox1)
 ```
-
-## Usando o teste de Wald e da razão de verossimilhança
-
-O teste de Wald avalia a estatística z, que no caso acima indica que diversas variáveis não são significativas, por exemplo, meat.cal, age, pat.karno.
-
-Vamos eliminar somente meat.cal e fazer o teste da razão de verossimilhança para confirmarmos que ela não é estatísticamente significativa.
-
-```{r}
-ajuste2 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +
-                   ph.karno + pat.karno + wt.loss, data = dados)
-logLik(ajuste2)
-
-TRV <- 2*(logLik(ajuste1) - logLik(ajuste2))
-pchisq(TRV[1],1, lower.tail = FALSE)
-```
-
-O resultado acima confirma que o modelo não é afetado pela retirada de meat.cal, ou seja, ela não é estatísticamente significativa.
 
 ## Automatizando ajuste
 
 ```{r}
 library(MASS)
-ajuste3 <- stepAIC(ajuste1, direction="backward", trace=FALSE)
-summary(ajuste3)
-```
-
-Veja que wt.loss e ph.karno são marginalmente significativas. pat.karno tem p-valor acima de 0,10 o que normalmente indicaria sua retirada do modelo.
-
-## Usando o BIC
-
-```{r}
-library(MASS)
-n_eventos <- sum(dados$status)
-ajuste4 <- stepAIC(ajuste1, direction="backward", k= log(n_eventos), trace=FALSE)
-summary(ajuste4)
+leuc.cox2 <- stepAIC(leuc.cox1, direction="backward", trace=FALSE)
+summary(leuc.cox2)
 ```
 
 ## Informações do Ajuste
 
 ```{r}
-coef(ajuste4)
-logLik(ajuste4)
+coef(leuc.cox2)
+logLik(leuc.cox2)
 ```
 
-## Tempos Idênticos
-
-```{r}
-ajuste5 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , 
-                 ties= "efron", 
-                 data=dados)
-ajuste6 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , 
-                 ties= "breslow", 
-                 data=dados)
-ajuste7 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , 
-                 ties= "exact", 
-                 data=dados)
-dif_met <- rbind(coef(ajuste5), coef(ajuste6), coef(ajuste7))
-row.names(dif_met) <- c("Efron", "Breslow", "Exact")
-knitr::kable(dif_met)
-```
-
-## Avaliando Ajuste
+## Avaliando o ajuste 1
 
 ```{r, message=FALSE}
-av1 <- survfit(Surv(time, status) ~ sex, data = dados)
-av1.tab <- summary(av1)
-plot(log(av1.tab$time),log(-log(av1.tab$surv)),
-col = av1.tab$strata, xlab = "log(t)", ylab = "log(-log(S))",
-pch = 20)
-legend("bottomright", bty = "n", lty = 1, col = c(1:2),
-legend = sprintf("Sexo %d", 1:2))
-av2 <- survfit(Surv(time, status) ~ ph.ecog, data = dados)
-av2.tab <- summary(av2)
-plot(log(av2.tab$time),log(-log(av2.tab$surv)),
-col = av2.tab$strata, xlab = "log(t)", ylab = "log(-log(S))",
-pch = 20)
-legend("bottomright", bty = "n", lty = 1, col = c(1,2,3,4),
-legend = sprintf("Ecog %d", 0:3))
+library(rms)
+survplot(npsurv(Surv(tempo, status) ~ Rx, data = dados),
+loglog = TRUE, logt=TRUE, xlab = "Tempo", ylab = "log(-log(S))")
 
 ```
 
-## Resíduos de Cox-Snell
+## Avaliando o ajuste 2
 
 ```{r, message=FALSE}
-library(car)
-cox.snell <- abs(dados$status - ajuste4$residuals)
-qqPlot(cox.snell, dist = "exp", rate = mean(cox.snell))
+library(survminer)
+ponto <- surv_cutpoint(dados, time = "tempo", event = "status", variables = "logwbc")
+ponto$cutpoint[1]
+dados$grupolwbc <- cut(dados$logwbc,ponto$cutpoint[1])
+survplot(npsurv(Surv(tempo, status) ~ grupolwbc, data = dados),
+loglog = TRUE, logt=TRUE, xlab = "Tempo", ylab = "log(-log(S))")
+
 ```
 
-## Resíduos de Schoenfeld
+## Avaliando o ajuste 3
 
 ```{r}
-cox.zph(ajuste4)
-resid.sch <- cox.zph(ajuste4)
-par(mfrow=c(1,3))
-plot(resid.sch)
+smoothSEcurve <- function(yy, xx) {
+# usar depois de chamr um grafico
+# Ajusta um curva lowess curve com IC de 95%
+xx.list <- min(xx) + ((0:100)/100)*(max(xx) - min(xx))
+# Then fit loess function through the points (xx, yy)
+# at the listed values
+yy.xx <- predict(loess(yy ~ xx), se=T,
+newdata=data.frame(xx=xx.list))
+lines(yy.xx$fit ~ xx.list, lwd=2)
+lines(yy.xx$fit -
+qt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)
+lines(yy.xx$fit +
+qt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)
+}
+rr.final <- residuals(leuc.cox2 , type="martingale")
+plot(rr.final ~ dados$logwbc)
+smoothSEcurve(rr.final, dados$logwbc)
+title("Residuos Martingale \nversus logwbc")
+plot(rr.final ~ factor(dados$Rx))
+title("Residuos Martingale \nversus Rx")
 ```
 
-## Modelo de Cox Estratificado
+## Avaliando o ajuste 4
 
 ```{r}
-ajuste4_E <- coxph(Surv(time, status) ~ sex + strata(ph.ecog), data=dados)
-summary(ajuste4_E)
+rr.final2 <- residuals(leuc.cox2 , type="deviance")
+plot(dados$logwbc, rr.final2, xlab="logwbc", ylab = "Influencia para logwbc")
+smoothSEcurve(rr.final2, dados$logwbc)
+# rr.final2 <- residuals(leuc.cox2 , type="dfbeta")
+# plot(dados$logwbc, rr.final2[,1], xlab="logwbc", ylab = "Influencia para logwbc")
 ```
 
+## Curva de Sobrevivência
+
 ```{r}
-ajuste_aux <- survfit(ajuste4_E)
-plot(ajuste_aux, mark.time=FALSE, col=c(1:4), lwd=3, las=1, bty='n', xlab="Tempo (dias)", ylab="S(t)")
-niveis <- sort(unique(dados$ph.ecog))
-legend("topright", levels(factor(niveis)), lwd=3, col=c(1:6))
+amostra <- data.frame(
+Rx = c(0, 1), logwbc = rep(mean(dados$logwbc), 2))
+amostra.surv <- survfit(leuc.cox2, newdata = amostra)
+plot(amostra.surv, col = c(1, 2), conf.int = TRUE,
+xlab = "Tempo", ylab = "S(t)")
+legend("bottomleft", bty = "n", lty = 1, col = 1:2,
+legend = sprintf("Rx %d", 0:1))
 ```

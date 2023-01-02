@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ricardo Accioly">
+
+<title>IME05-12532 - Análise de Sobrevivência</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../semanas/Aula08.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<meta name="twitter:title" content="IME05-12532 - Análise de Sobrevivência">
+<meta name="twitter:description" content="Modelos semi-paramétrico de Cox">
+<meta name="twitter:image" content="../images/anasobre.png">
+<meta name="twitter:creator" content="@r_accioly">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Análise de Sobrevivência</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/anasobre.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/raccioly20" title="GitHub" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/r_accioly" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
+  <a href="" class="quarto-color-scheme-toggle sidebar-tool" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">Informação da disciplina</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../visao-do-curso.html" class="sidebar-item-text sidebar-link">Visão Geral</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">Cronograma</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">RStudio Cloud</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../acesso-rstudio.html" class="sidebar-item-text sidebar-link">Acesso</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Conteúdo Semanal</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula01.html" class="sidebar-item-text sidebar-link">Aula01</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula02.html" class="sidebar-item-text sidebar-link">Aula02</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula03.html" class="sidebar-item-text sidebar-link">Aula03</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula04.html" class="sidebar-item-text sidebar-link">Aula04</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula05.html" class="sidebar-item-text sidebar-link">Aula05</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula06.html" class="sidebar-item-text sidebar-link">Aula06</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula07.html" class="sidebar-item-text sidebar-link">TFA</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula08.html" class="sidebar-item-text sidebar-link">Cox 1</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula09.html" class="sidebar-item-text sidebar-link active">Cox 2</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução">Introdução</a></li>
+  <li><a href="#carregando-os-dados" id="toc-carregando-os-dados" class="nav-link" data-scroll-target="#carregando-os-dados">Carregando os dados</a></li>
+  <li><a href="#verificação-de-dados-faltantes" id="toc-verificação-de-dados-faltantes" class="nav-link" data-scroll-target="#verificação-de-dados-faltantes">Verificação de dados faltantes</a></li>
+  <li><a href="#modelo-semi-paramétrico-de-cox" id="toc-modelo-semi-paramétrico-de-cox" class="nav-link" data-scroll-target="#modelo-semi-paramétrico-de-cox">Modelo Semi-paramétrico de Cox</a></li>
+  <li><a href="#usando-o-teste-de-wald-e-da-razão-de-verossimilhança" id="toc-usando-o-teste-de-wald-e-da-razão-de-verossimilhança" class="nav-link" data-scroll-target="#usando-o-teste-de-wald-e-da-razão-de-verossimilhança">Usando o teste de Wald e da razão de verossimilhança</a></li>
+  <li><a href="#automatizando-ajuste" id="toc-automatizando-ajuste" class="nav-link" data-scroll-target="#automatizando-ajuste">Automatizando ajuste</a></li>
+  <li><a href="#usando-o-bic" id="toc-usando-o-bic" class="nav-link" data-scroll-target="#usando-o-bic">Usando o BIC</a></li>
+  <li><a href="#informações-do-ajuste" id="toc-informações-do-ajuste" class="nav-link" data-scroll-target="#informações-do-ajuste">Informações do Ajuste</a></li>
+  <li><a href="#tempos-idênticos" id="toc-tempos-idênticos" class="nav-link" data-scroll-target="#tempos-idênticos">Tempos Idênticos</a></li>
+  <li><a href="#avaliando-ajuste" id="toc-avaliando-ajuste" class="nav-link" data-scroll-target="#avaliando-ajuste">Avaliando Ajuste</a></li>
+  <li><a href="#resíduos-de-cox-snell" id="toc-resíduos-de-cox-snell" class="nav-link" data-scroll-target="#resíduos-de-cox-snell">Resíduos de Cox-Snell</a></li>
+  <li><a href="#resíduos-de-schoenfeld" id="toc-resíduos-de-schoenfeld" class="nav-link" data-scroll-target="#resíduos-de-schoenfeld">Resíduos de Schoenfeld</a></li>
+  <li><a href="#modelo-de-cox-estratificado" id="toc-modelo-de-cox-estratificado" class="nav-link" data-scroll-target="#modelo-de-cox-estratificado">Modelo de Cox Estratificado</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Análise de Sobrevivência</h1>
+<p class="subtitle lead">Modelos semi-paramétrico de Cox</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ricardo Accioly </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introdução" class="level3">
+<h3 class="anchored" data-anchor-id="introdução">Introdução</h3>
+<p>Vamos usar neste exemplo dados da biblioteca survival.</p>
+<p>Os dados são de sobrevivência de pacientes com cancer de pulmão em estágio avançado do North Central Cancer Treatment Group.</p>
+<p>- inst: Códico da Intituição</p>
+<p>- time: Tempo de sobrevivência em dias</p>
+<p>- status: 1=censurado, 2=morto</p>
+<p>- age: Idade em anos</p>
+<p>- sex: 1=Homem 2 = Mulher</p>
+<p>- ph.ecog: escore ecog 0=bom 5=morto</p>
+<p>- ph.karno: escore de Karnofsky (ruim=0-bom=100) definido pelo médico</p>
+<p>- pat.karno: escore de Karnofsky definido pelo paciente</p>
+<p>- meal.cal: Calorias consumidas nas refeições</p>
+<p>- wt.loss: Perda de peso nos últimos seis meses (libras)</p>
+</section>
+<section id="carregando-os-dados" class="level3">
+<h3 class="anchored" data-anchor-id="carregando-os-dados">Carregando os dados</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> lung</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   228 obs. of  10 variables:
+ $ inst     : num  3 3 3 5 1 12 7 11 1 7 ...
+ $ time     : num  306 455 1010 210 883 ...
+ $ status   : num  2 2 1 2 2 1 2 2 2 2 ...
+ $ age      : num  74 68 56 57 60 74 68 71 53 61 ...
+ $ sex      : num  1 1 1 1 1 1 2 2 1 1 ...
+ $ ph.ecog  : num  1 0 0 1 0 1 2 2 1 2 ...
+ $ ph.karno : num  90 90 90 90 100 50 70 60 70 70 ...
+ $ pat.karno: num  100 90 90 60 90 80 60 80 80 70 ...
+ $ meal.cal : num  1175 1225 NA 1150 NA ...
+ $ wt.loss  : num  NA 15 15 11 0 0 10 1 16 34 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      inst            time            status           age       
+ Min.   : 1.00   Min.   :   5.0   Min.   :1.000   Min.   :39.00  
+ 1st Qu.: 3.00   1st Qu.: 166.8   1st Qu.:1.000   1st Qu.:56.00  
+ Median :11.00   Median : 255.5   Median :2.000   Median :63.00  
+ Mean   :11.09   Mean   : 305.2   Mean   :1.724   Mean   :62.45  
+ 3rd Qu.:16.00   3rd Qu.: 396.5   3rd Qu.:2.000   3rd Qu.:69.00  
+ Max.   :33.00   Max.   :1022.0   Max.   :2.000   Max.   :82.00  
+ NA's   :1                                                       
+      sex           ph.ecog          ph.karno        pat.karno     
+ Min.   :1.000   Min.   :0.0000   Min.   : 50.00   Min.   : 30.00  
+ 1st Qu.:1.000   1st Qu.:0.0000   1st Qu.: 75.00   1st Qu.: 70.00  
+ Median :1.000   Median :1.0000   Median : 80.00   Median : 80.00  
+ Mean   :1.395   Mean   :0.9515   Mean   : 81.94   Mean   : 79.96  
+ 3rd Qu.:2.000   3rd Qu.:1.0000   3rd Qu.: 90.00   3rd Qu.: 90.00  
+ Max.   :2.000   Max.   :3.0000   Max.   :100.00   Max.   :100.00  
+                 NA's   :1        NA's   :1        NA's   :3       
+    meal.cal         wt.loss       
+ Min.   :  96.0   Min.   :-24.000  
+ 1st Qu.: 635.0   1st Qu.:  0.000  
+ Median : 975.0   Median :  7.000  
+ Mean   : 928.8   Mean   :  9.832  
+ 3rd Qu.:1150.0   3rd Qu.: 15.750  
+ Max.   :2600.0   Max.   : 68.000  
+ NA's   :47       NA's   :14       </code></pre>
+</div>
+</div>
+</section>
+<section id="verificação-de-dados-faltantes" class="level3">
+<h3 class="anchored" data-anchor-id="verificação-de-dados-faltantes">Verificação de dados faltantes</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">complete.cases</span>(lung))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 167</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> dados <span class="sc">%&gt;%</span> <span class="fu">na.omit</span>(dados)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      inst            time            status           age       
+ Min.   : 1.00   Min.   :   5.0   Min.   :1.000   Min.   :39.00  
+ 1st Qu.: 3.00   1st Qu.: 174.5   1st Qu.:1.000   1st Qu.:57.00  
+ Median :11.00   Median : 268.0   Median :2.000   Median :64.00  
+ Mean   :10.71   Mean   : 309.9   Mean   :1.719   Mean   :62.57  
+ 3rd Qu.:15.00   3rd Qu.: 419.5   3rd Qu.:2.000   3rd Qu.:70.00  
+ Max.   :32.00   Max.   :1022.0   Max.   :2.000   Max.   :82.00  
+      sex           ph.ecog          ph.karno        pat.karno     
+ Min.   :1.000   Min.   :0.0000   Min.   : 50.00   Min.   : 30.00  
+ 1st Qu.:1.000   1st Qu.:0.0000   1st Qu.: 70.00   1st Qu.: 70.00  
+ Median :1.000   Median :1.0000   Median : 80.00   Median : 80.00  
+ Mean   :1.383   Mean   :0.9581   Mean   : 82.04   Mean   : 79.58  
+ 3rd Qu.:2.000   3rd Qu.:1.0000   3rd Qu.: 90.00   3rd Qu.: 90.00  
+ Max.   :2.000   Max.   :3.0000   Max.   :100.00   Max.   :100.00  
+    meal.cal         wt.loss       
+ Min.   :  96.0   Min.   :-24.000  
+ 1st Qu.: 619.0   1st Qu.:  0.000  
+ Median : 975.0   Median :  7.000  
+ Mean   : 929.1   Mean   :  9.719  
+ 3rd Qu.:1162.5   3rd Qu.: 15.000  
+ Max.   :2600.0   Max.   : 68.000  </code></pre>
+</div>
+</div>
+</section>
+<section id="modelo-semi-paramétrico-de-cox" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-semi-paramétrico-de-cox">Modelo Semi-paramétrico de Cox</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ajuste1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> ph.ecog <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                   ph.karno <span class="sc">+</span> pat.karno <span class="sc">+</span> meal.cal <span class="sc">+</span> wt.loss, <span class="at">data =</span> dados)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ajuste1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ age + sex + ph.ecog + ph.karno + 
+    pat.karno + meal.cal + wt.loss, data = dados)
+
+  n= 167, number of events= 120 
+
+                coef  exp(coef)   se(coef)      z Pr(&gt;|z|)   
+age        1.080e-02  1.011e+00  1.160e-02  0.931  0.35168   
+sex       -5.536e-01  5.749e-01  2.016e-01 -2.746  0.00603 **
+ph.ecog    7.395e-01  2.095e+00  2.250e-01  3.287  0.00101 **
+ph.karno   2.244e-02  1.023e+00  1.123e-02  1.998  0.04575 * 
+pat.karno -1.207e-02  9.880e-01  8.116e-03 -1.488  0.13685   
+meal.cal   2.835e-05  1.000e+00  2.594e-04  0.109  0.91298   
+wt.loss   -1.420e-02  9.859e-01  7.766e-03 -1.828  0.06748 . 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+          exp(coef) exp(-coef) lower .95 upper .95
+age          1.0109     0.9893    0.9881    1.0341
+sex          0.5749     1.7395    0.3872    0.8534
+ph.ecog      2.0950     0.4773    1.3479    3.2560
+ph.karno     1.0227     0.9778    1.0004    1.0455
+pat.karno    0.9880     1.0121    0.9724    1.0038
+meal.cal     1.0000     1.0000    0.9995    1.0005
+wt.loss      0.9859     1.0143    0.9710    1.0010
+
+Concordance= 0.653  (se = 0.029 )
+Likelihood ratio test= 28.16  on 7 df,   p=2e-04
+Wald test            = 27.5  on 7 df,   p=3e-04
+Score (logrank) test = 28.31  on 7 df,   p=2e-04</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(ajuste1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'log Lik.' -494.0344 (df=7)</code></pre>
+</div>
+</div>
+</section>
+<section id="usando-o-teste-de-wald-e-da-razão-de-verossimilhança" class="level2">
+<h2 class="anchored" data-anchor-id="usando-o-teste-de-wald-e-da-razão-de-verossimilhança">Usando o teste de Wald e da razão de verossimilhança</h2>
+<p>O teste de Wald avalia a estatística z, que no caso acima indica que diversas variáveis não são significativas, por exemplo, meat.cal, age, pat.karno.</p>
+<p>Vamos eliminar somente meat.cal e fazer o teste da razão de verossimilhança para confirmarmos que ela não é estatísticamente significativa.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ajuste2 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> ph.ecog <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                   ph.karno <span class="sc">+</span> pat.karno <span class="sc">+</span> wt.loss, <span class="at">data =</span> dados)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(ajuste2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'log Lik.' -494.0404 (df=6)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>TRV <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>(<span class="fu">logLik</span>(ajuste1) <span class="sc">-</span> <span class="fu">logLik</span>(ajuste2))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(TRV[<span class="dv">1</span>],<span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9131696</code></pre>
+</div>
+</div>
+<p>O resultado acima confirma que o modelo não é afetado pela retirada de meat.cal, ou seja, ela não é estatísticamente significativa.</p>
+</section>
+<section id="automatizando-ajuste" class="level2">
+<h2 class="anchored" data-anchor-id="automatizando-ajuste">Automatizando ajuste</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'MASS'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    select</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ajuste3 <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(ajuste1, <span class="at">direction=</span><span class="st">"backward"</span>, <span class="at">trace=</span><span class="cn">FALSE</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ajuste3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ sex + ph.ecog + ph.karno + 
+    pat.karno + wt.loss, data = dados)
+
+  n= 167, number of events= 120 
+
+               coef exp(coef)  se(coef)      z Pr(&gt;|z|)   
+sex       -0.558190  0.572244  0.199202 -2.802  0.00508 **
+ph.ecog    0.742983  2.102197  0.227604  3.264  0.00110 **
+ph.karno   0.020366  1.020575  0.011080  1.838  0.06604 . 
+pat.karno -0.012401  0.987675  0.007978 -1.554  0.12008   
+wt.loss   -0.014494  0.985611  0.007693 -1.884  0.05957 . 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+          exp(coef) exp(-coef) lower .95 upper .95
+sex          0.5722     1.7475    0.3873    0.8456
+ph.ecog      2.1022     0.4757    1.3457    3.2841
+ph.karno     1.0206     0.9798    0.9987    1.0430
+pat.karno    0.9877     1.0125    0.9724    1.0032
+wt.loss      0.9856     1.0146    0.9709    1.0006
+
+Concordance= 0.658  (se = 0.029 )
+Likelihood ratio test= 27.28  on 5 df,   p=5e-05
+Wald test            = 26.89  on 5 df,   p=6e-05
+Score (logrank) test = 27.64  on 5 df,   p=4e-05</code></pre>
+</div>
+</div>
+<p>Veja que wt.loss e ph.karno são marginalmente significativas. pat.karno tem p-valor acima de 0,10 o que normalmente indicaria sua retirada do modelo.</p>
+</section>
+<section id="usando-o-bic" class="level2">
+<h2 class="anchored" data-anchor-id="usando-o-bic">Usando o BIC</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>n_eventos <span class="ot">&lt;-</span> <span class="fu">sum</span>(dados<span class="sc">$</span>status)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>ajuste4 <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(ajuste1, <span class="at">direction=</span><span class="st">"backward"</span>, <span class="at">k=</span> <span class="fu">log</span>(n_eventos), <span class="at">trace=</span><span class="cn">FALSE</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ajuste4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ sex + ph.ecog, data = dados)
+
+  n= 167, number of events= 120 
+
+           coef exp(coef) se(coef)      z Pr(&gt;|z|)    
+sex     -0.5101    0.6004   0.1969 -2.591 0.009579 ** 
+ph.ecog  0.4825    1.6201   0.1323  3.647 0.000266 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+        exp(coef) exp(-coef) lower .95 upper .95
+sex        0.6004     1.6655    0.4082    0.8832
+ph.ecog    1.6201     0.6172    1.2501    2.0998
+
+Concordance= 0.641  (se = 0.031 )
+Likelihood ratio test= 19.48  on 2 df,   p=6e-05
+Wald test            = 19.35  on 2 df,   p=6e-05
+Score (logrank) test = 19.62  on 2 df,   p=5e-05</code></pre>
+</div>
+</div>
+</section>
+<section id="informações-do-ajuste" class="level2">
+<h2 class="anchored" data-anchor-id="informações-do-ajuste">Informações do Ajuste</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(ajuste4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       sex    ph.ecog 
+-0.5100991  0.4825185 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(ajuste4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'log Lik.' -498.3757 (df=2)</code></pre>
+</div>
+</div>
+</section>
+<section id="tempos-idênticos" class="level2">
+<h2 class="anchored" data-anchor-id="tempos-idênticos">Tempos Idênticos</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>ajuste5 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,status<span class="sc">==</span><span class="dv">2</span>) <span class="sc">~</span> sex <span class="sc">+</span> ph.ecog , </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ties=</span> <span class="st">"efron"</span>, </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data=</span>dados)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>ajuste6 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,status<span class="sc">==</span><span class="dv">2</span>) <span class="sc">~</span> sex <span class="sc">+</span> ph.ecog , </span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ties=</span> <span class="st">"breslow"</span>, </span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data=</span>dados)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>ajuste7 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,status<span class="sc">==</span><span class="dv">2</span>) <span class="sc">~</span> sex <span class="sc">+</span> ph.ecog , </span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ties=</span> <span class="st">"exact"</span>, </span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data=</span>dados)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>dif_met <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">coef</span>(ajuste5), <span class="fu">coef</span>(ajuste6), <span class="fu">coef</span>(ajuste7))</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(dif_met) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Efron"</span>, <span class="st">"Breslow"</span>, <span class="st">"Exact"</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(dif_met)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">sex</th>
+<th style="text-align: right;">ph.ecog</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Efron</td>
+<td style="text-align: right;">-0.5100991</td>
+<td style="text-align: right;">0.4825185</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Breslow</td>
+<td style="text-align: right;">-0.5094047</td>
+<td style="text-align: right;">0.4823368</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Exact</td>
+<td style="text-align: right;">-0.5103502</td>
+<td style="text-align: right;">0.4832902</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="avaliando-ajuste" class="level2">
+<h2 class="anchored" data-anchor-id="avaliando-ajuste">Avaliando Ajuste</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>av1 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> sex, <span class="at">data =</span> dados)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>av1.tab <span class="ot">&lt;-</span> <span class="fu">summary</span>(av1)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">log</span>(av1.tab<span class="sc">$</span>time),<span class="fu">log</span>(<span class="sc">-</span><span class="fu">log</span>(av1.tab<span class="sc">$</span>surv)),</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="at">col =</span> av1.tab<span class="sc">$</span>strata, <span class="at">xlab =</span> <span class="st">"log(t)"</span>, <span class="at">ylab =</span> <span class="st">"log(-log(S))"</span>,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="at">pch =</span> <span class="dv">20</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>),</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="at">legend =</span> <span class="fu">sprintf</span>(<span class="st">"Sexo %d"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula09_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>av2 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> ph.ecog, <span class="at">data =</span> dados)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>av2.tab <span class="ot">&lt;-</span> <span class="fu">summary</span>(av2)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">log</span>(av2.tab<span class="sc">$</span>time),<span class="fu">log</span>(<span class="sc">-</span><span class="fu">log</span>(av2.tab<span class="sc">$</span>surv)),</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="at">col =</span> av2.tab<span class="sc">$</span>strata, <span class="at">xlab =</span> <span class="st">"log(t)"</span>, <span class="at">ylab =</span> <span class="st">"log(-log(S))"</span>,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="at">pch =</span> <span class="dv">20</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>),</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="at">legend =</span> <span class="fu">sprintf</span>(<span class="st">"Ecog %d"</span>, <span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula09_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="resíduos-de-cox-snell" class="level2">
+<h2 class="anchored" data-anchor-id="resíduos-de-cox-snell">Resíduos de Cox-Snell</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>cox.snell <span class="ot">&lt;-</span> <span class="fu">abs</span>(dados<span class="sc">$</span>status <span class="sc">-</span> ajuste4<span class="sc">$</span>residuals)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(cox.snell, <span class="at">dist =</span> <span class="st">"exp"</span>, <span class="at">rate =</span> <span class="fu">mean</span>(cox.snell))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula09_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>37 18 
+25 11 </code></pre>
+</div>
+</div>
+</section>
+<section id="resíduos-de-schoenfeld" class="level2">
+<h2 class="anchored" data-anchor-id="resíduos-de-schoenfeld">Resíduos de Schoenfeld</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cox.zph</span>(ajuste4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        chisq df     p
+sex      1.24  1 0.266
+ph.ecog  5.27  1 0.022
+GLOBAL   6.19  2 0.045</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>resid.sch <span class="ot">&lt;-</span> <span class="fu">cox.zph</span>(ajuste4)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(resid.sch)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula09_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="modelo-de-cox-estratificado" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-de-cox-estratificado">Modelo de Cox Estratificado</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>ajuste4_E <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> sex <span class="sc">+</span> <span class="fu">strata</span>(ph.ecog), <span class="at">data=</span>dados)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ajuste4_E)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ sex + strata(ph.ecog), data = dados)
+
+  n= 167, number of events= 120 
+
+       coef exp(coef) se(coef)      z Pr(&gt;|z|)   
+sex -0.5434    0.5807   0.2002 -2.715  0.00664 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    exp(coef) exp(-coef) lower .95 upper .95
+sex    0.5807      1.722    0.3923    0.8598
+
+Concordance= 0.572  (se = 0.027 )
+Likelihood ratio test= 7.75  on 1 df,   p=0.005
+Wald test            = 7.37  on 1 df,   p=0.007
+Score (logrank) test = 7.54  on 1 df,   p=0.006</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>ajuste_aux <span class="ot">&lt;-</span> <span class="fu">survfit</span>(ajuste4_E)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ajuste_aux, <span class="at">mark.time=</span><span class="cn">FALSE</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>), <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">bty=</span><span class="st">'n'</span>, <span class="at">xlab=</span><span class="st">"Tempo (dias)"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>niveis <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(dados<span class="sc">$</span>ph.ecog))</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">levels</span>(<span class="fu">factor</span>(niveis)), <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula09_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../semanas/Aula08.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Cox 1</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Baseado em https://sta210-s22.github.io/website/</div>   
+  </div>
+</footer>
+
+
+
+</body></html>

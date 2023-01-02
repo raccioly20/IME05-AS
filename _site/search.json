@@ -18,319 +18,1019 @@
     "href": "index.html",
     "title": "IME05-12532 - Análise de Sobrevivência",
     "section": "",
-    "text": "Bom dia / Boa tarde / Boa Noite,\nAqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do R. O objetivo é mostrar as possibilidades de aplicação do R nesta disciplina.\nOs códigos apresentados em aula serão colocado por aqui também.\n[📖] TFA\n[📖] Cox 1\n[📖] Cox 2"
+    "text": "Bom dia / Boa tarde / Boa Noite,\nAqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do R. O objetivo é mostrar as possibilidades de aplicação do R nesta disciplina.\nOs códigos apresentados em aula serão colocado por aqui também.\n[📖] Aula01\n[📖] Aula02\n[📖] Aula03\n[📖] Aula04\n[📖] Aula05\n[📖] Aula06\n[📖] TFA\n[📖] Cox 1\n[📖] Cox 2"
   },
   {
-    "objectID": "semanas/Aula06.html",
-    "href": "semanas/Aula06.html",
+    "objectID": "semanas/Aula01.html#análise-de-sobrevivência",
+    "href": "semanas/Aula01.html#análise-de-sobrevivência",
     "title": "Análise de Sobrevivência",
-    "section": "",
-    "text": "Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.\nOs modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).\nO conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).\nDuas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar)."
+    "section": "Análise de Sobrevivência",
+    "text": "Análise de Sobrevivência\nNesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier. Vamos inicialmente utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência.\nVamos usar neste exemplo dados de pacientes com leucemia. O objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença. Existem dois grupos de pacientes. 21 receberam 6MP que é um medicamento para tratar leucemia e os outros 21 receberam placebo.\nO evento falha aqui é ocorrer uma recaída na doença."
   },
   {
-    "objectID": "semanas/Aula06.html#modelo-exponencial",
-    "href": "semanas/Aula06.html#modelo-exponencial",
+    "objectID": "semanas/Aula01.html#método-de-kaplan-meier",
+    "href": "semanas/Aula01.html#método-de-kaplan-meier",
+    "title": "Análise de Sobrevivência",
+    "section": "Método de Kaplan-Meier",
+    "text": "Método de Kaplan-Meier\n\nlibrary(survival)\ntempo<- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)\nstatus<- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0)\ndados <- data.frame(tempos=tempo, status=status)\najusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)\nplot(ajusteKM, xlab=\"Tempo (semanas)\",ylab=\"S(t)\", lty=2) \nlegend(\"topright\",\"6-MP\", lty = 2)"
+  },
+  {
+    "objectID": "semanas/Aula01.html#método-de-kaplan-meier-1",
+    "href": "semanas/Aula01.html#método-de-kaplan-meier-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Método de Kaplan-Meier",
+    "text": "Método de Kaplan-Meier\n\nsummary(ajusteKM)\n\nCall: survfit(formula = Surv(tempos, status) ~ 1, data = dados)\n\n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807"
+  },
+  {
+    "objectID": "semanas/Aula01.html#método-de-kaplan-meier-2",
+    "href": "semanas/Aula01.html#método-de-kaplan-meier-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Método de Kaplan-Meier",
+    "text": "Método de Kaplan-Meier\n\ntempo2<- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2<- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ndados2 <- data.frame(tempos=tempo2, status=status2)\najusteKM2 <- survfit(Surv(tempos, status) ~ 1, data=dados2)\nplot(ajusteKM2, xlab=\"t(semanas)\",ylab=\"S(t)\", lty=3) \nlegend(\"topright\",\"Placebo\", lty = 3)"
+  },
+  {
+    "objectID": "semanas/Aula01.html#método-de-kaplan-meier-3",
+    "href": "semanas/Aula01.html#método-de-kaplan-meier-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Método de Kaplan-Meier",
+    "text": "Método de Kaplan-Meier\n\nsummary(ajusteKM2)\n\nCall: survfit(formula = Surv(tempos, status) ~ 1, data = dados2)\n\n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA"
+  },
+  {
+    "objectID": "semanas/Aula01.html#análise-conjunta",
+    "href": "semanas/Aula01.html#análise-conjunta",
+    "title": "Análise de Sobrevivência",
+    "section": "Análise conjunta",
+    "text": "Análise conjunta\n\ntempo2g <- c(tempo,tempo2)\nstatus2g <- c(status,status2)\ngrupos <- c(rep(1,21),rep(2,21))\ndados3 <- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)\najusteKM3 <- survfit(Surv(tempos, status) ~ grupos, data=dados3)\nplot(ajusteKM3, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=1:2, \n     col=c(1,4), conf.int=0.95) \nlegend(\"topright\",c(\"6-MP\",\"Placebo\"), lty = 1:2, col=c(1,4))"
+  },
+  {
+    "objectID": "semanas/Aula01.html#método-de-kaplan-meier-4",
+    "href": "semanas/Aula01.html#método-de-kaplan-meier-4",
+    "title": "Análise de Sobrevivência",
+    "section": "Método de Kaplan-Meier",
+    "text": "Método de Kaplan-Meier\n\nsummary(ajusteKM3)\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3)\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA"
+  },
+  {
+    "objectID": "semanas/Aula01.html#diferentes-tipos-de-intervalo-de-confiança",
+    "href": "semanas/Aula01.html#diferentes-tipos-de-intervalo-de-confiança",
+    "title": "Análise de Sobrevivência",
+    "section": "Diferentes Tipos de Intervalo de Confiança",
+    "text": "Diferentes Tipos de Intervalo de Confiança\n\ntempo2g <- c(tempo,tempo2)\nstatus2g <- c(status,status2)\ngrupos <- c(rep(1,21),rep(2,21))\ndados3 <- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)\najusteKM4 <- survfit(Surv(tempos, status) ~ grupos, data=dados3,\n                     conf.type=\"plain\")"
+  },
+  {
+    "objectID": "semanas/Aula01.html#ic-pleno-aproximação-pela-normal",
+    "href": "semanas/Aula01.html#ic-pleno-aproximação-pela-normal",
+    "title": "Análise de Sobrevivência",
+    "section": "IC Pleno (Aproximação pela Normal)",
+    "text": "IC Pleno (Aproximação pela Normal)\n\nsummary(ajusteKM4)\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3, \n    conf.type = \"plain\")\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.707        1.000\n    7     17       1    0.807  0.0869        0.636        0.977\n   10     15       1    0.753  0.0963        0.564        0.942\n   13     12       1    0.690  0.1068        0.481        0.900\n   16     11       1    0.627  0.1141        0.404        0.851\n   22      7       1    0.538  0.1282        0.286        0.789\n   23      6       1    0.448  0.1346        0.184        0.712\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641       0.7792        1.000\n    2     19       2   0.8095  0.0857       0.6416        0.977\n    3     17       1   0.7619  0.0929       0.5797        0.944\n    4     16       2   0.6667  0.1029       0.4650        0.868\n    5     14       2   0.5714  0.1080       0.3598        0.783\n    8     12       4   0.3810  0.1060       0.1733        0.589\n   11      8       2   0.2857  0.0986       0.0925        0.479\n   12      6       2   0.1905  0.0857       0.0225        0.358\n   15      4       1   0.1429  0.0764       0.0000        0.293\n   17      3       1   0.0952  0.0641       0.0000        0.221\n   22      2       1   0.0476  0.0465       0.0000        0.139\n   23      1       1   0.0000     NaN          NaN          NaN"
+  },
+  {
+    "objectID": "semanas/Aula01.html#ic-log---padrão-do-r",
+    "href": "semanas/Aula01.html#ic-log---padrão-do-r",
+    "title": "Análise de Sobrevivência",
+    "section": "IC log - Padrão do R",
+    "text": "IC log - Padrão do R\n\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3, \n    conf.type = \"log\")\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA"
+  },
+  {
+    "objectID": "semanas/Aula01.html#ic-log-log---kalbfleish-prentice",
+    "href": "semanas/Aula01.html#ic-log-log---kalbfleish-prentice",
+    "title": "Análise de Sobrevivência",
+    "section": "IC log-log - Kalbfleish-Prentice",
+    "text": "IC log-log - Kalbfleish-Prentice\n\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3, \n    conf.type = \"log-log\")\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.620        0.952\n    7     17       1    0.807  0.0869        0.563        0.923\n   10     15       1    0.753  0.0963        0.503        0.889\n   13     12       1    0.690  0.1068        0.432        0.849\n   16     11       1    0.627  0.1141        0.368        0.805\n   22      7       1    0.538  0.1282        0.268        0.747\n   23      6       1    0.448  0.1346        0.188        0.680\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.67005        0.975\n    2     19       2   0.8095  0.0857      0.56891        0.924\n    3     17       1   0.7619  0.0929      0.51939        0.893\n    4     16       2   0.6667  0.1029      0.42535        0.825\n    5     14       2   0.5714  0.1080      0.33798        0.749\n    8     12       4   0.3810  0.1060      0.18307        0.578\n   11      8       2   0.2857  0.0986      0.11656        0.482\n   12      6       2   0.1905  0.0857      0.05948        0.377\n   15      4       1   0.1429  0.0764      0.03566        0.321\n   17      3       1   0.0952  0.0641      0.01626        0.261\n   22      2       1   0.0476  0.0465      0.00332        0.197\n   23      1       1   0.0000     NaN           NA           NA"
+  },
+  {
+    "objectID": "semanas/Aula01.html#vamos-usar-o-pacote-survminer-para-incrementar-a-visualização",
+    "href": "semanas/Aula01.html#vamos-usar-o-pacote-survminer-para-incrementar-a-visualização",
+    "title": "Análise de Sobrevivência",
+    "section": "Vamos usar o pacote survminer para incrementar a visualização",
+    "text": "Vamos usar o pacote survminer para incrementar a visualização\n\nlibrary(survminer)\ndados <- data.frame(tempo=tempo2g, status=status2g, grupo= grupos)\najusteKM4 <- survfit(Surv(tempo2g, status2g) ~ grupo, data= dados, conf.type=\"log-log\")"
+  },
+  {
+    "objectID": "semanas/Aula01.html#gráfico",
+    "href": "semanas/Aula01.html#gráfico",
+    "title": "Análise de Sobrevivência",
+    "section": "Gráfico",
+    "text": "Gráfico"
+  },
+  {
+    "objectID": "semanas/Aula02.html#análise-de-sobrevivência",
+    "href": "semanas/Aula02.html#análise-de-sobrevivência",
+    "title": "Análise de Sobrevivência",
+    "section": "Análise de Sobrevivência",
+    "text": "Análise de Sobrevivência\nNesta apresentação vamos ver passo a passo como obter comparar as curvas de sobrevivência utilizando o teste de log-rank. Vamos utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência.\nVamos usar neste exemplo dados de pacientes com leucemia. O objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença. Existem dois grupos de pacientes. 21 receberam 6MP que é um medicamento para tratar leucemia e os outros 21 receberam placebo.\nO evento falha aqui é ocorrer uma recaída na doença."
+  },
+  {
+    "objectID": "semanas/Aula02.html#método-kaplan-meier",
+    "href": "semanas/Aula02.html#método-kaplan-meier",
+    "title": "Análise de Sobrevivência",
+    "section": "Método Kaplan-Meier",
+    "text": "Método Kaplan-Meier\n\nlibrary(survival)\ntempo<- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)\nstatus<- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0) \ntempo2<- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2<- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ntempo2g <- c(tempo,tempo2)\nstatus2g <- c(status,status2)\ngrupos <- c(rep(1,21),rep(2,21))\ndados <- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)\najusteKM <- survfit(Surv(tempos, status) ~ grupos, data=dados)\nplot(ajusteKM, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=2:3) \nlegend(\"topright\",c(\"6-MP\",\"Placebo\"), lty = 2:3)"
+  },
+  {
+    "objectID": "semanas/Aula02.html#método-kaplan-meier-1",
+    "href": "semanas/Aula02.html#método-kaplan-meier-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Método Kaplan-Meier",
+    "text": "Método Kaplan-Meier\n\nsummary(ajusteKM)\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados)\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA"
+  },
+  {
+    "objectID": "semanas/Aula02.html#teste-do-log-rank",
+    "href": "semanas/Aula02.html#teste-do-log-rank",
+    "title": "Análise de Sobrevivência",
+    "section": "Teste do log-rank",
+    "text": "Teste do log-rank\n\nsurvdiff(Surv(tempo2g, status2g) ~ grupos, data=dados)\n\nCall:\nsurvdiff(formula = Surv(tempo2g, status2g) ~ grupos, data = dados)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 21        9     19.3      5.46      16.8\ngrupos=2 21       21     10.7      9.77      16.8\n\n Chisq= 16.8  on 1 degrees of freedom, p= 4e-05"
+  },
+  {
+    "objectID": "semanas/Aula02.html#teste-do-log-rank-usando-pesos",
+    "href": "semanas/Aula02.html#teste-do-log-rank-usando-pesos",
+    "title": "Análise de Sobrevivência",
+    "section": "Teste do log-rank usando pesos",
+    "text": "Teste do log-rank usando pesos\nQuando usamo rho=0, o teste é identico ao log-rank padrão\n\n# rho=0 é o teste de log-rank\nsurvdiff(Surv(tempos, status) ~ grupos, rho=0, data=dados)\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = dados, \n    rho = 0)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 21        9     19.3      5.46      16.8\ngrupos=2 21       21     10.7      9.77      16.8\n\n Chisq= 16.8  on 1 degrees of freedom, p= 4e-05"
+  },
+  {
+    "objectID": "semanas/Aula02.html#teste-do-log-rank-usando-pesos-de-harrington-fleming",
+    "href": "semanas/Aula02.html#teste-do-log-rank-usando-pesos-de-harrington-fleming",
+    "title": "Análise de Sobrevivência",
+    "section": "Teste do log-rank usando pesos de Harrington-Fleming",
+    "text": "Teste do log-rank usando pesos de Harrington-Fleming\nQuando usamo rho=1, ele se torna do teste de log-rank usando os pesos de Harrington-Fleming\n\n# rho=1 é o teste de Harrigton-Fleming\nsurvdiff(Surv(tempos, status) ~ grupos, rho=1, data=dados)\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = dados, \n    rho = 1)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 21     5.12    12.00      3.94      14.5\ngrupos=2 21    14.55     7.68      6.16      14.5\n\n Chisq= 14.5  on 1 degrees of freedom, p= 1e-04"
+  },
+  {
+    "objectID": "semanas/Aula02.html#teste-do-log-rank-para-mais-de-2-grupos",
+    "href": "semanas/Aula02.html#teste-do-log-rank-para-mais-de-2-grupos",
+    "title": "Análise de Sobrevivência",
+    "section": "Teste do Log-rank para mais de 2 grupos",
+    "text": "Teste do Log-rank para mais de 2 grupos\nVamos usar neste exemplo os dados de um estudo experimental com camundongos conduzido no Centro de Pesquisas René Rachou, FioCruz, MG. 44 camundongos foram infectados pela malaria (Plasmodium berguei) e aleatoriamente alocados em três grupos:\nGrupo 1: Imunizados 30 dias antes da infecção pela malária. Foram infetados também por esquistossomose.\nGrupo 2: Controle (Somente infectado pela malária)\nGrupo 3: Infectado pela malária e ela esquistossomose."
+  },
+  {
+    "objectID": "semanas/Aula02.html#teste-do-log-rank-para-mais-de-2-grupos-1",
+    "href": "semanas/Aula02.html#teste-do-log-rank-para-mais-de-2-grupos-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Teste do Log-rank para mais de 2 grupos",
+    "text": "Teste do Log-rank para mais de 2 grupos\nA resposta foi o tempo decorrido desde a infecção pela malária até a morte do camundongo. O tempo foi medido em dias e o estudo foi acompanhado por 30 dias. Vamos adotar um nível de significância de 0,05 para avaliar a diferença entre as curvas, ou seja, se a estatística de log-rank tiver um valor menor que 0,05, vamos rejeitar a hipótese nula."
+  },
+  {
+    "objectID": "semanas/Aula02.html#método-kaplan-meier-2",
+    "href": "semanas/Aula02.html#método-kaplan-meier-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Método Kaplan-Meier",
+    "text": "Método Kaplan-Meier\n\ntempos <- c(7,8,8,8,8,12,12,17,18,22,30,30,30,30,30,30,8,8,9,\n10,10,14,15,15,18,19,21,22,22,23,25,8,8,8,8,8,8,\n9,10,10,10,11,17,19)\nstatus <- c(rep(1,10), rep(0,6), rep(1,15), rep(1,13))\ngrupos <- c(rep(1,16), rep(2,15), rep(3,13))\ndados2 <- data.frame(tempos, status, grupos)\najusteKM2<- survfit(Surv(tempos, status) ~ grupos, data = dados2)\nplot(ajusteKM2, xlab=\"T(dias)\",ylab=\"S(t)\", lty=1:3) \nlegend(\"topright\",c(\"G 1\",\"G 2\", \"G 3\"), lty = 1:3)"
+  },
+  {
+    "objectID": "semanas/Aula02.html#teste-do-log-rank-1",
+    "href": "semanas/Aula02.html#teste-do-log-rank-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Teste do log-rank",
+    "text": "Teste do log-rank\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = dados2,  rho=0)\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = dados2, \n    rho = 0)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 16       10    17.00    2.8816    6.4111\ngrupos=2 15       15    14.51    0.0167    0.0317\ngrupos=3 13       13     6.49    6.5190   10.4447\n\n Chisq= 12.6  on 2 degrees of freedom, p= 0.002"
+  },
+  {
+    "objectID": "semanas/Aula02.html#obtendo-os-resultados-de-outra-forma",
+    "href": "semanas/Aula02.html#obtendo-os-resultados-de-outra-forma",
+    "title": "Análise de Sobrevivência",
+    "section": "Obtendo os resultados de outra forma",
+    "text": "Obtendo os resultados de outra forma\n\nteste_lr <- survdiff(Surv(tempos, status) ~ grupos, data = dados2,  rho=0)\nw <- teste_lr$obs[1:2] - teste_lr$exp[1:2]\nV <- teste_lr$var[1:2,1:2]\nt(w) %*% solve(V) %*% w\n\n         [,1]\n[1,] 12.56497"
+  },
+  {
+    "objectID": "semanas/Aula02.html#avaliação",
+    "href": "semanas/Aula02.html#avaliação",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliação",
+    "text": "Avaliação\nComo a hipótese nula foi rejeitada precisamos avaliar se todas as curvas de sobrevivência são diferentes. Para isto vamos fazer comparações, duas a duas, utilizando o método de Bonferroni. Como existem três grupos, são três as comparações duas a duas.\nO nível de significância a ser adotado nestas comparações é de \\(\\alpha\\) = 0,05/3 = 0,017. Isto vai garantir uma conclusão geral ao nível máximo de 0,05."
+  },
+  {
+    "objectID": "semanas/Aula02.html#grupos-1-e-2",
+    "href": "semanas/Aula02.html#grupos-1-e-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Grupos 1 e 2",
+    "text": "Grupos 1 e 2\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = subset(dados2, grupos!=3),  rho=0)\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, \n    grupos != 3), rho = 0)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 16       10     13.7      1.01      2.53\ngrupos=2 15       15     11.3      1.23      2.53\n\n Chisq= 2.5  on 1 degrees of freedom, p= 0.1"
+  },
+  {
+    "objectID": "semanas/Aula02.html#grupos-1-e-3",
+    "href": "semanas/Aula02.html#grupos-1-e-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Grupos 1 e 3",
+    "text": "Grupos 1 e 3\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = subset(dados2, grupos!=2),  rho=0)\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, \n    grupos != 2), rho = 0)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 16       10    15.34      1.86      7.86\ngrupos=3 13       13     7.66      3.72      7.86\n\n Chisq= 7.9  on 1 degrees of freedom, p= 0.005"
+  },
+  {
+    "objectID": "semanas/Aula02.html#grupos-2-e-3",
+    "href": "semanas/Aula02.html#grupos-2-e-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Grupos 2 e 3",
+    "text": "Grupos 2 e 3\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = subset(dados2, grupos!=1),  rho=0)\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, \n    grupos != 1), rho = 0)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=2 15       15    20.53      1.49      7.98\ngrupos=3 13       13     7.47      4.08      7.98\n\n Chisq= 8  on 1 degrees of freedom, p= 0.005"
+  },
+  {
+    "objectID": "semanas/Aula02.html#curva-de-sobrevivência-estratificada",
+    "href": "semanas/Aula02.html#curva-de-sobrevivência-estratificada",
+    "title": "Análise de Sobrevivência",
+    "section": "Curva de Sobrevivência estratificada",
+    "text": "Curva de Sobrevivência estratificada\nNeste exemplo temos 2 tratamentos, mas queremos controlar os resultados considerando uma variável categórica (sexo).\nO evento estudado é o tempo até a recaída de leucemia."
+  },
+  {
+    "objectID": "semanas/Aula02.html#curva-de-sobrevivência-estratificada-1",
+    "href": "semanas/Aula02.html#curva-de-sobrevivência-estratificada-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Curva de Sobrevivência estratificada",
+    "text": "Curva de Sobrevivência estratificada\nO conjunto de dados tem os seguintes informação:\n\ntempo (semanas)\nstatus (0 = censura e 1 = falha)\nsexo (0 = mulher e 1 = homem)\nlogwbc = log do número de células brancas\nRx (0 = Novo tratamento e 1 = Placebo)\n\nVamos ver como isto pode ser feito na função survfit."
+  },
+  {
+    "objectID": "semanas/Aula02.html#curva-de-sobrevivência-estratificada-2",
+    "href": "semanas/Aula02.html#curva-de-sobrevivência-estratificada-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Curva de Sobrevivência estratificada",
+    "text": "Curva de Sobrevivência estratificada\n\nlibrary(readxl)\ndados_a <- read_xlsx(\"anderson.xlsx\", col_names=T)\najusteKM_S <- survfit(Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\nplot(ajusteKM_S, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=1:4) \nlegend(\"topright\",c(\"Rx=0 e Sexo=M\",\"Rx=0 e Sexo=H\", \"Rx=1 e Sexo=M\",\n                    \"Rx=1 e Sexo=H\"), lty = 1:4)"
+  },
+  {
+    "objectID": "semanas/Aula02.html#função-taxa-de-falhas-e-quantis",
+    "href": "semanas/Aula02.html#função-taxa-de-falhas-e-quantis",
+    "title": "Análise de Sobrevivência",
+    "section": "Função taxa de falhas e quantis",
+    "text": "Função taxa de falhas e quantis\nVamos obter uma aproximação da funçaõ taxa de falhas usando a função density\nPosteriormente vamos obter o quantil usando uma função do pacote survey"
+  },
+  {
+    "objectID": "semanas/Aula02.html#função-taxa-de-falhas-não-paramétrica",
+    "href": "semanas/Aula02.html#função-taxa-de-falhas-não-paramétrica",
+    "title": "Análise de Sobrevivência",
+    "section": "Função taxa de falhas não paramétrica",
+    "text": "Função taxa de falhas não paramétrica\n\ntempo<- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)\nstatus<- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0) \ndados <- data.frame(tempos=tempo, status=status)\najusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)\najusteKM_sum <- summary(ajusteKM)\npesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk\nh <- density(ajusteKM_sum$time, weights = pesos,\nkernel = \"gaussian\", n = 100, from = 0, to = 35)\nplot(h$x, h$y, type = \"l\", xlab = \"Tempo [semanas]\", ylab = \"Taxa de Falhas\")"
+  },
+  {
+    "objectID": "semanas/Aula02.html#função-taxa-de-falhas-não-paramétrica-1",
+    "href": "semanas/Aula02.html#função-taxa-de-falhas-não-paramétrica-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Função taxa de falhas não paramétrica",
+    "text": "Função taxa de falhas não paramétrica\n\ntempo2<- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2<- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ndados <- data.frame(tempos=tempo2, status=status2)\najusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)\najusteKM_sum <- summary(ajusteKM)\npesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk\nh <- density(ajusteKM_sum$time, weights = pesos,\nkernel = \"gaussian\", n = 100, from = 0, to = 25)\nplot(h$x, h$y, type = \"l\", xlab = \"Tempo [semanas]\", ylab = \"Taxa de Falhas\")"
+  },
+  {
+    "objectID": "semanas/Aula02.html#quantis-não-paramétricos",
+    "href": "semanas/Aula02.html#quantis-não-paramétricos",
+    "title": "Análise de Sobrevivência",
+    "section": "Quantis não paramétricos",
+    "text": "Quantis não paramétricos\n\nlibrary(survey)\ndados_p <- svydesign(ids = ~1, data=dados)\ndados_svykm <- svykm(Surv(tempos, status) ~ 1, dados_p, se=TRUE)\nquantile(dados_svykm, 0.5, ci=TRUE)\n\n0.5 \n  8 \nattr(,\"ci\")\n    0.025 0.975\n0.5     5    12"
+  },
+  {
+    "objectID": "semanas/Aula03.html#modelos-paramétricos",
+    "href": "semanas/Aula03.html#modelos-paramétricos",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos",
+    "text": "Modelos Paramétricos\nNesta apresentação vamos ver passo a passo como obter a função taxa de falhas e de sobrevivência para alguns modelos de probabilidade.\nAqui vamos utilizar as funções existentes no pacote stats que vem com a instalação padrão do R."
+  },
+  {
+    "objectID": "semanas/Aula03.html#modelos-paramétricos---exponencial",
+    "href": "semanas/Aula03.html#modelos-paramétricos---exponencial",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos - Exponencial",
+    "text": "Modelos Paramétricos - Exponencial\n\nexpHaz <- function(x, rate) { \n  dexp(x, rate=rate)/\n    pexp(x, rate=rate, lower.tail=F)\n}\ncurve(expHaz(x, rate=0.5), from=0, to=50,\n      ylab=\"h(t)\", xlab=\"Tempo\", \n      col=\"red\", ylim=c(0,1))\ncurve(expHaz(x, rate=0.3), from=0, to=50, \n      ylab=\"h(t)\", xlab=\"Tempo\",\n      col=\"blue\", add = T)\ncurve(expHaz(x, rate=0.1), from=0, to=50,\n      ylab=\"h(t)\", xlab=\"Tempo\", \n      col=\"black\", add=T)\nlegend(\"topright\", \n       legend = c(expression(paste(alfa, \" = \", 2)),\n                  expression(paste(alfa, \" = \", 3)),\n                  expression(paste(alfa, \" = \", 10))),\n                   lty=1, col = c(\"red\",\"blue\",\"black\"))"
+  },
+  {
+    "objectID": "semanas/Aula03.html#taxa-de-falhas---exponencial",
+    "href": "semanas/Aula03.html#taxa-de-falhas---exponencial",
+    "title": "Análise de Sobrevivência",
+    "section": "Taxa de Falhas - Exponencial",
+    "text": "Taxa de Falhas - Exponencial"
+  },
+  {
+    "objectID": "semanas/Aula03.html#modelos-paramétricos---exponencial-1",
+    "href": "semanas/Aula03.html#modelos-paramétricos---exponencial-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos - Exponencial",
+    "text": "Modelos Paramétricos - Exponencial\n\nexpSurv <- function(x, rate) { \n  pexp(x, rate=rate, lower.tail=F)\n}\ncurve(expSurv(x, rate=0.5), from=0, to=50,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"red\")\ncurve(expSurv(x, rate=0.3), from=0, to=50,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"blue\", add=T)\ncurve(expSurv(x, rate=0.1), from=0, to=50,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"black\", add=T)\nlegend(\"topright\", \n       legend = c(expression(paste(alfa, \" = \", 2)),\n                  expression(paste(alfa, \" = \", 3)),\n                  expression(paste(alfa, \" = \", 10))),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+  },
+  {
+    "objectID": "semanas/Aula03.html#curva-de-sobrevivência---exponencial",
+    "href": "semanas/Aula03.html#curva-de-sobrevivência---exponencial",
+    "title": "Análise de Sobrevivência",
+    "section": "Curva de Sobrevivência - Exponencial",
+    "text": "Curva de Sobrevivência - Exponencial"
+  },
+  {
+    "objectID": "semanas/Aula03.html#modelos-paramétricos---weibull",
+    "href": "semanas/Aula03.html#modelos-paramétricos---weibull",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos - Weibull",
+    "text": "Modelos Paramétricos - Weibull\n\nweibHaz <- function(x, shape, scale) { \n  dweibull(x, shape=shape, scale=scale)/\n  pweibull(x, shape=shape, scale=scale,\n           lower.tail=F)\n}\ncurve(weibHaz(x, shape=1.5, scale=1), \n      from=0, to=2,\n      ylab=\"h(t)\", xlab=\"Tempo\", col=\"red\")\ncurve(weibHaz(x, shape=1, scale=1), \n      from=0, to=2, \n      ylab=\"h(t)\", xlab=\"Tempo\", col=\"blue\", \n      add = T)\ncurve(weibHaz(x, shape=0.75, scale=1), \n      from=0, to=2,\n      ylab=\"h(t)\", xlab=\"Tempo\", col=\"black\", \n      add=T)\nlegend(\"topright\", \n   legend = c(expression(paste(beta, \" = \", 1.5,\" \",\n                                   alfa, \" = \", 1)),\n              expression(paste(beta, \" = \", 1,\" \",\n                                    alfa, \" = \", 1)),\n              expression(paste(beta, \" = \", 0.75,\" \",\n                                    alfa, \" = \", 1))),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+  },
+  {
+    "objectID": "semanas/Aula03.html#taxa-de-falhas---weibull",
+    "href": "semanas/Aula03.html#taxa-de-falhas---weibull",
+    "title": "Análise de Sobrevivência",
+    "section": "Taxa de Falhas - Weibull",
+    "text": "Taxa de Falhas - Weibull"
+  },
+  {
+    "objectID": "semanas/Aula03.html#modelos-paramétricos---weibull-1",
+    "href": "semanas/Aula03.html#modelos-paramétricos---weibull-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos - Weibull",
+    "text": "Modelos Paramétricos - Weibull\n\nweibSurv <- function(x, shape, scale) {\n  pweibull(x, shape=shape, scale=scale,\n           lower.tail=F)\n}\ncurve(weibSurv(x, shape=1.5, scale=1), from=0, to=2,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"red\")\ncurve(weibSurv(x, shape=1, scale=1), from=0, to=2,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"blue\", add=T)\ncurve(weibSurv(x, shape=0.75, scale=1), from=0, to=2,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"black\", add=T)\nlegend(\"topright\", \n       legend = c(expression(paste(beta, \" = \", 1.5,\" \",\n                                       alfa, \" = \", 1)),                                    expression(paste(beta, \" = \", 1,\" \",\n                                       alfa, \" = \", 1)),\n         expression(paste(beta, \" = \", 0.75,\" \",\n                                      alfa, \" = \", 1))),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+  },
+  {
+    "objectID": "semanas/Aula03.html#curva-de-sobrevivência---weibull",
+    "href": "semanas/Aula03.html#curva-de-sobrevivência---weibull",
+    "title": "Análise de Sobrevivência",
+    "section": "Curva de Sobrevivência - Weibull",
+    "text": "Curva de Sobrevivência - Weibull"
+  },
+  {
+    "objectID": "semanas/Aula03.html#modelos-paramétricos---lognormal",
+    "href": "semanas/Aula03.html#modelos-paramétricos---lognormal",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos - Lognormal",
+    "text": "Modelos Paramétricos - Lognormal\n\nlogHaz <- function(x, meanlog, sdlog) {\n  dlnorm(x, meanlog=meanlog, sdlog=sdlog)/\n  plnorm(x, meanlog=meanlog, sdlog=sdlog, \n         lower.tail=F)\n}\ncurve(logHaz(x, meanlog=0, sdlog=0.5), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"log(Tempo)\", \n      col=\"red\", ylim=c(0,3.0))\ncurve(logHaz(x, meanlog=1, sdlog=0.7), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", \n      col=\"blue\", add=T)\ncurve(logHaz(x, meanlog=1, sdlog=1.0), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", \n      col=\"black\", add=T)\nlegend(\"topright\", c(\"lnorm(0,0.5)\", \"lnorm(1,0.7)\", \n                     \"lnorm(1,1)\"), lty=1, \n       col = c(\"red\",\"blue\",\"black\"))"
+  },
+  {
+    "objectID": "semanas/Aula03.html#taxa-de-falhas---lognormal",
+    "href": "semanas/Aula03.html#taxa-de-falhas---lognormal",
+    "title": "Análise de Sobrevivência",
+    "section": "Taxa de Falhas - Lognormal",
+    "text": "Taxa de Falhas - Lognormal"
+  },
+  {
+    "objectID": "semanas/Aula03.html#modelos-paramétricos---lognormal-1",
+    "href": "semanas/Aula03.html#modelos-paramétricos---lognormal-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos - Lognormal",
+    "text": "Modelos Paramétricos - Lognormal\n\nlogSurv <- function(x, meanlog, sdlog) {\n  plnorm(x, meanlog=meanlog, sdlog=sdlog, \n         lower.tail=F)\n}\ncurve(logSurv(x, meanlog=0, sdlog=0.5), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\",\n      col=\"red\")\ncurve(logSurv(x, meanlog=1, sdlog=0.7), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"blue\", add=T)\ncurve(logSurv(x, meanlog=1, sdlog=1.0),\n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\",\n      col=\"black\", add=T)\nlegend(\"topright\", c(\"lnorm(0,0.5)\", \n                     \"lnorm(1,0.7)\", \n                     \"lnorm(1,1)\"),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+  },
+  {
+    "objectID": "semanas/Aula03.html#curva-de-sobrevivência---lognormal",
+    "href": "semanas/Aula03.html#curva-de-sobrevivência---lognormal",
+    "title": "Análise de Sobrevivência",
+    "section": "Curva de Sobrevivência - Lognormal",
+    "text": "Curva de Sobrevivência - Lognormal"
+  },
+  {
+    "objectID": "semanas/Aula03.html#modelos-paramétricos---loglogistico",
+    "href": "semanas/Aula03.html#modelos-paramétricos---loglogistico",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos - Loglogistico",
+    "text": "Modelos Paramétricos - Loglogistico\n\nllogisHaz <- function(x, alfa, beta) {\n  haz <- beta/alfa*(x/alfa)^(beta-1)/(1+(x/alfa)^beta)  \n}\ncurve(llogisHaz(x, alfa=1, beta=0.5), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"red\")\ncurve(llogisHaz(x, alfa=1., beta=1), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"blue\", add=T)\ncurve(llogisHaz(x, alfa=1., beta=3), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"black\", add=T)\nlegend(\"topright\", c(\"llogis(1, 0.5)\", \"llogis(1,1)\",\n                     \"llogis(1,3)\"),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+  },
+  {
+    "objectID": "semanas/Aula03.html#taxa-de-falhas---loglogistico",
+    "href": "semanas/Aula03.html#taxa-de-falhas---loglogistico",
+    "title": "Análise de Sobrevivência",
+    "section": "Taxa de Falhas - Loglogistico",
+    "text": "Taxa de Falhas - Loglogistico"
+  },
+  {
+    "objectID": "semanas/Aula03.html#modelos-paramétricos---loglogistico-1",
+    "href": "semanas/Aula03.html#modelos-paramétricos---loglogistico-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos - Loglogistico",
+    "text": "Modelos Paramétricos - Loglogistico\n\nllogisSurv <- function(x, alfa, beta) {\n          surv <- 1/(1+(x/alfa)^beta)  \n}\ncurve(llogisSurv(x, alfa=1, beta=0.5), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"red\", ylim=c(0,1))\ncurve(llogisSurv(x, alfa=1, beta=1), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"blue\", add=T)\ncurve(llogisSurv(x, alfa=1, beta=3), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"black\", add=T)\nlegend(\"topright\", c(\"llogis(1, 0.5)\", \n                     \"llogis(1,1)\", \n                     \"llogis(1,3)\"),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+  },
+  {
+    "objectID": "semanas/Aula03.html#curva-de-sobrevivência---loglogistico",
+    "href": "semanas/Aula03.html#curva-de-sobrevivência---loglogistico",
+    "title": "Análise de Sobrevivência",
+    "section": "Curva de Sobrevivência - Loglogistico",
+    "text": "Curva de Sobrevivência - Loglogistico"
+  },
+  {
+    "objectID": "semanas/Aula04.html#modelos-paramétricos",
+    "href": "semanas/Aula04.html#modelos-paramétricos",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos",
+    "text": "Modelos Paramétricos\nNeste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser.\nVamos ver passo a passo como ajustar os modelos exponencial, Weibull e lognormal.\nAqui vamos utilizar as funções existentes no pacote survival.\nPara ajustar um modelo paramétrico usamo a função survreg."
+  },
+  {
+    "objectID": "semanas/Aula04.html#metodo-de-kaplan-meier",
+    "href": "semanas/Aula04.html#metodo-de-kaplan-meier",
+    "title": "Análise de Sobrevivência",
+    "section": "Metodo de Kaplan-Meier",
+    "text": "Metodo de Kaplan-Meier\n\nlibrary(survival)\ntempos<-c(3,5,6,7,8,9,10,10,12,15,15,18,19,20,22,25,28,30,40,45)\ncens<-c(1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0)\ndados <- data.frame(tempos=tempos, status=cens)\nekm <- survfit(Surv(tempos,status)~1, data=dados)\nsummary(ekm)\n\nCall: survfit(formula = Surv(tempos, status) ~ 1, data = dados)\n\n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    3     20       1   0.9500  0.0487      0.85913        1.000\n    5     19       1   0.9000  0.0671      0.77767        1.000\n    6     18       1   0.8500  0.0798      0.70707        1.000\n    7     17       1   0.8000  0.0894      0.64257        0.996\n    8     16       1   0.7500  0.0968      0.58233        0.966\n    9     15       1   0.7000  0.1025      0.52541        0.933\n   10     14       1   0.6500  0.1067      0.47124        0.897\n   12     12       1   0.5958  0.1107      0.41402        0.857\n   15     11       1   0.5417  0.1131      0.35976        0.816\n   18      9       1   0.4815  0.1154      0.30096        0.770\n   19      8       1   0.4213  0.1156      0.24601        0.721\n   20      7       1   0.3611  0.1137      0.19481        0.669\n   22      6       1   0.3009  0.1095      0.14745        0.614\n   25      5       1   0.2407  0.1028      0.10422        0.556\n   28      4       1   0.1806  0.0931      0.06573        0.496\n   30      3       1   0.1204  0.0792      0.03317        0.437\n   40      2       1   0.0602  0.0581      0.00907        0.399"
+  },
+  {
+    "objectID": "semanas/Aula04.html#curva-de-sobrevivência-não-paramétrica",
+    "href": "semanas/Aula04.html#curva-de-sobrevivência-não-paramétrica",
+    "title": "Análise de Sobrevivência",
+    "section": "Curva de Sobrevivência não paramétrica",
+    "text": "Curva de Sobrevivência não paramétrica\n\nplot(ekm, xlab=\"Tempo (meses)\",ylab=\"S(t) estimada\")"
+  },
+  {
+    "objectID": "semanas/Aula04.html#taxa-de-falhas-não-paramétrica",
+    "href": "semanas/Aula04.html#taxa-de-falhas-não-paramétrica",
+    "title": "Análise de Sobrevivência",
+    "section": "Taxa de Falhas não paramétrica",
+    "text": "Taxa de Falhas não paramétrica"
+  },
+  {
+    "objectID": "semanas/Aula04.html#quantis-não-parametricos",
+    "href": "semanas/Aula04.html#quantis-não-parametricos",
+    "title": "Análise de Sobrevivência",
+    "section": "Quantis não parametricos",
+    "text": "Quantis não parametricos\n\n\nmediana KM        ICI        ICS \n        18         10         28"
+  },
+  {
+    "objectID": "semanas/Aula04.html#modelo-exponencial",
+    "href": "semanas/Aula04.html#modelo-exponencial",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Exponencial",
-    "text": "Modelo Exponencial\n\nleuc.exp.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"exponential\")\nsummary(leuc.exp.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"exponential\")\n              Value Std. Error     z      p\n(Intercept)  5.9741     0.6965  8.58 <2e-16\nsexo        -0.0859     0.3834 -0.22  0.823\nlogwbc      -0.8723     0.2212 -3.94  8e-05\nRx          -1.1156     0.4270 -2.61  0.009\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.7   Loglik(intercept only)= -116.8\n    Chisq= 32.04 on 3 degrees of freedom, p= 5.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42"
+    "text": "Modelo Exponencial\n\n\nCall:\nsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"exponential\")\n\nCoefficients:\n(Intercept) \n   3.016111 \n\nScale fixed at 1 \n\nLoglik(model)= -68.3   Loglik(intercept only)= -68.3\nn= 20 \n\n\n(Intercept) \n   20.41176"
   },
   {
-    "objectID": "semanas/Aula06.html#automatizando-ajuste",
-    "href": "semanas/Aula06.html#automatizando-ajuste",
+    "objectID": "semanas/Aula04.html#taxa-de-falhas-np-vs-exp",
+    "href": "semanas/Aula04.html#taxa-de-falhas-np-vs-exp",
     "title": "Análise de Sobrevivência",
-    "section": "Automatizando ajuste",
-    "text": "Automatizando ajuste\n\nlibrary(MASS)\nleuc.exp.sel <- stepAIC(leuc.exp.comp, direction=\"backward\", trace=FALSE)\nsummary(leuc.exp.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"exponential\")\n             Value Std. Error     z       p\n(Intercept)  5.958      0.699  8.52 < 2e-16\nlogwbc      -0.884      0.216 -4.10 4.2e-05\nRx          -1.093      0.413 -2.65  0.0082\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.8   Loglik(intercept only)= -116.8\n    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42"
+    "section": "Taxa de falhas NP vs Exp",
+    "text": "Taxa de falhas NP vs Exp"
   },
   {
-    "objectID": "semanas/Aula06.html#fazendo-previsões",
-    "href": "semanas/Aula06.html#fazendo-previsões",
+    "objectID": "semanas/Aula04.html#quantis-do-modelo-exponencial",
+    "href": "semanas/Aula04.html#quantis-do-modelo-exponencial",
     "title": "Análise de Sobrevivência",
-    "section": "Fazendo Previsões",
-    "text": "Fazendo Previsões\n\nnovosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.exp.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n4.189084 3.096010"
+    "section": "Quantis do Modelo Exponencial",
+    "text": "Quantis do Modelo Exponencial\n\n\n   media      ICI      ICS \n20.41176 12.68908 32.83455 \n\n\n[1] 14.14836\n\n\nmediana Exp         ICI         ICS \n  14.148357    8.795399   22.759175"
   },
   {
-    "objectID": "semanas/Aula06.html#tempo-mediano",
-    "href": "semanas/Aula06.html#tempo-mediano",
+    "objectID": "semanas/Aula04.html#avaliação-do-modelo",
+    "href": "semanas/Aula04.html#avaliação-do-modelo",
     "title": "Análise de Sobrevivência",
-    "section": "Tempo Mediano",
-    "text": "Tempo Mediano\n\nprev1 <-predict(leuc.exp.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n45.72161 15.32518 \n\nprev1[1]/prev1[2]\n\n       1 \n2.983431"
+    "section": "Avaliação do modelo",
+    "text": "Avaliação do modelo\n\n\n\n[1] 17 16"
   },
   {
-    "objectID": "semanas/Aula06.html#comparando-com-outro-quantil",
-    "href": "semanas/Aula06.html#comparando-com-outro-quantil",
-    "title": "Análise de Sobrevivência",
-    "section": "Comparando com outro quantil",
-    "text": "Comparando com outro quantil\n\nprev2 <-predict(leuc.exp.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n79.41687 26.61931 \n\nprev2[1]/prev2[2]\n\n       1 \n2.983431"
-  },
-  {
-    "objectID": "semanas/Aula06.html#verificando-o-modelo",
-    "href": "semanas/Aula06.html#verificando-o-modelo",
-    "title": "Análise de Sobrevivência",
-    "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\nsmoothSEcurve <- function(yy, xx) {\n# usar depois de chamr um grafico\n# Ajusta um curva lowess curve com IC de 95%\nxx.list <- min(xx) + ((0:100)/100)*(max(xx) - min(xx))\n# Then fit loess function through the points (xx, yy)\n# at the listed values\nyy.xx <- predict(loess(yy ~ xx), se=T,\nnewdata=data.frame(xx=xx.list))\nlines(yy.xx$fit ~ xx.list, lwd=2)\nlines(yy.xx$fit -\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\nlines(yy.xx$fit +\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\n}\n\n\nlibrary(car)\n\nCarregando pacotes exigidos: carData\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.exp.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 16"
-  },
-  {
-    "objectID": "semanas/Aula06.html#modelo-weibull",
-    "href": "semanas/Aula06.html#modelo-weibull",
+    "objectID": "semanas/Aula04.html#modelo-weibull",
+    "href": "semanas/Aula04.html#modelo-weibull",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Weibull",
-    "text": "Modelo Weibull\n\nleuc.wei.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"weibull\")\nsummary(leuc.wei.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"weibull\")\n             Value Std. Error     z       p\n(Intercept)  5.462      0.351 15.58 < 2e-16\nsexo        -0.156      0.179 -0.87 0.38350\nlogwbc      -0.792      0.105 -7.54 4.8e-14\nRx          -0.722      0.201 -3.59 0.00034\nLog(scale)  -0.815      0.144 -5.65 1.6e-08\n\nScale= 0.443 \n\nWeibull distribution\nLoglik(model)= -89.7   Loglik(intercept only)= -116.4\n    Chisq= 53.42 on 3 degrees of freedom, p= 1.5e-11 \nNumber of Newton-Raphson Iterations: 7 \nn= 42 \n\n\n\nleuc.wei.sel <- stepAIC(leuc.wei.comp, direction=\"backward\", trace=FALSE)\nsummary(leuc.wei.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"weibull\")\n             Value Std. Error     z       p\n(Intercept)  5.399      0.364 14.84 < 2e-16\nlogwbc      -0.807      0.108 -7.45 9.7e-14\nRx          -0.659      0.189 -3.49 0.00049\nLog(scale)  -0.793      0.142 -5.58 2.5e-08\n\nScale= 0.452 \n\nWeibull distribution\nLoglik(model)= -90.1   Loglik(intercept only)= -116.4\n    Chisq= 52.68 on 2 degrees of freedom, p= 3.6e-12 \nNumber of Newton-Raphson Iterations: 7 \nn= 42"
+    "text": "Modelo Weibull\n\n\nCall:\nsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"weibull\")\n\nCoefficients:\n(Intercept) \n   3.060529 \n\nScale= 0.647922 \n\nLoglik(model)= -66.1   Loglik(intercept only)= -66.1\nn= 20 \n\n\n(Intercept) \n   21.33885 \n\n\n[1] 1.543396"
   },
   {
-    "objectID": "semanas/Aula06.html#fazendo-previsões-1",
-    "href": "semanas/Aula06.html#fazendo-previsões-1",
+    "objectID": "semanas/Aula04.html#taxa-de-falhas-np-vs-weibull",
+    "href": "semanas/Aula04.html#taxa-de-falhas-np-vs-weibull",
     "title": "Análise de Sobrevivência",
-    "section": "Fazendo Previsões",
-    "text": "Fazendo Previsões\n\nnovosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.wei.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n3.784108 3.125137"
+    "section": "Taxa de Falhas NP vs Weibull",
+    "text": "Taxa de Falhas NP vs Weibull"
   },
   {
-    "objectID": "semanas/Aula06.html#tempo-mediano-1",
-    "href": "semanas/Aula06.html#tempo-mediano-1",
+    "objectID": "semanas/Aula04.html#quantis-do-modelo-weibull",
+    "href": "semanas/Aula04.html#quantis-do-modelo-weibull",
     "title": "Análise de Sobrevivência",
-    "section": "Tempo Mediano",
-    "text": "Tempo Mediano\n\nprev1 <-predict(leuc.wei.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n37.27311 19.28448 \n\nprev1[1]/prev1[2]\n\n       1 \n1.932804"
+    "section": "Quantis do Modelo Weibull",
+    "text": "Quantis do Modelo Weibull\n\n\n[1] 16.82823\n\n\nmediana Wei         ICI         ICS \n   16.82823    11.95670    23.68456"
   },
   {
-    "objectID": "semanas/Aula06.html#comparando-com-outro-quantil-1",
-    "href": "semanas/Aula06.html#comparando-com-outro-quantil-1",
+    "objectID": "semanas/Aula04.html#avaliação-do-modelo-1",
+    "href": "semanas/Aula04.html#avaliação-do-modelo-1",
     "title": "Análise de Sobrevivência",
-    "section": "Comparando com outro quantil",
-    "text": "Comparando com outro quantil\n\nprev2 <-predict(leuc.wei.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n47.85133 24.75747 \n\nprev2[1]/prev2[2]\n\n       1 \n1.932804"
+    "section": "Avaliação do Modelo",
+    "text": "Avaliação do Modelo\n\n\n\n[1] 17 16"
   },
   {
-    "objectID": "semanas/Aula06.html#verificando-o-modelo-1",
-    "href": "semanas/Aula06.html#verificando-o-modelo-1",
-    "title": "Análise de Sobrevivência",
-    "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.wei.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1/leuc.wei.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 16"
-  },
-  {
-    "objectID": "semanas/Aula06.html#modelo-lognormal",
-    "href": "semanas/Aula06.html#modelo-lognormal",
+    "objectID": "semanas/Aula04.html#modelo-lognormal",
+    "href": "semanas/Aula04.html#modelo-lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Lognormal",
-    "text": "Modelo Lognormal\n\nleuc.logn.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"lognormal\")\nsummary(leuc.logn.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"lognormal\")\n              Value Std. Error     z       p\n(Intercept)  4.9975     0.3924 12.74 < 2e-16\nsexo        -0.0947     0.2211 -0.43 0.66862\nlogwbc      -0.7051     0.1251 -5.64 1.7e-08\nRx          -0.8539     0.2311 -3.69 0.00022\nLog(scale)  -0.4424     0.1293 -3.42 0.00062\n\nScale= 0.642 \n\nLog Normal distribution\nLoglik(model)= -93.9   Loglik(intercept only)= -115.4\n    Chisq= 43.08 on 3 degrees of freedom, p= 2.4e-09 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\n\n\nleuc.logn.sel <- stepAIC(leuc.logn.comp, direction=\"backward\", trace=FALSE)\nsummary(leuc.logn.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"lognormal\")\n             Value Std. Error     z       p\n(Intercept)  4.982      0.394 12.65 < 2e-16\nlogwbc      -0.716      0.123 -5.80 6.6e-09\nRx          -0.848      0.232 -3.66 0.00025\nLog(scale)  -0.437      0.129 -3.39 0.00070\n\nScale= 0.646 \n\nLog Normal distribution\nLoglik(model)= -93.9   Loglik(intercept only)= -115.4\n    Chisq= 42.9 on 2 degrees of freedom, p= 4.8e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42"
+    "text": "Modelo Lognormal\n\n\nCall:\nsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"lognorm\")\n\nCoefficients:\n(Intercept) \n   2.717176 \n\nScale= 0.7648167 \n\nLoglik(model)= -65.7   Loglik(intercept only)= -65.7\nn= 20 \n\n\n(Intercept) \n   2.717176 \n\n\n[1] 0.7648167"
   },
   {
-    "objectID": "semanas/Aula06.html#fazendo-previsões-2",
-    "href": "semanas/Aula06.html#fazendo-previsões-2",
+    "objectID": "semanas/Aula04.html#taxa-de-falhas-np-vs-lognormal",
+    "href": "semanas/Aula04.html#taxa-de-falhas-np-vs-lognormal",
     "title": "Análise de Sobrevivência",
-    "section": "Fazendo Previsões",
-    "text": "Fazendo Previsões\n\nnovosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.logn.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n3.549821 2.702019"
+    "section": "Taxa de Falhas NP vs Lognormal",
+    "text": "Taxa de Falhas NP vs Lognormal"
   },
   {
-    "objectID": "semanas/Aula06.html#tempo-mediano-2",
-    "href": "semanas/Aula06.html#tempo-mediano-2",
+    "objectID": "semanas/Aula04.html#quantis-do-modelo-lognormal",
+    "href": "semanas/Aula04.html#quantis-do-modelo-lognormal",
     "title": "Análise de Sobrevivência",
-    "section": "Tempo Mediano",
-    "text": "Tempo Mediano\n\nprev1 <-predict(leuc.logn.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n34.80708 14.90980 \n\nprev1[1]/prev1[2]\n\n      1 \n2.33451"
+    "section": "Quantis do Modelo Lognormal",
+    "text": "Quantis do Modelo Lognormal\n\n\n[1] 15.13751\n\n\nmediana Logn          ICI          ICS \n    15.13751     10.71601     21.38334"
   },
   {
-    "objectID": "semanas/Aula06.html#comparando-com-outro-quantil-2",
-    "href": "semanas/Aula06.html#comparando-com-outro-quantil-2",
+    "objectID": "semanas/Aula04.html#avaliação-do-modelo-2",
+    "href": "semanas/Aula04.html#avaliação-do-modelo-2",
     "title": "Análise de Sobrevivência",
-    "section": "Comparando com outro quantil",
-    "text": "Comparando com outro quantil\n\nprev2 <-predict(leuc.logn.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n48.83742 20.91977 \n\nprev2[1]/prev2[2]\n\n      1 \n2.33451"
+    "section": "Avaliação do Modelo",
+    "text": "Avaliação do Modelo\n\n\n\n[1] 17 16"
   },
   {
-    "objectID": "semanas/Aula06.html#verificando-o-modelo-2",
-    "href": "semanas/Aula06.html#verificando-o-modelo-2",
+    "objectID": "semanas/Aula04.html#modleo-loglogístico",
+    "href": "semanas/Aula04.html#modleo-loglogístico",
     "title": "Análise de Sobrevivência",
-    "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.logn.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"norm\",\nsd = leuc.logn.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 12"
+    "section": "Modleo Loglogístico",
+    "text": "Modleo Loglogístico\n\n\nCall:\nsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"loglogistic\")\n\nCoefficients:\n(Intercept) \n   2.737415 \n\nScale= 0.4496653 \n\nLoglik(model)= -66   Loglik(intercept only)= -66\nn= 20 \n\n\n(Intercept) \n   2.737415 \n\n\n[1] 0.4496653"
   },
   {
-    "objectID": "semanas/Aula06.html#modelo-loglogistico",
-    "href": "semanas/Aula06.html#modelo-loglogistico",
+    "objectID": "semanas/Aula04.html#taxa-de-falhas-np-vs-lologística",
+    "href": "semanas/Aula04.html#taxa-de-falhas-np-vs-lologística",
     "title": "Análise de Sobrevivência",
-    "section": "Modelo Loglogistico",
-    "text": "Modelo Loglogistico\n\nleuc.logl.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"loglogistic\")\nsummary(leuc.logl.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"loglogistic\")\n              Value Std. Error     z       p\n(Intercept)  5.0190     0.3518 14.27 < 2e-16\nsexo        -0.0408     0.2027 -0.20 0.84065\nlogwbc      -0.7278     0.1098 -6.63 3.4e-11\nRx          -0.7494     0.2133 -3.51 0.00044\nLog(scale)  -1.0894     0.1509 -7.22 5.1e-13\n\nScale= 0.336 \n\nLog logistic distribution\nLoglik(model)= -92.3   Loglik(intercept only)= -115.4\n    Chisq= 46.08 on 3 degrees of freedom, p= 5.5e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\n\n\nleuc.logl.sel <- stepAIC(leuc.logl.comp, direction=\"backward\", trace=FALSE)\nsummary(leuc.logl.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"loglogistic\")\n             Value Std. Error     z       p\n(Intercept)  5.008      0.348 14.40 < 2e-16\nlogwbc      -0.733      0.108 -6.81 9.8e-12\nRx          -0.743      0.210 -3.54   4e-04\nLog(scale)  -1.089      0.151 -7.22 5.3e-13\n\nScale= 0.337 \n\nLog logistic distribution\nLoglik(model)= -92.3   Loglik(intercept only)= -115.4\n    Chisq= 46.04 on 2 degrees of freedom, p= 1e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42"
+    "section": "Taxa de Falhas NP vs Lologística",
+    "text": "Taxa de Falhas NP vs Lologística"
   },
   {
-    "objectID": "semanas/Aula06.html#fazendo-previsões-3",
-    "href": "semanas/Aula06.html#fazendo-previsões-3",
+    "objectID": "semanas/Aula04.html#quantis-do-modelo-loglogístico",
+    "href": "semanas/Aula04.html#quantis-do-modelo-loglogístico",
     "title": "Análise de Sobrevivência",
-    "section": "Fazendo Previsões",
-    "text": "Fazendo Previsões\n\nnovosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.logl.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n3.542894 2.800346"
+    "section": "Quantis do Modelo LogLogístico",
+    "text": "Quantis do Modelo LogLogístico\n\n\n[1] 15.447\n\n\nmediana LogL          ICI          ICS \n    15.44700     10.85399     21.98361"
   },
   {
-    "objectID": "semanas/Aula06.html#tempo-mediano-3",
-    "href": "semanas/Aula06.html#tempo-mediano-3",
+    "objectID": "semanas/Aula04.html#avaliação-do-modelo-3",
+    "href": "semanas/Aula04.html#avaliação-do-modelo-3",
     "title": "Análise de Sobrevivência",
-    "section": "Tempo Mediano",
-    "text": "Tempo Mediano\n\nprev1 <-predict(leuc.logl.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n34.56680 16.45034 \n\nprev1[1]/prev1[2]\n\n       1 \n2.101282"
+    "section": "Avaliação do Modelo",
+    "text": "Avaliação do Modelo\n\n\n\n[1] 17 16"
   },
   {
-    "objectID": "semanas/Aula06.html#comparando-com-outro-quantil-3",
-    "href": "semanas/Aula06.html#comparando-com-outro-quantil-3",
+    "objectID": "semanas/Aula04.html#curvas-de-sobrevivência",
+    "href": "semanas/Aula04.html#curvas-de-sobrevivência",
     "title": "Análise de Sobrevivência",
-    "section": "Comparando com outro quantil",
-    "text": "Comparando com outro quantil\n\nprev2 <-predict(leuc.logl.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n45.97221 21.87818 \n\nprev2[1]/prev2[2]\n\n       1 \n2.101282"
+    "section": "Curvas de Sobrevivência",
+    "text": "Curvas de Sobrevivência\n\n\n      tempo         st       ste        stw       stln      stll\n [1,]     3 0.95000000 0.8633164 0.95274148 0.98283934 0.9745310\n [2,]     5 0.90000000 0.7827384 0.89897484 0.92624322 0.9247343\n [3,]     6 0.85000000 0.7453152 0.86839357 0.88685752 0.8911964\n [4,]     7 0.80000000 0.7096812 0.83609525 0.84337638 0.8532358\n [5,]     8 0.75000000 0.6757509 0.80253272 0.79781416 0.8120295\n [6,]     9 0.70000000 0.6434428 0.76809812 0.75169629 0.7687589\n [7,]    10 0.65000000 0.6126794 0.73313414 0.70611769 0.7245227\n [8,]    12 0.59583333 0.5554947 0.66278292 0.61931883 0.6368104\n [9,]    15 0.54166667 0.4795676 0.55966698 0.50475984 0.5163200\n[10,]    18 0.48148148 0.4140186 0.46346069 0.41042396 0.4157713\n[11,]    19 0.42129630 0.3942241 0.43345774 0.38317692 0.3868919\n[12,]    20 0.36111111 0.3753760 0.40461041 0.35784922 0.3602069\n[13,]    22 0.30092593 0.3403401 0.35056108 0.31248031 0.3129370\n[14,]    25 0.24074074 0.2938212 0.27891623 0.25592025 0.2552681\n[15,]    28 0.18055556 0.2536607 0.21851514 0.21065456 0.2103630\n[16,]    30 0.12037037 0.2299851 0.18419003 0.18556452 0.1860066\n[17,]    40 0.06018519 0.1409071 0.07154720 0.10195229 0.1075572\n[18,]    45 0.06018519 0.1102934 0.04229094 0.07714984 0.0848755"
   },
   {
-    "objectID": "semanas/Aula06.html#verificando-o-modelo-3",
-    "href": "semanas/Aula06.html#verificando-o-modelo-3",
+    "objectID": "semanas/Aula04.html#quantis",
+    "href": "semanas/Aula04.html#quantis",
     "title": "Análise de Sobrevivência",
-    "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.logl.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"logis\",\nscale = leuc.logl.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 12"
+    "section": "Quantis",
+    "text": "Quantis\n\n\nmediana KM        ICI        ICS \n        18         10         28 \n\n\nmediana Exp         ICI         ICS \n  14.148357    8.795399   22.759175 \n\n\nmediana Wei         ICI         ICS \n   16.82823    11.95670    23.68456 \n\n\nmediana Logn          ICI          ICS \n    15.13751     10.71601     21.38334 \n\n\nmediana LogL          ICI          ICS \n    15.44700     10.85399     21.98361"
   },
   {
-    "objectID": "semanas/Aula06.html#comparação-dos-modelos",
-    "href": "semanas/Aula06.html#comparação-dos-modelos",
+    "objectID": "semanas/Aula04.html#comparação-np-vs-paramétrico",
+    "href": "semanas/Aula04.html#comparação-np-vs-paramétrico",
     "title": "Análise de Sobrevivência",
-    "section": "Comparação dos modelos",
-    "text": "Comparação dos modelos\n\ntab.exp <- summary(leuc.exp.sel)\ntab.exp\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"exponential\")\n             Value Std. Error     z       p\n(Intercept)  5.958      0.699  8.52 < 2e-16\nlogwbc      -0.884      0.216 -4.10 4.2e-05\nRx          -1.093      0.413 -2.65  0.0082\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.8   Loglik(intercept only)= -116.8\n    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42 \n\ntab.wei <- summary(leuc.wei.sel)\ntab.wei\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"weibull\")\n             Value Std. Error     z       p\n(Intercept)  5.399      0.364 14.84 < 2e-16\nlogwbc      -0.807      0.108 -7.45 9.7e-14\nRx          -0.659      0.189 -3.49 0.00049\nLog(scale)  -0.793      0.142 -5.58 2.5e-08\n\nScale= 0.452 \n\nWeibull distribution\nLoglik(model)= -90.1   Loglik(intercept only)= -116.4\n    Chisq= 52.68 on 2 degrees of freedom, p= 3.6e-12 \nNumber of Newton-Raphson Iterations: 7 \nn= 42 \n\nTRV <- 2*(tab.wei$loglik[1] - tab.exp$loglik[1])\npchisq(TRV, 1, lower.tail = F)\n\n[1] 0.3953251\n\ntab.ln <- summary(leuc.logn.sel)\ntab.ln\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"lognormal\")\n             Value Std. Error     z       p\n(Intercept)  4.982      0.394 12.65 < 2e-16\nlogwbc      -0.716      0.123 -5.80 6.6e-09\nRx          -0.848      0.232 -3.66 0.00025\nLog(scale)  -0.437      0.129 -3.39 0.00070\n\nScale= 0.646 \n\nLog Normal distribution\nLoglik(model)= -93.9   Loglik(intercept only)= -115.4\n    Chisq= 42.9 on 2 degrees of freedom, p= 4.8e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\ntab.ll <- summary(leuc.logl.sel)\ntab.ll\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"loglogistic\")\n             Value Std. Error     z       p\n(Intercept)  5.008      0.348 14.40 < 2e-16\nlogwbc      -0.733      0.108 -6.81 9.8e-12\nRx          -0.743      0.210 -3.54   4e-04\nLog(scale)  -1.089      0.151 -7.22 5.3e-13\n\nScale= 0.337 \n\nLog logistic distribution\nLoglik(model)= -92.3   Loglik(intercept only)= -115.4\n    Chisq= 46.04 on 2 degrees of freedom, p= 1e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\naic.exp <- -2*tab.exp$loglik[1] + 2*3\naic.exp\n\n[1] 239.5333\n\naic.wei <- -2*tab.wei$loglik[1] + 2*4\naic.wei\n\n[1] 240.8108\n\naic.ln <- -2*tab.ln$loglik[1] + 2*4\naic.ln\n\n[1] 238.786\n\naic.ll <- -2*tab.ll$loglik[1] + 2*4\naic.ll\n\n[1] 238.7022\n\naic <- c(aic.exp, aic.wei, aic.ln, aic.ll)\ndelta.aic <- aic - min(aic)\ndelta.aic\n\n[1] 0.83108732 2.10858745 0.08373248 0.00000000\n\npeso.aic <- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\nsum(peso.aic)\n\n[1] 1\n\nmodelos <- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      p_Akaike = peso.aic)\ngt::gt(modelos)\n\n\n\n\n\n  \n  \n    \n      modelos\n      p_Akaike\n    \n  \n  \n    Exponencial\n0.2224093\n    Weibull\n0.1174214\n    Lognormal\n0.3231759\n    Loglogistico\n0.3369933"
+    "section": "Comparação NP vs Paramétrico",
+    "text": "Comparação NP vs Paramétrico"
+  },
+  {
+    "objectID": "semanas/Aula04.html#comparação-np-vs-paramétrico-1",
+    "href": "semanas/Aula04.html#comparação-np-vs-paramétrico-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparação NP vs Paramétrico",
+    "text": "Comparação NP vs Paramétrico"
+  },
+  {
+    "objectID": "semanas/Aula04.html#comparação-np-vs-paramétrico-2",
+    "href": "semanas/Aula04.html#comparação-np-vs-paramétrico-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparação NP vs Paramétrico",
+    "text": "Comparação NP vs Paramétrico"
+  },
+  {
+    "objectID": "semanas/Aula04.html#comparação-np-vs-paramétrico-3",
+    "href": "semanas/Aula04.html#comparação-np-vs-paramétrico-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparação NP vs Paramétrico",
+    "text": "Comparação NP vs Paramétrico"
+  },
+  {
+    "objectID": "semanas/Aula05.html#modelos-paramétricos",
+    "href": "semanas/Aula05.html#modelos-paramétricos",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos",
+    "text": "Modelos Paramétricos\nNeste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser.\nNesta apresentação vamos verificar graficamente através de gráficos Q-Q se os modelos exponencial, Weibull, lognormal e log-logístico parecem ser adequados.\nAqui vamos utilizar as funções existentes no pacote survival.\nPara ajustar um modelo paramétrico usamos a função survreg."
+  },
+  {
+    "objectID": "semanas/Aula05.html#metodo-kaplan-meier",
+    "href": "semanas/Aula05.html#metodo-kaplan-meier",
+    "title": "Análise de Sobrevivência",
+    "section": "Metodo Kaplan-Meier",
+    "text": "Metodo Kaplan-Meier\n\n\nCall: survfit(formula = Surv(tempos, status) ~ 1, data = dados)\n\n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    3     20       1   0.9500  0.0487      0.85913        1.000\n    5     19       1   0.9000  0.0671      0.77767        1.000\n    6     18       1   0.8500  0.0798      0.70707        1.000\n    7     17       1   0.8000  0.0894      0.64257        0.996\n    8     16       1   0.7500  0.0968      0.58233        0.966\n    9     15       1   0.7000  0.1025      0.52541        0.933\n   10     14       1   0.6500  0.1067      0.47124        0.897\n   12     12       1   0.5958  0.1107      0.41402        0.857\n   15     11       1   0.5417  0.1131      0.35976        0.816\n   18      9       1   0.4815  0.1154      0.30096        0.770\n   19      8       1   0.4213  0.1156      0.24601        0.721\n   20      7       1   0.3611  0.1137      0.19481        0.669\n   22      6       1   0.3009  0.1095      0.14745        0.614\n   25      5       1   0.2407  0.1028      0.10422        0.556\n   28      4       1   0.1806  0.0931      0.06573        0.496\n   30      3       1   0.1204  0.0792      0.03317        0.437\n   40      2       1   0.0602  0.0581      0.00907        0.399"
+  },
+  {
+    "objectID": "semanas/Aula05.html#curva-de-sobrevivência-não-paramétrica",
+    "href": "semanas/Aula05.html#curva-de-sobrevivência-não-paramétrica",
+    "title": "Análise de Sobrevivência",
+    "section": "Curva de Sobrevivência Não paramétrica",
+    "text": "Curva de Sobrevivência Não paramétrica"
+  },
+  {
+    "objectID": "semanas/Aula05.html#modelos-paramétricos-1",
+    "href": "semanas/Aula05.html#modelos-paramétricos-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos",
+    "text": "Modelos Paramétricos\n\n\n\n`"
+  },
+  {
+    "objectID": "semanas/Aula05.html#avaliação-do-modelo-weibull",
+    "href": "semanas/Aula05.html#avaliação-do-modelo-weibull",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliação do Modelo Weibull",
+    "text": "Avaliação do Modelo Weibull\n\n\n\n                     2.5 %    97.5 %\n(Intercept)      -4.763998 -4.318050\nlog(tab.np$time)  1.442427  1.609615"
+  },
+  {
+    "objectID": "semanas/Aula05.html#avaliação-do-modelo-lognormal",
+    "href": "semanas/Aula05.html#avaliação-do-modelo-lognormal",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliação do Modelo Lognormal",
+    "text": "Avaliação do Modelo Lognormal"
+  },
+  {
+    "objectID": "semanas/Aula05.html#avaliação-do-modelo-loglogístico",
+    "href": "semanas/Aula05.html#avaliação-do-modelo-loglogístico",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliação do Modelo LogLogístico",
+    "text": "Avaliação do Modelo LogLogístico"
+  },
+  {
+    "objectID": "semanas/Aula05.html#teste-de-razão-de-verossimilhança",
+    "href": "semanas/Aula05.html#teste-de-razão-de-verossimilhança",
+    "title": "Análise de Sobrevivência",
+    "section": "Teste de Razão de Verossimilhança",
+    "text": "Teste de Razão de Verossimilhança\nNo nível de significância de 𝛼=0,05 eu rejeito a hipótese de que o parametro de forma seja igual a 1.\n\n\n\nCall:\nsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"exponential\")\n            Value Std. Error    z      p\n(Intercept) 3.016      0.243 12.4 <2e-16\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -68.3   Loglik(intercept only)= -68.3\nNumber of Newton-Raphson Iterations: 4 \nn= 20 \n\n\n\nCall:\nsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"weibull\")\n             Value Std. Error    z      p\n(Intercept)  3.061      0.160 19.1 <2e-16\nLog(scale)  -0.434      0.189 -2.3  0.022\n\nScale= 0.648 \n\nWeibull distribution\nLoglik(model)= -66.1   Loglik(intercept only)= -66.1\nNumber of Newton-Raphson Iterations: 6 \nn= 20 \n\n\n[1] 0.03853913"
+  },
+  {
+    "objectID": "semanas/Aula05.html#comparando-modelos-através-do-aic",
+    "href": "semanas/Aula05.html#comparando-modelos-através-do-aic",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando modelos através do AIC",
+    "text": "Comparando modelos através do AIC\n\ntab.exp <- summary(ajustExp)\ntab.wei <- summary(ajustWei)\ntab.ln <- summary(ajustLog)\ntab.ll <- summary(ajustLogl)\naic.exp <- -2*tab.exp$loglik[1] + 2*1\naic.exp\n\n[1] 138.5478\n\naic.wei <- -2*tab.wei$loglik[1] + 2*2\naic.wei\n\n[1] 136.2667\n\naic.ln <- -2*tab.ln$loglik[1] + 2*2\naic.ln\n\n[1] 135.4798\n\naic.ll <- -2*tab.ll$loglik[1] + 2*2\naic.ll\n\n[1] 136.0611\n\naic <- c(aic.exp, aic.wei, aic.ln, aic.ll)\ndelta.aic <- aic - min(aic)\ndelta.aic\n\n[1] 3.0679853 0.7869174 0.0000000 0.5812562\n\npeso.aic <- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\nsum(peso.aic)\n\n[1] 1"
+  },
+  {
+    "objectID": "semanas/Aula05.html#comparando-modleos-através-do-peso-de-akaike",
+    "href": "semanas/Aula05.html#comparando-modleos-através-do-peso-de-akaike",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando modleos através do Peso de Akaike",
+    "text": "Comparando modleos através do Peso de Akaike\n\n\n\n\n\n\n  \n  \n    \n      modelos\n      p_Akaike\n    \n  \n  \n    Exponencial\n0.08175044\n    Weibull\n0.25575120\n    Lognormal\n0.37904837\n    Loglogistico\n0.28344999"
+  },
+  {
+    "objectID": "semanas/Aula06.html#modelos-paramétricos",
+    "href": "semanas/Aula06.html#modelos-paramétricos",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos",
+    "text": "Modelos Paramétricos\nNeste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser. Aqui vamos utilizar as funções existentes no pacote survival e flexsurv.\nPara ajustar um modelo paramétrico usamos a função survreg."
+  },
+  {
+    "objectID": "semanas/Aula06.html#metodo-de-kaplan-meier",
+    "href": "semanas/Aula06.html#metodo-de-kaplan-meier",
+    "title": "Análise de Sobrevivência",
+    "section": "Metodo de Kaplan-Meier",
+    "text": "Metodo de Kaplan-Meier\n\nlibrary(survival)\ntempos<-c(3,5,6,7,8,9,10,10,12,15,15,18,19,20,22,25,28,30,40,45)\ncens<-c(1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0)\ndados <- data.frame(tempos=tempos, status=cens)\nekm <- survfit(Surv(tempos,status)~1, data=dados)\nst <- ekm$surv\ntempost <- ekm$time"
+  },
+  {
+    "objectID": "semanas/Aula06.html#biblioteca-flexsurv---exponencial",
+    "href": "semanas/Aula06.html#biblioteca-flexsurv---exponencial",
+    "title": "Análise de Sobrevivência",
+    "section": "Biblioteca Flexsurv - Exponencial",
+    "text": "Biblioteca Flexsurv - Exponencial\n\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"exponential\")\n\nEstimates: \n      est     L95%    U95%    se    \nrate  0.0490  0.0305  0.0788  0.0119\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -68.27389, df = 1\nAIC = 138.5478"
+  },
+  {
+    "objectID": "semanas/Aula06.html#biblioteca-flexsurv---weibull",
+    "href": "semanas/Aula06.html#biblioteca-flexsurv---weibull",
+    "title": "Análise de Sobrevivência",
+    "section": "Biblioteca Flexsurv - Weibull",
+    "text": "Biblioteca Flexsurv - Weibull\n\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"weibull\")\n\nEstimates: \n       est     L95%    U95%    se    \nshape   1.543   1.066   2.235   0.291\nscale  21.339  15.591  29.206   3.417\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -66.13336, df = 2\nAIC = 136.2667"
+  },
+  {
+    "objectID": "semanas/Aula06.html#biblioteca-flexsurv---lognormal",
+    "href": "semanas/Aula06.html#biblioteca-flexsurv---lognormal",
+    "title": "Análise de Sobrevivência",
+    "section": "Biblioteca Flexsurv - Lognormal",
+    "text": "Biblioteca Flexsurv - Lognormal\n\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"lognormal\")\n\nEstimates: \n         est    L95%   U95%   se   \nmeanlog  2.717  2.372  3.063  0.176\nsdlog    0.765  0.544  1.075  0.133\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -65.7399, df = 2\nAIC = 135.4798"
+  },
+  {
+    "objectID": "semanas/Aula06.html#biblioteca-flexsurv---loglogística",
+    "href": "semanas/Aula06.html#biblioteca-flexsurv---loglogística",
+    "title": "Análise de Sobrevivência",
+    "section": "Biblioteca Flexsurv - LogLogística",
+    "text": "Biblioteca Flexsurv - LogLogística\n\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"llogis\")\n\nEstimates: \n       est    L95%   U95%   se   \nshape   2.22   1.51   3.28   0.44\nscale  15.45  10.85  21.98   2.78\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -66.03053, df = 2\nAIC = 136.0611"
+  },
+  {
+    "objectID": "semanas/Aula06.html#biblioteca-flexsurv---gama-generalizada",
+    "href": "semanas/Aula06.html#biblioteca-flexsurv---gama-generalizada",
+    "title": "Análise de Sobrevivência",
+    "section": "Biblioteca Flexsurv - Gama Generalizada",
+    "text": "Biblioteca Flexsurv - Gama Generalizada\n\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"gengamma\")\n\nEstimates: \n       est     L95%    U95%    se    \nmu      2.805   2.168   3.442   0.325\nsigma   0.743   0.498   1.110   0.152\nQ       0.247  -1.291   1.786   0.785\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -65.69074, df = 3\nAIC = 137.3815"
+  },
+  {
+    "objectID": "semanas/Aula06.html#teste-da-razão-de-verossimilhança",
+    "href": "semanas/Aula06.html#teste-da-razão-de-verossimilhança",
+    "title": "Análise de Sobrevivência",
+    "section": "Teste da Razão de Verossimilhança",
+    "text": "Teste da Razão de Verossimilhança\n\najuste1$loglik # exponencial\n\n[1] -68.27389\n\najuste2$loglik # Weibull\n\n[1] -66.13336\n\najuste3$loglik # Lognormal\n\n[1] -65.7399\n\najuste4$loglik # LogLogistica\n\n[1] -66.03053\n\najuste5$loglik # Gama Generalizada\n\n[1] -65.69074\n\n# Exponencial q=σ=1\nTRVe <- 2*(ajuste5$loglik - ajuste1$loglik)\npchisq(TRVe,2, lower.tail = F)\n\n[1] 0.07553559\n\n# Weibull q = 1\nTRVw <- 2*(ajuste5$loglik - ajuste2$loglik)\npchisq(TRVw,1, lower.tail = F)\n\n[1] 0.3467719\n\n# Lognormal q = 0\nTRVlog <- 2*(ajuste5$loglik - ajuste3$loglik)\npchisq(TRVlog,1, lower.tail = F)\n\n[1] 0.753858"
+  },
+  {
+    "objectID": "semanas/Aula06.html#comparando-através-do-aic",
+    "href": "semanas/Aula06.html#comparando-através-do-aic",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando através do AIC",
+    "text": "Comparando através do AIC\n\naic.exp <- -2*ajuste1$loglik + 2*1\naic.exp\n\n[1] 138.5478\n\naic.wei <- -2*ajuste2$loglik + 2*2\naic.wei\n\n[1] 136.2667\n\naic.ln <- -2*ajuste3$loglik + 2*2\naic.ln\n\n[1] 135.4798\n\naic.ll <- -2*ajuste4$loglik + 2*2\naic.ll\n\n[1] 136.0611\n\naic.gg <- -2*ajuste5$loglik + 2*3\naic.gg\n\n[1] 137.3815\n\naic <- c(aic.exp, aic.wei, aic.ln, aic.ll, aic.gg)\ndelta.aic <- aic - min(aic)\ndelta.aic\n\n[1] 3.0679853 0.7869174 0.0000000 0.5812562 1.9016824\n\npeso.aic <- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\nsum(peso.aic)\n\n[1] 1"
+  },
+  {
+    "objectID": "semanas/Aula06.html#peso-de-akaike",
+    "href": "semanas/Aula06.html#peso-de-akaike",
+    "title": "Análise de Sobrevivência",
+    "section": "Peso de Akaike",
+    "text": "Peso de Akaike\n\n\n\n\n\n\n  \n  \n    \n      modelos\n      p_Akaike\n    \n  \n  \n    Exponencial\n0.0713062\n    Weibull\n0.2230770\n    Lognormal\n0.3306221\n    Loglogistico\n0.2472371\n    GG\n0.1277576"
+  },
+  {
+    "objectID": "semanas/Aula06.html#curvas-de-sobrevivência",
+    "href": "semanas/Aula06.html#curvas-de-sobrevivência",
+    "title": "Análise de Sobrevivência",
+    "section": "Curvas de Sobrevivência",
+    "text": "Curvas de Sobrevivência"
   },
   {
     "objectID": "semanas/Aula07.html",
     "href": "semanas/Aula07.html",
     "title": "Análise de Sobrevivência",
     "section": "",
-    "text": "Nesta etapa vamos começar a trabalhar com o modelo semi-paramétrico de Cox\nO conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).\nDuas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar)."
+    "text": "Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.\nOs modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).\nO conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).\nDuas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar)."
   },
   {
-    "objectID": "semanas/Aula07.html#carregando-os-dados",
-    "href": "semanas/Aula07.html#carregando-os-dados",
+    "objectID": "semanas/Aula07.html#modelo-exponencial",
+    "href": "semanas/Aula07.html#modelo-exponencial",
     "title": "Análise de Sobrevivência",
-    "section": "Carregando os dados",
-    "text": "Carregando os dados\n\nlibrary(survival)\nlibrary(readxl)\ndados <- read_xlsx(\"anderson.xlsx\", col_names = TRUE )\nsummary(dados)\n\n     tempo           status            sexo            logwbc     \n Min.   : 1.00   Min.   :0.0000   Min.   :0.0000   Min.   :1.450  \n 1st Qu.: 6.00   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:2.303  \n Median :10.50   Median :1.0000   Median :0.0000   Median :2.800  \n Mean   :12.88   Mean   :0.7143   Mean   :0.4762   Mean   :2.930  \n 3rd Qu.:18.50   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:3.490  \n Max.   :35.00   Max.   :1.0000   Max.   :1.0000   Max.   :5.000  \n       Rx     \n Min.   :0.0  \n 1st Qu.:0.0  \n Median :0.5  \n Mean   :0.5  \n 3rd Qu.:1.0  \n Max.   :1.0"
-  },
-  {
-    "objectID": "semanas/Aula07.html#ajuste-não-paramétrico",
-    "href": "semanas/Aula07.html#ajuste-não-paramétrico",
-    "title": "Análise de Sobrevivência",
-    "section": "Ajuste Não Paramétrico",
-    "text": "Ajuste Não Paramétrico\n\nekm <- survfit(Surv(tempo,status)~Rx, data=dados)\ntempo <- ekm$time\nst <- ekm$surv\nsummary(ekm)\n\nCall: survfit(formula = Surv(tempo, status) ~ Rx, data = dados)\n\n                Rx=0 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807\n\n                Rx=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA\n\nplot(ekm, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=2:3)\nlegend(\"topright\",c(\"Rx=0\",\"Rx=1\"), lty = 2:3)"
-  },
-  {
-    "objectID": "semanas/Aula07.html#modelo-semi-paramétrico-de-cox",
-    "href": "semanas/Aula07.html#modelo-semi-paramétrico-de-cox",
-    "title": "Análise de Sobrevivência",
-    "section": "Modelo Semi-paramétrico de Cox",
-    "text": "Modelo Semi-paramétrico de Cox\n\nleuc.cox1 <- coxph(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados)\nsummary(leuc.cox1)\n\nCall:\ncoxph(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados)\n\n  n= 42, number of events= 30 \n\n         coef exp(coef) se(coef)     z Pr(>|z|)    \nsexo   0.3147    1.3698   0.4545 0.692  0.48872    \nlogwbc 1.6819    5.3760   0.3366 4.997 5.82e-07 ***\nRx     1.5036    4.4978   0.4615 3.258  0.00112 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n       exp(coef) exp(-coef) lower .95 upper .95\nsexo       1.370     0.7300    0.5621     3.338\nlogwbc     5.376     0.1860    2.7794    10.398\nRx         4.498     0.2223    1.8204    11.113\n\nConcordance= 0.851  (se = 0.041 )\nLikelihood ratio test= 47.19  on 3 df,   p=3e-10\nWald test            = 33.54  on 3 df,   p=2e-07\nScore (logrank) test = 48.01  on 3 df,   p=2e-10"
+    "section": "Modelo Exponencial",
+    "text": "Modelo Exponencial\n\nleuc.exp.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"exponential\")\nsummary(leuc.exp.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"exponential\")\n              Value Std. Error     z      p\n(Intercept)  5.9741     0.6965  8.58 <2e-16\nsexo        -0.0859     0.3834 -0.22  0.823\nlogwbc      -0.8723     0.2212 -3.94  8e-05\nRx          -1.1156     0.4270 -2.61  0.009\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.7   Loglik(intercept only)= -116.8\n    Chisq= 32.04 on 3 degrees of freedom, p= 5.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42"
   },
   {
     "objectID": "semanas/Aula07.html#automatizando-ajuste",
     "href": "semanas/Aula07.html#automatizando-ajuste",
     "title": "Análise de Sobrevivência",
     "section": "Automatizando ajuste",
-    "text": "Automatizando ajuste\n\nlibrary(MASS)\nleuc.cox2 <- stepAIC(leuc.cox1, direction=\"backward\", trace=FALSE)\nsummary(leuc.cox2)\n\nCall:\ncoxph(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados)\n\n  n= 42, number of events= 30 \n\n         coef exp(coef) se(coef)     z Pr(>|z|)    \nlogwbc 1.6909    5.4243   0.3359 5.034  4.8e-07 ***\nRx     1.3861    3.9991   0.4248 3.263   0.0011 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n       exp(coef) exp(-coef) lower .95 upper .95\nlogwbc     5.424     0.1844     2.808    10.478\nRx         3.999     0.2501     1.739     9.195\n\nConcordance= 0.852  (se = 0.04 )\nLikelihood ratio test= 46.71  on 2 df,   p=7e-11\nWald test            = 33.6  on 2 df,   p=5e-08\nScore (logrank) test = 46.07  on 2 df,   p=1e-10"
+    "text": "Automatizando ajuste\n\nlibrary(MASS)\nleuc.exp.sel <- stepAIC(leuc.exp.comp, direction=\"backward\", trace=FALSE)\nsummary(leuc.exp.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"exponential\")\n             Value Std. Error     z       p\n(Intercept)  5.958      0.699  8.52 < 2e-16\nlogwbc      -0.884      0.216 -4.10 4.2e-05\nRx          -1.093      0.413 -2.65  0.0082\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.8   Loglik(intercept only)= -116.8\n    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42"
   },
   {
-    "objectID": "semanas/Aula07.html#informações-do-ajuste",
-    "href": "semanas/Aula07.html#informações-do-ajuste",
+    "objectID": "semanas/Aula07.html#fazendo-previsões",
+    "href": "semanas/Aula07.html#fazendo-previsões",
     "title": "Análise de Sobrevivência",
-    "section": "Informações do Ajuste",
-    "text": "Informações do Ajuste\n\ncoef(leuc.cox2)\n\n  logwbc       Rx \n1.690890 1.386076 \n\nlogLik(leuc.cox2)\n\n'log Lik.' -69.8281 (df=2)"
+    "section": "Fazendo Previsões",
+    "text": "Fazendo Previsões\n\nnovosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.exp.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n4.189084 3.096010"
   },
   {
-    "objectID": "semanas/Aula07.html#avaliando-o-ajuste-1",
-    "href": "semanas/Aula07.html#avaliando-o-ajuste-1",
+    "objectID": "semanas/Aula07.html#tempo-mediano",
+    "href": "semanas/Aula07.html#tempo-mediano",
     "title": "Análise de Sobrevivência",
-    "section": "Avaliando o ajuste 1",
-    "text": "Avaliando o ajuste 1\n\nlibrary(rms)\nsurvplot(npsurv(Surv(tempo, status) ~ Rx, data = dados),\nloglog = TRUE, logt=TRUE, xlab = \"Tempo\", ylab = \"log(-log(S))\")"
+    "section": "Tempo Mediano",
+    "text": "Tempo Mediano\n\nprev1 <-predict(leuc.exp.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n45.72161 15.32518 \n\nprev1[1]/prev1[2]\n\n       1 \n2.983431"
   },
   {
-    "objectID": "semanas/Aula07.html#avaliando-o-ajuste-2",
-    "href": "semanas/Aula07.html#avaliando-o-ajuste-2",
+    "objectID": "semanas/Aula07.html#comparando-com-outro-quantil",
+    "href": "semanas/Aula07.html#comparando-com-outro-quantil",
     "title": "Análise de Sobrevivência",
-    "section": "Avaliando o ajuste 2",
-    "text": "Avaliando o ajuste 2\n\nlibrary(survminer)\nponto <- surv_cutpoint(dados, time = \"tempo\", event = \"status\", variables = \"logwbc\")\nponto$cutpoint[1]\n\n       cutpoint\nlogwbc     2.73\n\ndados$grupolwbc <- cut(dados$logwbc,ponto$cutpoint[1])\nsurvplot(npsurv(Surv(tempo, status) ~ grupolwbc, data = dados),\nloglog = TRUE, logt=TRUE, xlab = \"Tempo\", ylab = \"log(-log(S))\")"
+    "section": "Comparando com outro quantil",
+    "text": "Comparando com outro quantil\n\nprev2 <-predict(leuc.exp.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n79.41687 26.61931 \n\nprev2[1]/prev2[2]\n\n       1 \n2.983431"
   },
   {
-    "objectID": "semanas/Aula07.html#avaliando-o-ajuste-3",
-    "href": "semanas/Aula07.html#avaliando-o-ajuste-3",
+    "objectID": "semanas/Aula07.html#verificando-o-modelo",
+    "href": "semanas/Aula07.html#verificando-o-modelo",
     "title": "Análise de Sobrevivência",
-    "section": "Avaliando o ajuste 3",
-    "text": "Avaliando o ajuste 3\n\nsmoothSEcurve <- function(yy, xx) {\n# usar depois de chamr um grafico\n# Ajusta um curva lowess curve com IC de 95%\nxx.list <- min(xx) + ((0:100)/100)*(max(xx) - min(xx))\n# Then fit loess function through the points (xx, yy)\n# at the listed values\nyy.xx <- predict(loess(yy ~ xx), se=T,\nnewdata=data.frame(xx=xx.list))\nlines(yy.xx$fit ~ xx.list, lwd=2)\nlines(yy.xx$fit -\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\nlines(yy.xx$fit +\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\n}\nrr.final <- residuals(leuc.cox2 , type=\"martingale\")\nplot(rr.final ~ dados$logwbc)\nsmoothSEcurve(rr.final, dados$logwbc)\ntitle(\"Residuos Martingale \\nversus logwbc\")\n\n\n\nplot(rr.final ~ factor(dados$Rx))\ntitle(\"Residuos Martingale \\nversus Rx\")"
+    "section": "Verificando o modelo",
+    "text": "Verificando o modelo\n\nsmoothSEcurve <- function(yy, xx) {\n# usar depois de chamr um grafico\n# Ajusta um curva lowess curve com IC de 95%\nxx.list <- min(xx) + ((0:100)/100)*(max(xx) - min(xx))\n# Then fit loess function through the points (xx, yy)\n# at the listed values\nyy.xx <- predict(loess(yy ~ xx), se=T,\nnewdata=data.frame(xx=xx.list))\nlines(yy.xx$fit ~ xx.list, lwd=2)\nlines(yy.xx$fit -\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\nlines(yy.xx$fit +\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\n}\n\n\nlibrary(car)\n\nCarregando pacotes exigidos: carData\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.exp.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 16"
   },
   {
-    "objectID": "semanas/Aula07.html#avaliando-o-ajuste-4",
-    "href": "semanas/Aula07.html#avaliando-o-ajuste-4",
+    "objectID": "semanas/Aula07.html#modelo-weibull",
+    "href": "semanas/Aula07.html#modelo-weibull",
     "title": "Análise de Sobrevivência",
-    "section": "Avaliando o ajuste 4",
-    "text": "Avaliando o ajuste 4\n\nrr.final2 <- residuals(leuc.cox2 , type=\"deviance\")\nplot(dados$logwbc, rr.final2, xlab=\"logwbc\", ylab = \"Influencia para logwbc\")\nsmoothSEcurve(rr.final2, dados$logwbc)\n\n\n\n# rr.final2 <- residuals(leuc.cox2 , type=\"dfbeta\")\n# plot(dados$logwbc, rr.final2[,1], xlab=\"logwbc\", ylab = \"Influencia para logwbc\")"
+    "section": "Modelo Weibull",
+    "text": "Modelo Weibull\n\nleuc.wei.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"weibull\")\nsummary(leuc.wei.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"weibull\")\n             Value Std. Error     z       p\n(Intercept)  5.462      0.351 15.58 < 2e-16\nsexo        -0.156      0.179 -0.87 0.38350\nlogwbc      -0.792      0.105 -7.54 4.8e-14\nRx          -0.722      0.201 -3.59 0.00034\nLog(scale)  -0.815      0.144 -5.65 1.6e-08\n\nScale= 0.443 \n\nWeibull distribution\nLoglik(model)= -89.7   Loglik(intercept only)= -116.4\n    Chisq= 53.42 on 3 degrees of freedom, p= 1.5e-11 \nNumber of Newton-Raphson Iterations: 7 \nn= 42 \n\n\n\nleuc.wei.sel <- stepAIC(leuc.wei.comp, direction=\"backward\", trace=FALSE)\nsummary(leuc.wei.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"weibull\")\n             Value Std. Error     z       p\n(Intercept)  5.399      0.364 14.84 < 2e-16\nlogwbc      -0.807      0.108 -7.45 9.7e-14\nRx          -0.659      0.189 -3.49 0.00049\nLog(scale)  -0.793      0.142 -5.58 2.5e-08\n\nScale= 0.452 \n\nWeibull distribution\nLoglik(model)= -90.1   Loglik(intercept only)= -116.4\n    Chisq= 52.68 on 2 degrees of freedom, p= 3.6e-12 \nNumber of Newton-Raphson Iterations: 7 \nn= 42"
   },
   {
-    "objectID": "semanas/Aula07.html#curva-de-sobrevivência",
-    "href": "semanas/Aula07.html#curva-de-sobrevivência",
+    "objectID": "semanas/Aula07.html#fazendo-previsões-1",
+    "href": "semanas/Aula07.html#fazendo-previsões-1",
     "title": "Análise de Sobrevivência",
-    "section": "Curva de Sobrevivência",
-    "text": "Curva de Sobrevivência\n\namostra <- data.frame(\nRx = c(0, 1), logwbc = rep(mean(dados$logwbc), 2))\namostra.surv <- survfit(leuc.cox2, newdata = amostra)\nplot(amostra.surv, col = c(1, 2), conf.int = TRUE,\nxlab = \"Tempo\", ylab = \"S(t)\")\nlegend(\"bottomleft\", bty = \"n\", lty = 1, col = 1:2,\nlegend = sprintf(\"Rx %d\", 0:1))"
+    "section": "Fazendo Previsões",
+    "text": "Fazendo Previsões\n\nnovosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.wei.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n3.784108 3.125137"
+  },
+  {
+    "objectID": "semanas/Aula07.html#tempo-mediano-1",
+    "href": "semanas/Aula07.html#tempo-mediano-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Tempo Mediano",
+    "text": "Tempo Mediano\n\nprev1 <-predict(leuc.wei.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n37.27311 19.28448 \n\nprev1[1]/prev1[2]\n\n       1 \n1.932804"
+  },
+  {
+    "objectID": "semanas/Aula07.html#comparando-com-outro-quantil-1",
+    "href": "semanas/Aula07.html#comparando-com-outro-quantil-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando com outro quantil",
+    "text": "Comparando com outro quantil\n\nprev2 <-predict(leuc.wei.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n47.85133 24.75747 \n\nprev2[1]/prev2[2]\n\n       1 \n1.932804"
+  },
+  {
+    "objectID": "semanas/Aula07.html#verificando-o-modelo-1",
+    "href": "semanas/Aula07.html#verificando-o-modelo-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Verificando o modelo",
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.wei.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1/leuc.wei.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 16"
+  },
+  {
+    "objectID": "semanas/Aula07.html#modelo-lognormal",
+    "href": "semanas/Aula07.html#modelo-lognormal",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelo Lognormal",
+    "text": "Modelo Lognormal\n\nleuc.logn.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"lognormal\")\nsummary(leuc.logn.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"lognormal\")\n              Value Std. Error     z       p\n(Intercept)  4.9975     0.3924 12.74 < 2e-16\nsexo        -0.0947     0.2211 -0.43 0.66862\nlogwbc      -0.7051     0.1251 -5.64 1.7e-08\nRx          -0.8539     0.2311 -3.69 0.00022\nLog(scale)  -0.4424     0.1293 -3.42 0.00062\n\nScale= 0.642 \n\nLog Normal distribution\nLoglik(model)= -93.9   Loglik(intercept only)= -115.4\n    Chisq= 43.08 on 3 degrees of freedom, p= 2.4e-09 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\n\n\nleuc.logn.sel <- stepAIC(leuc.logn.comp, direction=\"backward\", trace=FALSE)\nsummary(leuc.logn.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"lognormal\")\n             Value Std. Error     z       p\n(Intercept)  4.982      0.394 12.65 < 2e-16\nlogwbc      -0.716      0.123 -5.80 6.6e-09\nRx          -0.848      0.232 -3.66 0.00025\nLog(scale)  -0.437      0.129 -3.39 0.00070\n\nScale= 0.646 \n\nLog Normal distribution\nLoglik(model)= -93.9   Loglik(intercept only)= -115.4\n    Chisq= 42.9 on 2 degrees of freedom, p= 4.8e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42"
+  },
+  {
+    "objectID": "semanas/Aula07.html#fazendo-previsões-2",
+    "href": "semanas/Aula07.html#fazendo-previsões-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Fazendo Previsões",
+    "text": "Fazendo Previsões\n\nnovosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.logn.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n3.549821 2.702019"
+  },
+  {
+    "objectID": "semanas/Aula07.html#tempo-mediano-2",
+    "href": "semanas/Aula07.html#tempo-mediano-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Tempo Mediano",
+    "text": "Tempo Mediano\n\nprev1 <-predict(leuc.logn.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n34.80708 14.90980 \n\nprev1[1]/prev1[2]\n\n      1 \n2.33451"
+  },
+  {
+    "objectID": "semanas/Aula07.html#comparando-com-outro-quantil-2",
+    "href": "semanas/Aula07.html#comparando-com-outro-quantil-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando com outro quantil",
+    "text": "Comparando com outro quantil\n\nprev2 <-predict(leuc.logn.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n48.83742 20.91977 \n\nprev2[1]/prev2[2]\n\n      1 \n2.33451"
+  },
+  {
+    "objectID": "semanas/Aula07.html#verificando-o-modelo-2",
+    "href": "semanas/Aula07.html#verificando-o-modelo-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Verificando o modelo",
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.logn.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"norm\",\nsd = leuc.logn.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 12"
+  },
+  {
+    "objectID": "semanas/Aula07.html#modelo-loglogistico",
+    "href": "semanas/Aula07.html#modelo-loglogistico",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelo Loglogistico",
+    "text": "Modelo Loglogistico\n\nleuc.logl.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, dist = \"loglogistic\")\nsummary(leuc.logl.comp)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, \n    dist = \"loglogistic\")\n              Value Std. Error     z       p\n(Intercept)  5.0190     0.3518 14.27 < 2e-16\nsexo        -0.0408     0.2027 -0.20 0.84065\nlogwbc      -0.7278     0.1098 -6.63 3.4e-11\nRx          -0.7494     0.2133 -3.51 0.00044\nLog(scale)  -1.0894     0.1509 -7.22 5.1e-13\n\nScale= 0.336 \n\nLog logistic distribution\nLoglik(model)= -92.3   Loglik(intercept only)= -115.4\n    Chisq= 46.08 on 3 degrees of freedom, p= 5.5e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\n\n\nleuc.logl.sel <- stepAIC(leuc.logl.comp, direction=\"backward\", trace=FALSE)\nsummary(leuc.logl.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"loglogistic\")\n             Value Std. Error     z       p\n(Intercept)  5.008      0.348 14.40 < 2e-16\nlogwbc      -0.733      0.108 -6.81 9.8e-12\nRx          -0.743      0.210 -3.54   4e-04\nLog(scale)  -1.089      0.151 -7.22 5.3e-13\n\nScale= 0.337 \n\nLog logistic distribution\nLoglik(model)= -92.3   Loglik(intercept only)= -115.4\n    Chisq= 46.04 on 2 degrees of freedom, p= 1e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42"
+  },
+  {
+    "objectID": "semanas/Aula07.html#fazendo-previsões-3",
+    "href": "semanas/Aula07.html#fazendo-previsões-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Fazendo Previsões",
+    "text": "Fazendo Previsões\n\nnovosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.logl.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n3.542894 2.800346"
+  },
+  {
+    "objectID": "semanas/Aula07.html#tempo-mediano-3",
+    "href": "semanas/Aula07.html#tempo-mediano-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Tempo Mediano",
+    "text": "Tempo Mediano\n\nprev1 <-predict(leuc.logl.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n34.56680 16.45034 \n\nprev1[1]/prev1[2]\n\n       1 \n2.101282"
+  },
+  {
+    "objectID": "semanas/Aula07.html#comparando-com-outro-quantil-3",
+    "href": "semanas/Aula07.html#comparando-com-outro-quantil-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando com outro quantil",
+    "text": "Comparando com outro quantil\n\nprev2 <-predict(leuc.logl.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n45.97221 21.87818 \n\nprev2[1]/prev2[2]\n\n       1 \n2.101282"
+  },
+  {
+    "objectID": "semanas/Aula07.html#verificando-o-modelo-3",
+    "href": "semanas/Aula07.html#verificando-o-modelo-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Verificando o modelo",
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin <- predict(leuc.logl.sel, type = \"lp\")[dados$status == 1]\nlog.resid <- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"logis\",\nscale = leuc.logl.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 12"
+  },
+  {
+    "objectID": "semanas/Aula07.html#comparação-dos-modelos",
+    "href": "semanas/Aula07.html#comparação-dos-modelos",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparação dos modelos",
+    "text": "Comparação dos modelos\n\ntab.exp <- summary(leuc.exp.sel)\ntab.exp\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"exponential\")\n             Value Std. Error     z       p\n(Intercept)  5.958      0.699  8.52 < 2e-16\nlogwbc      -0.884      0.216 -4.10 4.2e-05\nRx          -1.093      0.413 -2.65  0.0082\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.8   Loglik(intercept only)= -116.8\n    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42 \n\ntab.wei <- summary(leuc.wei.sel)\ntab.wei\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"weibull\")\n             Value Std. Error     z       p\n(Intercept)  5.399      0.364 14.84 < 2e-16\nlogwbc      -0.807      0.108 -7.45 9.7e-14\nRx          -0.659      0.189 -3.49 0.00049\nLog(scale)  -0.793      0.142 -5.58 2.5e-08\n\nScale= 0.452 \n\nWeibull distribution\nLoglik(model)= -90.1   Loglik(intercept only)= -116.4\n    Chisq= 52.68 on 2 degrees of freedom, p= 3.6e-12 \nNumber of Newton-Raphson Iterations: 7 \nn= 42 \n\nTRV <- 2*(tab.wei$loglik[1] - tab.exp$loglik[1])\npchisq(TRV, 1, lower.tail = F)\n\n[1] 0.3953251\n\ntab.ln <- summary(leuc.logn.sel)\ntab.ln\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"lognormal\")\n             Value Std. Error     z       p\n(Intercept)  4.982      0.394 12.65 < 2e-16\nlogwbc      -0.716      0.123 -5.80 6.6e-09\nRx          -0.848      0.232 -3.66 0.00025\nLog(scale)  -0.437      0.129 -3.39 0.00070\n\nScale= 0.646 \n\nLog Normal distribution\nLoglik(model)= -93.9   Loglik(intercept only)= -115.4\n    Chisq= 42.9 on 2 degrees of freedom, p= 4.8e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\ntab.ll <- summary(leuc.logl.sel)\ntab.ll\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"loglogistic\")\n             Value Std. Error     z       p\n(Intercept)  5.008      0.348 14.40 < 2e-16\nlogwbc      -0.733      0.108 -6.81 9.8e-12\nRx          -0.743      0.210 -3.54   4e-04\nLog(scale)  -1.089      0.151 -7.22 5.3e-13\n\nScale= 0.337 \n\nLog logistic distribution\nLoglik(model)= -92.3   Loglik(intercept only)= -115.4\n    Chisq= 46.04 on 2 degrees of freedom, p= 1e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\naic.exp <- -2*tab.exp$loglik[1] + 2*3\naic.exp\n\n[1] 239.5333\n\naic.wei <- -2*tab.wei$loglik[1] + 2*4\naic.wei\n\n[1] 240.8108\n\naic.ln <- -2*tab.ln$loglik[1] + 2*4\naic.ln\n\n[1] 238.786\n\naic.ll <- -2*tab.ll$loglik[1] + 2*4\naic.ll\n\n[1] 238.7022\n\naic <- c(aic.exp, aic.wei, aic.ln, aic.ll)\ndelta.aic <- aic - min(aic)\ndelta.aic\n\n[1] 0.83108732 2.10858745 0.08373248 0.00000000\n\npeso.aic <- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\nsum(peso.aic)\n\n[1] 1\n\nmodelos <- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      p_Akaike = peso.aic)\ngt::gt(modelos)\n\n\n\n\n\n  \n  \n    \n      modelos\n      p_Akaike\n    \n  \n  \n    Exponencial\n0.2224093\n    Weibull\n0.1174214\n    Lognormal\n0.3231759\n    Loglogistico\n0.3369933"
   },
   {
     "objectID": "semanas/Aula08.html",
     "href": "semanas/Aula08.html",
     "title": "Análise de Sobrevivência",
     "section": "",
-    "text": "Vamos usar neste exemplo dados da biblioteca survival.\nOs dados são de sobrevivência de pacientes com cancer de pulmão em estágio avançado do North Central Cancer Treatment Group.\n- inst: Códico da Intituição\n- time: Tempo de sobrevivência em dias\n- status: 1=censurado, 2=morto\n- age: Idade em anos\n- sex: 1=Homem 2 = Mulher\n- ph.ecog: escore ecog 0=bom 5=morto\n- ph.karno: escore de Karnofsky (ruim=0-bom=100) definido pelo médico\n- pat.karno: escore de Karnofsky definido pelo paciente\n- meal.cal: Calorias consumidas nas refeições\n- wt.loss: Perda de peso nos últimos seis meses (libras)"
+    "text": "Nesta etapa vamos começar a trabalhar com o modelo semi-paramétrico de Cox\nO conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).\nDuas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar)."
+  },
+  {
+    "objectID": "semanas/Aula08.html#carregando-os-dados",
+    "href": "semanas/Aula08.html#carregando-os-dados",
+    "title": "Análise de Sobrevivência",
+    "section": "Carregando os dados",
+    "text": "Carregando os dados\n\nlibrary(survival)\nlibrary(readxl)\ndados <- read_xlsx(\"anderson.xlsx\", col_names = TRUE )\nsummary(dados)\n\n     tempo           status            sexo            logwbc     \n Min.   : 1.00   Min.   :0.0000   Min.   :0.0000   Min.   :1.450  \n 1st Qu.: 6.00   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:2.303  \n Median :10.50   Median :1.0000   Median :0.0000   Median :2.800  \n Mean   :12.88   Mean   :0.7143   Mean   :0.4762   Mean   :2.930  \n 3rd Qu.:18.50   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:3.490  \n Max.   :35.00   Max.   :1.0000   Max.   :1.0000   Max.   :5.000  \n       Rx     \n Min.   :0.0  \n 1st Qu.:0.0  \n Median :0.5  \n Mean   :0.5  \n 3rd Qu.:1.0  \n Max.   :1.0"
+  },
+  {
+    "objectID": "semanas/Aula08.html#ajuste-não-paramétrico",
+    "href": "semanas/Aula08.html#ajuste-não-paramétrico",
+    "title": "Análise de Sobrevivência",
+    "section": "Ajuste Não Paramétrico",
+    "text": "Ajuste Não Paramétrico\n\nekm <- survfit(Surv(tempo,status)~Rx, data=dados)\ntempo <- ekm$time\nst <- ekm$surv\nsummary(ekm)\n\nCall: survfit(formula = Surv(tempo, status) ~ Rx, data = dados)\n\n                Rx=0 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807\n\n                Rx=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA\n\nplot(ekm, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=2:3)\nlegend(\"topright\",c(\"Rx=0\",\"Rx=1\"), lty = 2:3)"
   },
   {
     "objectID": "semanas/Aula08.html#modelo-semi-paramétrico-de-cox",
     "href": "semanas/Aula08.html#modelo-semi-paramétrico-de-cox",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Semi-paramétrico de Cox",
-    "text": "Modelo Semi-paramétrico de Cox\n\najuste1 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +\n                   ph.karno + pat.karno + meal.cal + wt.loss, data = dados)\nsummary(ajuste1)\n\nCall:\ncoxph(formula = Surv(time, status) ~ age + sex + ph.ecog + ph.karno + \n    pat.karno + meal.cal + wt.loss, data = dados)\n\n  n= 167, number of events= 120 \n\n                coef  exp(coef)   se(coef)      z Pr(>|z|)   \nage        1.080e-02  1.011e+00  1.160e-02  0.931  0.35168   \nsex       -5.536e-01  5.749e-01  2.016e-01 -2.746  0.00603 **\nph.ecog    7.395e-01  2.095e+00  2.250e-01  3.287  0.00101 **\nph.karno   2.244e-02  1.023e+00  1.123e-02  1.998  0.04575 * \npat.karno -1.207e-02  9.880e-01  8.116e-03 -1.488  0.13685   \nmeal.cal   2.835e-05  1.000e+00  2.594e-04  0.109  0.91298   \nwt.loss   -1.420e-02  9.859e-01  7.766e-03 -1.828  0.06748 . \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n          exp(coef) exp(-coef) lower .95 upper .95\nage          1.0109     0.9893    0.9881    1.0341\nsex          0.5749     1.7395    0.3872    0.8534\nph.ecog      2.0950     0.4773    1.3479    3.2560\nph.karno     1.0227     0.9778    1.0004    1.0455\npat.karno    0.9880     1.0121    0.9724    1.0038\nmeal.cal     1.0000     1.0000    0.9995    1.0005\nwt.loss      0.9859     1.0143    0.9710    1.0010\n\nConcordance= 0.653  (se = 0.029 )\nLikelihood ratio test= 28.16  on 7 df,   p=2e-04\nWald test            = 27.5  on 7 df,   p=3e-04\nScore (logrank) test = 28.31  on 7 df,   p=2e-04\n\nlogLik(ajuste1)\n\n'log Lik.' -494.0344 (df=7)"
-  },
-  {
-    "objectID": "semanas/Aula08.html#usando-o-teste-de-wald-e-da-razão-de-verossimilhança",
-    "href": "semanas/Aula08.html#usando-o-teste-de-wald-e-da-razão-de-verossimilhança",
-    "title": "Análise de Sobrevivência",
-    "section": "Usando o teste de Wald e da razão de verossimilhança",
-    "text": "Usando o teste de Wald e da razão de verossimilhança\nO teste de Wald avalia a estatística z, que no caso acima indica que diversas variáveis não são significativas, por exemplo, meat.cal, age, pat.karno.\nVamos eliminar somente meat.cal e fazer o teste da razão de verossimilhança para confirmarmos que ela não é estatísticamente significativa.\n\najuste2 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +\n                   ph.karno + pat.karno + wt.loss, data = dados)\nlogLik(ajuste2)\n\n'log Lik.' -494.0404 (df=6)\n\nTRV <- 2*(logLik(ajuste1) - logLik(ajuste2))\npchisq(TRV[1],1, lower.tail = FALSE)\n\n[1] 0.9131696\n\n\nO resultado acima confirma que o modelo não é afetado pela retirada de meat.cal, ou seja, ela não é estatísticamente significativa."
+    "text": "Modelo Semi-paramétrico de Cox\n\nleuc.cox1 <- coxph(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados)\nsummary(leuc.cox1)\n\nCall:\ncoxph(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados)\n\n  n= 42, number of events= 30 \n\n         coef exp(coef) se(coef)     z Pr(>|z|)    \nsexo   0.3147    1.3698   0.4545 0.692  0.48872    \nlogwbc 1.6819    5.3760   0.3366 4.997 5.82e-07 ***\nRx     1.5036    4.4978   0.4615 3.258  0.00112 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n       exp(coef) exp(-coef) lower .95 upper .95\nsexo       1.370     0.7300    0.5621     3.338\nlogwbc     5.376     0.1860    2.7794    10.398\nRx         4.498     0.2223    1.8204    11.113\n\nConcordance= 0.851  (se = 0.041 )\nLikelihood ratio test= 47.19  on 3 df,   p=3e-10\nWald test            = 33.54  on 3 df,   p=2e-07\nScore (logrank) test = 48.01  on 3 df,   p=2e-10"
   },
   {
     "objectID": "semanas/Aula08.html#automatizando-ajuste",
     "href": "semanas/Aula08.html#automatizando-ajuste",
     "title": "Análise de Sobrevivência",
     "section": "Automatizando ajuste",
-    "text": "Automatizando ajuste\n\nlibrary(MASS)\n\n\nAttaching package: 'MASS'\n\n\nThe following object is masked from 'package:dplyr':\n\n    select\n\najuste3 <- stepAIC(ajuste1, direction=\"backward\", trace=FALSE)\nsummary(ajuste3)\n\nCall:\ncoxph(formula = Surv(time, status) ~ sex + ph.ecog + ph.karno + \n    pat.karno + wt.loss, data = dados)\n\n  n= 167, number of events= 120 \n\n               coef exp(coef)  se(coef)      z Pr(>|z|)   \nsex       -0.558190  0.572244  0.199202 -2.802  0.00508 **\nph.ecog    0.742983  2.102197  0.227604  3.264  0.00110 **\nph.karno   0.020366  1.020575  0.011080  1.838  0.06604 . \npat.karno -0.012401  0.987675  0.007978 -1.554  0.12008   \nwt.loss   -0.014494  0.985611  0.007693 -1.884  0.05957 . \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n          exp(coef) exp(-coef) lower .95 upper .95\nsex          0.5722     1.7475    0.3873    0.8456\nph.ecog      2.1022     0.4757    1.3457    3.2841\nph.karno     1.0206     0.9798    0.9987    1.0430\npat.karno    0.9877     1.0125    0.9724    1.0032\nwt.loss      0.9856     1.0146    0.9709    1.0006\n\nConcordance= 0.658  (se = 0.029 )\nLikelihood ratio test= 27.28  on 5 df,   p=5e-05\nWald test            = 26.89  on 5 df,   p=6e-05\nScore (logrank) test = 27.64  on 5 df,   p=4e-05\n\n\nVeja que wt.loss e ph.karno são marginalmente significativas. pat.karno tem p-valor acima de 0,10 o que normalmente indicaria sua retirada do modelo."
-  },
-  {
-    "objectID": "semanas/Aula08.html#usando-o-bic",
-    "href": "semanas/Aula08.html#usando-o-bic",
-    "title": "Análise de Sobrevivência",
-    "section": "Usando o BIC",
-    "text": "Usando o BIC\n\nlibrary(MASS)\nn_eventos <- sum(dados$status)\najuste4 <- stepAIC(ajuste1, direction=\"backward\", k= log(n_eventos), trace=FALSE)\nsummary(ajuste4)\n\nCall:\ncoxph(formula = Surv(time, status) ~ sex + ph.ecog, data = dados)\n\n  n= 167, number of events= 120 \n\n           coef exp(coef) se(coef)      z Pr(>|z|)    \nsex     -0.5101    0.6004   0.1969 -2.591 0.009579 ** \nph.ecog  0.4825    1.6201   0.1323  3.647 0.000266 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n        exp(coef) exp(-coef) lower .95 upper .95\nsex        0.6004     1.6655    0.4082    0.8832\nph.ecog    1.6201     0.6172    1.2501    2.0998\n\nConcordance= 0.641  (se = 0.031 )\nLikelihood ratio test= 19.48  on 2 df,   p=6e-05\nWald test            = 19.35  on 2 df,   p=6e-05\nScore (logrank) test = 19.62  on 2 df,   p=5e-05"
+    "text": "Automatizando ajuste\n\nlibrary(MASS)\nleuc.cox2 <- stepAIC(leuc.cox1, direction=\"backward\", trace=FALSE)\nsummary(leuc.cox2)\n\nCall:\ncoxph(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados)\n\n  n= 42, number of events= 30 \n\n         coef exp(coef) se(coef)     z Pr(>|z|)    \nlogwbc 1.6909    5.4243   0.3359 5.034  4.8e-07 ***\nRx     1.3861    3.9991   0.4248 3.263   0.0011 ** \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n       exp(coef) exp(-coef) lower .95 upper .95\nlogwbc     5.424     0.1844     2.808    10.478\nRx         3.999     0.2501     1.739     9.195\n\nConcordance= 0.852  (se = 0.04 )\nLikelihood ratio test= 46.71  on 2 df,   p=7e-11\nWald test            = 33.6  on 2 df,   p=5e-08\nScore (logrank) test = 46.07  on 2 df,   p=1e-10"
   },
   {
     "objectID": "semanas/Aula08.html#informações-do-ajuste",
     "href": "semanas/Aula08.html#informações-do-ajuste",
     "title": "Análise de Sobrevivência",
     "section": "Informações do Ajuste",
+    "text": "Informações do Ajuste\n\ncoef(leuc.cox2)\n\n  logwbc       Rx \n1.690890 1.386076 \n\nlogLik(leuc.cox2)\n\n'log Lik.' -69.8281 (df=2)"
+  },
+  {
+    "objectID": "semanas/Aula08.html#avaliando-o-ajuste-1",
+    "href": "semanas/Aula08.html#avaliando-o-ajuste-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliando o ajuste 1",
+    "text": "Avaliando o ajuste 1\n\nlibrary(rms)\nsurvplot(npsurv(Surv(tempo, status) ~ Rx, data = dados),\nloglog = TRUE, logt=TRUE, xlab = \"Tempo\", ylab = \"log(-log(S))\")"
+  },
+  {
+    "objectID": "semanas/Aula08.html#avaliando-o-ajuste-2",
+    "href": "semanas/Aula08.html#avaliando-o-ajuste-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliando o ajuste 2",
+    "text": "Avaliando o ajuste 2\n\nlibrary(survminer)\nponto <- surv_cutpoint(dados, time = \"tempo\", event = \"status\", variables = \"logwbc\")\nponto$cutpoint[1]\n\n       cutpoint\nlogwbc     2.73\n\ndados$grupolwbc <- cut(dados$logwbc,ponto$cutpoint[1])\nsurvplot(npsurv(Surv(tempo, status) ~ grupolwbc, data = dados),\nloglog = TRUE, logt=TRUE, xlab = \"Tempo\", ylab = \"log(-log(S))\")"
+  },
+  {
+    "objectID": "semanas/Aula08.html#avaliando-o-ajuste-3",
+    "href": "semanas/Aula08.html#avaliando-o-ajuste-3",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliando o ajuste 3",
+    "text": "Avaliando o ajuste 3\n\nsmoothSEcurve <- function(yy, xx) {\n# usar depois de chamr um grafico\n# Ajusta um curva lowess curve com IC de 95%\nxx.list <- min(xx) + ((0:100)/100)*(max(xx) - min(xx))\n# Then fit loess function through the points (xx, yy)\n# at the listed values\nyy.xx <- predict(loess(yy ~ xx), se=T,\nnewdata=data.frame(xx=xx.list))\nlines(yy.xx$fit ~ xx.list, lwd=2)\nlines(yy.xx$fit -\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\nlines(yy.xx$fit +\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\n}\nrr.final <- residuals(leuc.cox2 , type=\"martingale\")\nplot(rr.final ~ dados$logwbc)\nsmoothSEcurve(rr.final, dados$logwbc)\ntitle(\"Residuos Martingale \\nversus logwbc\")\n\n\n\nplot(rr.final ~ factor(dados$Rx))\ntitle(\"Residuos Martingale \\nversus Rx\")"
+  },
+  {
+    "objectID": "semanas/Aula08.html#avaliando-o-ajuste-4",
+    "href": "semanas/Aula08.html#avaliando-o-ajuste-4",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliando o ajuste 4",
+    "text": "Avaliando o ajuste 4\n\nrr.final2 <- residuals(leuc.cox2 , type=\"deviance\")\nplot(dados$logwbc, rr.final2, xlab=\"logwbc\", ylab = \"Influencia para logwbc\")\nsmoothSEcurve(rr.final2, dados$logwbc)\n\n\n\n# rr.final2 <- residuals(leuc.cox2 , type=\"dfbeta\")\n# plot(dados$logwbc, rr.final2[,1], xlab=\"logwbc\", ylab = \"Influencia para logwbc\")"
+  },
+  {
+    "objectID": "semanas/Aula08.html#curva-de-sobrevivência",
+    "href": "semanas/Aula08.html#curva-de-sobrevivência",
+    "title": "Análise de Sobrevivência",
+    "section": "Curva de Sobrevivência",
+    "text": "Curva de Sobrevivência\n\namostra <- data.frame(\nRx = c(0, 1), logwbc = rep(mean(dados$logwbc), 2))\namostra.surv <- survfit(leuc.cox2, newdata = amostra)\nplot(amostra.surv, col = c(1, 2), conf.int = TRUE,\nxlab = \"Tempo\", ylab = \"S(t)\")\nlegend(\"bottomleft\", bty = \"n\", lty = 1, col = 1:2,\nlegend = sprintf(\"Rx %d\", 0:1))"
+  },
+  {
+    "objectID": "semanas/Aula09.html",
+    "href": "semanas/Aula09.html",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Vamos usar neste exemplo dados da biblioteca survival.\nOs dados são de sobrevivência de pacientes com cancer de pulmão em estágio avançado do North Central Cancer Treatment Group.\n- inst: Códico da Intituição\n- time: Tempo de sobrevivência em dias\n- status: 1=censurado, 2=morto\n- age: Idade em anos\n- sex: 1=Homem 2 = Mulher\n- ph.ecog: escore ecog 0=bom 5=morto\n- ph.karno: escore de Karnofsky (ruim=0-bom=100) definido pelo médico\n- pat.karno: escore de Karnofsky definido pelo paciente\n- meal.cal: Calorias consumidas nas refeições\n- wt.loss: Perda de peso nos últimos seis meses (libras)"
+  },
+  {
+    "objectID": "semanas/Aula09.html#modelo-semi-paramétrico-de-cox",
+    "href": "semanas/Aula09.html#modelo-semi-paramétrico-de-cox",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelo Semi-paramétrico de Cox",
+    "text": "Modelo Semi-paramétrico de Cox\n\najuste1 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +\n                   ph.karno + pat.karno + meal.cal + wt.loss, data = dados)\nsummary(ajuste1)\n\nCall:\ncoxph(formula = Surv(time, status) ~ age + sex + ph.ecog + ph.karno + \n    pat.karno + meal.cal + wt.loss, data = dados)\n\n  n= 167, number of events= 120 \n\n                coef  exp(coef)   se(coef)      z Pr(>|z|)   \nage        1.080e-02  1.011e+00  1.160e-02  0.931  0.35168   \nsex       -5.536e-01  5.749e-01  2.016e-01 -2.746  0.00603 **\nph.ecog    7.395e-01  2.095e+00  2.250e-01  3.287  0.00101 **\nph.karno   2.244e-02  1.023e+00  1.123e-02  1.998  0.04575 * \npat.karno -1.207e-02  9.880e-01  8.116e-03 -1.488  0.13685   \nmeal.cal   2.835e-05  1.000e+00  2.594e-04  0.109  0.91298   \nwt.loss   -1.420e-02  9.859e-01  7.766e-03 -1.828  0.06748 . \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n          exp(coef) exp(-coef) lower .95 upper .95\nage          1.0109     0.9893    0.9881    1.0341\nsex          0.5749     1.7395    0.3872    0.8534\nph.ecog      2.0950     0.4773    1.3479    3.2560\nph.karno     1.0227     0.9778    1.0004    1.0455\npat.karno    0.9880     1.0121    0.9724    1.0038\nmeal.cal     1.0000     1.0000    0.9995    1.0005\nwt.loss      0.9859     1.0143    0.9710    1.0010\n\nConcordance= 0.653  (se = 0.029 )\nLikelihood ratio test= 28.16  on 7 df,   p=2e-04\nWald test            = 27.5  on 7 df,   p=3e-04\nScore (logrank) test = 28.31  on 7 df,   p=2e-04\n\nlogLik(ajuste1)\n\n'log Lik.' -494.0344 (df=7)"
+  },
+  {
+    "objectID": "semanas/Aula09.html#usando-o-teste-de-wald-e-da-razão-de-verossimilhança",
+    "href": "semanas/Aula09.html#usando-o-teste-de-wald-e-da-razão-de-verossimilhança",
+    "title": "Análise de Sobrevivência",
+    "section": "Usando o teste de Wald e da razão de verossimilhança",
+    "text": "Usando o teste de Wald e da razão de verossimilhança\nO teste de Wald avalia a estatística z, que no caso acima indica que diversas variáveis não são significativas, por exemplo, meat.cal, age, pat.karno.\nVamos eliminar somente meat.cal e fazer o teste da razão de verossimilhança para confirmarmos que ela não é estatísticamente significativa.\n\najuste2 <- coxph(Surv(time, status) ~ age + sex + ph.ecog +\n                   ph.karno + pat.karno + wt.loss, data = dados)\nlogLik(ajuste2)\n\n'log Lik.' -494.0404 (df=6)\n\nTRV <- 2*(logLik(ajuste1) - logLik(ajuste2))\npchisq(TRV[1],1, lower.tail = FALSE)\n\n[1] 0.9131696\n\n\nO resultado acima confirma que o modelo não é afetado pela retirada de meat.cal, ou seja, ela não é estatísticamente significativa."
+  },
+  {
+    "objectID": "semanas/Aula09.html#automatizando-ajuste",
+    "href": "semanas/Aula09.html#automatizando-ajuste",
+    "title": "Análise de Sobrevivência",
+    "section": "Automatizando ajuste",
+    "text": "Automatizando ajuste\n\nlibrary(MASS)\n\n\nAttaching package: 'MASS'\n\n\nThe following object is masked from 'package:dplyr':\n\n    select\n\najuste3 <- stepAIC(ajuste1, direction=\"backward\", trace=FALSE)\nsummary(ajuste3)\n\nCall:\ncoxph(formula = Surv(time, status) ~ sex + ph.ecog + ph.karno + \n    pat.karno + wt.loss, data = dados)\n\n  n= 167, number of events= 120 \n\n               coef exp(coef)  se(coef)      z Pr(>|z|)   \nsex       -0.558190  0.572244  0.199202 -2.802  0.00508 **\nph.ecog    0.742983  2.102197  0.227604  3.264  0.00110 **\nph.karno   0.020366  1.020575  0.011080  1.838  0.06604 . \npat.karno -0.012401  0.987675  0.007978 -1.554  0.12008   \nwt.loss   -0.014494  0.985611  0.007693 -1.884  0.05957 . \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n          exp(coef) exp(-coef) lower .95 upper .95\nsex          0.5722     1.7475    0.3873    0.8456\nph.ecog      2.1022     0.4757    1.3457    3.2841\nph.karno     1.0206     0.9798    0.9987    1.0430\npat.karno    0.9877     1.0125    0.9724    1.0032\nwt.loss      0.9856     1.0146    0.9709    1.0006\n\nConcordance= 0.658  (se = 0.029 )\nLikelihood ratio test= 27.28  on 5 df,   p=5e-05\nWald test            = 26.89  on 5 df,   p=6e-05\nScore (logrank) test = 27.64  on 5 df,   p=4e-05\n\n\nVeja que wt.loss e ph.karno são marginalmente significativas. pat.karno tem p-valor acima de 0,10 o que normalmente indicaria sua retirada do modelo."
+  },
+  {
+    "objectID": "semanas/Aula09.html#usando-o-bic",
+    "href": "semanas/Aula09.html#usando-o-bic",
+    "title": "Análise de Sobrevivência",
+    "section": "Usando o BIC",
+    "text": "Usando o BIC\n\nlibrary(MASS)\nn_eventos <- sum(dados$status)\najuste4 <- stepAIC(ajuste1, direction=\"backward\", k= log(n_eventos), trace=FALSE)\nsummary(ajuste4)\n\nCall:\ncoxph(formula = Surv(time, status) ~ sex + ph.ecog, data = dados)\n\n  n= 167, number of events= 120 \n\n           coef exp(coef) se(coef)      z Pr(>|z|)    \nsex     -0.5101    0.6004   0.1969 -2.591 0.009579 ** \nph.ecog  0.4825    1.6201   0.1323  3.647 0.000266 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n        exp(coef) exp(-coef) lower .95 upper .95\nsex        0.6004     1.6655    0.4082    0.8832\nph.ecog    1.6201     0.6172    1.2501    2.0998\n\nConcordance= 0.641  (se = 0.031 )\nLikelihood ratio test= 19.48  on 2 df,   p=6e-05\nWald test            = 19.35  on 2 df,   p=6e-05\nScore (logrank) test = 19.62  on 2 df,   p=5e-05"
+  },
+  {
+    "objectID": "semanas/Aula09.html#informações-do-ajuste",
+    "href": "semanas/Aula09.html#informações-do-ajuste",
+    "title": "Análise de Sobrevivência",
+    "section": "Informações do Ajuste",
     "text": "Informações do Ajuste\n\ncoef(ajuste4)\n\n       sex    ph.ecog \n-0.5100991  0.4825185 \n\nlogLik(ajuste4)\n\n'log Lik.' -498.3757 (df=2)"
   },
   {
-    "objectID": "semanas/Aula08.html#tempos-idênticos",
-    "href": "semanas/Aula08.html#tempos-idênticos",
+    "objectID": "semanas/Aula09.html#tempos-idênticos",
+    "href": "semanas/Aula09.html#tempos-idênticos",
     "title": "Análise de Sobrevivência",
     "section": "Tempos Idênticos",
     "text": "Tempos Idênticos\n\najuste5 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , \n                 ties= \"efron\", \n                 data=dados)\najuste6 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , \n                 ties= \"breslow\", \n                 data=dados)\najuste7 <- coxph(Surv(time,status==2) ~ sex + ph.ecog , \n                 ties= \"exact\", \n                 data=dados)\ndif_met <- rbind(coef(ajuste5), coef(ajuste6), coef(ajuste7))\nrow.names(dif_met) <- c(\"Efron\", \"Breslow\", \"Exact\")\nknitr::kable(dif_met)\n\n\n\n\n\nsex\nph.ecog\n\n\n\n\nEfron\n-0.5100991\n0.4825185\n\n\nBreslow\n-0.5094047\n0.4823368\n\n\nExact\n-0.5103502\n0.4832902"
   },
   {
-    "objectID": "semanas/Aula08.html#avaliando-ajuste",
-    "href": "semanas/Aula08.html#avaliando-ajuste",
+    "objectID": "semanas/Aula09.html#avaliando-ajuste",
+    "href": "semanas/Aula09.html#avaliando-ajuste",
     "title": "Análise de Sobrevivência",
     "section": "Avaliando Ajuste",
     "text": "Avaliando Ajuste\n\nav1 <- survfit(Surv(time, status) ~ sex, data = dados)\nav1.tab <- summary(av1)\nplot(log(av1.tab$time),log(-log(av1.tab$surv)),\ncol = av1.tab$strata, xlab = \"log(t)\", ylab = \"log(-log(S))\",\npch = 20)\nlegend(\"bottomright\", bty = \"n\", lty = 1, col = c(1:2),\nlegend = sprintf(\"Sexo %d\", 1:2))\n\n\n\nav2 <- survfit(Surv(time, status) ~ ph.ecog, data = dados)\nav2.tab <- summary(av2)\nplot(log(av2.tab$time),log(-log(av2.tab$surv)),\ncol = av2.tab$strata, xlab = \"log(t)\", ylab = \"log(-log(S))\",\npch = 20)\nlegend(\"bottomright\", bty = \"n\", lty = 1, col = c(1,2,3,4),\nlegend = sprintf(\"Ecog %d\", 0:3))"
   },
   {
-    "objectID": "semanas/Aula08.html#resíduos-de-cox-snell",
-    "href": "semanas/Aula08.html#resíduos-de-cox-snell",
+    "objectID": "semanas/Aula09.html#resíduos-de-cox-snell",
+    "href": "semanas/Aula09.html#resíduos-de-cox-snell",
     "title": "Análise de Sobrevivência",
     "section": "Resíduos de Cox-Snell",
     "text": "Resíduos de Cox-Snell\n\nlibrary(car)\ncox.snell <- abs(dados$status - ajuste4$residuals)\nqqPlot(cox.snell, dist = \"exp\", rate = mean(cox.snell))\n\n\n\n\n37 18 \n25 11"
   },
   {
-    "objectID": "semanas/Aula08.html#resíduos-de-schoenfeld",
-    "href": "semanas/Aula08.html#resíduos-de-schoenfeld",
+    "objectID": "semanas/Aula09.html#resíduos-de-schoenfeld",
+    "href": "semanas/Aula09.html#resíduos-de-schoenfeld",
     "title": "Análise de Sobrevivência",
     "section": "Resíduos de Schoenfeld",
     "text": "Resíduos de Schoenfeld\n\ncox.zph(ajuste4)\n\n        chisq df     p\nsex      1.24  1 0.266\nph.ecog  5.27  1 0.022\nGLOBAL   6.19  2 0.045\n\nresid.sch <- cox.zph(ajuste4)\npar(mfrow=c(1,3))\nplot(resid.sch)"
   },
   {
-    "objectID": "semanas/Aula08.html#modelo-de-cox-estratificado",
-    "href": "semanas/Aula08.html#modelo-de-cox-estratificado",
+    "objectID": "semanas/Aula09.html#modelo-de-cox-estratificado",
+    "href": "semanas/Aula09.html#modelo-de-cox-estratificado",
     "title": "Análise de Sobrevivência",
     "section": "Modelo de Cox Estratificado",
     "text": "Modelo de Cox Estratificado\n\najuste4_E <- coxph(Surv(time, status) ~ sex + strata(ph.ecog), data=dados)\nsummary(ajuste4_E)\n\nCall:\ncoxph(formula = Surv(time, status) ~ sex + strata(ph.ecog), data = dados)\n\n  n= 167, number of events= 120 \n\n       coef exp(coef) se(coef)      z Pr(>|z|)   \nsex -0.5434    0.5807   0.2002 -2.715  0.00664 **\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n    exp(coef) exp(-coef) lower .95 upper .95\nsex    0.5807      1.722    0.3923    0.8598\n\nConcordance= 0.572  (se = 0.027 )\nLikelihood ratio test= 7.75  on 1 df,   p=0.005\nWald test            = 7.37  on 1 df,   p=0.007\nScore (logrank) test = 7.54  on 1 df,   p=0.006\n\n\n\najuste_aux <- survfit(ajuste4_E)\nplot(ajuste_aux, mark.time=FALSE, col=c(1:4), lwd=3, las=1, bty='n', xlab=\"Tempo (dias)\", ylab=\"S(t)\")\nniveis <- sort(unique(dados$ph.ecog))\nlegend(\"topright\", levels(factor(niveis)), lwd=3, col=c(1:6))"
