@@ -495,19 +495,18 @@ n= 42 </code></pre>
 <h2 class="anchored" data-anchor-id="verificando-o-modelo">Verificando o modelo</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>smoothSEcurve <span class="ot">&lt;-</span> <span class="cf">function</span>(yy, xx) {</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># usar depois de chamr um grafico</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># usar depois de chamar um grafico</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajusta um curva lowess curve com IC de 95%</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>xx.list <span class="ot">&lt;-</span> <span class="fu">min</span>(xx) <span class="sc">+</span> ((<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span>)<span class="sc">/</span><span class="dv">100</span>)<span class="sc">*</span>(<span class="fu">max</span>(xx) <span class="sc">-</span> <span class="fu">min</span>(xx))</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Then fit loess function through the points (xx, yy)</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co"># at the listed values</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>yy.xx <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">loess</span>(yy <span class="sc">~</span> xx), <span class="at">se=</span>T,</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">xx=</span>xx.list))</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">~</span> xx.list, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">-</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, yy.xx<span class="sc">$</span>df)<span class="sc">*</span>yy.xx<span class="sc">$</span>se.fit <span class="sc">~</span> xx.list, <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">+</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, yy.xx<span class="sc">$</span>df)<span class="sc">*</span>yy.xx<span class="sc">$</span>se.fit <span class="sc">~</span> xx.list, <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Facilita a avaliação dos resíduos</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>xx.list <span class="ot">&lt;-</span> <span class="fu">min</span>(xx) <span class="sc">+</span> ((<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span>)<span class="sc">/</span><span class="dv">100</span>)<span class="sc">*</span>(<span class="fu">max</span>(xx) <span class="sc">-</span> <span class="fu">min</span>(xx))</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>yy.xx <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">loess</span>(yy <span class="sc">~</span> xx), <span class="at">se=</span>T,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">xx=</span>xx.list))</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">~</span> xx.list, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">-</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, yy.xx<span class="sc">$</span>df)<span class="sc">*</span>yy.xx<span class="sc">$</span>se.fit <span class="sc">~</span> xx.list, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, yy.xx<span class="sc">$</span>df)<span class="sc">*</span>yy.xx<span class="sc">$</span>se.fit <span class="sc">~</span> xx.list, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -998,12 +997,12 @@ n= 42 </code></pre>
 <span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>gt<span class="sc">::</span><span class="fu">gt</span>(modelos)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div id="pyglrzehel" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="xwngapghfu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-:where(#pyglrzehel) .gt_table {
+:where(#xwngapghfu) .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1028,7 +1027,7 @@ n= 42 </code></pre>
   border-left-color: #D3D3D3;
 }
 
-:where(#pyglrzehel) .gt_heading {
+:where(#xwngapghfu) .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1040,7 +1039,7 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-:where(#pyglrzehel) .gt_title {
+:where(#xwngapghfu) .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1052,7 +1051,7 @@ n= 42 </code></pre>
   border-bottom-width: 0;
 }
 
-:where(#pyglrzehel) .gt_subtitle {
+:where(#xwngapghfu) .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1064,13 +1063,13 @@ n= 42 </code></pre>
   border-top-width: 0;
 }
 
-:where(#pyglrzehel) .gt_bottom_border {
+:where(#xwngapghfu) .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-:where(#pyglrzehel) .gt_col_headings {
+:where(#xwngapghfu) .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1085,7 +1084,7 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-:where(#pyglrzehel) .gt_col_heading {
+:where(#xwngapghfu) .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1105,7 +1104,7 @@ n= 42 </code></pre>
   overflow-x: hidden;
 }
 
-:where(#pyglrzehel) .gt_column_spanner_outer {
+:where(#xwngapghfu) .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1117,15 +1116,15 @@ n= 42 </code></pre>
   padding-right: 4px;
 }
 
-:where(#pyglrzehel) .gt_column_spanner_outer:first-child {
+:where(#xwngapghfu) .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-:where(#pyglrzehel) .gt_column_spanner_outer:last-child {
+:where(#xwngapghfu) .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-:where(#pyglrzehel) .gt_column_spanner {
+:where(#xwngapghfu) .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1137,7 +1136,7 @@ n= 42 </code></pre>
   width: 100%;
 }
 
-:where(#pyglrzehel) .gt_group_heading {
+:where(#xwngapghfu) .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1162,7 +1161,7 @@ n= 42 </code></pre>
   vertical-align: middle;
 }
 
-:where(#pyglrzehel) .gt_empty_group_heading {
+:where(#xwngapghfu) .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1177,15 +1176,15 @@ n= 42 </code></pre>
   vertical-align: middle;
 }
 
-:where(#pyglrzehel) .gt_from_md > :first-child {
+:where(#xwngapghfu) .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-:where(#pyglrzehel) .gt_from_md > :last-child {
+:where(#xwngapghfu) .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-:where(#pyglrzehel) .gt_row {
+:where(#xwngapghfu) .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1204,7 +1203,7 @@ n= 42 </code></pre>
   overflow-x: hidden;
 }
 
-:where(#pyglrzehel) .gt_stub {
+:where(#xwngapghfu) .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1217,7 +1216,7 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-:where(#pyglrzehel) .gt_stub_row_group {
+:where(#xwngapghfu) .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1231,11 +1230,11 @@ n= 42 </code></pre>
   vertical-align: top;
 }
 
-:where(#pyglrzehel) .gt_row_group_first td {
+:where(#xwngapghfu) .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-:where(#pyglrzehel) .gt_summary_row {
+:where(#xwngapghfu) .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1245,16 +1244,16 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-:where(#pyglrzehel) .gt_first_summary_row {
+:where(#xwngapghfu) .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-:where(#pyglrzehel) .gt_first_summary_row.thick {
+:where(#xwngapghfu) .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-:where(#pyglrzehel) .gt_last_summary_row {
+:where(#xwngapghfu) .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1264,7 +1263,7 @@ n= 42 </code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-:where(#pyglrzehel) .gt_grand_summary_row {
+:where(#xwngapghfu) .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1274,7 +1273,7 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-:where(#pyglrzehel) .gt_first_grand_summary_row {
+:where(#xwngapghfu) .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1284,11 +1283,11 @@ n= 42 </code></pre>
   border-top-color: #D3D3D3;
 }
 
-:where(#pyglrzehel) .gt_striped {
+:where(#xwngapghfu) .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-:where(#pyglrzehel) .gt_table_body {
+:where(#xwngapghfu) .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1297,7 +1296,7 @@ n= 42 </code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-:where(#pyglrzehel) .gt_footnotes {
+:where(#xwngapghfu) .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1311,7 +1310,7 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-:where(#pyglrzehel) .gt_footnote {
+:where(#xwngapghfu) .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -1320,7 +1319,7 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-:where(#pyglrzehel) .gt_sourcenotes {
+:where(#xwngapghfu) .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1334,7 +1333,7 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-:where(#pyglrzehel) .gt_sourcenote {
+:where(#xwngapghfu) .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1342,64 +1341,64 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-:where(#pyglrzehel) .gt_left {
+:where(#xwngapghfu) .gt_left {
   text-align: left;
 }
 
-:where(#pyglrzehel) .gt_center {
+:where(#xwngapghfu) .gt_center {
   text-align: center;
 }
 
-:where(#pyglrzehel) .gt_right {
+:where(#xwngapghfu) .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-:where(#pyglrzehel) .gt_font_normal {
+:where(#xwngapghfu) .gt_font_normal {
   font-weight: normal;
 }
 
-:where(#pyglrzehel) .gt_font_bold {
+:where(#xwngapghfu) .gt_font_bold {
   font-weight: bold;
 }
 
-:where(#pyglrzehel) .gt_font_italic {
+:where(#xwngapghfu) .gt_font_italic {
   font-style: italic;
 }
 
-:where(#pyglrzehel) .gt_super {
+:where(#xwngapghfu) .gt_super {
   font-size: 65%;
 }
 
-:where(#pyglrzehel) .gt_footnote_marks {
+:where(#xwngapghfu) .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-:where(#pyglrzehel) .gt_asterisk {
+:where(#xwngapghfu) .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-:where(#pyglrzehel) .gt_indent_1 {
+:where(#xwngapghfu) .gt_indent_1 {
   text-indent: 5px;
 }
 
-:where(#pyglrzehel) .gt_indent_2 {
+:where(#xwngapghfu) .gt_indent_2 {
   text-indent: 10px;
 }
 
-:where(#pyglrzehel) .gt_indent_3 {
+:where(#xwngapghfu) .gt_indent_3 {
   text-indent: 15px;
 }
 
-:where(#pyglrzehel) .gt_indent_4 {
+:where(#xwngapghfu) .gt_indent_4 {
   text-indent: 20px;
 }
 
-:where(#pyglrzehel) .gt_indent_5 {
+:where(#xwngapghfu) .gt_indent_5 {
   text-indent: 25px;
 }
 </style>

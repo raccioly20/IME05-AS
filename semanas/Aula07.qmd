@@ -78,11 +78,10 @@ prev2[1]/prev2[2]
 
 ```{r}
 smoothSEcurve <- function(yy, xx) {
-# usar depois de chamr um grafico
+# usar depois de chamar um grafico
 # Ajusta um curva lowess curve com IC de 95%
+## Facilita a avaliação dos resíduos
 xx.list <- min(xx) + ((0:100)/100)*(max(xx) - min(xx))
-# Then fit loess function through the points (xx, yy)
-# at the listed values
 yy.xx <- predict(loess(yy ~ xx), se=T,
 newdata=data.frame(xx=xx.list))
 lines(yy.xx$fit ~ xx.list, lwd=2)
