@@ -1,0 +1,112 @@
+---
+title: "Análise de Sobrevivência"
+subtitle: "Modelos Paramétricos TFA (AFT)"
+author: "Ricardo Accioly"
+format:
+  revealjs:
+    width: 1600
+    height: 900 
+    theme: dark
+    slide-number: true
+    css: styles.css
+---
+
+## Modelo TFA Exponencial
+
+O conjunto de dados carregados a seguir são de 238 pacientes viciados com heroína.
+
+Os pacientes foram tratados em duas clínicas (1 e 2), além disso foram coletadas informações sobre dose de medicamento ministrado no tratamento e se o paciente já havia sido preso ou não.
+
+Os tempos (`survt`) são em dias e o evento analisado foi o tempo até a saída da clínica (status=1) ou o tempo até o término de estudo (tempo censurado (status=0).
+
+-   id: Identificação do paciente
+-   clinic: clinica em que ocorreu o tratamento
+-   survt: tempo até a saída da clínica (dias)
+-   status: censoring status 0=censored (censurado), 1=evento
+-   prison: 0= se nunca foi preso e 1= se já foi preso
+-   dose: dose do medicamento ministradp
+
+
+## Carregando os dados
+
+```{r}
+#| echo: fenced
+library(survival)
+library(readxl)
+dados <- read_xlsx("heroina.xlsx", col_names = TRUE )
+summary(dados)
+```
+
+## Avaliando presença de dados ausentes
+
+```{r}
+#| echo: fenced
+nrow(dados)
+sum(complete.cases(dados))
+```
+
+## Ajuste do Modelo Exponencial
+
+```{r}
+#| echo: fenced
+TFAExp <- survreg(Surv(survt, status) ~ clinic + prison + dose,
+                   dist = "exponential", 
+                   data=dados)
+summary(TFAExp)
+```
+
+A variável prison é marginalmente significativa considerando um nível de significância de 0,10.
+
+## Modelo Reajustado
+
+```{r}
+#| echo: fenced
+TFAExp1 <- survreg(Surv(survt, status) ~ clinic + dose,
+                   dist = "exponential", 
+                   data=dados)
+summary(TFAExp1)
+```
+
+Modelo sem a variável prison.
+
+## Método de Kaplan-Meier
+
+```{r}
+#| echo: fenced
+ajusteKM <- survfit(Surv(survt, status) ~ clinic, data = dados)
+plot(ajusteKM, xlab="T(dias)",ylab="S(t)", lty=1:2, col = 1:2) 
+legend("topright", bty = "n", lty = 1:2, col = 1:2,
+legend = sprintf("clinic %d", 1:2))
+```
+
+## Avaliação dos resultados
+
+```{r}
+#| echo: fenced
+coefExp <- coef(TFAExp1)
+exp(coefExp[2])
+exp(coefExp[3])
+```
+
+A mudança da clinica 1 para a clinica 2 teve um fator de aceleração de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1.
+
+A mudança na dose aumentou ligeiramente o tempo até o evento, o fator de aceleração foi de 1,02
+
+## Novos dados
+
+```{r}
+#| echo: fenced
+novosdados <- data.frame(clinic = c("1", "2"),
+                         prison = c("no", "no"), dose = c(60, 60))
+previs <- predict(TFAExp1, type = "quantile", 
+                  newdata = novosdados, p = 0.5)
+previs
+previs[2]/previs[1]
+previs <- predict(TFAExp1, type = "quantile", 
+                  newdata = novosdados, p = 0.7)
+previs
+previs[2]/previs[1]
+```
+
+Veja que no modelo TFA a proporcionalidade é verificada em diferentes quantis da curva de sobrevivência
+

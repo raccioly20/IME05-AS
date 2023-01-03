@@ -1,0 +1,311 @@
+---
+title: "Análise de Sobrevivência"
+subtitle: "Modelos Paramétricos TFA (AFT)"
+author: "Ricardo Accioly"
+format:
+  revealjs:
+    width: 1600
+    height: 900 
+    theme: dark
+    slide-number: true
+    css: styles.css
+---
+
+## Modelos TFA
+
+O conjunto de dados carregados a seguir são de 238 pacientes viciados com heroína.
+
+Os pacientes foram tratados em duas clínicas (1 e 2), além disso foram coletadas informações sobre dose de medicamento ministrado no tratamento e se o paciente já havia sido preso ou não.
+
+Os tempos (`survt`) são em dias e o evento analisado foi o tempo até a saída da clínica (status=1) ou o tempo até o término de estudo (tempo censurado (status=0).
+
+-   id: Identificação do paciente
+-   clinic: clinica em que ocorreu o tratamento
+-   survt: tempo até a saída da clínica (dias)
+-   status: censoring status 0=censored (censurado), 1=evento
+-   prison: 0= se nunca foi preso e 1= se já foi preso
+-   dose: dose do medicamento ministradp
+
+## Carregando os dados
+
+```{r}
+#| echo: fenced
+library(survival)
+library(readxl)
+dados <- read_xlsx("heroina.xlsx", col_names = TRUE )
+summary(dados)
+```
+
+## Avaliando presença de dados ausentes
+
+```{r}
+#| echo: fenced
+nrow(dados)
+sum(complete.cases(dados))
+```
+
+## Ajuste do Modelo Exponencial
+
+```{r}
+#| echo: fenced
+ajustExp <- survreg(Surv(survt,status)~1,dist='exponential', data=dados)
+ajustExp
+alfa <- exp(ajustExp$coefficients[1])
+```
+
+## Ajuste do Modelo Weibull
+
+```{r}
+#| echo: fenced
+ajustWei <- survreg(Surv(survt, status)~1,dist='weibull', data=dados)
+ajustWei
+alfaw <- exp(ajustWei$coefficients[1])
+betaw <- 1/ajustWei$scale
+```
+
+## Ajuste do Modelo Lognormal
+
+```{r}
+#| echo: fenced
+ajustLog <- survreg(Surv(survt,status)~1,dist='lognorm', data=dados)
+ajustLog
+mu <- ajustLog$icoef[1]
+sigma <- exp(ajustLog$icoef[2])
+```
+
+## Ajuste do Modelo Loglogístico
+
+```{r}
+#| echo: fenced
+ajustLogl <- survreg(Surv(survt,status)~1, data=dados, dist='loglogistic')
+ajustLogl
+mu1 <- ajustLogl$icoef[1]
+sigma1 <- exp(ajustLogl$icoef[2])
+```
+
+## Comparação dos Modelos {.scrollable}
+
+```{r}
+#| echo: fenced
+ekm <- survfit(Surv(survt,status)~1, data=dados)
+tempo <- ekm$time
+st <- ekm$surv
+ste <- exp(-tempo/alfa)
+stw <- exp(-(tempo/alfaw)^betaw)
+stln <- pnorm((-log(tempo) + mu)/sigma)
+stll <- plogis((-log(tempo) + mu1)/sigma1)
+knitr::kable(head(cbind(tempo,st,ste,stw,stln,stll),15))
+```
+
+## Comparação dos Modelos
+
+```{r}
+#| echo: fenced
+#| output-location: slide
+#| fig-width: 15
+#| fig-height: 8
+par(mfrow=c(2,2))
+plot(st,ste,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = "S(t): Kaplan-Meier", ylab="S(t): exponencial")
+lines(c(0,1), c(0,1), type="l", lty=1)
+plot(st,stw,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = "S(t): Kaplan-Meier",
+     ylab="S(t): Weibull")
+lines(c(0,1), c(0,1), type="l", lty=1)
+plot(st,stln,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = "S(t): Kaplan-Meier",
+     ylab="S(t): log-normal")
+lines(c(0,1), c(0,1), type="l", lty=1)
+plot(st,stll,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), 
+     xlab = "S(t): Kaplan-Meier", ylab="S(t): loglogística")
+lines(c(0,1), c(0,1), type="l", lty=1)
+```
+
+
+## Comparação dos Modelos
+
+
+```{r}
+#| echo: fenced
+#| output-location: slide
+#| fig-width: 15
+#| fig-height: 8
+par(mfrow=c(1,3))
+tab.np <- summary(ekm)
+invst1 <- qnorm(tab.np$surv)
+invst2 <- qlogis(tab.np$surv) 
+plot(log(tab.np$time), log(-log(tab.np$surv)),
+     xlab="log(t)", ylab="log(-log(S(t)))", pch=20)
+plot(log(tab.np$time), invst1,
+     xlab="log(t)", ylab=expression(Phi^-1*(S(t))), pch=20)
+plot(log(tab.np$time), invst2,
+     xlab="log(t)", ylab=expression(Phi^-1*Logis*(S(t))), pch=20)
+```
+
+## Modelo Weibull
+
+```{r}
+#| echo: fenced
+TFAWei <- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,
+                   dist = "weibull", 
+                   data=dados)
+summary(TFAWei)
+```
+
+## Previsões
+
+```{r}
+#| echo: fenced
+novosdados <- data.frame(clinic = c("1", "2"),
+                         prison = factor(c(0, 0)), dose = c(60, 60))
+previs <- predict(TFAWei, type = "quantile", 
+                  newdata = novosdados, p = 0.5)
+previs
+previs[2]/previs[1]
+previs <- predict(TFAWei, type = "quantile", 
+                  newdata = novosdados, p = 0.7)
+previs
+previs[2]/previs[1]
+```
+
+
+## Função auxiliar
+
+```{r}
+smoothSEcurve <- function(yy, xx) {
+# usar depois de chamar um grafico
+# Ajusta um curva lowess curve com IC de 95%
+## Facilita a avaliação dos resíduos
+xx.list <- min(xx) + ((0:100)/100)*(max(xx) - min(xx))
+yy.xx <- predict(loess(yy ~ xx), se=T,
+newdata=data.frame(xx=xx.list))
+lines(yy.xx$fit ~ xx.list, lwd=2)
+lines(yy.xx$fit -
+qt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)
+lines(yy.xx$fit +
+qt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)
+}
+```
+
+
+## Diagnóstico do Modelo
+
+```{r}
+#| echo: fenced
+#| output-location: slide
+#| fig-width: 15
+#| fig-height: 8
+library(car)
+par(mfrow = c(1, 2), cex = 0.6)
+pred.lin <- predict(TFAWei, type = "lp")[dados$status == 1]
+log.resid <- log(dados$survt[dados$status == 1]) - pred.lin
+plot(pred.lin, log.resid, main = "Grafico TA",
+xlab = "log(valores ajustados)", ylab = "log(residuos)")
+smoothSEcurve(log.resid, pred.lin)
+qqPlot(exp(log.resid), dist = "weibull",
+shape = 1/TFAWei$scale,
+main = "Grafico Q-Q", xlab = "Quantis teoricos Weibull", ylab = "Quantis empiricos")
+```
+
+## Modelo Lognormal
+
+
+```{r}
+#| echo: fenced
+TFALn <- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,
+                   dist = "lognormal", 
+                   data=dados)
+summary(TFALn)
+```
+
+
+## Previsões
+
+```{r}
+#| echo: fenced
+novosdados <- data.frame(clinic = c("1", "2"),
+                         prison = factor(c(0, 0)), dose = c(60, 60))
+previs <- predict(TFALn, type = "quantile", 
+                  newdata = novosdados, p = 0.5)
+previs
+previs[2]/previs[1]
+previs <- predict(TFALn, type = "quantile", 
+                  newdata = novosdados, p = 0.7)
+previs
+previs[2]/previs[1]
+```
+
+
+## Diagnóstico do Modelo
+
+
+```{r}
+#| echo: fenced
+#| output-location: slide
+#| fig-width: 15
+#| fig-height: 8
+par(mfrow = c(1, 2), cex = 0.6)
+pred.lin <- predict(TFALn, type = "lp")[dados$status == 1]
+log.resid <- log(dados$survt[dados$status == 1]) - pred.lin
+plot(pred.lin, log.resid, main = "Grafico TA",
+xlab = "log(valores ajustados)", ylab = "log(residuos)")
+smoothSEcurve(log.resid, pred.lin)
+qqPlot(log.resid, dist = "norm", sd=TFALn$scale, 
+main = "Grafico Q-Q", xlab = "Quantis teoricos Lognormal", ylab = "Quantis empiricos")
+```
+
+
+## Modeleo Loglogistico
+
+```{r}
+#| echo: fenced
+TFALl <- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,
+                   dist = "loglogistic", 
+                   data=dados)
+summary(TFALl)
+```
+
+
+## Previsões
+
+
+```{r}
+#| echo: fenced
+novosdados <- data.frame(clinic = c("1", "2"),
+                         prison = factor(c(0, 0)), dose = c(60, 60))
+previs <- predict(TFALl, type = "quantile", 
+                  newdata = novosdados, p = 0.5)
+previs
+previs[2]/previs[1]
+previs <- predict(TFALl, type = "quantile", 
+                  newdata = novosdados, p = 0.7)
+previs
+previs[2]/previs[1]
+```
+
+
+## Diagnóstico do Modelo
+
+```{r}
+#| echo: fenced
+#| output-location: slide
+#| fig-width: 15
+#| fig-height: 8
+par(mfrow = c(1, 2), cex = 0.6)
+pred.lin <- predict(TFALl, type = "lp")[dados$status == 1]
+log.resid <- log(dados$survt[dados$status == 1]) - pred.lin
+plot(pred.lin, log.resid, main = "Grafico TA",
+xlab = "log(valores ajustados)", ylab = "log(residuos)")
+smoothSEcurve(log.resid, pred.lin)
+qqPlot(log.resid, dist = "logis", 
+main = "Grafico Q-Q", xlab = "Quantis teoricos Logistica", ylab = "Quantis empiricos")
+```
+
+## Usando o stepAIC
+
+```{r}
+#| echo: fenced
+library(MASS)
+TFAWei <- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,
+                   dist = "weibull", 
+                   data=dados)
+TFAWei_AIC <- stepAIC(TFAWei, trace=FALSE)
+summary(TFAWei_AIC)
+```

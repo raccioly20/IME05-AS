@@ -4,7 +4,7 @@ subtitle: "Modelos Paramétricos - Outros Modelos"
 author: "Ricardo Accioly"
 format:
   revealjs:
-    theme: league 
+    theme: dark 
     slide-number: true
     chalkboard: 
       buttons: false
@@ -12,7 +12,7 @@ format:
     css: styles.css
 ---
 
-```{r setup}
+```{r, setup}
 #| echo: true
 #| fig-width: 10
 #| fig-height: 4.5
@@ -20,8 +20,7 @@ format:
 
 ## Modelos Paramétricos
 
-Neste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser.
-Aqui vamos utilizar as funções existentes no pacote `survival` e `flexsurv`.
+Neste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser. Aqui vamos utilizar as funções existentes no pacote `survival` e `flexsurv`.
 
 Para ajustar um modelo paramétrico usamos a função `survreg`.
 
@@ -130,7 +129,6 @@ modelos <- data.frame(modelos=c("Exponencial", "Weibull",
                       p_Akaike = peso.aic)
 gt::gt(modelos)
 ```
-
 
 ## Curvas de Sobrevivência
 

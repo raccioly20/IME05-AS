@@ -1,0 +1,103 @@
+---
+title: "Análise de Sobrevivência"
+subtitle: "Modelos SemiParamétrico de Cox"
+author: "Ricardo Accioly"
+format:
+  revealjs:
+    theme: dark
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    css: styles.css
+---
+
+## Modelo SemiParamétrico de Cox {.smaller .scrollable}
+
+Vamos usar neste exemplo dados da biblioteca survival.
+
+Os dados são de sobrevivência de pacientes com cancer de pulmão em estágio avançado do North Central Cancer Treatment Group.
+
+-   inst: Institution code (Código da instituição)
+-   time: Survival time in days (Tempo de sobrevivência em dias)
+-   status: censoring status 1=censored (censurado), 2=dead (morto)
+-   age: Age in years (Idade em anos)
+-   sex: Male=1 Female=2 (1=Homem, 2 = Mulher)
+-   ph.ecog: ECOG performance score as rated by the physician. 0=asymptomatic, 1= symptomatic but completely ambulatory, 2= in bed \<50% of the day, 3= in bed \> 50% of the day but not bedbound, 4 = bedbound
+-   ph.karno: Karnofsky performance score (bad=0-good=100) rated by physician
+-   pat.karno: Karnofsky performance score as rated by patient
+-   meal.cal: Calories consumed at meals
+-   wt.loss: Weight loss in last six months (pounds)
+
+## Carregando Dados
+
+```{r}
+library(survival)
+dados <- lung
+summary(dados)
+```
+
+## Casos completos
+
+```{r}
+sum(complete.cases(lung))
+```
+
+## Dados Idênticos
+
+```{r}
+dados1 <- na.omit(dados)
+# ties=c("efron","breslow","exact")
+ajuste1 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
+                 ties= "efron", 
+                 data=dados1)
+ajuste2 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
+                 ties= "breslow", 
+                 data=dados1)
+ajuste3 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
+                 ties= "exact", 
+                 data=dados1)
+```
+
+Existem três formas de lidar com dados idênticos
+
+## Dados idênticos
+
+```{r}
+dif_met <- rbind(coef(ajuste1), coef(ajuste2), coef(ajuste3))
+row.names(dif_met) <- c("Efron", "Breslow", "Exact")
+knitr::kable(dif_met)
+```
+
+## Usando o stepAIC
+
+```{r}
+library(MASS)
+ajuste4 <- coxph(Surv(time,status==2) ~ age + sex + ph.ecog + ph.karno + pat.karno + meal.cal + wt.loss, ties= "efron", data=dados1)
+ajust4_AIC <- stepAIC(ajuste4)
+```
+
+## Usando o stepAIC
+
+```{r}
+ajust4_AIC <- stepAIC(ajuste4, trace=FALSE)
+ajust4_AIC
+```
+
+Nesta caso usamos trace=FALSE e com isso resultados parciais não são mostrados
+
+## Ajuste de modelos encaixados
+
+```{r}
+ajuste4a <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno + pat.karno + wt.loss, ties= "efron", data=dados1)
+ajuste4b <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno + wt.loss, ties= "efron", data=dados1)
+```
+
+## Teste da Razão de Verossimilhança
+
+```{r}
+TRV <- 2*(logLik(ajuste4a) - logLik(ajuste4b))
+1 - pchisq(TRV[1],1)
+```
+
+Ao nível de significância de 0,10 poderíamos usar o modelo mais simples sem o pat.karno

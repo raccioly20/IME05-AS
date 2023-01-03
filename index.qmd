@@ -20,8 +20,22 @@ Os códigos apresentados em aula serão colocado por aqui também.
 
 \[📖\] <a href="./semanas/Aula06.html" class="link">Aula06</a>
 
-\[📖\] <a href="./semanas/Aula07.html" class="link">TFA</a>
+\[📖\] <a href="./semanas/Aula06x.html" class="link">TFA1</a>
+
+\[📖\] <a href="./semanas/Aula06x1.html" class="link">TFA2</a>
+
+\[📖\] <a href="./semanas/Aula07.html" class="link">TFA3</a>
 
 \[📖\] <a href="./semanas/Aula08.html" class="link">Cox 1</a>
 
 \[📖\] <a href="./semanas/Aula09.html" class="link">Cox 2</a>
+
+\[📖\] <a href="./semanas/Aula10.html" class="link">Cox 3</a>
+
+\[📖\] <a href="./semanas/Aula11.html" class="link">Cox 4</a>
+
+\[📖\] <a href="./semanas/Aula12.html" class="link">Cox 5</a>
+
+\[📖\] <a href="./semanas/Aula13.html" class="link">Cox 6</a>
+
+\[📖\] <a href="./semanas/Aula14.html" class="link">Cox 7</a>
