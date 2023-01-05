@@ -4,7 +4,7 @@
     "href": "about.html",
     "title": "Sobre",
     "section": "",
-    "text": "Bom dia / Boa tarde / Boa Noite,\nEsta é a página principal do site da disciplina Análise de Sobrevivência IME05-12532."
+    "text": "Bom dia / Boa tarde / Boa Noite,\nEsta é a página principal do site da disciplina Análise de Sobrevivência IME05-12532.\nEste site foi construído usando Quarto e foi baseado em diversas fontes de informação obtidas na internet.\nSeguem algumas referências úteis para o Quarto:\nQuarto\nCurso da Duke University\nComo criar um blog com o Quarto\nWebnar do Quarto"
   },
   {
     "objectID": "acesso-rstudio.html",

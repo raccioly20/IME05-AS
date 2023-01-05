@@ -5,3 +5,15 @@ title: "Sobre"
 Bom dia / Boa tarde / Boa Noite,
 
 Esta é a página principal do site da disciplina Análise de Sobrevivência IME05-12532.
+
+Este site foi construído usando Quarto e foi baseado em diversas fontes de informação obtidas na internet.
+
+Seguem algumas referências úteis para o Quarto:
+
+[Quarto](https://quarto.org/ "Quarto")
+
+[Curso da Duke University](https://sta210-s22.github.io/website/ "STA210")
+
+[Como criar um blog com o Quarto](https://beamilz.com/posts/2022-06-05-creating-a-blog-with-quarto/en/index.html "Blog")
+
+[Webnar do Quarto](https://www.youtube.com/watch?v=yvi5uXQMvu4materials/1-welcome-to-quarto/slides/welcome-to-quarto.html#/title-slide "Webnar")
