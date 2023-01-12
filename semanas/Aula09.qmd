@@ -90,7 +90,6 @@ Veja que wt.loss e ph.karno são marginalmente significativas. pat.karno tem p-v
 ## Usando o BIC
 
 ```{r}
-library(MASS)
 n_eventos <- sum(dados$status)
 ajuste4 <- stepAIC(ajuste1, direction="backward", k= log(n_eventos), trace=FALSE)
 summary(ajuste4)
@@ -120,6 +119,10 @@ row.names(dif_met) <- c("Efron", "Breslow", "Exact")
 knitr::kable(dif_met)
 ```
 
+
+Observe que as diferenças entre os métodos são pequenas, não afetando a interpretação. 
+
+
 ## Avaliando Ajuste
 
 ```{r, message=FALSE}
@@ -140,6 +143,9 @@ legend = sprintf("Ecog %d", 0:3))
 
 ```
 
+
+Não temos indicação gráfica de não proporcionalidade das taxas de falhas
+
 ## Resíduos de Cox-Snell
 
 ```{r, message=FALSE}
@@ -147,6 +153,8 @@ library(car)
 cox.snell <- abs(dados$status - ajuste4$residuals)
 qqPlot(cox.snell, dist = "exp", rate = mean(cox.snell))
 ```
+
+Algum desvio na cauda direita
 
 ## Resíduos de Schoenfeld
 
@@ -157,7 +165,30 @@ par(mfrow=c(1,3))
 plot(resid.sch)
 ```
 
+Não há indicação significativa de não proporcionalidade. 
+
+Somente ph.ecog apresenta um p valor mais baixo indicando um potencial comportamento de não proporcionalidade. A hipótese nula é que o coeficiente angular é zero.
+
+## Resíduos Martingale e Deviance
+
+Os resíduos Martingale servem para avaliar alguma forma de não lineridade do modelo e os resíduoas deviance para verificarmos a presença de outliers.
+
+```{r}
+par(mfrow=c(1,2))
+mart<- residuals(ajuste4,type="martingale")
+dev<- residuals(ajuste4,type="deviance")
+plot(mart, ylab="res",pch=20)
+title("Resıduos Martingale")
+plot(dev, ylab="res",pch=20)
+title("Residuos Deviance")
+```
+
+Não temos indicações claras em nenhum dos dois resíduos 
+
+
 ## Modelo de Cox Estratificado
+
+Na eventiualidade de termos um termo claramente violando a proporcionalidade das taxas de falhas, podemos contornar este problema usando a variável como um estrato.
 
 ```{r}
 ajuste4_E <- coxph(Surv(time, status) ~ sex + strata(ph.ecog), data=dados)

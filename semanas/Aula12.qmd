@@ -1,6 +1,6 @@
 ---
 title: "Análise de Sobrevivência"
-subtitle: "Modelos SemiParamétrico de Cox"
+subtitle: "Estratificação no Modelo de Cox"
 author: "Ricardo Accioly"
 format:
   revealjs:
@@ -12,92 +12,113 @@ format:
     css: styles.css
 ---
 
-## Modelo SemiParamétrico de Cox {.smaller .scrollable}
+## Estratificação no Modelo de Cox {.smaller .scrollable}
 
-Vamos usar neste exemplo dados da biblioteca survival.
+Vamos usar o conjunto de dados da biblioteca `survival` denominado veteran.
 
-Os dados são de sobrevivência de pacientes com cancer de pulmão em estágio avançado do North Central Cancer Treatment Group.
+Os dados são de um estudo clínico realizado pela Administração de Veteranos sobre veteranos do sexo masculino com câncer de pulmão avançado e inoperável.
 
--   inst: Institution code (Código da instituição)
--   time: Survival time in days (Tempo de sobrevivência em dias)
--   status: censoring status 1=censored (censurado), 2=dead (morto)
--   age: Age in years (Idade em anos)
--   sex: Male=1 Female=2 (1=Homem, 2 = Mulher)
--   ph.ecog: ECOG performance score as rated by the physician. 0=asymptomatic, 1= symptomatic but completely ambulatory, 2= in bed \<50% of the day, 3= in bed \> 50% of the day but not bedbound, 4 = bedbound
--   ph.karno: Karnofsky performance score (bad=0-good=100) rated by physician
--   pat.karno: Karnofsky performance score as rated by patient
--   meal.cal: Calories consumed at meals
--   wt.loss: Weight loss in last six months (pounds)
+No ensaio, os pacientes foram randomizados para receber uma quimioterapia padrão ou uma quimioterapia experimental, e o tempo final foi o tempo até a morte
 
-## Carregando Dados
+Os dados coletados foram:
+
+-   trt: tratamento padrão=1 experimental=2
+-   celltype: tipo de tumor (1=squamous, 2=celula pequena, 3=adenocarcinoma, 4=grande)
+-   time: tempo de sobrevivência (dias)
+-   status: censoring status 0=censored (censurado), 1=evento
+-   karno: Karnofsky score, um método de quantificar o status básico do paciente
+-   diagtime: tempo em meses do diagnóstico até a aleatorização
+-   age: idade em anos na aleatorização
+-   prior: terapia anterior 0=não e 10=sim
+
+## Carregando os dados
 
 ```{r}
+#| echo: fenced
 library(survival)
-dados <- lung
+dados <- veteran
 summary(dados)
+str(dados)
 ```
 
-## Casos completos
+## Verificando dados ausentes
 
 ```{r}
-sum(complete.cases(lung))
+#| echo: fenced
+nrow(dados)
+sum(complete.cases(dados))
 ```
 
-## Dados Idênticos
+## Visualizando
 
 ```{r}
-dados1 <- na.omit(dados)
-# ties=c("efron","breslow","exact")
-ajuste1 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
-                 ties= "efron", 
-                 data=dados1)
-ajuste2 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
-                 ties= "breslow", 
-                 data=dados1)
-ajuste3 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno , 
-                 ties= "exact", 
-                 data=dados1)
+#| echo: fenced
+ajusteKM <- survfit(Surv(time/365.25, status) ~ trt, data=dados)
+plot(ajusteKM, mark.time=FALSE, col=c(1:2), lwd=3, las=1, bty='n', xlab='Tempo (anos)', ylab='Sobrevivência')
+legend("topright", c('Padrão', 'Experimental'), lwd=3, col=c(1:2))
 ```
 
-Existem três formas de lidar com dados idênticos
-
-## Dados idênticos
+## Modelo de Cox
 
 ```{r}
-dif_met <- rbind(coef(ajuste1), coef(ajuste2), coef(ajuste3))
-row.names(dif_met) <- c("Efron", "Breslow", "Exact")
-knitr::kable(dif_met)
+#| echo: fenced
+ajusteCox <- coxph(Surv(time/365.25, status) ~ trt + karno + diagtime + age + prior + celltype, data=dados)
+summary(ajusteCox)
 ```
 
 ## Usando o stepAIC
 
 ```{r}
+#| echo: fenced
 library(MASS)
-ajuste4 <- coxph(Surv(time,status==2) ~ age + sex + ph.ecog + ph.karno + pat.karno + meal.cal + wt.loss, ties= "efron", data=dados1)
-ajust4_AIC <- stepAIC(ajuste4)
+ajuste_AIC <- stepAIC(ajusteCox, trace=FALSE)
+summary(ajuste_AIC)
 ```
 
-## Usando o stepAIC
+## Resíduos de Schoenfeld
 
 ```{r}
-ajust4_AIC <- stepAIC(ajuste4, trace=FALSE)
-ajust4_AIC
+#| echo: fenced
+cox.zph(ajuste_AIC)
+resid.sch <- cox.zph(ajuste_AIC)
+par(mfrow=c(1,2))
+plot(resid.sch)
 ```
 
-Nesta caso usamos trace=FALSE e com isso resultados parciais não são mostrados
-
-## Ajuste de modelos encaixados
+## Estratificação
 
 ```{r}
-ajuste4a <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno + pat.karno + wt.loss, ties= "efron", data=dados1)
-ajuste4b <- coxph(Surv(time,status==2) ~ sex + ph.ecog + ph.karno + wt.loss, ties= "efron", data=dados1)
+#| echo: fenced
+ajusteCoxE <- coxph(Surv(time/365.25, status) ~ karno + strata(celltype), data=dados)
+summary(ajusteCoxE)
 ```
 
-## Teste da Razão de Verossimilhança
+## Grafico
 
 ```{r}
-TRV <- 2*(logLik(ajuste4a) - logLik(ajuste4b))
-1 - pchisq(TRV[1],1)
+ajuste_aux <- survfit(ajusteCoxE)
+plot(ajuste_aux, mark.time=FALSE, col=c(1:4), lwd=3, las=1, bty='n', xlab='Tempo (anos)', ylab='Sobrevivência')
+legend("topright", levels(dados$celltype), lwd=3, col=c(1:4))
 ```
 
-Ao nível de significância de 0,10 poderíamos usar o modelo mais simples sem o pat.karno
+## Estratificação de Karno
+
+```{r}
+#| echo: fenced
+# Karno 100 bom
+# Karno >60 o paciente está apto a viver sozinho
+# karno 30-60 requer assintência médica
+# karno < 30 paciente hospitalizado
+dados$fkarno <- cut(dados$karno, c(0, 30, 60, 100))
+ajusteCoxE1 <- coxph(Surv(time/365.25, status) ~ strata(fkarno) + celltype, data=dados)
+summary(ajusteCoxE1)
+```
+
+## Grafico
+
+```{r}
+#| echo: fenced
+ajuste_aux1 <- survfit(ajusteCoxE1)
+plot(ajuste_aux1, mark.time=FALSE, col=c(1:3), lwd=3, las=1, bty='n', xlab='Tempo (anos)', ylab='Sobrevivência')
+legend("topright", levels(dados$fkarno), lwd=3, col=c(1:3))
+```

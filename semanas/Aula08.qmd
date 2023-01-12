@@ -79,40 +79,6 @@ loglog = TRUE, logt=TRUE, xlab = "Tempo", ylab = "log(-log(S))")
 
 ```
 
-## Avaliando o ajuste 3
-
-```{r}
-smoothSEcurve <- function(yy, xx) {
-# usar depois de chamr um grafico
-# Ajusta um curva lowess curve com IC de 95%
-xx.list <- min(xx) + ((0:100)/100)*(max(xx) - min(xx))
-# Then fit loess function through the points (xx, yy)
-# at the listed values
-yy.xx <- predict(loess(yy ~ xx), se=T,
-newdata=data.frame(xx=xx.list))
-lines(yy.xx$fit ~ xx.list, lwd=2)
-lines(yy.xx$fit -
-qt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)
-lines(yy.xx$fit +
-qt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)
-}
-rr.final <- residuals(leuc.cox2 , type="martingale")
-plot(rr.final ~ dados$logwbc)
-smoothSEcurve(rr.final, dados$logwbc)
-title("Residuos Martingale \nversus logwbc")
-plot(rr.final ~ factor(dados$Rx))
-title("Residuos Martingale \nversus Rx")
-```
-
-## Avaliando o ajuste 4
-
-```{r}
-rr.final2 <- residuals(leuc.cox2 , type="deviance")
-plot(dados$logwbc, rr.final2, xlab="logwbc", ylab = "Influencia para logwbc")
-smoothSEcurve(rr.final2, dados$logwbc)
-# rr.final2 <- residuals(leuc.cox2 , type="dfbeta")
-# plot(dados$logwbc, rr.final2[,1], xlab="logwbc", ylab = "Influencia para logwbc")
-```
 
 ## Curva de Sobrevivência
 

@@ -408,860 +408,152 @@ Ricardo Accioly
 </div>
 
 </section>
-<section id="modelo-semiparamétrico-de-cox" class="slide level2 smaller scrollable">
-<h2>Modelo SemiParamétrico de Cox</h2>
-<p>Vamos usar neste exemplo dados da biblioteca survival. Os dados são de sobrevivência de pacientes com cancer de pulmão em estágio avançado do North Central Cancer Treatment Group.</p>
+<section id="diagnóstico-do-modelo-de-cox" class="slide level2 smaller scrollable">
+<h2>Diagnóstico do modelo de Cox</h2>
+<p>O conjunto de dados carregados a seguir são de 238 pacientes viciados com heroína.</p>
+<p>Os pacientes foram tratados em duas clínicas (1 e 2), além disso foram coletadas informações sobre dose de medicamento ministrado no tratamento e se o paciente já havia sido preso ou não.</p>
+<p>Os tempos (<code>survt</code>) são em dias e o evento analisado foi o tempo até a saída da clínica (status=1) ou o tempo até o término de estudo (tempo censurado (status=0).</p>
 <ul>
-<li>inst: Institution code (Código da instituição)</li>
-<li>time: Survival time in days (Tempo de sobrevivência em dias)</li>
-<li>status: censoring status 1=censored (censurado), 2=dead (morto)</li>
-<li>age: Age in years (Idade em anos)</li>
-<li>sex: Male=1 Female=2 (1=Homem, 2 = Mulher)</li>
-<li>ph.ecog: ECOG performance score as rated by the physician. 0=asymptomatic, 1= symptomatic but completely ambulatory, 2= in bed &lt;50% of the day, 3= in bed &gt; 50% of the day but not bedbound, 4 = bedbound</li>
-<li>ph.karno: Karnofsky performance score (bad=0-good=100) rated by physician</li>
-<li>pat.karno: Karnofsky performance score as rated by patient</li>
-<li>meal.cal: Calories consumed at meals</li>
-<li>wt.loss: Weight loss in last six months (pounds)</li>
+<li>id: Identificação do paciente</li>
+<li>clinic: clinica em que ocorreu o tratamento</li>
+<li>survt: tempo até a saída da clínica (dias)</li>
+<li>status: censoring status 0=censored (censurado), 1=evento</li>
+<li>prison: 0= se nunca foi preso e 1= se já foi preso</li>
+<li>dose: dose do medicamento ministradp</li>
 </ul>
 </section>
 <section id="carregando-os-dados" class="slide level2">
 <h2>Carregando os dados</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>dados <span class="ot">&lt;-</span> lung</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">str</span>(dados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>dados <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"heroina.xlsx"</span>, <span class="at">col_names =</span> <span class="cn">TRUE</span> )</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">str</span>(dados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>'data.frame':   228 obs. of  10 variables:
- $ inst     : num  3 3 3 5 1 12 7 11 1 7 ...
- $ time     : num  306 455 1010 210 883 ...
- $ status   : num  2 2 1 2 2 1 2 2 2 2 ...
- $ age      : num  74 68 56 57 60 74 68 71 53 61 ...
- $ sex      : num  1 1 1 1 1 1 2 2 1 1 ...
- $ ph.ecog  : num  1 0 0 1 0 1 2 2 1 2 ...
- $ ph.karno : num  90 90 90 90 100 50 70 60 70 70 ...
- $ pat.karno: num  100 90 90 60 90 80 60 80 80 70 ...
- $ meal.cal : num  1175 1225 NA 1150 NA ...
- $ wt.loss  : num  NA 15 15 11 0 0 10 1 16 34 ...</code></pre>
-</div>
-</div>
-<p>Analisando vemos que o conjunto de dados tem 10 variáveis e 228 observações</p>
-</section>
-<section id="avaliando-a-presença-de-dados-ausentes" class="slide level2">
-<h2>Avaliando a presença de dados ausentes</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">sum</span>(<span class="fu">complete.cases</span>(lung))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 167</code></pre>
-</div>
-</div>
-<p>Existem 167 casos completos, ou seja, temos dados ausentes em algumas variáveis</p>
-</section>
-<section id="visualizando-dados-iniciais" class="slide level2">
-<h2>Visualizando dados iniciais</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>gt<span class="sc">::</span><span class="fu">gt</span>(<span class="fu">head</span>(dados))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-
-<div id="sgxraiwskv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
-}
-
-:where(#sgxraiwskv) .gt_table {
-  display: table;
-  border-collapse: collapse;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-:where(#sgxraiwskv) .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-:where(#sgxraiwskv) .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-:where(#sgxraiwskv) .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 0;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-:where(#sgxraiwskv) .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-:where(#sgxraiwskv) .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-:where(#sgxraiwskv) .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-:where(#sgxraiwskv) .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-:where(#sgxraiwskv) .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-:where(#sgxraiwskv) .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-:where(#sgxraiwskv) .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-:where(#sgxraiwskv) .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-:where(#sgxraiwskv) .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-:where(#sgxraiwskv) .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-:where(#sgxraiwskv) .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-:where(#sgxraiwskv) .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-:where(#sgxraiwskv) .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-:where(#sgxraiwskv) .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-:where(#sgxraiwskv) .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-:where(#sgxraiwskv) .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-:where(#sgxraiwskv) .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-:where(#sgxraiwskv) .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-:where(#sgxraiwskv) .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-:where(#sgxraiwskv) .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-:where(#sgxraiwskv) .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-:where(#sgxraiwskv) .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-:where(#sgxraiwskv) .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-:where(#sgxraiwskv) .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-:where(#sgxraiwskv) .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-left: 4px;
-  padding-right: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-:where(#sgxraiwskv) .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-:where(#sgxraiwskv) .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-:where(#sgxraiwskv) .gt_left {
-  text-align: left;
-}
-
-:where(#sgxraiwskv) .gt_center {
-  text-align: center;
-}
-
-:where(#sgxraiwskv) .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-:where(#sgxraiwskv) .gt_font_normal {
-  font-weight: normal;
-}
-
-:where(#sgxraiwskv) .gt_font_bold {
-  font-weight: bold;
-}
-
-:where(#sgxraiwskv) .gt_font_italic {
-  font-style: italic;
-}
-
-:where(#sgxraiwskv) .gt_super {
-  font-size: 65%;
-}
-
-:where(#sgxraiwskv) .gt_footnote_marks {
-  font-style: italic;
-  font-weight: normal;
-  font-size: 75%;
-  vertical-align: 0.4em;
-}
-
-:where(#sgxraiwskv) .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-:where(#sgxraiwskv) .gt_indent_1 {
-  text-indent: 5px;
-}
-
-:where(#sgxraiwskv) .gt_indent_2 {
-  text-indent: 10px;
-}
-
-:where(#sgxraiwskv) .gt_indent_3 {
-  text-indent: 15px;
-}
-
-:where(#sgxraiwskv) .gt_indent_4 {
-  text-indent: 20px;
-}
-
-:where(#sgxraiwskv) .gt_indent_5 {
-  text-indent: 25px;
-}
-</style>
-<table class="gt_table">
-  
-  <thead class="gt_col_headings">
-    <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">inst</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">time</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">status</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">age</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">sex</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">ph.ecog</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">ph.karno</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">pat.karno</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">meal.cal</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">wt.loss</th>
-    </tr>
-  </thead>
-  <tbody class="gt_table_body">
-    <tr><td class="gt_row gt_right">3</td>
-<td class="gt_row gt_right">306</td>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_right">74</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">90</td>
-<td class="gt_row gt_right">100</td>
-<td class="gt_row gt_right">1175</td>
-<td class="gt_row gt_right">NA</td></tr>
-    <tr><td class="gt_row gt_right">3</td>
-<td class="gt_row gt_right">455</td>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_right">68</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">0</td>
-<td class="gt_row gt_right">90</td>
-<td class="gt_row gt_right">90</td>
-<td class="gt_row gt_right">1225</td>
-<td class="gt_row gt_right">15</td></tr>
-    <tr><td class="gt_row gt_right">3</td>
-<td class="gt_row gt_right">1010</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">56</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">0</td>
-<td class="gt_row gt_right">90</td>
-<td class="gt_row gt_right">90</td>
-<td class="gt_row gt_right">NA</td>
-<td class="gt_row gt_right">15</td></tr>
-    <tr><td class="gt_row gt_right">5</td>
-<td class="gt_row gt_right">210</td>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_right">57</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">90</td>
-<td class="gt_row gt_right">60</td>
-<td class="gt_row gt_right">1150</td>
-<td class="gt_row gt_right">11</td></tr>
-    <tr><td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">883</td>
-<td class="gt_row gt_right">2</td>
-<td class="gt_row gt_right">60</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">0</td>
-<td class="gt_row gt_right">100</td>
-<td class="gt_row gt_right">90</td>
-<td class="gt_row gt_right">NA</td>
-<td class="gt_row gt_right">0</td></tr>
-    <tr><td class="gt_row gt_right">12</td>
-<td class="gt_row gt_right">1022</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">74</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">50</td>
-<td class="gt_row gt_right">80</td>
-<td class="gt_row gt_right">513</td>
-<td class="gt_row gt_right">0</td></tr>
-  </tbody>
-  
-  
-</table>
-</div>
+<pre><code>tibble [238 × 6] (S3: tbl_df/tbl/data.frame)
+ $ id    : num [1:238] 1 2 3 4 5 6 7 8 9 10 ...
+ $ clinic: num [1:238] 1 1 1 1 1 1 1 1 1 1 ...
+ $ status: num [1:238] 1 1 1 1 1 1 1 0 1 1 ...
+ $ survt : num [1:238] 428 275 262 183 259 714 438 796 892 393 ...
+ $ prison: num [1:238] 0 1 0 0 1 0 1 1 0 1 ...
+ $ dose  : num [1:238] 50 55 55 30 65 55 65 60 50 65 ...</code></pre>
 </div>
 </div>
 </section>
-<section id="modelo-de-cox" class="slide level2">
-<h2>Modelo de Cox</h2>
+<section id="avaliando-presença-de-dados-ausentes" class="slide level2">
+<h2>Avaliando presença de dados ausentes</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>ajuste1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,status<span class="sc">==</span><span class="dv">2</span>) <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> ph.ecog <span class="sc">+</span> ph.karno <span class="sc">+</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>                   pat.karno <span class="sc">+</span> meal.cal <span class="sc">+</span> wt.loss, <span class="at">data=</span>dados)</span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">coef</span>(ajuste1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">sum</span>(<span class="fu">complete.cases</span>(dados))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          age           sex       ph.ecog      ph.karno     pat.karno 
- 1.064919e-02 -5.508521e-01  7.341767e-01  2.245506e-02 -1.241655e-02 
-     meal.cal       wt.loss 
- 3.329025e-05 -1.433061e-02 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">logLik</span>(ajuste1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>'log Lik.' -498.7519 (df=7)</code></pre>
+<pre><code>[1] 238</code></pre>
 </div>
 </div>
-<p>As funções coef e loglik nos dão detalhes do modelo ajustado.</p>
 </section>
-<section id="resultados-do-ajuste" class="slide level2">
-<h2>Resultados do ajuste</h2>
+<section id="ajuste-do-modelo" class="slide level2">
+<h2>Ajuste do modelo</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">summary</span>(ajuste1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>ajuste1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(survt,status) <span class="sc">~</span> clinic <span class="sc">+</span> prison <span class="sc">+</span> dose,</span>
+<span id="cb5-2"><a href="#cb5-2"></a>                 <span class="at">ties=</span> <span class="st">"efron"</span>, <span class="at">data=</span>dados)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>ajuste1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
-coxph(formula = Surv(time, status == 2) ~ age + sex + ph.ecog + 
-    ph.karno + pat.karno + meal.cal + wt.loss, data = dados)
+coxph(formula = Surv(survt, status) ~ clinic + prison + dose, 
+    data = dados, ties = "efron")
 
-  n= 168, number of events= 121 
-   (60 observations deleted due to missingness)
+            coef exp(coef)  se(coef)      z        p
+clinic -1.009896  0.364257  0.214889 -4.700 2.61e-06
+prison  0.326555  1.386184  0.167225  1.953   0.0508
+dose   -0.035369  0.965249  0.006379 -5.545 2.94e-08
 
-                coef  exp(coef)   se(coef)      z Pr(&gt;|z|)   
-age        1.065e-02  1.011e+00  1.161e-02  0.917  0.35906   
-sex       -5.509e-01  5.765e-01  2.008e-01 -2.743  0.00609 **
-ph.ecog    7.342e-01  2.084e+00  2.233e-01  3.288  0.00101 **
-ph.karno   2.246e-02  1.023e+00  1.124e-02  1.998  0.04574 * 
-pat.karno -1.242e-02  9.877e-01  8.054e-03 -1.542  0.12316   
-meal.cal   3.329e-05  1.000e+00  2.595e-04  0.128  0.89791   
-wt.loss   -1.433e-02  9.858e-01  7.771e-03 -1.844  0.06518 . 
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-          exp(coef) exp(-coef) lower .95 upper .95
-age          1.0107     0.9894    0.9880    1.0340
-sex          0.5765     1.7347    0.3889    0.8545
-ph.ecog      2.0838     0.4799    1.3452    3.2277
-ph.karno     1.0227     0.9778    1.0004    1.0455
-pat.karno    0.9877     1.0125    0.9722    1.0034
-meal.cal     1.0000     1.0000    0.9995    1.0005
-wt.loss      0.9858     1.0144    0.9709    1.0009
-
-Concordance= 0.651  (se = 0.029 )
-Likelihood ratio test= 28.33  on 7 df,   p=2e-04
-Wald test            = 27.58  on 7 df,   p=3e-04
-Score (logrank) test = 28.41  on 7 df,   p=2e-04</code></pre>
-</div>
-</div>
-<p>O ajuste com todas as variáveis mostrou que 60 observações foram eliminadas devido a dados ausentes.</p>
-</section>
-<section id="reavaliando-o-modelo-de-cox" class="slide level2">
-<h2>Reavaliando o modelo de Cox</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>ajuste2 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,status<span class="sc">==</span><span class="dv">2</span>) <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> ph.ecog <span class="sc">+</span> ph.karno <span class="sc">+</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>                   pat.karno <span class="sc">+</span> wt.loss, <span class="at">data=</span>dados)</span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="fu">coef</span>(ajuste2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        age         sex     ph.ecog    ph.karno   pat.karno     wt.loss 
- 0.01305840 -0.62516673  0.67522724  0.02011588 -0.01474279 -0.01324331 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">logLik</span>(ajuste2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>'log Lik.' -640.4764 (df=6)</code></pre>
-</div>
-</div>
-<p>Neste modelo eliminamos a variável meat.cal, pois seu p-valor indicou que ela não era estatisticamente significativa.</p>
-</section>
-<section id="resultados-do-modelo-reavaliado" class="slide level2">
-<h2>Resultados do modelo reavaliado</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">summary</span>(ajuste2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-coxph(formula = Surv(time, status == 2) ~ age + sex + ph.ecog + 
-    ph.karno + pat.karno + wt.loss, data = dados)
-
-  n= 210, number of events= 148 
-   (18 observations deleted due to missingness)
-
-               coef exp(coef)  se(coef)      z Pr(&gt;|z|)    
-age        0.013058  1.013144  0.009866  1.324 0.185639    
-sex       -0.625167  0.535172  0.178703 -3.498 0.000468 ***
-ph.ecog    0.675227  1.964479  0.198735  3.398 0.000680 ***
-ph.karno   0.020116  1.020320  0.010178  1.976 0.048111 *  
-pat.karno -0.014743  0.985365  0.007300 -2.019 0.043440 *  
-wt.loss   -0.013243  0.986844  0.007009 -1.889 0.058836 .  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-          exp(coef) exp(-coef) lower .95 upper .95
-age          1.0131     0.9870    0.9937    1.0329
-sex          0.5352     1.8686    0.3770    0.7596
-ph.ecog      1.9645     0.5090    1.3307    2.9001
-ph.karno     1.0203     0.9801    1.0002    1.0409
-pat.karno    0.9854     1.0149    0.9714    0.9996
-wt.loss      0.9868     1.0133    0.9734    1.0005
-
-Concordance= 0.656  (se = 0.025 )
-Likelihood ratio test= 37.2  on 6 df,   p=2e-06
-Wald test            = 36.49  on 6 df,   p=2e-06
-Score (logrank) test = 37.59  on 6 df,   p=1e-06</code></pre>
-</div>
-</div>
-<p>Veja que ao eliminar meat.cal passamos a ter somente 18 observações eliminadas devido a dados ausentes.</p>
-</section>
-<section id="eliminando-dados-faltantes" class="slide level2">
-<h2>Eliminando dados faltantes</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>dados1 <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(dados)</span>
-<span id="cb18-2"><a href="#cb18-2"></a>ajuste3 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,status<span class="sc">==</span><span class="dv">2</span>) <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> ph.ecog <span class="sc">+</span> ph.karno <span class="sc">+</span></span>
-<span id="cb18-3"><a href="#cb18-3"></a>                   pat.karno <span class="sc">+</span> meal.cal <span class="sc">+</span> wt.loss, <span class="at">data=</span>dados1)</span>
-<span id="cb18-4"><a href="#cb18-4"></a><span class="fu">logLik</span>(ajuste3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>'log Lik.' -494.0344 (df=7)</code></pre>
-</div>
-</div>
-<p>Observe que modelos com números diferentes de observações não podem ser comparados, desta forma, inicialmente vamos eliminar os dados ausentes. Posteriormente devemos rever este ponto, pois ao eliminar observações podemos estar afetando a signicância de algumas variáveis explicativas.</p>
-</section>
-<section id="resultados-do-ajuste-1" class="slide level2">
-<h2>Resultados do ajuste</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">summary</span>(ajuste3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-coxph(formula = Surv(time, status == 2) ~ age + sex + ph.ecog + 
-    ph.karno + pat.karno + meal.cal + wt.loss, data = dados1)
-
-  n= 167, number of events= 120 
-
-                coef  exp(coef)   se(coef)      z Pr(&gt;|z|)   
-age        1.080e-02  1.011e+00  1.160e-02  0.931  0.35168   
-sex       -5.536e-01  5.749e-01  2.016e-01 -2.746  0.00603 **
-ph.ecog    7.395e-01  2.095e+00  2.250e-01  3.287  0.00101 **
-ph.karno   2.244e-02  1.023e+00  1.123e-02  1.998  0.04575 * 
-pat.karno -1.207e-02  9.880e-01  8.116e-03 -1.488  0.13685   
-meal.cal   2.835e-05  1.000e+00  2.594e-04  0.109  0.91298   
-wt.loss   -1.420e-02  9.859e-01  7.766e-03 -1.828  0.06748 . 
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-          exp(coef) exp(-coef) lower .95 upper .95
-age          1.0109     0.9893    0.9881    1.0341
-sex          0.5749     1.7395    0.3872    0.8534
-ph.ecog      2.0950     0.4773    1.3479    3.2560
-ph.karno     1.0227     0.9778    1.0004    1.0455
-pat.karno    0.9880     1.0121    0.9724    1.0038
-meal.cal     1.0000     1.0000    0.9995    1.0005
-wt.loss      0.9859     1.0143    0.9710    1.0010
-
-Concordance= 0.653  (se = 0.029 )
-Likelihood ratio test= 28.16  on 7 df,   p=2e-04
-Wald test            = 27.5  on 7 df,   p=3e-04
-Score (logrank) test = 28.31  on 7 df,   p=2e-04</code></pre>
-</div>
-</div>
-<p>A variável meat.cal continua sem significância estatística.</p>
-</section>
-<section id="modelo-sem-meat.cal" class="slide level2">
-<h2>Modelo sem meat.cal</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>ajuste4 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,status<span class="sc">==</span><span class="dv">2</span>) <span class="sc">~</span> age <span class="sc">+</span> sex <span class="sc">+</span> ph.ecog <span class="sc">+</span> ph.karno <span class="sc">+</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>                   pat.karno <span class="sc">+</span> wt.loss, <span class="at">data=</span>dados1)</span>
-<span id="cb22-3"><a href="#cb22-3"></a><span class="fu">logLik</span>(ajuste4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>'log Lik.' -494.0404 (df=6)</code></pre>
-</div>
-</div>
-<p>Meat.cal foi retirada do ajuste</p>
-</section>
-<section id="resultados-do-ajuste-2" class="slide level2">
-<h2>Resultados do ajuste</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">summary</span>(ajuste4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-coxph(formula = Surv(time, status == 2) ~ age + sex + ph.ecog + 
-    ph.karno + pat.karno + wt.loss, data = dados1)
-
-  n= 167, number of events= 120 
-
-               coef exp(coef)  se(coef)      z Pr(&gt;|z|)   
-age        0.010589  1.010645  0.011429  0.926  0.35419   
-sex       -0.556616  0.573145  0.199666 -2.788  0.00531 **
-ph.ecog    0.738572  2.092944  0.224746  3.286  0.00102 **
-ph.karno   0.022394  1.022647  0.011218  1.996  0.04590 * 
-pat.karno -0.011912  0.988159  0.007974 -1.494  0.13522   
-wt.loss   -0.014200  0.985901  0.007783 -1.824  0.06808 . 
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-          exp(coef) exp(-coef) lower .95 upper .95
-age          1.0106     0.9895    0.9883    1.0335
-sex          0.5731     1.7448    0.3875    0.8477
-ph.ecog      2.0929     0.4778    1.3473    3.2513
-ph.karno     1.0226     0.9779    1.0004    1.0454
-pat.karno    0.9882     1.0120    0.9728    1.0037
-wt.loss      0.9859     1.0143    0.9710    1.0011
-
-Concordance= 0.653  (se = 0.029 )
-Likelihood ratio test= 28.15  on 6 df,   p=9e-05
-Wald test            = 27.51  on 6 df,   p=1e-04
-Score (logrank) test = 28.31  on 6 df,   p=8e-05</code></pre>
-</div>
-</div>
-<p>Adotando o nível de significância de 0,10, veja que agora pat.karno não é estatisticamente significativa! Na amostra original ela era estatisticamente significativa.</p>
-</section>
-<section id="teste-da-razão-de-verossimilhança" class="slide level2">
-<h2>Teste da Razão de verossimilhança</h2>
-<p>Quando os modelos são encaixados e estamos com amostras iguais, podemos usar o teste da razão de verossimilhança</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>TRV <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>(<span class="fu">logLik</span>(ajuste3) <span class="sc">-</span> <span class="fu">logLik</span>(ajuste4))</span>
-<span id="cb26-2"><a href="#cb26-2"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pchisq</span>(TRV[<span class="dv">1</span>],<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.9131696</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co"># Posso obter o mesmo resultado com a Anova</span></span>
-<span id="cb28-2"><a href="#cb28-2"></a><span class="fu">anova</span>(ajuste3,ajuste4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Analysis of Deviance Table
- Cox model: response is  Surv(time, status == 2)
- Model 1: ~ age + sex + ph.ecog + ph.karno + pat.karno + meal.cal + wt.loss
- Model 2: ~ age + sex + ph.ecog + ph.karno + pat.karno + wt.loss
-   loglik  Chisq Df Pr(&gt;|Chi|)
-1 -494.03                     
-2 -494.04 0.0119  1     0.9132</code></pre>
+Likelihood ratio test=64.56  on 3 df, p=6.229e-14
+n= 238, number of events= 150 </code></pre>
 </div>
 </div>
 </section>
-<section id="modelos-não-encaixados" class="slide level2">
-<h2>Modelos não encaixados</h2>
+<section id="avaliando-o-modelo" class="slide level2">
+<h2>Avaliando o modelo</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>ajuste5 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,status<span class="sc">==</span><span class="dv">2</span>) <span class="sc">~</span> age <span class="sc">+</span> ph.karno <span class="sc">+</span> wt.loss,</span>
-<span id="cb30-2"><a href="#cb30-2"></a>                 <span class="at">data=</span>dados1)</span>
-<span id="cb30-3"><a href="#cb30-3"></a><span class="fu">coef</span>(ajuste5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>         age     ph.karno      wt.loss 
- 0.014614112 -0.008985812 -0.001936254 </code></pre>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>amostra.dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">clinic =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>), <span class="at">prison =</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">2</span>), <span class="at">dose =</span> <span class="fu">rep</span>(<span class="fu">mean</span>(dados<span class="sc">$</span>dose), <span class="dv">2</span>))</span>
+<span id="cb7-2"><a href="#cb7-2"></a>amostra.sobr <span class="ot">&lt;-</span> <span class="fu">survfit</span>(ajuste1, <span class="at">newdata =</span> amostra.dados)</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">plot</span>(amostra.sobr, <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="at">xlab =</span> <span class="st">"Tempo (dias)"</span>, <span class="at">ylab =</span> <span class="st">"S(t)"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="fu">legend</span>(<span class="st">"bottomleft"</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,</span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="at">legend =</span> <span class="fu">sprintf</span>(<span class="st">"clinic %d"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>ajuste6 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,status<span class="sc">==</span><span class="dv">2</span>) <span class="sc">~</span> sex <span class="sc">+</span> ph.ecog <span class="sc">+</span> pat.karno, <span class="at">data=</span>dados1)</span>
-<span id="cb32-2"><a href="#cb32-2"></a><span class="fu">coef</span>(ajuste6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<img data-src="Aula11_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<section id="avaliando-proporcionalidade" class="slide level2">
+<h2>Avaliando proporcionalidade</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>vic.km.clinica <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(survt, status) <span class="sc">~</span> clinic, <span class="at">data =</span> dados)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>tabela.vic <span class="ot">&lt;-</span> <span class="fu">summary</span>(vic.km.clinica)</span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">plot</span>(tabela.vic<span class="sc">$</span>time, <span class="fu">log</span>(<span class="sc">-</span><span class="fu">log</span>(tabela.vic<span class="sc">$</span>surv)),</span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="at">col =</span> tabela.vic<span class="sc">$</span>strata, <span class="at">xlab =</span> <span class="st">"log(t)"</span>, <span class="at">ylab =</span> <span class="st">"log(-log(S))"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="at">pch =</span> <span class="dv">20</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="Aula11_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<section id="avaliando-proporcionalidade-1" class="slide level2">
+<h2>Avaliando proporcionalidade</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(rms)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">survplot</span>(<span class="fu">npsurv</span>(<span class="fu">Surv</span>(survt, status) <span class="sc">~</span> clinic, <span class="at">data =</span> dados),</span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="at">loglog =</span> <span class="cn">TRUE</span>, <span class="at">logt=</span><span class="cn">TRUE</span>, <span class="at">xlab =</span> <span class="st">"Tempo"</span>, <span class="at">ylab =</span> <span class="st">"log(-log(S))"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="Aula11_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="avaliando-o-modelo-1" class="slide level2">
+<h2>Avaliando o modelo</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">survplot</span>(<span class="fu">npsurv</span>(<span class="fu">Surv</span>(survt, status) <span class="sc">~</span> prison, <span class="at">data =</span> dados),</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="at">loglog =</span> <span class="cn">TRUE</span>, <span class="at">logt=</span><span class="cn">TRUE</span>, <span class="at">xlab =</span> <span class="st">"Tempo"</span>, <span class="at">ylab =</span> <span class="st">"log(-log(S))"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="Aula11_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<section id="avaliando-o-modelo-2" class="slide level2">
+<h2>Avaliando o modelo</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>dados<span class="sc">$</span>dose_60 <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(dados<span class="sc">$</span>dose<span class="sc">&lt;=</span><span class="dv">60</span>)</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">survplot</span>(<span class="fu">npsurv</span>(<span class="fu">Surv</span>(survt, status) <span class="sc">~</span> dose_60, <span class="at">data =</span> dados),</span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="at">loglog =</span> <span class="cn">TRUE</span>, <span class="at">logt=</span><span class="cn">TRUE</span>, <span class="at">xlab =</span> <span class="st">"Tempo"</span>, <span class="at">ylab =</span> <span class="st">"log(-log(S))"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="Aula11_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<section id="resíduos-de-cox-snell" class="slide level2">
+<h2>Resíduos de Cox-Snell</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>cox.snell <span class="ot">&lt;-</span> <span class="fu">abs</span>(dados<span class="sc">$</span>status <span class="sc">-</span> ajuste1<span class="sc">$</span>residuals)</span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="fu">qqPlot</span>(cox.snell, <span class="at">dist =</span> <span class="st">"exp"</span>, <span class="at">rate =</span> <span class="fu">mean</span>(cox.snell))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 <div class="cell-output cell-output-stdout">
-<pre><code>         sex      ph.ecog    pat.karno 
--0.494861735  0.389220202 -0.007463256 </code></pre>
+<pre><code>[1]  9 84</code></pre>
+</div>
+</div>
+<img data-src="Aula11_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
+<section id="resíduos-de-schoenfeld" class="slide level2">
+<h2>Resíduos de Schoenfeld</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">cox.zph</span>(ajuste1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        chisq df       p
+clinic 11.159  1 0.00084
+prison  0.839  1 0.35969
+dose    0.515  1 0.47310
+GLOBAL 12.287  3 0.00646</code></pre>
 </div>
 </div>
 </section>
-<section id="comparando-modelo-com-o-aic-e-bic" class="slide level2">
-<h2>Comparando modelo com o AIC e BIC</h2>
+<section id="resíduos-de-schoenfeld-1" class="slide level2">
+<h2>Resíduos de Schoenfeld</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">AIC</span>(ajuste5,ajuste6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        df      AIC
-ajuste5  3 1017.267
-ajuste6  3 1001.862</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">BIC</span>(ajuste5,ajuste6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        df      BIC
-ajuste5  3 1025.629
-ajuste6  3 1010.225</code></pre>
-</div>
-</div>
-<p>A comparação de modelos não encaixados pode ser feita através do AIC ou do BIC. Observe que os modelo devem ter o mesmo tamanho de amostra.</p>
-</section>
-<section id="utilizando-o-stepaic" class="slide level2">
-<h2>Utilizando o stepAIC</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb38-2"><a href="#cb38-2"></a>novoajuste <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(ajuste4, <span class="at">direction =</span> <span class="st">"backward"</span>, <span class="at">trace=</span><span class="cn">FALSE</span>)</span>
-<span id="cb38-3"><a href="#cb38-3"></a><span class="fu">summary</span>(novoajuste)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-coxph(formula = Surv(time, status == 2) ~ sex + ph.ecog + ph.karno + 
-    pat.karno + wt.loss, data = dados1)
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>resid.sch <span class="ot">&lt;-</span> <span class="fu">cox.zph</span>(ajuste1)</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="fu">plot</span>(resid.sch)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-  n= 167, number of events= 120 
-
-               coef exp(coef)  se(coef)      z Pr(&gt;|z|)   
-sex       -0.558190  0.572244  0.199202 -2.802  0.00508 **
-ph.ecog    0.742983  2.102197  0.227604  3.264  0.00110 **
-ph.karno   0.020366  1.020575  0.011080  1.838  0.06604 . 
-pat.karno -0.012401  0.987675  0.007978 -1.554  0.12008   
-wt.loss   -0.014494  0.985611  0.007693 -1.884  0.05957 . 
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-          exp(coef) exp(-coef) lower .95 upper .95
-sex          0.5722     1.7475    0.3873    0.8456
-ph.ecog      2.1022     0.4757    1.3457    3.2841
-ph.karno     1.0206     0.9798    0.9987    1.0430
-pat.karno    0.9877     1.0125    0.9724    1.0032
-wt.loss      0.9856     1.0146    0.9709    1.0006
-
-Concordance= 0.658  (se = 0.029 )
-Likelihood ratio test= 27.28  on 5 df,   p=5e-05
-Wald test            = 26.89  on 5 df,   p=6e-05
-Score (logrank) test = 27.64  on 5 df,   p=4e-05</code></pre>
-</div>
 </div>
 
-<div class="footer footer-default">
+<img data-src="Aula11_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"><div class="footer footer-default">
 
 </div>
 </section>

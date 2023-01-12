@@ -4,7 +4,7 @@ subtitle: "Modelos SemiParamétrico de Cox"
 author: "Ricardo Accioly"
 format:
   revealjs:
-    theme: dark 
+    theme: dark
     slide-number: true
     chalkboard: 
       buttons: false
@@ -12,163 +12,106 @@ format:
     css: styles.css
 ---
 
-## Modelo SemiParamétrico de Cox {.smaller .scrollable}
+## Diagnóstico do modelo de Cox {.smaller .scrollable}
 
-Vamos usar neste exemplo dados da biblioteca survival.
-Os dados são de sobrevivência de pacientes com cancer de pulmão em estágio avançado do North Central Cancer Treatment Group.
+O conjunto de dados carregados a seguir são de 238 pacientes viciados com heroína.
 
--   inst: Institution code (Código da instituição)
--   time: Survival time in days (Tempo de sobrevivência em dias)
--   status: censoring status 1=censored (censurado), 2=dead (morto)
--   age: Age in years (Idade em anos)
--   sex: Male=1 Female=2 (1=Homem, 2 = Mulher)
--   ph.ecog: ECOG performance score as rated by the physician. 0=asymptomatic, 1= symptomatic but completely ambulatory, 2= in bed \<50% of the day, 3= in bed \> 50% of the day but not bedbound, 4 = bedbound
--   ph.karno: Karnofsky performance score (bad=0-good=100) rated by physician
--   pat.karno: Karnofsky performance score as rated by patient
--   meal.cal: Calories consumed at meals
--   wt.loss: Weight loss in last six months (pounds)
+Os pacientes foram tratados em duas clínicas (1 e 2), além disso foram coletadas informações sobre dose de medicamento ministrado no tratamento e se o paciente já havia sido preso ou não.
 
+Os tempos (`survt`) são em dias e o evento analisado foi o tempo até a saída da clínica (status=1) ou o tempo até o término de estudo (tempo censurado (status=0).
+
+-   id: Identificação do paciente
+-   clinic: clinica em que ocorreu o tratamento
+-   survt: tempo até a saída da clínica (dias)
+-   status: censoring status 0=censored (censurado), 1=evento
+-   prison: 0= se nunca foi preso e 1= se já foi preso
+-   dose: dose do medicamento ministradp
 
 ## Carregando os dados
 
 ```{r}
 library(survival)
-dados <- lung
+library(readxl)
+dados <- read_xlsx("heroina.xlsx", col_names = TRUE )
 str(dados)
 ```
 
-Analisando vemos que o conjunto de dados tem 10 variáveis e 228 observações
-
-## Avaliando a presença de dados ausentes
+## Avaliando presença de dados ausentes
 
 ```{r}
-sum(complete.cases(lung))
+sum(complete.cases(dados))
 ```
 
-Existem 167 casos completos, ou seja, temos dados ausentes em algumas variáveis
-
-## Visualizando dados iniciais
+## Ajuste do modelo
 
 ```{r}
-gt::gt(head(dados))
+ajuste1 <- coxph(Surv(survt,status) ~ clinic + prison + dose,
+                 ties= "efron", data=dados)
+ajuste1
 ```
 
-## Modelo de Cox
+## Avaliando o modelo
 
 ```{r}
-ajuste1 <- coxph(Surv(time,status==2) ~ age + sex + ph.ecog + ph.karno +
-                   pat.karno + meal.cal + wt.loss, data=dados)
-coef(ajuste1)
-logLik(ajuste1)
+amostra.dados <- data.frame(clinic = c("1", "2"), prison = rep(0, 2), dose = rep(mean(dados$dose), 2))
+amostra.sobr <- survfit(ajuste1, newdata = amostra.dados)
+plot(amostra.sobr, col = c(1, 2), conf.int = TRUE,
+xlab = "Tempo (dias)", ylab = "S(t)")
+legend("bottomleft", bty = "n", lty = 1, col = 1:2,
+legend = sprintf("clinic %d", 1:2))
 ```
 
-As funções coef e loglik nos dão detalhes do modelo ajustado.
-
-## Resultados do ajuste
+## Avaliando proporcionalidade
 
 ```{r}
-summary(ajuste1)
+vic.km.clinica <- survfit(Surv(survt, status) ~ clinic, data = dados)
+tabela.vic <- summary(vic.km.clinica)
+plot(tabela.vic$time, log(-log(tabela.vic$surv)),
+col = tabela.vic$strata, xlab = "log(t)", ylab = "log(-log(S))",
+pch = 20) 
 ```
 
-O ajuste com todas as variáveis mostrou que 60 observações foram eliminadas devido a dados ausentes. 
-
-## Reavaliando o modelo de Cox
+## Avaliando proporcionalidade
 
 ```{r}
-ajuste2 <- coxph(Surv(time,status==2) ~ age + sex + ph.ecog + ph.karno +
-                   pat.karno + wt.loss, data=dados)
-coef(ajuste2)
-logLik(ajuste2)
+library(rms)
+survplot(npsurv(Surv(survt, status) ~ clinic, data = dados),
+loglog = TRUE, logt=TRUE, xlab = "Tempo", ylab = "log(-log(S))")
 ```
 
-Neste modelo eliminamos a variável meat.cal, pois seu p-valor indicou que ela não era estatisticamente significativa.
-
-## Resultados do modelo reavaliado
+## Avaliando o modelo
 
 ```{r}
-summary(ajuste2)
+survplot(npsurv(Surv(survt, status) ~ prison, data = dados),
+loglog = TRUE, logt=TRUE, xlab = "Tempo", ylab = "log(-log(S))")
 ```
 
-Veja que ao eliminar meat.cal passamos a ter somente 18 observações eliminadas devido a dados ausentes.
-
-
-## Eliminando dados faltantes
+## Avaliando o modelo
 
 ```{r}
-dados1 <- na.omit(dados)
-ajuste3 <- coxph(Surv(time,status==2) ~ age + sex + ph.ecog + ph.karno +
-                   pat.karno + meal.cal + wt.loss, data=dados1)
-logLik(ajuste3)
+dados$dose_60 <- as.integer(dados$dose<=60)
+survplot(npsurv(Surv(survt, status) ~ dose_60, data = dados),
+loglog = TRUE, logt=TRUE, xlab = "Tempo", ylab = "log(-log(S))")
 ```
 
-Observe que modelos com números diferentes de observações não podem ser comparados, desta forma, inicialmente vamos eliminar os dados ausentes.
-Posteriormente devemos rever este ponto, pois ao eliminar observações podemos estar afetando a signicância de algumas variáveis explicativas.
-
-## Resultados do ajuste
+## Resíduos de Cox-Snell
 
 ```{r}
-summary(ajuste3)
+library(car)
+cox.snell <- abs(dados$status - ajuste1$residuals)
+qqPlot(cox.snell, dist = "exp", rate = mean(cox.snell))
 ```
 
-A variável meat.cal continua sem significância estatística. 
-
-## Modelo sem meat.cal
+## Resíduos de Schoenfeld
 
 ```{r}
-ajuste4 <- coxph(Surv(time,status==2) ~ age + sex + ph.ecog + ph.karno +
-                   pat.karno + wt.loss, data=dados1)
-logLik(ajuste4)
+cox.zph(ajuste1)
 ```
 
-Meat.cal foi retirada do ajuste
-
-## Resultados do ajuste
+## Resíduos de Schoenfeld
 
 ```{r}
-summary(ajuste4)
+resid.sch <- cox.zph(ajuste1)
+par(mfrow=c(1,3))
+plot(resid.sch)
 ```
-
-Adotando o nível de significância de 0,10, veja que agora pat.karno não é estatisticamente significativa!
-Na amostra original ela era estatisticamente significativa.
-
-## Teste da Razão de verossimilhança
-
-Quando os modelos são encaixados e estamos com amostras iguais, podemos usar o teste da razão de verossimilhança
-
-```{r}
-TRV <- 2*(logLik(ajuste3) - logLik(ajuste4))
-1 - pchisq(TRV[1],1)
-
-# Posso obter o mesmo resultado com a Anova
-anova(ajuste3,ajuste4)
-```
-
-## Modelos não encaixados
-
-```{r}
-ajuste5 <- coxph(Surv(time,status==2) ~ age + ph.karno + wt.loss,
-                 data=dados1)
-coef(ajuste5)
-ajuste6 <- coxph(Surv(time,status==2) ~ sex + ph.ecog + pat.karno, data=dados1)
-coef(ajuste6)
-```
-
-## Comparando modelo com o AIC e BIC
-
-```{r}
-AIC(ajuste5,ajuste6)
-BIC(ajuste5,ajuste6)
-
-```
-
-A comparação de modelos não encaixados pode ser feita através do AIC ou do BIC. Observe que os modelo devem ter o mesmo tamanho de amostra.
-
-## Utilizando o stepAIC
-
-```{r}
-library(MASS)
-novoajuste <- stepAIC(ajuste4, direction = "backward", trace=FALSE)
-summary(novoajuste)
-```
-
-
