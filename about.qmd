@@ -4,7 +4,7 @@ title: "Sobre"
 
 Bom dia / Boa tarde / Boa Noite,
 
-Esta é a página principal do site da disciplina Análise de Sobrevivência IME05-12532.
+Sou o Professor Ricardo Accioly e esta é a página principal do site da disciplina Análise de Sobrevivência IME05-12532 do Departamento de Estatística da UERJ.
 
 Este site foi construído usando Quarto e foi baseado em diversas fontes de informação obtidas na internet.
 
