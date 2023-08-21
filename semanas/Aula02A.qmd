@@ -1,0 +1,110 @@
+---
+title: "Análise de Sobrevivência"
+subtitle: "Modelos não Paramétricos"
+author: "Prof. Ricardo Accioly"
+format:
+  revealjs:
+    slide-number: true
+    css: styles.css
+    theme: dark
+    footer: "IME05-12532 - Análise de Sobrevivência"
+---
+
+## Análise de Sobrevivência (1)
+
+Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.
+
+Vamos inicialmente utilizar o pacote `survival` que é a principal referência em modelos de análise de sobrevivência.
+
+## Análise de Sobrevivência (2)
+
+Vamos usar neste exemplo dados de pacientes com leucemia.
+
+O objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença.
+
+Existem dois grupos de pacientes:
+
+-   21 receberam 6MP que é um medicamento para tratar leucemia
+-   Os outros 21 receberam placebo.
+
+::: {.fragment .highlight-red}
+O evento falha aqui é ocorrer uma recaída na doença.
+:::
+
+## Método Kaplan-Meier {.smaller}
+
+::: panel-tabset
+### Ajuste
+
+```{r }
+#| echo: fenced
+library(survival)
+tempo<- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)
+status<- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0) 
+tempo2<- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)
+status2<- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) 
+tempo2g <- c(tempo,tempo2)
+status2g <- c(status,status2)
+grupos <- c(rep(1,21),rep(2,21))
+dados <- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)
+ajusteKM <- survfit(Surv(tempos, status) ~ grupos, data=dados)
+```
+
+### Grafico
+
+```{r}
+#| echo: fenced
+plot(ajusteKM, xlab="T(semanas)",ylab="S(t)", lty=2:3) 
+legend("topright",c("6-MP","Placebo"), lty = 2:3)
+```
+:::
+
+## Método Kaplan-Meier {.smaller}
+
+```{r}
+#| echo: fenced
+summary(ajusteKM)
+```
+
+## Método de Nelson-Aalen
+
+```{r}
+tempo<- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)
+status<- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0) 
+tempo2<- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)
+status2<- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) 
+tempo2g <- c(tempo,tempo2)
+status2g <- c(status,status2)
+grupos <- c(rep(1,21),rep(2,21))
+dados <- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)
+ajusteNA <- survfit(Surv(tempos, status)~grupos, data = dados, stype=2, ctype=1 )
+```
+
+## Grafico
+
+```{r}
+#| echo: fenced
+plot(ajusteNA, xlab="T(semanas)",ylab="S(t)", lty=2:3) 
+legend("topright",c("6-MP","Placebo"), lty = 2:3)
+```
+
+## Método Nelson-Aalen {.smaller}
+
+```{r}
+#| echo: fenced
+summary(ajusteNA)
+```
+
+## IC através da Normal {.smaller}
+
+```{r}
+ajusteKM <- survfit(Surv(tempos, status) ~ grupos, data=dados, conf.type="plain")
+summary(ajusteKM)
+```
+
+## IC usando a transformação log-log {.smaller}
+
+```{r}
+ajusteKM <- survfit(Surv(tempos, status) ~ grupos, data=dados, conf.type="log-log")
+summary(ajusteKM)
+```

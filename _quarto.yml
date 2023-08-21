@@ -54,7 +54,9 @@ website:
         contents:
           - href: semanas/Aula01.qmd
             text: "Aula01"
-          - href: semanas/Aula02.qmd
+          - href: semanas/Aula02A.qmd
+            text: "Aula02"
+          - href: semanas/Aula02B.qmd
             text: "Aula02"
           - href: semanas/Aula03.qmd
             text: "Aula03"

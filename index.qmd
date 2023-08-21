@@ -10,7 +10,9 @@ Os códigos apresentados em aula serão colocado por aqui também.
 
 \[📖\] <a href="./semanas/Aula01.html" class="link">Aula01</a>
 
-\[📖\] <a href="./semanas/Aula02.html" class="link">Aula02</a>
+\[📖\] <a href="./semanas/Aula02A.html" class="link">Aula02A</a>
+
+\[📖\] <a href="./semanas/Aula02B.html" class="link">Aula02B</a>
 
 \[📖\] <a href="./semanas/Aula03.html" class="link">Aula03</a>
 
