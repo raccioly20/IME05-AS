@@ -734,7 +734,7 @@ grupos=3 13       13     7.47      4.08      7.98
 <p>Vamos obter uma aproximação da função taxa de falhas usando a função density</p>
 <p>Posteriormente vamos obter o quantil usando uma função do pacote <code>survey</code></p>
 </section>
-<section id="ht-não-paramétrica---6mp" class="slide level2">
+<section id="ht-não-paramétrica---6mp" class="slide level2 smaller">
 <h2>h(t) não paramétrica - 6MP</h2>
 <div class="panel-tabset">
 <ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Codigo</a></li><li><a href="#tabset-4-2">Grafico</a></li></ul>
@@ -748,12 +748,17 @@ grupos=3 13       13     7.47      4.08      7.98
 <span id="cb25-5"><a href="#cb25-5"></a>ajusteKM_sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajusteKM)</span>
 <span id="cb25-6"><a href="#cb25-6"></a>pesos <span class="ot">&lt;-</span> ajusteKM_sum<span class="sc">$</span>n.event<span class="sc">/</span>ajusteKM_sum<span class="sc">$</span>n.risk</span>
 <span id="cb25-7"><a href="#cb25-7"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">weights =</span> pesos,</span>
-<span id="cb25-8"><a href="#cb25-8"></a><span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">35</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-8"><a href="#cb25-8"></a><span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">35</span>)</span>
+<span id="cb25-9"><a href="#cb25-9"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb25-10"><a href="#cb25-10"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span>h<span class="sc">$</span>x, <span class="at">y=</span>h<span class="sc">$</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-4-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">plot</span>(h<span class="sc">$</span>x, h<span class="sc">$</span>y, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"Tempo [semanas]"</span>, <span class="at">ylab =</span> <span class="st">"Taxa de Falhas"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.20</span>)) <span class="sc">+</span> <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb26-3"><a href="#cb26-3"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>)) <span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Tempo [semanas]"</span>, <span class="at">y =</span> <span class="st">"Estimativa da taxa de falhas"</span>, <span class="at">title =</span> <span class="st">"Estimativa da taxa de falhas - 6MP"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img data-src="Aula02B_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
 </div>
@@ -762,7 +767,7 @@ grupos=3 13       13     7.47      4.08      7.98
 </div>
 </div>
 </section>
-<section id="ht-não-paramétrica---placebo" class="slide level2">
+<section id="ht-não-paramétrica---placebo" class="slide level2 smaller">
 <h2>h(t) não paramétrica - Placebo</h2>
 <div class="panel-tabset">
 <ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Codigo</a></li><li><a href="#tabset-5-2">Grafico</a></li></ul>
@@ -776,12 +781,16 @@ grupos=3 13       13     7.47      4.08      7.98
 <span id="cb27-5"><a href="#cb27-5"></a>ajusteKM_sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajusteKM)</span>
 <span id="cb27-6"><a href="#cb27-6"></a>pesos <span class="ot">&lt;-</span> ajusteKM_sum<span class="sc">$</span>n.event<span class="sc">/</span>ajusteKM_sum<span class="sc">$</span>n.risk</span>
 <span id="cb27-7"><a href="#cb27-7"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">weights =</span> pesos,</span>
-<span id="cb27-8"><a href="#cb27-8"></a><span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-8"><a href="#cb27-8"></a><span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">25</span>)</span>
+<span id="cb27-9"><a href="#cb27-9"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span>h<span class="sc">$</span>x, <span class="at">y=</span>h<span class="sc">$</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-5-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">plot</span>(h<span class="sc">$</span>x, h<span class="sc">$</span>y, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"Tempo [semanas]"</span>, <span class="at">ylab =</span> <span class="st">"Taxa de Falhas"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.20</span>)) <span class="sc">+</span>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb28-3"><a href="#cb28-3"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>)) <span class="sc">+</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Tempo [semanas]"</span>, <span class="at">y =</span> <span class="st">"Estimativa da taxa de falhas"</span>, <span class="at">title =</span> <span class="st">"Estimativa da taxa de falhas - Placebo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img data-src="Aula02B_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
 </div>
@@ -792,10 +801,6 @@ grupos=3 13       13     7.47      4.08      7.98
 </section>
 <section id="quantis-não-paramétricos" class="slide level2">
 <h2>Quantis não paramétricos</h2>
-<div class="panel-tabset">
-<ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Quantis</a></li><li><a href="#tabset-6-2">dados_p</a></li></ul>
-<div class="tab-content">
-<div id="tabset-6-1">
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">library</span>(survey)</span>
 <span id="cb29-2"><a href="#cb29-2"></a>dados_p <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">ids =</span> <span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados)</span>
@@ -807,18 +812,6 @@ grupos=3 13       13     7.47      4.08      7.98
 attr(,"ci")
     0.025 0.975
 0.5     5    12</code></pre>
-</div>
-</div>
-</div>
-<div id="tabset-6-2">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">svydesign</span>(<span class="at">ids =</span> <span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Independent Sampling design (with replacement)
-svydesign(ids = ~1, data = dados)</code></pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 

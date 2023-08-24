@@ -111,7 +111,7 @@ A resposta foi o tempo decorrido desde a infecção pela malária até a morte d
 
 Vamos adotar um `nível de significância` de 0,05 para avaliar a diferença entre as curvas, ou seja, se a estatística de `log-rank` tiver um valor menor que 0,05, vamos rejeitar a hipótese nula.
 
-## Método Kaplan-Meier
+## Método Kaplan-Meier 
 
 ::: panel-tabset
 ### Ajuste
@@ -224,7 +224,7 @@ Vamos obter uma aproximação da função taxa de falhas usando a função densi
 
 Posteriormente vamos obter o quantil usando uma função do pacote `survey`
 
-## h(t) não paramétrica - 6MP
+## h(t) não paramétrica - 6MP {.smaller}
 
 ::: panel-tabset
 ### Codigo
@@ -239,17 +239,21 @@ ajusteKM_sum <- summary(ajusteKM)
 pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
 h <- density(ajusteKM_sum$time, weights = pesos,
 kernel = "gaussian", n = 100, from = 0, to = 35)
-
+library(ggplot2)
+data <- data.frame(x=h$x, y=h$y)
 ```
 
 ### Grafico
 
 ```{r}
-plot(h$x, h$y, type = "l", xlab = "Tempo [semanas]", ylab = "Taxa de Falhas")
+ggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20)) + theme_light() +
+  theme(axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14)) +
+  labs(x = "Tempo [semanas]", y = "Estimativa da taxa de falhas", title = "Estimativa da taxa de falhas - 6MP")
 ```
 :::
 
-## h(t) não paramétrica - Placebo
+## h(t) não paramétrica - Placebo  {.smaller}
 
 ::: panel-tabset
 ### Codigo
@@ -264,19 +268,21 @@ ajusteKM_sum <- summary(ajusteKM)
 pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
 h <- density(ajusteKM_sum$time, weights = pesos,
 kernel = "gaussian", n = 100, from = 0, to = 25)
+data <- data.frame(x=h$x, y=h$y)
 ```
 
 ### Grafico
 
 ```{r}
-plot(h$x, h$y, type = "l", xlab = "Tempo [semanas]", ylab = "Taxa de Falhas")
+ggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20)) +  theme_light() +
+  theme(axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14)) +
+  labs(x = "Tempo [semanas]", y = "Estimativa da taxa de falhas", title = "Estimativa da taxa de falhas - Placebo")
 ```
 :::
 
-## Quantis não paramétricos
 
-::: panel-tabset
-### Quantis
+## Quantis não paramétricos
 
 ```{r}
 #| echo: true
@@ -286,9 +292,3 @@ dados_svykm <- svykm(Surv(tempos, status) ~ 1, dados_p, se=TRUE)
 quantile(dados_svykm, 0.5, ci=TRUE)
 ```
 
-### dados_p
-
-```{r}
-svydesign(ids = ~1, data=dados)
-```
-:::
