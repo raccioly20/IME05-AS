@@ -4,12 +4,10 @@ subtitle: "Modelos Paramétricos"
 author: "Ricardo Accioly"
 format:
   revealjs:
-    theme: league 
     slide-number: true
-    chalkboard: 
-      buttons: false
-    preview-links: auto
     css: styles.css
+    theme: dark
+    footer: "IME05-12532 - Análise de Sobrevivência"
 ---
 
 ```{r setup}
@@ -17,7 +15,6 @@ format:
 #| fig-width: 10
 #| fig-height: 4.5
 ```
-
 
 ## Modelos Paramétricos
 
@@ -28,7 +25,6 @@ Vamos ver passo a passo como ajustar os modelos exponencial, Weibull e lognormal
 Aqui vamos utilizar as funções existentes no pacote `survival`.
 
 Para ajustar um modelo paramétrico usamo a função `survreg`.
-
 
 ## Metodo de Kaplan-Meier
 
@@ -65,9 +61,7 @@ plot(h$x, h$y, type = "l", xlab = "Tempo (meses)", ylab = "Taxa de Falhas")
 
 ```
 
-
 ## Quantis não parametricos
-
 
 ```{r}
 library(survey)
@@ -79,7 +73,6 @@ names(med.km) <- c("mediana KM","ICI","ICS")
 med.km
 ```
 
-
 ## Modelo Exponencial
 
 ```{r}
@@ -90,8 +83,7 @@ alfa <- exp(ajustExp$coefficients[1])
 alfa
 ```
 
-
-## Taxa de falhas NP vs Exp
+## Taxa de falhas NP vs Exp {.smaller}
 
 ```{r}
 ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
@@ -110,29 +102,53 @@ curve(expHaz(x, rate=1/alfa), from=0, to=45,
       add=TRUE)
 ```
 
-## Quantis do Modelo Exponencial
+## Taxa de falhas NP vs Exp
 
 ```{r}
-coef <- ajustExp$coefficients[1] 
-var <- ajustExp$var
-IC.exp <- c(alfa,exp(coef-1.96*sqrt(var)), 
-            exp(coef+1.96*sqrt(var)))
-names(IC.exp) <- c("media","ICI","ICS")
-IC.exp
+#| echo: false
+ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
+ajusteKM_sum <- summary(ajusteKM)
+pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
+h <- density(ajusteKM_sum$time, weights = pesos, 
+             kernel = "gaussian", n = 100, from = 0, to = 45)
+plot(h$x, h$y, type = "l", xlab = "Tempo (meses)", ylab = "Taxa de Falhas")
+expHaz <- function(x, rate) { 
+  dexp(x, rate=rate)/
+    pexp(x, rate=rate, lower.tail=F)
+}
+curve(expHaz(x, rate=1/alfa), from=0, to=45,
+      ylab="h(t)", xlab="Tempo", 
+      col="red", ylim=c(0,1),
+      add=TRUE)
+```
 
+## Quantis do Modelo Exponencial
+
+::: panel-tabset
+
+### Cálculos
+
+```{r}
 est_med <- predict(ajustExp,type="uquantile",p=0.5,se.fit=T)
 est_med1 <- est_med$fit[1]
 est_med1.ep <- est_med$se.fit[1]
-exp(est_med1)
+
 IC.mediana_exp <- c(exp(est_med1),exp(est_med1-1.96*est_med1.ep),
 exp(est_med1+1.96*est_med1.ep))
 names(IC.mediana_exp) <- c("mediana Exp","ICI","ICS")
+
+```
+
+### Resultados
+
+```{r}
+#IC Mediana
 IC.mediana_exp
 ```
 
+:::
 
 ## Avaliação do modelo
-
 
 ```{r}
 library(car)
@@ -144,19 +160,45 @@ xlab = "Quantis Teoricos (exponencial)",
 ylab = "Quantis Empiricos")
 ```
 
+## Avaliação do modelo Exponencial
+
+```{r}
+#| echo: false
+library(car)
+n.censurado <- dados$tempos[dados$status == 1]
+qqPlot(n.censurado,
+dist = "exp",
+rate = 1/alfa,
+xlab = "Quantis Teoricos (exponencial)",
+ylab = "Quantis Empiricos")
+```
+
+
 
 ## Modelo Weibull
 
+::: panel-tabset
+
+### Ajuste do modelo
 ```{r}
 ajustWei <- survreg(Surv(tempos,status)~1, data=dados, dist='weibull')
 ajustWei
 alfaw <- exp(ajustWei$coefficients[1])
-alfaw
 betaw <- 1/ajustWei$scale
+```
+
+### Parametros do modelo
+
+```{r}
+# Alfa - parametro de escala
+alfaw
+# Beta - parametro de forma
 betaw
 ```
 
-## Taxa de Falhas NP vs Weibull
+:::
+
+## Taxa de Falhas NP vs Weibull {.smaller}
 
 ```{r}
 ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
@@ -178,20 +220,56 @@ curve(weibHaz(x, shape=betaw, scale=alfaw),
 
 ```
 
+## Taxa de Falhas NP vs Weibull
+
+```{r}
+#| echo: false
+ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
+ajusteKM_sum <- summary(ajusteKM)
+pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
+h <- density(ajusteKM_sum$time, weights = pesos, 
+             kernel = "gaussian", n = 100, from = 0, to = 45)
+plot(h$x, h$y, type = "l", xlab = "Tempo (meses)", ylab = "Taxa de Falhas",
+     ylim=c(0,0.10))
+weibHaz <- function(x, shape, scale) { 
+  dweibull(x, shape=shape, scale=scale)/
+  pweibull(x, shape=shape, scale=scale,
+           lower.tail=F)
+}
+curve(weibHaz(x, shape=betaw, scale=alfaw), 
+      from=0, to=45,
+      ylab="h(t)", xlab="Tempo", col="red",
+      add=TRUE)
+
+```
 
 ## Quantis do Modelo Weibull
+
+::: panel-tabset
+
+### Cálculos
 
 ```{r}
 ajustWei <- survreg(Surv(tempos,status)~1, data=dados, dist='weibull')
 estmedw <- predict(ajustWei,type="uquantile",p=0.5,se.fit=T)
 estmedw1 <- estmedw$fit[1]
 estmedw1.ep <- estmedw$se.fit[1]
-exp(estmedw1)
 IC.mediana_w <- c(exp(estmedw1),exp(estmedw1-1.96*estmedw1.ep),
 exp(estmedw1+1.96*estmedw1.ep))
 names(IC.mediana_w) <- c("mediana Wei","ICI","ICS")
+
+```
+
+
+### Resultados
+
+```{r}
+## Mediana
 IC.mediana_w
 ```
+
+
+:::
 
 ## Avaliação do Modelo
 
@@ -205,20 +283,45 @@ xlab = "Quantis Teoricos (Weibull)",
 ylab = "Quantis Empiricos")
 ```
 
+## Avaliação do Modelo Weibull
+
+```{r}
+#| echo: false
+n.censurado <- dados$tempos[dados$status == 1]
+qqPlot(n.censurado,
+dist = "weibull",
+shape = betaw,
+scale = alfaw,
+xlab = "Quantis Teoricos (Weibull)",
+ylab = "Quantis Empiricos")
+```
+
 
 ## Modelo Lognormal
+
+::: panel-tabset
+
+### Ajuste do modelo
 
 ```{r}
 ajustLog <- survreg(Surv(tempos, status)~1, data=dados, dist='lognorm')
 ajustLog
 mulog <- ajustLog$icoef[1]
-mulog
 sigmalog <- ajustLog$scale
+```
+
+### Parametros do modelo
+
+```{r}
+# Media
+mulog
+# Desvio padrão
 sigmalog
 ```
 
+:::
 
-## Taxa de Falhas NP vs Lognormal
+## Taxa de Falhas NP vs Lognormal {.smaller}
 
 ```{r}
 ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
@@ -239,6 +342,27 @@ curve(logHaz(x, meanlog=mulog, sdlog=sigmalog), from=0, to=45,
       add=TRUE)
 ```
 
+## Taxa de Falhas NP vs Lognormal {.smaller}
+
+```{r}
+#| echo: false
+ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
+ajusteKM_sum <- summary(ajusteKM)
+pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
+h <- density(ajusteKM_sum$time, weights = pesos, 
+             kernel = "gaussian", n = 100, from = 0, to = 45)
+plot(h$x, h$y, type = "l", xlab = "Tempo (meses)", ylab = "Taxa de Falhas",
+     ylim=c(0,0.10))
+logHaz <- function(x, meanlog, sdlog) {
+  dlnorm(x, meanlog=meanlog, sdlog=sdlog)/
+  plnorm(x, meanlog=meanlog, sdlog=sdlog, 
+         lower.tail=F)
+}
+curve(logHaz(x, meanlog=mulog, sdlog=sigmalog), from=0, to=45,
+      ylab="h(t)", xlab="Tempo", 
+      col="red",
+      add=TRUE)
+```
 
 ## Quantis do Modelo Lognormal
 
@@ -247,7 +371,6 @@ ajustLog <- survreg(Surv(tempos, status)~1, data=dados, dist='lognorm')
 estmedl <- predict(ajustLog,type="uquantile",p=0.5,se.fit=T)
 estmedl1 <- estmedl$fit[1]
 estmedl1.ep <- estmedl$se.fit[1]
-exp(estmedl1)
 IC.mediana_log <- c(exp(estmedl1),exp(estmedl1-1.96*estmedl1.ep),
 exp(estmedl1+1.96*estmedl1.ep))
 names(IC.mediana_log) <- c("mediana Logn","ICI","ICS")
@@ -266,21 +389,47 @@ xlab = "Quantis Teoricos (Lognormal)",
 ylab = "Quantis Empiricos")
 ```
 
+## Avaliação do Modelo Lognormal
 
-## Modleo Loglogístico
+```{r}
+#| echo: false
+n.censurado <- dados$tempos[dados$status == 1]
+qqPlot(n.censurado,
+dist = "lnorm",
+meanlog = mulog,
+sdlog = sigmalog,
+xlab = "Quantis Teoricos (Lognormal)",
+ylab = "Quantis Empiricos")
+```
+
+
+## Modelo Loglogístico {.smaller}
+
+::: panel-tabset
+
+### Ajuste do modelo
 
 ```{r}
 ajustLLog <- survreg(Surv(tempos, status)~1, data=dados, dist='loglogistic')
 ajustLLog
 betall<- ajustLLog$icoef[1]
-betall
 alfall <- ajustLLog$scale
-alfall
 mullog <- betall
 sigmallog <- alfall
 ```
 
-## Taxa de Falhas NP vs Lologística
+### Parametros do modelo
+
+```{r}
+# Media
+betall
+# Desvio padrão
+alfall
+```
+
+:::
+
+## Taxa de Falhas NP vs Loglogística {.smaller}
 
 ```{r}
 ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
@@ -298,15 +447,33 @@ curve(llogisHaz(x, alfa=alfall, beta=betall), from=0, to=45,
       ylab="h(t)", xlab="Tempo", col="red", add=TRUE)
 ```
 
-## Quantis do Modelo LogLogístico
+## Taxa de Falhas NP vs Loglogística
 
+```{r}
+#| echo: false
+ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
+ajusteKM_sum <- summary(ajusteKM)
+pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
+h <- density(ajusteKM_sum$time, weights = pesos, 
+             kernel = "gaussian", n = 100, from = 0, to = 45)
+plot(h$x, h$y, type = "l", xlab = "Tempo (meses)", ylab = "Taxa de Falhas",
+     ylim=c(0,0.15))
+library(flexsurv)
+llogisHaz <- function(x, alfa, beta) {
+  haz <- hllogis(x, shape = beta, scale = alfa, log = FALSE)
+}
+curve(llogisHaz(x, alfa=alfall, beta=betall), from=0, to=45,
+      ylab="h(t)", xlab="Tempo", col="red", add=TRUE)
+```
+
+
+## Quantis do Modelo LogLogístico
 
 ```{r}
 ajustLLog <- survreg(Surv(tempos, status)~1, data=dados, dist='loglogistic')
 estmedll <- predict(ajustLLog,type="uquantile",p=0.5,se.fit=T)
 estmedll1 <- estmedll$fit[1]
 estmedll1.ep <- estmedll$se.fit[1]
-exp(estmedll1)
 IC.mediana_llog <- c(exp(estmedll1),exp(estmedll1-1.96*estmedll1.ep),
 exp(estmedll1+1.96*estmedll1.ep))
 names(IC.mediana_llog) <- c("mediana LogL","ICI","ICS")
@@ -325,8 +492,21 @@ qqPlot(n.censurado,
        ylab = "Quantis Empiricos")
 ```
 
+## Avaliação do Modelo LogLogístico
 
-## Curvas de Sobrevivência
+```{r}
+#| echo: false
+n.censurado <- dados$tempos[dados$status == 1]
+qqPlot(n.censurado,
+       dist = "llogis",
+       shape = betall,
+       scale = alfall,
+       xlab = "Quantis Teoricos (LogLogistico)",
+       ylab = "Quantis Empiricos")
+```
+
+
+## Curvas de Sobrevivência {.smaller}
 
 ```{r}
 tempo <- ekm$time
@@ -350,7 +530,6 @@ IC.mediana_llog
 
 ## Comparação NP vs Paramétrico
 
-
 ```{r}
 par(mfrow=c(1,2))
 plot(st,ste,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = "S(t): Kaplan-Meier", ylab="S(t): exponencial")
@@ -362,7 +541,6 @@ lines(c(0,1), c(0,1), type="l", lty=1)
 
 ## Comparação NP vs Paramétrico
 
-
 ```{r}
 par(mfrow=c(1,2))
 plot(st,stln,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = "S(t): Kaplan-Meier",
@@ -373,9 +551,7 @@ plot(st,stll,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = "S(t): Kapl
 lines(c(0,1), c(0,1), type="l", lty=1)
 ```
 
-
 ## Comparação NP vs Paramétrico
-
 
 ```{r}
 par(mfrow=c(1,2))
@@ -387,9 +563,7 @@ lines(c(0,tempo),c(1,stw), lty=2)
 legend(25,0.8,lty=c(1,2),c("Kaplan-Meier", "Weibull"),bty="n",cex=0.8)
 ```
 
-
 ## Comparação NP vs Paramétrico
-
 
 ```{r}
 par(mfrow=c(1,2))

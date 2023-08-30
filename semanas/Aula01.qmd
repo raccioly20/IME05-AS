@@ -49,8 +49,8 @@ ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
 ### Grafico
 
 ```{r}
-plot(ajusteKM, xlab="Tempo (semanas)",ylab="S(t)", lty=2) 
-legend("topright","6-MP", lty = 2)
+plot(ajusteKM, xlab="Tempo (semanas)",ylab="S(t)", lty=1, col=1, lwd=2 ) 
+legend("topright","6-MP", lty = 1, col = 1, lwd=2)
 ```
 :::
 
@@ -79,8 +79,8 @@ ajusteKM2 <- survfit(Surv(tempos, status) ~ 1, data=dados2)
 ### Gráfico
 
 ```{r}
-plot(ajusteKM2, xlab="t(semanas)",ylab="S(t)", lty=3) 
-legend("topright","Placebo", lty = 3)
+plot(ajusteKM2, xlab="t(semanas)",ylab="S(t)", lty=1, col=2, lwd=2 ) 
+legend("topright","Placebo", lty = 1, col=2, lwd=2)
 ```
 :::
 
@@ -108,9 +108,9 @@ ajusteKM3 <- survfit(Surv(tempos, status) ~ grupos, data=dados3)
 ### Gráfico
 
 ```{r}
-plot(ajusteKM3, xlab="T(semanas)",ylab="S(t)", lty=1:2, 
-     col=c(1,4), conf.int=0.95) 
-legend("topright",c("6-MP","Placebo"), lty = 1:2, col=c(1,4))
+plot(ajusteKM3, xlab="T(semanas)",ylab="S(t)", lty=1, 
+     col=c(1,2), lwd=2, conf.int=0.95) 
+legend("topright",c("6-MP","Placebo"), lty = 1:1, col=c(1,2), lwd=2)
 
 ```
 :::

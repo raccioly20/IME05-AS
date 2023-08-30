@@ -100,8 +100,6 @@
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
@@ -459,11 +457,26 @@ Ricardo Accioly
 <img data-src="Aula04_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
 <section id="taxa-de-falhas-não-paramétrica" class="slide level2">
 <h2>Taxa de Falhas não paramétrica</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>dados)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>ajusteKM_sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajusteKM)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>pesos <span class="ot">&lt;-</span> ajusteKM_sum<span class="sc">$</span>n.event<span class="sc">/</span>ajusteKM_sum<span class="sc">$</span>n.risk</span>
+<span id="cb4-4"><a href="#cb4-4"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">weights =</span> pesos, </span>
+<span id="cb4-5"><a href="#cb4-5"></a>             <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">45</span>)</span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">plot</span>(h<span class="sc">$</span>x, h<span class="sc">$</span>y, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"Tempo (meses)"</span>, <span class="at">ylab =</span> <span class="st">"Taxa de Falhas"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
+</div>
 <img data-src="Aula04_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
 <section id="quantis-não-parametricos" class="slide level2">
 <h2>Quantis não parametricos</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(survey)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>dados_p <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">ids =</span> <span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>dados_svykm <span class="ot">&lt;-</span> <span class="fu">svykm</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> <span class="dv">1</span>, dados_p, <span class="at">se=</span><span class="cn">TRUE</span>)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>mediana.km <span class="ot">&lt;-</span> <span class="fu">quantile</span>(dados_svykm, <span class="fl">0.5</span>, <span class="at">ci=</span><span class="cn">TRUE</span>)</span>
+<span id="cb5-5"><a href="#cb5-5"></a>med.km <span class="ot">&lt;-</span> <span class="fu">c</span>(mediana.km[<span class="dv">1</span>], <span class="fu">attr</span>(mediana.km, <span class="st">"ci"</span>)[<span class="dv">1</span>], <span class="fu">attr</span>(mediana.km, <span class="st">"ci"</span>)[<span class="dv">2</span>])</span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="fu">names</span>(med.km) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"mediana KM"</span>,<span class="st">"ICI"</span>,<span class="st">"ICS"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>med.km</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mediana KM        ICI        ICS 
         18         10         28 </code></pre>
@@ -473,6 +486,9 @@ Ricardo Accioly
 <section id="modelo-exponencial" class="slide level2">
 <h2>Modelo Exponencial</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>ajustExp <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempos,status)<span class="sc">~</span><span class="dv">1</span>, </span>
+<span id="cb7-2"><a href="#cb7-2"></a>                    <span class="at">data=</span>dados, <span class="at">dist=</span><span class="st">'exponential'</span>)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>ajustExp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = "exponential")
@@ -486,44 +502,101 @@ Scale fixed at 1
 Loglik(model)= -68.3   Loglik(intercept only)= -68.3
 n= 20 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>alfa <span class="ot">&lt;-</span> <span class="fu">exp</span>(ajustExp<span class="sc">$</span>coefficients[<span class="dv">1</span>])</span>
+<span id="cb9-2"><a href="#cb9-2"></a>alfa</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept) 
    20.41176 </code></pre>
 </div>
 </div>
 </section>
-<section id="taxa-de-falhas-np-vs-exp" class="slide level2">
+<section id="taxa-de-falhas-np-vs-exp" class="slide level2 smaller">
+<h2>Taxa de falhas NP vs Exp</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>dados)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>ajusteKM_sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajusteKM)</span>
+<span id="cb11-3"><a href="#cb11-3"></a>pesos <span class="ot">&lt;-</span> ajusteKM_sum<span class="sc">$</span>n.event<span class="sc">/</span>ajusteKM_sum<span class="sc">$</span>n.risk</span>
+<span id="cb11-4"><a href="#cb11-4"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">weights =</span> pesos, </span>
+<span id="cb11-5"><a href="#cb11-5"></a>             <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">45</span>)</span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="fu">plot</span>(h<span class="sc">$</span>x, h<span class="sc">$</span>y, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"Tempo (meses)"</span>, <span class="at">ylab =</span> <span class="st">"Taxa de Falhas"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7"></a>expHaz <span class="ot">&lt;-</span> <span class="cf">function</span>(x, rate) { </span>
+<span id="cb11-8"><a href="#cb11-8"></a>  <span class="fu">dexp</span>(x, <span class="at">rate=</span>rate)<span class="sc">/</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>    <span class="fu">pexp</span>(x, <span class="at">rate=</span>rate, <span class="at">lower.tail=</span>F)</span>
+<span id="cb11-10"><a href="#cb11-10"></a>}</span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="fu">curve</span>(<span class="fu">expHaz</span>(x, <span class="at">rate=</span><span class="dv">1</span><span class="sc">/</span>alfa), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">45</span>,</span>
+<span id="cb11-12"><a href="#cb11-12"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, </span>
+<span id="cb11-13"><a href="#cb11-13"></a>      <span class="at">col=</span><span class="st">"red"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb11-14"><a href="#cb11-14"></a>      <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="taxa-de-falhas-np-vs-exp-1" class="slide level2">
 <h2>Taxa de falhas NP vs Exp</h2>
 
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
 <section id="quantis-do-modelo-exponencial" class="slide level2">
 <h2>Quantis do Modelo Exponencial</h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Cálculos</a></li><li><a href="#tabset-1-2">Resultados</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>   media      ICI      ICS 
-20.41176 12.68908 32.83455 </code></pre>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>est_med <span class="ot">&lt;-</span> <span class="fu">predict</span>(ajustExp,<span class="at">type=</span><span class="st">"uquantile"</span>,<span class="at">p=</span><span class="fl">0.5</span>,<span class="at">se.fit=</span>T)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>est_med1 <span class="ot">&lt;-</span> est_med<span class="sc">$</span>fit[<span class="dv">1</span>]</span>
+<span id="cb12-3"><a href="#cb12-3"></a>est_med1.ep <span class="ot">&lt;-</span> est_med<span class="sc">$</span>se.fit[<span class="dv">1</span>]</span>
+<span id="cb12-4"><a href="#cb12-4"></a></span>
+<span id="cb12-5"><a href="#cb12-5"></a>IC.mediana_exp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">exp</span>(est_med1),<span class="fu">exp</span>(est_med1<span class="fl">-1.96</span><span class="sc">*</span>est_med1.ep),</span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="fu">exp</span>(est_med1<span class="fl">+1.96</span><span class="sc">*</span>est_med1.ep))</span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="fu">names</span>(IC.mediana_exp) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"mediana Exp"</span>,<span class="st">"ICI"</span>,<span class="st">"ICS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 14.14836</code></pre>
 </div>
+<div id="tabset-1-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">#IC Mediana</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>IC.mediana_exp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mediana Exp         ICI         ICS 
   14.148357    8.795399   22.759175 </code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
 <section id="avaliação-do-modelo" class="slide level2">
 <h2>Avaliação do modelo</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>n.censurado <span class="ot">&lt;-</span> dados<span class="sc">$</span>tempos[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">qqPlot</span>(n.censurado,</span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="at">dist =</span> <span class="st">"exp"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="at">rate =</span> <span class="dv">1</span><span class="sc">/</span>alfa,</span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="at">xlab =</span> <span class="st">"Quantis Teoricos (exponencial)"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="at">ylab =</span> <span class="st">"Quantis Empiricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 17 16</code></pre>
 </div>
 </div>
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+<section id="avaliação-do-modelo-exponencial" class="slide level2">
+<h2>Avaliação do modelo Exponencial</h2>
+<div class="cell">
+
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 17 16</code></pre>
+</div>
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
 <section id="modelo-weibull" class="slide level2">
 <h2>Modelo Weibull</h2>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Ajuste do modelo</a></li><li><a href="#tabset-2-2">Parametros do modelo</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
 <div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>ajustWei <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempos,status)<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados, <span class="at">dist=</span><span class="st">'weibull'</span>)</span>
+<span id="cb18-2"><a href="#cb18-2"></a>ajustWei</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = "weibull")
@@ -537,43 +610,117 @@ Scale= 0.647922
 Loglik(model)= -66.1   Loglik(intercept only)= -66.1
 n= 20 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>alfaw <span class="ot">&lt;-</span> <span class="fu">exp</span>(ajustWei<span class="sc">$</span>coefficients[<span class="dv">1</span>])</span>
+<span id="cb20-2"><a href="#cb20-2"></a>betaw <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>ajustWei<span class="sc">$</span>scale</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-2-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Alfa - parametro de escala</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>alfaw</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept) 
    21.33885 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Beta - parametro de forma</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>betaw</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.543396</code></pre>
 </div>
 </div>
+</div>
+</div>
+</div>
 </section>
-<section id="taxa-de-falhas-np-vs-weibull" class="slide level2">
+<section id="taxa-de-falhas-np-vs-weibull" class="slide level2 smaller">
+<h2>Taxa de Falhas NP vs Weibull</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>dados)</span>
+<span id="cb25-2"><a href="#cb25-2"></a>ajusteKM_sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajusteKM)</span>
+<span id="cb25-3"><a href="#cb25-3"></a>pesos <span class="ot">&lt;-</span> ajusteKM_sum<span class="sc">$</span>n.event<span class="sc">/</span>ajusteKM_sum<span class="sc">$</span>n.risk</span>
+<span id="cb25-4"><a href="#cb25-4"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">weights =</span> pesos, </span>
+<span id="cb25-5"><a href="#cb25-5"></a>             <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">45</span>)</span>
+<span id="cb25-6"><a href="#cb25-6"></a><span class="fu">plot</span>(h<span class="sc">$</span>x, h<span class="sc">$</span>y, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"Tempo (meses)"</span>, <span class="at">ylab =</span> <span class="st">"Taxa de Falhas"</span>,</span>
+<span id="cb25-7"><a href="#cb25-7"></a>     <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.10</span>))</span>
+<span id="cb25-8"><a href="#cb25-8"></a>weibHaz <span class="ot">&lt;-</span> <span class="cf">function</span>(x, shape, scale) { </span>
+<span id="cb25-9"><a href="#cb25-9"></a>  <span class="fu">dweibull</span>(x, <span class="at">shape=</span>shape, <span class="at">scale=</span>scale)<span class="sc">/</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a>  <span class="fu">pweibull</span>(x, <span class="at">shape=</span>shape, <span class="at">scale=</span>scale,</span>
+<span id="cb25-11"><a href="#cb25-11"></a>           <span class="at">lower.tail=</span>F)</span>
+<span id="cb25-12"><a href="#cb25-12"></a>}</span>
+<span id="cb25-13"><a href="#cb25-13"></a><span class="fu">curve</span>(<span class="fu">weibHaz</span>(x, <span class="at">shape=</span>betaw, <span class="at">scale=</span>alfaw), </span>
+<span id="cb25-14"><a href="#cb25-14"></a>      <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">45</span>,</span>
+<span id="cb25-15"><a href="#cb25-15"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, <span class="at">col=</span><span class="st">"red"</span>,</span>
+<span id="cb25-16"><a href="#cb25-16"></a>      <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<section id="taxa-de-falhas-np-vs-weibull-1" class="slide level2">
 <h2>Taxa de Falhas NP vs Weibull</h2>
 
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
 <section id="quantis-do-modelo-weibull" class="slide level2">
 <h2>Quantis do Modelo Weibull</h2>
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Cálculos</a></li><li><a href="#tabset-3-2">Resultados</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 16.82823</code></pre>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>ajustWei <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempos,status)<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados, <span class="at">dist=</span><span class="st">'weibull'</span>)</span>
+<span id="cb26-2"><a href="#cb26-2"></a>estmedw <span class="ot">&lt;-</span> <span class="fu">predict</span>(ajustWei,<span class="at">type=</span><span class="st">"uquantile"</span>,<span class="at">p=</span><span class="fl">0.5</span>,<span class="at">se.fit=</span>T)</span>
+<span id="cb26-3"><a href="#cb26-3"></a>estmedw1 <span class="ot">&lt;-</span> estmedw<span class="sc">$</span>fit[<span class="dv">1</span>]</span>
+<span id="cb26-4"><a href="#cb26-4"></a>estmedw1.ep <span class="ot">&lt;-</span> estmedw<span class="sc">$</span>se.fit[<span class="dv">1</span>]</span>
+<span id="cb26-5"><a href="#cb26-5"></a>IC.mediana_w <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">exp</span>(estmedw1),<span class="fu">exp</span>(estmedw1<span class="fl">-1.96</span><span class="sc">*</span>estmedw1.ep),</span>
+<span id="cb26-6"><a href="#cb26-6"></a><span class="fu">exp</span>(estmedw1<span class="fl">+1.96</span><span class="sc">*</span>estmedw1.ep))</span>
+<span id="cb26-7"><a href="#cb26-7"></a><span class="fu">names</span>(IC.mediana_w) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"mediana Wei"</span>,<span class="st">"ICI"</span>,<span class="st">"ICS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</div>
+<div id="tabset-3-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="do">## Mediana</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>IC.mediana_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mediana Wei         ICI         ICS 
    16.82823    11.95670    23.68456 </code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
 <section id="avaliação-do-modelo-1" class="slide level2">
 <h2>Avaliação do Modelo</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>n.censurado <span class="ot">&lt;-</span> dados<span class="sc">$</span>tempos[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb29-2"><a href="#cb29-2"></a><span class="fu">qqPlot</span>(n.censurado,</span>
+<span id="cb29-3"><a href="#cb29-3"></a><span class="at">dist =</span> <span class="st">"weibull"</span>,</span>
+<span id="cb29-4"><a href="#cb29-4"></a><span class="at">shape =</span> betaw,</span>
+<span id="cb29-5"><a href="#cb29-5"></a><span class="at">scale =</span> alfaw,</span>
+<span id="cb29-6"><a href="#cb29-6"></a><span class="at">xlab =</span> <span class="st">"Quantis Teoricos (Weibull)"</span>,</span>
+<span id="cb29-7"><a href="#cb29-7"></a><span class="at">ylab =</span> <span class="st">"Quantis Empiricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 17 16</code></pre>
 </div>
 </div>
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
+<section id="avaliação-do-modelo-weibull" class="slide level2">
+<h2>Avaliação do Modelo Weibull</h2>
+<div class="cell">
+
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 17 16</code></pre>
+</div>
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
 <section id="modelo-lognormal" class="slide level2">
 <h2>Modelo Lognormal</h2>
+<div class="panel-tabset">
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Ajuste do modelo</a></li><li><a href="#tabset-4-2">Parametros do modelo</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1">
 <div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>ajustLog <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempos, status)<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados, <span class="at">dist=</span><span class="st">'lognorm'</span>)</span>
+<span id="cb32-2"><a href="#cb32-2"></a>ajustLog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = "lognorm")
@@ -587,25 +734,65 @@ Scale= 0.7648167
 Loglik(model)= -65.7   Loglik(intercept only)= -65.7
 n= 20 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>mulog <span class="ot">&lt;-</span> ajustLog<span class="sc">$</span>icoef[<span class="dv">1</span>]</span>
+<span id="cb34-2"><a href="#cb34-2"></a>sigmalog <span class="ot">&lt;-</span> ajustLog<span class="sc">$</span>scale</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-4-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># Media</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a>mulog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept) 
    2.717176 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co"># Desvio padrão</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a>sigmalog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7648167</code></pre>
 </div>
 </div>
+</div>
+</div>
+</div>
 </section>
-<section id="taxa-de-falhas-np-vs-lognormal" class="slide level2">
+<section id="taxa-de-falhas-np-vs-lognormal" class="slide level2 smaller">
+<h2>Taxa de Falhas NP vs Lognormal</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>dados)</span>
+<span id="cb39-2"><a href="#cb39-2"></a>ajusteKM_sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajusteKM)</span>
+<span id="cb39-3"><a href="#cb39-3"></a>pesos <span class="ot">&lt;-</span> ajusteKM_sum<span class="sc">$</span>n.event<span class="sc">/</span>ajusteKM_sum<span class="sc">$</span>n.risk</span>
+<span id="cb39-4"><a href="#cb39-4"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">weights =</span> pesos, </span>
+<span id="cb39-5"><a href="#cb39-5"></a>             <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">45</span>)</span>
+<span id="cb39-6"><a href="#cb39-6"></a><span class="fu">plot</span>(h<span class="sc">$</span>x, h<span class="sc">$</span>y, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"Tempo (meses)"</span>, <span class="at">ylab =</span> <span class="st">"Taxa de Falhas"</span>,</span>
+<span id="cb39-7"><a href="#cb39-7"></a>     <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.10</span>))</span>
+<span id="cb39-8"><a href="#cb39-8"></a>logHaz <span class="ot">&lt;-</span> <span class="cf">function</span>(x, meanlog, sdlog) {</span>
+<span id="cb39-9"><a href="#cb39-9"></a>  <span class="fu">dlnorm</span>(x, <span class="at">meanlog=</span>meanlog, <span class="at">sdlog=</span>sdlog)<span class="sc">/</span></span>
+<span id="cb39-10"><a href="#cb39-10"></a>  <span class="fu">plnorm</span>(x, <span class="at">meanlog=</span>meanlog, <span class="at">sdlog=</span>sdlog, </span>
+<span id="cb39-11"><a href="#cb39-11"></a>         <span class="at">lower.tail=</span>F)</span>
+<span id="cb39-12"><a href="#cb39-12"></a>}</span>
+<span id="cb39-13"><a href="#cb39-13"></a><span class="fu">curve</span>(<span class="fu">logHaz</span>(x, <span class="at">meanlog=</span>mulog, <span class="at">sdlog=</span>sigmalog), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">45</span>,</span>
+<span id="cb39-14"><a href="#cb39-14"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, </span>
+<span id="cb39-15"><a href="#cb39-15"></a>      <span class="at">col=</span><span class="st">"red"</span>,</span>
+<span id="cb39-16"><a href="#cb39-16"></a>      <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
+<section id="taxa-de-falhas-np-vs-lognormal-1" class="slide level2 smaller">
 <h2>Taxa de Falhas NP vs Lognormal</h2>
 
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
 <section id="quantis-do-modelo-lognormal" class="slide level2">
 <h2>Quantis do Modelo Lognormal</h2>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 15.13751</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>ajustLog <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempos, status)<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados, <span class="at">dist=</span><span class="st">'lognorm'</span>)</span>
+<span id="cb40-2"><a href="#cb40-2"></a>estmedl <span class="ot">&lt;-</span> <span class="fu">predict</span>(ajustLog,<span class="at">type=</span><span class="st">"uquantile"</span>,<span class="at">p=</span><span class="fl">0.5</span>,<span class="at">se.fit=</span>T)</span>
+<span id="cb40-3"><a href="#cb40-3"></a>estmedl1 <span class="ot">&lt;-</span> estmedl<span class="sc">$</span>fit[<span class="dv">1</span>]</span>
+<span id="cb40-4"><a href="#cb40-4"></a>estmedl1.ep <span class="ot">&lt;-</span> estmedl<span class="sc">$</span>se.fit[<span class="dv">1</span>]</span>
+<span id="cb40-5"><a href="#cb40-5"></a>IC.mediana_log <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">exp</span>(estmedl1),<span class="fu">exp</span>(estmedl1<span class="fl">-1.96</span><span class="sc">*</span>estmedl1.ep),</span>
+<span id="cb40-6"><a href="#cb40-6"></a><span class="fu">exp</span>(estmedl1<span class="fl">+1.96</span><span class="sc">*</span>estmedl1.ep))</span>
+<span id="cb40-7"><a href="#cb40-7"></a><span class="fu">names</span>(IC.mediana_log) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"mediana Logn"</span>,<span class="st">"ICI"</span>,<span class="st">"ICS"</span>)</span>
+<span id="cb40-8"><a href="#cb40-8"></a>IC.mediana_log</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mediana Logn          ICI          ICS 
     15.13751     10.71601     21.38334 </code></pre>
@@ -615,15 +802,37 @@ n= 20 </code></pre>
 <section id="avaliação-do-modelo-2" class="slide level2">
 <h2>Avaliação do Modelo</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>n.censurado <span class="ot">&lt;-</span> dados<span class="sc">$</span>tempos[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb42-2"><a href="#cb42-2"></a><span class="fu">qqPlot</span>(n.censurado,</span>
+<span id="cb42-3"><a href="#cb42-3"></a><span class="at">dist =</span> <span class="st">"lnorm"</span>,</span>
+<span id="cb42-4"><a href="#cb42-4"></a><span class="at">meanlog =</span> mulog,</span>
+<span id="cb42-5"><a href="#cb42-5"></a><span class="at">sdlog =</span> sigmalog,</span>
+<span id="cb42-6"><a href="#cb42-6"></a><span class="at">xlab =</span> <span class="st">"Quantis Teoricos (Lognormal)"</span>,</span>
+<span id="cb42-7"><a href="#cb42-7"></a><span class="at">ylab =</span> <span class="st">"Quantis Empiricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 17 16</code></pre>
 </div>
 </div>
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
-<section id="modleo-loglogístico" class="slide level2">
-<h2>Modleo Loglogístico</h2>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"></section>
+<section id="avaliação-do-modelo-lognormal" class="slide level2">
+<h2>Avaliação do Modelo Lognormal</h2>
 <div class="cell">
+
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 17 16</code></pre>
+</div>
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-26-1.png" width="960" class="r-stretch"></section>
+<section id="modelo-loglogístico" class="slide level2 smaller">
+<h2>Modelo Loglogístico</h2>
+<div class="panel-tabset">
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Ajuste do modelo</a></li><li><a href="#tabset-5-2">Parametros do modelo</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>ajustLLog <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempos, status)<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados, <span class="at">dist=</span><span class="st">'loglogistic'</span>)</span>
+<span id="cb45-2"><a href="#cb45-2"></a>ajustLLog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = "loglogistic")
@@ -637,25 +846,64 @@ Scale= 0.4496653
 Loglik(model)= -66   Loglik(intercept only)= -66
 n= 20 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>betall<span class="ot">&lt;-</span> ajustLLog<span class="sc">$</span>icoef[<span class="dv">1</span>]</span>
+<span id="cb47-2"><a href="#cb47-2"></a>alfall <span class="ot">&lt;-</span> ajustLLog<span class="sc">$</span>scale</span>
+<span id="cb47-3"><a href="#cb47-3"></a>mullog <span class="ot">&lt;-</span> betall</span>
+<span id="cb47-4"><a href="#cb47-4"></a>sigmallog <span class="ot">&lt;-</span> alfall</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-5-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="co"># Media</span></span>
+<span id="cb48-2"><a href="#cb48-2"></a>betall</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept) 
    2.737415 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="co"># Desvio padrão</span></span>
+<span id="cb50-2"><a href="#cb50-2"></a>alfall</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.4496653</code></pre>
 </div>
 </div>
+</div>
+</div>
+</div>
 </section>
-<section id="taxa-de-falhas-np-vs-lologística" class="slide level2">
-<h2>Taxa de Falhas NP vs Lologística</h2>
+<section id="taxa-de-falhas-np-vs-loglogística" class="slide level2 smaller">
+<h2>Taxa de Falhas NP vs Loglogística</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>dados)</span>
+<span id="cb52-2"><a href="#cb52-2"></a>ajusteKM_sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajusteKM)</span>
+<span id="cb52-3"><a href="#cb52-3"></a>pesos <span class="ot">&lt;-</span> ajusteKM_sum<span class="sc">$</span>n.event<span class="sc">/</span>ajusteKM_sum<span class="sc">$</span>n.risk</span>
+<span id="cb52-4"><a href="#cb52-4"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">weights =</span> pesos, </span>
+<span id="cb52-5"><a href="#cb52-5"></a>             <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">45</span>)</span>
+<span id="cb52-6"><a href="#cb52-6"></a><span class="fu">plot</span>(h<span class="sc">$</span>x, h<span class="sc">$</span>y, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xlab =</span> <span class="st">"Tempo (meses)"</span>, <span class="at">ylab =</span> <span class="st">"Taxa de Falhas"</span>,</span>
+<span id="cb52-7"><a href="#cb52-7"></a>     <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.15</span>))</span>
+<span id="cb52-8"><a href="#cb52-8"></a><span class="fu">library</span>(flexsurv)</span>
+<span id="cb52-9"><a href="#cb52-9"></a>llogisHaz <span class="ot">&lt;-</span> <span class="cf">function</span>(x, alfa, beta) {</span>
+<span id="cb52-10"><a href="#cb52-10"></a>  haz <span class="ot">&lt;-</span> <span class="fu">hllogis</span>(x, <span class="at">shape =</span> beta, <span class="at">scale =</span> alfa, <span class="at">log =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb52-11"><a href="#cb52-11"></a>}</span>
+<span id="cb52-12"><a href="#cb52-12"></a><span class="fu">curve</span>(<span class="fu">llogisHaz</span>(x, <span class="at">alfa=</span>alfall, <span class="at">beta=</span>betall), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">45</span>,</span>
+<span id="cb52-13"><a href="#cb52-13"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-29-1.png" width="960" class="r-stretch"></section>
+<section id="taxa-de-falhas-np-vs-loglogística-1" class="slide level2">
+<h2>Taxa de Falhas NP vs Loglogística</h2>
+
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-30-1.png" width="960" class="r-stretch"></section>
 <section id="quantis-do-modelo-loglogístico" class="slide level2">
 <h2>Quantis do Modelo LogLogístico</h2>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 15.447</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>ajustLLog <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempos, status)<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados, <span class="at">dist=</span><span class="st">'loglogistic'</span>)</span>
+<span id="cb53-2"><a href="#cb53-2"></a>estmedll <span class="ot">&lt;-</span> <span class="fu">predict</span>(ajustLLog,<span class="at">type=</span><span class="st">"uquantile"</span>,<span class="at">p=</span><span class="fl">0.5</span>,<span class="at">se.fit=</span>T)</span>
+<span id="cb53-3"><a href="#cb53-3"></a>estmedll1 <span class="ot">&lt;-</span> estmedll<span class="sc">$</span>fit[<span class="dv">1</span>]</span>
+<span id="cb53-4"><a href="#cb53-4"></a>estmedll1.ep <span class="ot">&lt;-</span> estmedll<span class="sc">$</span>se.fit[<span class="dv">1</span>]</span>
+<span id="cb53-5"><a href="#cb53-5"></a>IC.mediana_llog <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">exp</span>(estmedll1),<span class="fu">exp</span>(estmedll1<span class="fl">-1.96</span><span class="sc">*</span>estmedll1.ep),</span>
+<span id="cb53-6"><a href="#cb53-6"></a><span class="fu">exp</span>(estmedll1<span class="fl">+1.96</span><span class="sc">*</span>estmedll1.ep))</span>
+<span id="cb53-7"><a href="#cb53-7"></a><span class="fu">names</span>(IC.mediana_llog) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"mediana LogL"</span>,<span class="st">"ICI"</span>,<span class="st">"ICS"</span>)</span>
+<span id="cb53-8"><a href="#cb53-8"></a>IC.mediana_llog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mediana LogL          ICI          ICS 
     15.44700     10.85399     21.98361 </code></pre>
@@ -665,15 +913,38 @@ n= 20 </code></pre>
 <section id="avaliação-do-modelo-3" class="slide level2">
 <h2>Avaliação do Modelo</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>n.censurado <span class="ot">&lt;-</span> dados<span class="sc">$</span>tempos[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb55-2"><a href="#cb55-2"></a><span class="fu">qqPlot</span>(n.censurado,</span>
+<span id="cb55-3"><a href="#cb55-3"></a>       <span class="at">dist =</span> <span class="st">"llogis"</span>,</span>
+<span id="cb55-4"><a href="#cb55-4"></a>       <span class="at">shape =</span> betall,</span>
+<span id="cb55-5"><a href="#cb55-5"></a>       <span class="at">scale =</span> alfall,</span>
+<span id="cb55-6"><a href="#cb55-6"></a>       <span class="at">xlab =</span> <span class="st">"Quantis Teoricos (LogLogistico)"</span>,</span>
+<span id="cb55-7"><a href="#cb55-7"></a>       <span class="at">ylab =</span> <span class="st">"Quantis Empiricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 17 16</code></pre>
 </div>
 </div>
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"></section>
-<section id="curvas-de-sobrevivência" class="slide level2">
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-32-1.png" width="960" class="r-stretch"></section>
+<section id="avaliação-do-modelo-loglogístico" class="slide level2">
+<h2>Avaliação do Modelo LogLogístico</h2>
+<div class="cell">
+
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 17 16</code></pre>
+</div>
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-33-1.png" width="960" class="r-stretch"></section>
+<section id="curvas-de-sobrevivência" class="slide level2 smaller">
 <h2>Curvas de Sobrevivência</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a>tempo <span class="ot">&lt;-</span> ekm<span class="sc">$</span>time</span>
+<span id="cb58-2"><a href="#cb58-2"></a>st <span class="ot">&lt;-</span> ekm<span class="sc">$</span>surv</span>
+<span id="cb58-3"><a href="#cb58-3"></a>ste <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>tempo<span class="sc">/</span>alfa)</span>
+<span id="cb58-4"><a href="#cb58-4"></a>stw <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>(tempo<span class="sc">/</span>alfaw)<span class="sc">^</span>betaw)</span>
+<span id="cb58-5"><a href="#cb58-5"></a>stln <span class="ot">&lt;-</span> <span class="fu">pnorm</span>((<span class="sc">-</span><span class="fu">log</span>(tempo) <span class="sc">+</span> mulog)<span class="sc">/</span>sigmalog)</span>
+<span id="cb58-6"><a href="#cb58-6"></a>stll <span class="ot">&lt;-</span> <span class="fu">plogis</span>((<span class="sc">-</span><span class="fu">log</span>(tempo) <span class="sc">+</span> mullog)<span class="sc">/</span>sigmallog)</span>
+<span id="cb58-7"><a href="#cb58-7"></a><span class="fu">cbind</span>(tempo,st,ste,stw,stln, stll)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      tempo         st       ste        stw       stln      stll
  [1,]     3 0.95000000 0.8633164 0.95274148 0.98283934 0.9745310
@@ -700,22 +971,27 @@ n= 20 </code></pre>
 <section id="quantis" class="slide level2">
 <h2>Quantis</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a>med.km</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mediana KM        ICI        ICS 
         18         10         28 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a>IC.mediana_exp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mediana Exp         ICI         ICS 
   14.148357    8.795399   22.759175 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a>IC.mediana_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mediana Wei         ICI         ICS 
    16.82823    11.95670    23.68456 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a>IC.mediana_log</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mediana Logn          ICI          ICS 
     15.13751     10.71601     21.38334 </code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a>IC.mediana_llog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mediana LogL          ICI          ICS 
     15.44700     10.85399     21.98361 </code></pre>
@@ -724,22 +1000,57 @@ n= 20 </code></pre>
 </section>
 <section id="comparação-np-vs-paramétrico" class="slide level2">
 <h2>Comparação NP vs Paramétrico</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb70-2"><a href="#cb70-2"></a><span class="fu">plot</span>(st,ste,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>, <span class="at">ylab=</span><span class="st">"S(t): exponencial"</span>)</span>
+<span id="cb70-3"><a href="#cb70-3"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span>
+<span id="cb70-4"><a href="#cb70-4"></a><span class="fu">plot</span>(st,stw,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
+<span id="cb70-5"><a href="#cb70-5"></a>     <span class="at">ylab=</span><span class="st">"S(t): Weibull"</span>)</span>
+<span id="cb70-6"><a href="#cb70-6"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-36-1.png" width="960" class="r-stretch"></section>
 <section id="comparação-np-vs-paramétrico-1" class="slide level2">
 <h2>Comparação NP vs Paramétrico</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb71-2"><a href="#cb71-2"></a><span class="fu">plot</span>(st,stln,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
+<span id="cb71-3"><a href="#cb71-3"></a>     <span class="at">ylab=</span><span class="st">"S(t): Log-normal"</span>)</span>
+<span id="cb71-4"><a href="#cb71-4"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span>
+<span id="cb71-5"><a href="#cb71-5"></a><span class="fu">plot</span>(st,stll,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
+<span id="cb71-6"><a href="#cb71-6"></a>     <span class="at">ylab=</span><span class="st">"S(t): log-Logistica"</span>)</span>
+<span id="cb71-7"><a href="#cb71-7"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-37-1.png" width="960" class="r-stretch"></section>
 <section id="comparação-np-vs-paramétrico-2" class="slide level2">
 <h2>Comparação NP vs Paramétrico</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb72-2"><a href="#cb72-2"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
+<span id="cb72-3"><a href="#cb72-3"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,ste), <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb72-4"><a href="#cb72-4"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"Exponencial"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span>
+<span id="cb72-5"><a href="#cb72-5"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
+<span id="cb72-6"><a href="#cb72-6"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,stw), <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb72-7"><a href="#cb72-7"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"Weibull"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"></section>
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-38-1.png" width="960" class="r-stretch"></section>
 <section id="comparação-np-vs-paramétrico-3" class="slide level2">
 <h2>Comparação NP vs Paramétrico</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb73-2"><a href="#cb73-2"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
+<span id="cb73-3"><a href="#cb73-3"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,stln), <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb73-4"><a href="#cb73-4"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"Lognormal"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span>
+<span id="cb73-5"><a href="#cb73-5"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
+<span id="cb73-6"><a href="#cb73-6"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,stll), <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb73-7"><a href="#cb73-7"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"LogLogistica"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
+</div>
 
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-26-1.png" width="960" class="r-stretch"><div class="footer footer-default">
-
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-39-1.png" width="960" class="r-stretch"><div class="footer footer-default">
+<p>IME05-12532 - Análise de Sobrevivência</p>
 </div>
 </section>
     </div>
@@ -752,7 +1063,6 @@ n= 20 </code></pre>
   <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -768,14 +1078,13 @@ n= 20 </code></pre>
       // https://revealjs.com/config/
       Reveal.initialize({
 'controlsAuto': true,
-'previewLinksAuto': true,
+'previewLinksAuto': false,
 'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":false},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -946,7 +1255,7 @@ n= 20 </code></pre>
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealMath,
           RevealNotes,

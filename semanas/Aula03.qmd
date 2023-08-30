@@ -4,12 +4,10 @@ subtitle: "Modelos Paramétricos"
 author: "Ricardo Accioly"
 format:
   revealjs:
-    theme: dark 
     slide-number: true
-    chalkboard: 
-      buttons: false
-    preview-links: auto
     css: styles.css
+    theme: dark
+    footer: "IME05-12532 - Análise de Sobrevivência"
 ---
 
 ## Modelos Paramétricos
@@ -18,12 +16,11 @@ Nesta apresentação vamos ver passo a passo como obter a função taxa de falha
 
 Aqui vamos utilizar as funções existentes no pacote `stats` que vem com a instalação padrão do R.
 
-## Modelos Paramétricos - Exponencial
+## Modelos Paramétricos - Exponencial  {.smaller}
 
 ```{r}
 #| echo: true
-#| fig-width: 10
-#| fig-height: 4.5
+#| output-location: column
 expHaz <- function(x, rate) { 
   dexp(x, rate=rate)/
     pexp(x, rate=rate, lower.tail=F)
@@ -44,7 +41,7 @@ legend("topright",
                    lty=1, col = c("red","blue","black"))
 ```
 
-## Taxa de Falhas - Exponencial
+## Taxa de Falhas - Exponencial  
 
 ```{r}
 #| echo: false
@@ -70,12 +67,11 @@ legend("topright",
                    lty=1, col = c("red","blue","black"))
 ```
 
-## Modelos Paramétricos - Exponencial
+## Modelos Paramétricos - Exponencial {.smaller}
 
 ```{r}
 #| echo: true
-#| fig-width: 10
-#| fig-height: 4.5
+#| output-location: column
 expSurv <- function(x, rate) { 
   pexp(x, rate=rate, lower.tail=F)
 }
@@ -96,8 +92,7 @@ legend("topright",
 
 ```{r}
 #| echo: false
-#| fig-width: 10
-#| fig-height: 4.5
+#| output-location: column
 expSurv <- function(x, rate) { 
   pexp(x, rate=rate, lower.tail=F)
 }
@@ -114,7 +109,7 @@ legend("topright",
        lty=1, col = c("red","blue","black"))
 ```
 
-## Modelos Paramétricos - Weibull
+## Modelos Paramétricos - Weibull {.smaller}
 
 ```{r}
 #| echo: true
@@ -178,7 +173,7 @@ legend("topright",
        lty=1, col = c("red","blue","black"))
 ```
 
-## Modelos Paramétricos - Weibull
+## Modelos Paramétricos - Weibull {.smaller}
 
 ```{r}
 #| echo: true
@@ -196,7 +191,8 @@ curve(weibSurv(x, shape=0.75, scale=1), from=0, to=2,
       ylab="S(t)", xlab="Tempo", col="black", add=T)
 legend("topright", 
        legend = c(expression(paste(beta, " = ", 1.5," ",
-                                       alfa, " = ", 1)),                                    expression(paste(beta, " = ", 1," ",
+                                       alfa, " = ", 1)),
+                  expression(paste(beta, " = ", 1," ",
                                        alfa, " = ", 1)),
          expression(paste(beta, " = ", 0.75," ",
                                       alfa, " = ", 1))),
@@ -228,7 +224,7 @@ legend("topright",
        lty=1, col = c("red","blue","black"))
 ```
 
-## Modelos Paramétricos - Lognormal
+## Modelos Paramétricos - Lognormal  {.smaller}
 
 ```{r}
 #| echo: true
@@ -278,7 +274,7 @@ legend("topright", c("lnorm(0,0.5)", "lnorm(1,0.7)",
        col = c("red","blue","black"))
 ```
 
-## Modelos Paramétricos - Lognormal
+## Modelos Paramétricos - Lognormal {.smaller}
 
 ```{r}
 #| echo: true
@@ -334,7 +330,7 @@ legend("topright", c("lnorm(0,0.5)",
        lty=1, col = c("red","blue","black"))
 ```
 
-## Modelos Paramétricos - Loglogistico
+## Modelos Paramétricos - Loglogistico {.smaller}
 
 ```{r}
 #| echo: true
@@ -376,7 +372,7 @@ legend("topright", c("llogis(1, 0.5)", "llogis(1,1)",
        lty=1, col = c("red","blue","black"))
 ```
 
-## Modelos Paramétricos - Loglogistico
+## Modelos Paramétricos - Loglogistico {.smaller}
 
 ```{r}
 #| echo: true

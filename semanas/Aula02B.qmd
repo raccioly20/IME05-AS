@@ -111,7 +111,7 @@ A resposta foi o tempo decorrido desde a infecção pela malária até a morte d
 
 Vamos adotar um `nível de significância` de 0,05 para avaliar a diferença entre as curvas, ou seja, se a estatística de `log-rank` tiver um valor menor que 0,05, vamos rejeitar a hipótese nula.
 
-## Método Kaplan-Meier 
+## Método Kaplan-Meier
 
 ::: panel-tabset
 ### Ajuste
@@ -253,7 +253,7 @@ ggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20))
 ```
 :::
 
-## h(t) não paramétrica - Placebo  {.smaller}
+## h(t) não paramétrica - Placebo {.smaller}
 
 ::: panel-tabset
 ### Codigo
@@ -281,7 +281,6 @@ ggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20))
 ```
 :::
 
-
 ## Quantis não paramétricos
 
 ```{r}
@@ -291,4 +290,3 @@ dados_p <- svydesign(ids = ~1, data=dados)
 dados_svykm <- svykm(Surv(tempos, status) ~ 1, dados_p, se=TRUE)
 quantile(dados_svykm, 0.5, ci=TRUE)
 ```
-
