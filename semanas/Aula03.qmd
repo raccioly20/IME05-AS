@@ -16,7 +16,7 @@ Nesta apresentação vamos ver passo a passo como obter a função taxa de falha
 
 Aqui vamos utilizar as funções existentes no pacote `stats` que vem com a instalação padrão do R.
 
-## Modelos Paramétricos - Exponencial  {.smaller}
+## Modelos Paramétricos - Exponencial {.smaller}
 
 ```{r}
 #| echo: true
@@ -41,7 +41,7 @@ legend("topright",
                    lty=1, col = c("red","blue","black"))
 ```
 
-## Taxa de Falhas - Exponencial  
+## Taxa de Falhas - Exponencial
 
 ```{r}
 #| echo: false
@@ -92,7 +92,6 @@ legend("topright",
 
 ```{r}
 #| echo: false
-#| output-location: column
 expSurv <- function(x, rate) { 
   pexp(x, rate=rate, lower.tail=F)
 }
@@ -113,8 +112,7 @@ legend("topright",
 
 ```{r}
 #| echo: true
-#| fig-width: 10
-#| fig-height: 4.5
+#| output-location: column
 weibHaz <- function(x, shape, scale) { 
   dweibull(x, shape=shape, scale=scale)/
   pweibull(x, shape=shape, scale=scale,
@@ -145,8 +143,6 @@ legend("topright",
 
 ```{r}
 #| echo: false
-#| fig-width: 10
-#| fig-height: 4.5
 weibHaz <- function(x, shape, scale) { 
   dweibull(x, shape=shape, scale=scale)/
   pweibull(x, shape=shape, scale=scale,
@@ -177,8 +173,7 @@ legend("topright",
 
 ```{r}
 #| echo: true
-#| fig-width: 10
-#| fig-height: 4.5
+#| output-location: column
 weibSurv <- function(x, shape, scale) {
   pweibull(x, shape=shape, scale=scale,
            lower.tail=F)
@@ -203,8 +198,6 @@ legend("topright",
 
 ```{r}
 #| echo: false
-#| fig-width: 10
-#| fig-height: 4.5
 weibSurv <- function(x, shape, scale) {
   pweibull(x, shape=shape, scale=scale,
            lower.tail=F)
@@ -224,12 +217,11 @@ legend("topright",
        lty=1, col = c("red","blue","black"))
 ```
 
-## Modelos Paramétricos - Lognormal  {.smaller}
+## Modelos Paramétricos - Lognormal {.smaller}
 
 ```{r}
 #| echo: true
-#| fig-width: 10
-#| fig-height: 4.5
+#| output-location: column
 logHaz <- function(x, meanlog, sdlog) {
   dlnorm(x, meanlog=meanlog, sdlog=sdlog)/
   plnorm(x, meanlog=meanlog, sdlog=sdlog, 
@@ -253,8 +245,6 @@ legend("topright", c("lnorm(0,0.5)", "lnorm(1,0.7)",
 
 ```{r}
 #| echo: false
-#| fig-width: 10
-#| fig-height: 4.5
 logHaz <- function(x, meanlog, sdlog) {
   dlnorm(x, meanlog=meanlog, sdlog=sdlog)/
   plnorm(x, meanlog=meanlog, sdlog=sdlog, 
@@ -278,8 +268,7 @@ legend("topright", c("lnorm(0,0.5)", "lnorm(1,0.7)",
 
 ```{r}
 #| echo: true
-#| fig-width: 10
-#| fig-height: 4.5
+#| output-location: column
 logSurv <- function(x, meanlog, sdlog) {
   plnorm(x, meanlog=meanlog, sdlog=sdlog, 
          lower.tail=F)
@@ -306,8 +295,6 @@ legend("topright", c("lnorm(0,0.5)",
 
 ```{r}
 #| echo: false
-#| fig-width: 10
-#| fig-height: 4.5
 logSurv <- function(x, meanlog, sdlog) {
   plnorm(x, meanlog=meanlog, sdlog=sdlog, 
          lower.tail=F)
@@ -334,8 +321,7 @@ legend("topright", c("lnorm(0,0.5)",
 
 ```{r}
 #| echo: true
-#| fig-width: 10
-#| fig-height: 4.5
+#| output-location: column
 
 llogisHaz <- function(x, alfa, beta) {
   haz <- beta/alfa*(x/alfa)^(beta-1)/(1+(x/alfa)^beta)  
@@ -355,8 +341,6 @@ legend("topright", c("llogis(1, 0.5)", "llogis(1,1)",
 
 ```{r}
 #| echo: false
-#| fig-width: 10
-#| fig-height: 4.5
 
 llogisHaz <- function(x, alfa, beta) {
   haz <- beta/alfa*(x/alfa)^(beta-1)/(1+(x/alfa)^beta)  
@@ -376,8 +360,7 @@ legend("topright", c("llogis(1, 0.5)", "llogis(1,1)",
 
 ```{r}
 #| echo: true
-#| fig-width: 10
-#| fig-height: 4.5
+#| output-location: column
 
 llogisSurv <- function(x, alfa, beta) {
           surv <- 1/(1+(x/alfa)^beta)  
@@ -404,8 +387,6 @@ legend("topright", c("llogis(1, 0.5)",
 
 ```{r}
 #| echo: false
-#| fig-width: 10
-#| fig-height: 4.5
 
 llogisSurv <- function(x, alfa, beta) {
           surv <- 1/(1+(x/alfa)^beta)  

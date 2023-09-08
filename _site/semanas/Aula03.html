@@ -477,7 +477,8 @@ Ricardo Accioly
 <img data-src="Aula03_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
 <section id="modelos-paramétricos---weibull" class="slide level2 smaller">
 <h2>Modelos Paramétricos - Weibull</h2>
-<div class="cell">
+<div class="cell columns column-output-location">
+<div class="column">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>weibHaz <span class="ot">&lt;-</span> <span class="cf">function</span>(x, shape, scale) { </span>
 <span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">dweibull</span>(x, <span class="at">shape=</span>shape, <span class="at">scale=</span>scale)<span class="sc">/</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">pweibull</span>(x, <span class="at">shape=</span>shape, <span class="at">scale=</span>scale,</span>
@@ -502,16 +503,21 @@ Ricardo Accioly
 <span id="cb3-22"><a href="#cb3-22"></a>              <span class="fu">expression</span>(<span class="fu">paste</span>(beta, <span class="st">" = "</span>, <span class="fl">0.75</span>,<span class="st">" "</span>,</span>
 <span id="cb3-23"><a href="#cb3-23"></a>                                    alfa, <span class="st">" = "</span>, <span class="dv">1</span>))),</span>
 <span id="cb3-24"><a href="#cb3-24"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
+</div><div class="column">
+<div class="cell-output-display">
+<p><img data-src="Aula03_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
 </div>
-<img data-src="Aula03_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+</div>
+</div>
+</section>
 <section id="taxa-de-falhas---weibull" class="slide level2">
 <h2>Taxa de Falhas - Weibull</h2>
 
 <img data-src="Aula03_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
 <section id="modelos-paramétricos---weibull-1" class="slide level2 smaller">
 <h2>Modelos Paramétricos - Weibull</h2>
-<div class="cell">
+<div class="cell columns column-output-location">
+<div class="column">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>weibSurv <span class="ot">&lt;-</span> <span class="cf">function</span>(x, shape, scale) {</span>
 <span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">pweibull</span>(x, <span class="at">shape=</span>shape, <span class="at">scale=</span>scale,</span>
 <span id="cb4-3"><a href="#cb4-3"></a>           <span class="at">lower.tail=</span>F)</span>
@@ -530,16 +536,21 @@ Ricardo Accioly
 <span id="cb4-16"><a href="#cb4-16"></a>         <span class="fu">expression</span>(<span class="fu">paste</span>(beta, <span class="st">" = "</span>, <span class="fl">0.75</span>,<span class="st">" "</span>,</span>
 <span id="cb4-17"><a href="#cb4-17"></a>                                      alfa, <span class="st">" = "</span>, <span class="dv">1</span>))),</span>
 <span id="cb4-18"><a href="#cb4-18"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
+</div><div class="column">
+<div class="cell-output-display">
+<p><img data-src="Aula03_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
 </div>
-<img data-src="Aula03_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+</div>
+</div>
+</section>
 <section id="curva-de-sobrevivência---weibull" class="slide level2">
 <h2>Curva de Sobrevivência - Weibull</h2>
 
 <img data-src="Aula03_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
 <section id="modelos-paramétricos---lognormal" class="slide level2 smaller">
 <h2>Modelos Paramétricos - Lognormal</h2>
-<div class="cell">
+<div class="cell columns column-output-location">
+<div class="column">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>logHaz <span class="ot">&lt;-</span> <span class="cf">function</span>(x, meanlog, sdlog) {</span>
 <span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">dlnorm</span>(x, <span class="at">meanlog=</span>meanlog, <span class="at">sdlog=</span>sdlog)<span class="sc">/</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">plnorm</span>(x, <span class="at">meanlog=</span>meanlog, <span class="at">sdlog=</span>sdlog, </span>
@@ -557,16 +568,21 @@ Ricardo Accioly
 <span id="cb5-15"><a href="#cb5-15"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"lnorm(0,0.5)"</span>, <span class="st">"lnorm(1,0.7)"</span>, </span>
 <span id="cb5-16"><a href="#cb5-16"></a>                     <span class="st">"lnorm(1,1)"</span>), <span class="at">lty=</span><span class="dv">1</span>, </span>
 <span id="cb5-17"><a href="#cb5-17"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
+</div><div class="column">
+<div class="cell-output-display">
+<p><img data-src="Aula03_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
 </div>
-<img data-src="Aula03_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
+</div>
+</div>
+</section>
 <section id="taxa-de-falhas---lognormal" class="slide level2">
 <h2>Taxa de Falhas - Lognormal</h2>
 
 <img data-src="Aula03_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
 <section id="modelos-paramétricos---lognormal-1" class="slide level2 smaller">
 <h2>Modelos Paramétricos - Lognormal</h2>
-<div class="cell">
+<div class="cell columns column-output-location">
+<div class="column">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>logSurv <span class="ot">&lt;-</span> <span class="cf">function</span>(x, meanlog, sdlog) {</span>
 <span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">plnorm</span>(x, <span class="at">meanlog=</span>meanlog, <span class="at">sdlog=</span>sdlog, </span>
 <span id="cb6-3"><a href="#cb6-3"></a>         <span class="at">lower.tail=</span>F)</span>
@@ -587,16 +603,21 @@ Ricardo Accioly
 <span id="cb6-18"><a href="#cb6-18"></a>                     <span class="st">"lnorm(1,0.7)"</span>, </span>
 <span id="cb6-19"><a href="#cb6-19"></a>                     <span class="st">"lnorm(1,1)"</span>),</span>
 <span id="cb6-20"><a href="#cb6-20"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
+</div><div class="column">
+<div class="cell-output-display">
+<p><img data-src="Aula03_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
 </div>
-<img data-src="Aula03_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
+</div>
+</div>
+</section>
 <section id="curva-de-sobrevivência---lognormal" class="slide level2">
 <h2>Curva de Sobrevivência - Lognormal</h2>
 
 <img data-src="Aula03_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
 <section id="modelos-paramétricos---loglogistico" class="slide level2 smaller">
 <h2>Modelos Paramétricos - Loglogistico</h2>
-<div class="cell">
+<div class="cell columns column-output-location">
+<div class="column">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>llogisHaz <span class="ot">&lt;-</span> <span class="cf">function</span>(x, alfa, beta) {</span>
 <span id="cb7-2"><a href="#cb7-2"></a>  haz <span class="ot">&lt;-</span> beta<span class="sc">/</span>alfa<span class="sc">*</span>(x<span class="sc">/</span>alfa)<span class="sc">^</span>(beta<span class="dv">-1</span>)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>(x<span class="sc">/</span>alfa)<span class="sc">^</span>beta)  </span>
 <span id="cb7-3"><a href="#cb7-3"></a>}</span>
@@ -609,16 +630,21 @@ Ricardo Accioly
 <span id="cb7-10"><a href="#cb7-10"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"llogis(1, 0.5)"</span>, <span class="st">"llogis(1,1)"</span>,</span>
 <span id="cb7-11"><a href="#cb7-11"></a>                     <span class="st">"llogis(1,3)"</span>),</span>
 <span id="cb7-12"><a href="#cb7-12"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
+</div><div class="column">
+<div class="cell-output-display">
+<p><img data-src="Aula03_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
 </div>
-<img data-src="Aula03_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+</div>
+</div>
+</section>
 <section id="taxa-de-falhas---loglogistico" class="slide level2">
 <h2>Taxa de Falhas - Loglogistico</h2>
 
 <img data-src="Aula03_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
 <section id="modelos-paramétricos---loglogistico-1" class="slide level2 smaller">
 <h2>Modelos Paramétricos - Loglogistico</h2>
-<div class="cell">
+<div class="cell columns column-output-location">
+<div class="column">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>llogisSurv <span class="ot">&lt;-</span> <span class="cf">function</span>(x, alfa, beta) {</span>
 <span id="cb8-2"><a href="#cb8-2"></a>          surv <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>(x<span class="sc">/</span>alfa)<span class="sc">^</span>beta)  </span>
 <span id="cb8-3"><a href="#cb8-3"></a>}</span>
@@ -638,9 +664,13 @@ Ricardo Accioly
 <span id="cb8-17"><a href="#cb8-17"></a>                     <span class="st">"llogis(1,1)"</span>, </span>
 <span id="cb8-18"><a href="#cb8-18"></a>                     <span class="st">"llogis(1,3)"</span>),</span>
 <span id="cb8-19"><a href="#cb8-19"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
+</div><div class="column">
+<div class="cell-output-display">
+<p><img data-src="Aula03_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
 </div>
-<img data-src="Aula03_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
+</div>
+</div>
+</section>
 <section id="curva-de-sobrevivência---loglogistico" class="slide level2">
 <h2>Curva de Sobrevivência - Loglogistico</h2>
 

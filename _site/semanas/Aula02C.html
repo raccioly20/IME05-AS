@@ -426,305 +426,90 @@ Prof.&nbsp;Ricardo Accioly
 <p>O evento falha aqui é ocorrer uma recaída na doença.</p>
 </div>
 </section>
-<section id="método-kaplan-meier" class="slide level2 smaller">
-<h2>Método Kaplan-Meier</h2>
+<section id="função-taxa-de-falhas-e-quantis" class="slide level2">
+<h2>Função taxa de falhas e quantis</h2>
+<p>Vamos obter uma aproximação da função taxa de falhas usando a função density</p>
+<p>Posteriormente vamos obter o quantil usando uma função do pacote <code>survey</code></p>
+</section>
+<section id="ht-não-paramétrica---6mp" class="slide level2 smaller">
+<h2>h(t) não paramétrica - 6MP</h2>
 <div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Ajuste</a></li><li><a href="#tabset-1-2">Grafico</a></li></ul>
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Codigo</a></li><li><a href="#tabset-1-2">Grafico</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(survival)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>tempo<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">13</span>,<span class="dv">16</span>,<span class="dv">17</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">25</span>,<span class="dv">32</span>,<span class="dv">32</span>,<span class="dv">34</span>,<span class="dv">35</span>)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>status<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>) </span>
-<span id="cb1-5"><a href="#cb1-5"></a>tempo2<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">11</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">17</span>,<span class="dv">22</span>,<span class="dv">23</span>)</span>
-<span id="cb1-6"><a href="#cb1-6"></a>status2<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>) </span>
-<span id="cb1-7"><a href="#cb1-7"></a>tempo2g <span class="ot">&lt;-</span> <span class="fu">c</span>(tempo,tempo2)</span>
-<span id="cb1-8"><a href="#cb1-8"></a>status2g <span class="ot">&lt;-</span> <span class="fu">c</span>(status,status2)</span>
-<span id="cb1-9"><a href="#cb1-9"></a>grupos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">21</span>),<span class="fu">rep</span>(<span class="dv">2</span>,<span class="dv">21</span>))</span>
-<span id="cb1-10"><a href="#cb1-10"></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tempos=</span>tempo2g, <span class="at">status=</span>status2g, <span class="at">grupos=</span>grupos)</span>
-<span id="cb1-11"><a href="#cb1-11"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data=</span>dados)</span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>tempo<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">13</span>,<span class="dv">16</span>,<span class="dv">17</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">25</span>,<span class="dv">32</span>,<span class="dv">32</span>,<span class="dv">34</span>,<span class="dv">35</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>status<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>) </span>
+<span id="cb1-4"><a href="#cb1-4"></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tempos=</span>tempo, <span class="at">status=</span>status)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>dados)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>ajusteKM_sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajusteKM)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>pesos <span class="ot">&lt;-</span> ajusteKM_sum<span class="sc">$</span>n.event<span class="sc">/</span>ajusteKM_sum<span class="sc">$</span>n.risk</span>
+<span id="cb1-8"><a href="#cb1-8"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">weights =</span> pesos,</span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">35</span>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-11"><a href="#cb1-11"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span>h<span class="sc">$</span>x, <span class="at">y=</span>h<span class="sc">$</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-1-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1"></a><span class="in">```{r}</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">plot</span>(ajusteKM, <span class="at">xlab=</span><span class="st">"T(semanas)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>) </span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"6-MP"</span>,<span class="st">"Placebo"</span>), <span class="at">lty =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.20</span>)) <span class="sc">+</span> <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb2-3"><a href="#cb2-3"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>)) <span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Tempo [semanas]"</span>, <span class="at">y =</span> <span class="st">"Estimativa da taxa de falhas"</span>, <span class="at">title =</span> <span class="st">"Estimativa da taxa de falhas - 6MP"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="Aula02B_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
+<p><img data-src="Aula02C_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="método-kaplan-meier-1" class="slide level2 smaller">
-<h2>Método Kaplan-Meier</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1"></a><span class="in">```{r}</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">summary</span>(ajusteKM)</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados)
-
-                grupos=1 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    6     21       3    0.857  0.0764        0.720        1.000
-    7     17       1    0.807  0.0869        0.653        0.996
-   10     15       1    0.753  0.0963        0.586        0.968
-   13     12       1    0.690  0.1068        0.510        0.935
-   16     11       1    0.627  0.1141        0.439        0.896
-   22      7       1    0.538  0.1282        0.337        0.858
-   23      6       1    0.448  0.1346        0.249        0.807
-
-                grupos=2 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    1     21       2   0.9048  0.0641      0.78754        1.000
-    2     19       2   0.8095  0.0857      0.65785        0.996
-    3     17       1   0.7619  0.0929      0.59988        0.968
-    4     16       2   0.6667  0.1029      0.49268        0.902
-    5     14       2   0.5714  0.1080      0.39455        0.828
-    8     12       4   0.3810  0.1060      0.22085        0.657
-   11      8       2   0.2857  0.0986      0.14529        0.562
-   12      6       2   0.1905  0.0857      0.07887        0.460
-   15      4       1   0.1429  0.0764      0.05011        0.407
-   17      3       1   0.0952  0.0641      0.02549        0.356
-   22      2       1   0.0476  0.0465      0.00703        0.322
-   23      1       1   0.0000     NaN           NA           NA</code></pre>
-</div>
-</div>
-</section>
-<section id="teste-do-log-rank" class="slide level2">
-<h2>Teste do log-rank</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data=</span>dados)</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-survdiff(formula = Surv(tempos, status) ~ grupos, data = dados)
-
-          N Observed Expected (O-E)^2/E (O-E)^2/V
-grupos=1 21        9     19.3      5.46      16.8
-grupos=2 21       21     10.7      9.77      16.8
-
- Chisq= 16.8  on 1 degrees of freedom, p= 4e-05 </code></pre>
-</div>
-</div>
-</section>
-<section id="teste-do-log-rank-usando-pesos" class="slide level2">
-<h2>Teste do log-rank usando pesos</h2>
-<p>Quando usamo rho=0, o teste é identico ao log-rank padrão</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="co"># rho=0 é o teste de log-rank</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">rho=</span><span class="dv">0</span>, <span class="at">data=</span>dados)</span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-survdiff(formula = Surv(tempos, status) ~ grupos, data = dados, 
-    rho = 0)
-
-          N Observed Expected (O-E)^2/E (O-E)^2/V
-grupos=1 21        9     19.3      5.46      16.8
-grupos=2 21       21     10.7      9.77      16.8
-
- Chisq= 16.8  on 1 degrees of freedom, p= 4e-05 </code></pre>
-</div>
-</div>
-</section>
-<section id="usando-pesos-de-petopeto-hf" class="slide level2">
-<h2>Usando pesos de Peto&amp;Peto (HF)</h2>
-<p>Quando usamo rho=1, ele se torna do teste de log-rank usando os pesos de Peto&amp;Peto</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1"></a><span class="in">```{r}</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co"># rho=1 é o teste de Harrigton-Fleming</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">rho=</span><span class="dv">1</span>, <span class="at">data=</span>dados)</span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-survdiff(formula = Surv(tempos, status) ~ grupos, data = dados, 
-    rho = 1)
-
-          N Observed Expected (O-E)^2/E (O-E)^2/V
-grupos=1 21     5.12    12.00      3.94      14.5
-grupos=2 21    14.55     7.68      6.16      14.5
-
- Chisq= 14.5  on 1 degrees of freedom, p= 1e-04 </code></pre>
-</div>
-</div>
-</section>
-<section id="teste-do-log-rank-para-mais-de-2-grupos" class="slide level2 smaller">
-<h2>Teste do Log-rank para mais de 2 grupos</h2>
-<p>Vamos usar neste exemplo os dados de um estudo experimental com camundongos conduzido no Centro de Pesquisas René Rachou, FioCruz, MG.</p>
-<p>44 camundongos foram infectados pela malaria (Plasmodium berguei) e aleatoriamente alocados em três grupos:</p>
-<p><code>Grupo 1</code>: Imunizados 30 dias antes da infecção pela malária. Foram infetados também por esquistossomose.</p>
-<p><code>Grupo 2</code>: Controle (Somente infectado pela malária)</p>
-<p><code>Grupo 3</code>: Infectado pela malária e ela esquistossomose.</p>
-</section>
-<section id="teste-do-log-rank-para-mais-de-2-grupos-1" class="slide level2">
-<h2>Teste do Log-rank para mais de 2 grupos</h2>
-<p>A resposta foi o tempo decorrido desde a infecção pela malária até a morte do camundongo. O tempo foi medido em dias e o estudo foi acompanhado por 30 dias.</p>
-<p>Vamos adotar um <code>nível de significância</code> de 0,05 para avaliar a diferença entre as curvas, ou seja, se a estatística de <code>log-rank</code> tiver um valor menor que 0,05, vamos rejeitar a hipótese nula.</p>
-</section>
-<section id="método-kaplan-meier-2" class="slide level2">
-<h2>Método Kaplan-Meier</h2>
+<section id="ht-não-paramétrica---placebo" class="slide level2 smaller">
+<h2>h(t) não paramétrica - Placebo</h2>
 <div class="panel-tabset">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Ajuste</a></li><li><a href="#tabset-2-2">Grafico</a></li></ul>
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Codigo</a></li><li><a href="#tabset-2-2">Grafico</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1"></a><span class="in">```{r}</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>tempos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">12</span>,<span class="dv">12</span>,<span class="dv">17</span>,<span class="dv">18</span>,<span class="dv">22</span>,<span class="dv">30</span>,<span class="dv">30</span>,<span class="dv">30</span>,<span class="dv">30</span>,<span class="dv">30</span>,<span class="dv">30</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">9</span>,</span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">14</span>,<span class="dv">15</span>,<span class="dv">15</span>,<span class="dv">18</span>,<span class="dv">19</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">25</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,</span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">17</span>,<span class="dv">19</span>)</span>
-<span id="cb11-5"><a href="#cb11-5"></a>status <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">10</span>), <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">6</span>), <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">15</span>), <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">13</span>))</span>
-<span id="cb11-6"><a href="#cb11-6"></a>grupos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">16</span>), <span class="fu">rep</span>(<span class="dv">2</span>,<span class="dv">15</span>), <span class="fu">rep</span>(<span class="dv">3</span>,<span class="dv">13</span>))</span>
-<span id="cb11-7"><a href="#cb11-7"></a>dados2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(tempos, status, grupos)</span>
-<span id="cb11-8"><a href="#cb11-8"></a>ajusteKM2<span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> dados2)</span>
-<span id="cb11-9"><a href="#cb11-9"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>tempo2<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">11</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">17</span>,<span class="dv">22</span>,<span class="dv">23</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>status2<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>) </span>
+<span id="cb3-3"><a href="#cb3-3"></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tempos=</span>tempo2, <span class="at">status=</span>status2)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>dados)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>ajusteKM_sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajusteKM)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>pesos <span class="ot">&lt;-</span> ajusteKM_sum<span class="sc">$</span>n.event<span class="sc">/</span>ajusteKM_sum<span class="sc">$</span>n.risk</span>
+<span id="cb3-7"><a href="#cb3-7"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">weights =</span> pesos,</span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">25</span>)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span>h<span class="sc">$</span>x, <span class="at">y=</span>h<span class="sc">$</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-2-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">plot</span>(ajusteKM2, <span class="at">xlab=</span><span class="st">"T(dias)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) </span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"G 1"</span>,<span class="st">"G 2"</span>, <span class="st">"G 3"</span>), <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.20</span>)) <span class="sc">+</span>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb4-3"><a href="#cb4-3"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>)) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Tempo [semanas]"</span>, <span class="at">y =</span> <span class="st">"Estimativa da taxa de falhas"</span>, <span class="at">title =</span> <span class="st">"Estimativa da taxa de falhas - Placebo"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="Aula02B_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+<p><img data-src="Aula02C_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section id="teste-do-log-rank-1" class="slide level2">
-<h2>Teste do log-rank</h2>
+<section id="quantis-não-paramétricos" class="slide level2">
+<h2>Quantis não paramétricos</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> dados2,  <span class="at">rho=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(survey)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>dados_p <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">ids =</span> <span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>dados_svykm <span class="ot">&lt;-</span> <span class="fu">svykm</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> <span class="dv">1</span>, dados_p, <span class="at">se=</span><span class="cn">TRUE</span>)</span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">quantile</span>(dados_svykm, <span class="fl">0.5</span>, <span class="at">ci=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Call:
-survdiff(formula = Surv(tempos, status) ~ grupos, data = dados2, 
-    rho = 0)
-
-          N Observed Expected (O-E)^2/E (O-E)^2/V
-grupos=1 16       10    17.00    2.8816    6.4111
-grupos=2 15       15    14.51    0.0167    0.0317
-grupos=3 13       13     6.49    6.5190   10.4447
-
- Chisq= 12.6  on 2 degrees of freedom, p= 0.002 </code></pre>
-</div>
-</div>
-</section>
-<section id="obtendo-os-resultados-de-outra-forma" class="slide level2">
-<h2>Obtendo os resultados de outra forma</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>teste_lr <span class="ot">&lt;-</span> <span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> dados2,  <span class="at">rho=</span><span class="dv">0</span>)</span>
-<span id="cb15-2"><a href="#cb15-2"></a>w <span class="ot">&lt;-</span> teste_lr<span class="sc">$</span>obs[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="sc">-</span> teste_lr<span class="sc">$</span>exp[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb15-3"><a href="#cb15-3"></a>V <span class="ot">&lt;-</span> teste_lr<span class="sc">$</span>var[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="fu">t</span>(w) <span class="sc">%*%</span> <span class="fu">solve</span>(V) <span class="sc">%*%</span> w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>         [,1]
-[1,] 12.56497</code></pre>
-</div>
-</div>
-</section>
-<section id="avaliação" class="slide level2 smaller">
-<h2>Avaliação</h2>
-<p>Como a hipótese nula foi rejeitada precisamos avaliar se todas as curvas de sobrevivência são diferentes. Para isto vamos fazer comparações, duas a duas, utilizando o método de <code>Bonferroni</code>.</p>
-<p>Como existem três grupos, são três as comparações duas a duas.</p>
-<p>O nível de significância a ser adotado nestas comparações é de <span class="math inline">\(\alpha\)</span> = 0,05/3 = 0,017. Isto vai garantir uma conclusão geral ao nível máximo de 0,05.</p>
-</section>
-<section id="grupos-1-e-2" class="slide level2">
-<h2>Grupos 1 e 2</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> <span class="fu">subset</span>(dados2, grupos<span class="sc">!=</span><span class="dv">3</span>),  <span class="at">rho=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-survdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, 
-    grupos != 3), rho = 0)
-
-          N Observed Expected (O-E)^2/E (O-E)^2/V
-grupos=1 16       10     13.7      1.01      2.53
-grupos=2 15       15     11.3      1.23      2.53
-
- Chisq= 2.5  on 1 degrees of freedom, p= 0.1 </code></pre>
-</div>
-</div>
-</section>
-<section id="grupos-1-e-3" class="slide level2">
-<h2>Grupos 1 e 3</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> <span class="fu">subset</span>(dados2, grupos<span class="sc">!=</span><span class="dv">2</span>),  <span class="at">rho=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-survdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, 
-    grupos != 2), rho = 0)
-
-          N Observed Expected (O-E)^2/E (O-E)^2/V
-grupos=1 16       10    15.34      1.86      7.86
-grupos=3 13       13     7.66      3.72      7.86
-
- Chisq= 7.9  on 1 degrees of freedom, p= 0.005 </code></pre>
-</div>
-</div>
-</section>
-<section id="grupos-2-e-3" class="slide level2">
-<h2>Grupos 2 e 3</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> <span class="fu">subset</span>(dados2, grupos<span class="sc">!=</span><span class="dv">1</span>),  <span class="at">rho=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call:
-survdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, 
-    grupos != 1), rho = 0)
-
-          N Observed Expected (O-E)^2/E (O-E)^2/V
-grupos=2 15       15    20.53      1.49      7.98
-grupos=3 13       13     7.47      4.08      7.98
-
- Chisq= 8  on 1 degrees of freedom, p= 0.005 </code></pre>
-</div>
-</div>
-</section>
-<section id="curva-de-sobrevivência-estratificada" class="slide level2 smaller">
-<h2>Curva de Sobrevivência estratificada</h2>
-<p>Neste exemplo temos 2 tratamentos, mas queremos controlar os resultados considerando uma variável categórica (sexo).</p>
-<p>O evento estudado é o tempo até a <code>recaída</code> de leucemia.</p>
-<p>O conjunto de dados tem os seguintes informação:</p>
-<ul>
-<li>tempo (semanas)</li>
-<li>status (0 = censura e 1 = falha)</li>
-<li>sexo (0 = mulher e 1 = homem)</li>
-<li>logwbc = log do número de células brancas</li>
-<li>Rx (0 = Novo tratamento e 1 = Placebo)</li>
-</ul>
-<p>Vamos ver como isto pode ser feito na função survfit.</p>
-</section>
-<section id="curva-de-sobrevivência-estratificada-1" class="slide level2">
-<h2>Curva de Sobrevivência estratificada</h2>
-<div class="panel-tabset">
-<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Ajuste</a></li><li><a href="#tabset-3-2">Grafico</a></li></ul>
-<div class="tab-content">
-<div id="tabset-3-1">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb23-1"><a href="#cb23-1"></a><span class="in">```{r}</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb23-3"><a href="#cb23-3"></a>dados_a <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"anderson.xlsx"</span>, <span class="at">col_names=</span>T)</span>
-<span id="cb23-4"><a href="#cb23-4"></a>ajusteKM_S <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx <span class="sc">+</span> <span class="fu">strata</span>(sexo), <span class="at">data =</span> dados_a)</span>
-<span id="cb23-5"><a href="#cb23-5"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<div id="tabset-3-2">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">plot</span>(ajusteKM_S, <span class="at">xlab=</span><span class="st">"T(semanas)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) </span>
-<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"Rx=0 e Sexo=M"</span>,<span class="st">"Rx=0 e Sexo=F"</span>, <span class="st">"Rx=1 e Sexo=M"</span>, <span class="st">"Rx=1 e Sexo=F"</span>), <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img data-src="Aula02B_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
-</div>
-</div>
-</div>
+<pre><code>0.5 
+  8 
+attr(,"ci")
+    0.025 0.975
+0.5     5    12</code></pre>
 </div>
 </div>
 

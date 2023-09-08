@@ -58,6 +58,8 @@ website:
             text: "Aula02"
           - href: semanas/Aula02B.qmd
             text: "Aula02"
+          - href: semanas/Aula02C.qmd
+            text: "Aula02"
           - href: semanas/Aula03.qmd
             text: "Aula03"
           - href: semanas/Aula04.qmd
