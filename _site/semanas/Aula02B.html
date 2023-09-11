@@ -741,6 +741,32 @@ Rx=1 21       21     13.5      4.23       9.7
  Chisq= 9.7  on 1 degrees of freedom, p= 0.002 </code></pre>
 </div>
 </div>
+</section>
+<section id="explorando-os-dados" class="slide level2">
+<h2>Explorando os dados</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">summary</span>(<span class="fu">as.factor</span>(dados_a<span class="sc">$</span>sexo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 0  1 
+22 20 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10</code></pre>
+</div>
+</div>
 
 <div class="footer footer-default">
 <p>IME05-12532 - Análise de Sobrevivência</p>

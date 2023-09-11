@@ -207,10 +207,21 @@ legend("topright",c("Rx=0 e Sexo=M","Rx=0 e Sexo=F", "Rx=1 e Sexo=M", "Rx=1 e Se
 ```
 :::
 
-## Teste do log-rank
 
+## Teste do log-rank
 ```{r}
 survdiff(Surv(tempo, status) ~ Rx, data = dados_a)
 survdiff(Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)
+
+```
+
+## Explorando os dados
+
+```{r}
+summary(as.factor(dados_a$sexo))
+sum(dados_a$sexo==0 & dados_a$Rx==0)
+sum(dados_a$sexo==1 & dados_a$Rx==0)
+sum(dados_a$sexo==0 & dados_a$Rx==1)
+sum(dados_a$sexo==1 & dados_a$Rx==1)
 ```
 
