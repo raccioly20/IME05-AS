@@ -714,6 +714,33 @@ grupos=3 13       13     7.47      4.08      7.98
 </div>
 </div>
 </div>
+</section>
+<section id="teste-do-log-rank-2" class="slide level2">
+<h2>Teste do log-rank</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx, <span class="at">data =</span> dados_a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+survdiff(formula = Surv(tempo, status) ~ Rx, data = dados_a)
+
+      N Observed Expected (O-E)^2/E (O-E)^2/V
+Rx=0 21        9     19.3      5.46      16.8
+Rx=1 21       21     10.7      9.77      16.8
+
+ Chisq= 16.8  on 1 degrees of freedom, p= 4e-05 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx <span class="sc">+</span> <span class="fu">strata</span>(sexo), <span class="at">data =</span> dados_a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+survdiff(formula = Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)
+
+      N Observed Expected (O-E)^2/E (O-E)^2/V
+Rx=0 21        9     16.5      3.44       9.7
+Rx=1 21       21     13.5      4.23       9.7
+
+ Chisq= 9.7  on 1 degrees of freedom, p= 0.002 </code></pre>
+</div>
+</div>
 
 <div class="footer footer-default">
 <p>IME05-12532 - Análise de Sobrevivência</p>

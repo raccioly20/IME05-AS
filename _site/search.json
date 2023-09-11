@@ -704,7 +704,7 @@
     "href": "semanas/Aula02B.html#curva-de-sobrevivência-estratificada-1",
     "title": "Análise de Sobrevivência",
     "section": "Curva de Sobrevivência estratificada",
-    "text": "Curva de Sobrevivência estratificada\n\nAjusteGrafico\n\n\n\n```{r}\nlibrary(readxl)\ndados_a &lt;- read_xlsx(\"anderson.xlsx\", col_names=T)\najusteKM_S &lt;- survfit(Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\n```\n\n\n\n\nplot(ajusteKM_S, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=1:4) \nlegend(\"topright\",c(\"Rx=0 e Sexo=M\",\"Rx=0 e Sexo=F\", \"Rx=1 e Sexo=M\", \"Rx=1 e Sexo=F\"), lty = 1:4)\n\n\n\n\n\n\n\n\n\nIME05-12532 - Análise de Sobrevivência"
+    "text": "Curva de Sobrevivência estratificada\n\nAjusteGrafico\n\n\n\n```{r}\nlibrary(readxl)\ndados_a &lt;- read_xlsx(\"anderson.xlsx\", col_names=T)\najusteKM_S &lt;- survfit(Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\n```\n\n\n\n\nplot(ajusteKM_S, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=1:4) \nlegend(\"topright\",c(\"Rx=0 e Sexo=M\",\"Rx=0 e Sexo=F\", \"Rx=1 e Sexo=M\", \"Rx=1 e Sexo=F\"), lty = 1:4)"
   },
   {
     "objectID": "semanas/Aula01.html#análise-de-sobrevivência-1",
@@ -1657,5 +1657,12 @@
     "title": "Análise de Sobrevivência",
     "section": "Gráfico do Método Nelson-Aalen",
     "text": "Gráfico do Método Nelson-Aalen\n\ngraf"
+  },
+  {
+    "objectID": "semanas/Aula02B.html#teste-do-log-rank-2",
+    "href": "semanas/Aula02B.html#teste-do-log-rank-2",
+    "title": "Análise de Sobrevivência",
+    "section": "Teste do log-rank",
+    "text": "Teste do log-rank\n\nsurvdiff(Surv(tempo, status) ~ Rx, data = dados_a)\n\nCall:\nsurvdiff(formula = Surv(tempo, status) ~ Rx, data = dados_a)\n\n      N Observed Expected (O-E)^2/E (O-E)^2/V\nRx=0 21        9     19.3      5.46      16.8\nRx=1 21       21     10.7      9.77      16.8\n\n Chisq= 16.8  on 1 degrees of freedom, p= 4e-05 \n\nsurvdiff(Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\n\nCall:\nsurvdiff(formula = Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\n\n      N Observed Expected (O-E)^2/E (O-E)^2/V\nRx=0 21        9     16.5      3.44       9.7\nRx=1 21       21     13.5      4.23       9.7\n\n Chisq= 9.7  on 1 degrees of freedom, p= 0.002 \n\n\n\n\nIME05-12532 - Análise de Sobrevivência"
   }
 ]
