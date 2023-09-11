@@ -541,7 +541,7 @@ grupos=2 21       21     10.7      9.77      16.8
 <p>Quando usamo rho=1, ele se torna do teste de log-rank usando os pesos de Peto&amp;Peto</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1"></a><span class="in">```{r}</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co"># rho=1 é o teste de Harrigton-Fleming</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co"># rho=1 é o teste de Peto&amp;Peto</span></span>
 <span id="cb9-3"><a href="#cb9-3"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">rho=</span><span class="dv">1</span>, <span class="at">data=</span>dados)</span>
 <span id="cb9-4"><a href="#cb9-4"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

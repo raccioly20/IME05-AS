@@ -627,7 +627,7 @@
     "href": "semanas/Aula02B.html#usando-pesos-de-petopeto-hf",
     "title": "Análise de Sobrevivência",
     "section": "Usando pesos de Peto&Peto (HF)",
-    "text": "Usando pesos de Peto&Peto (HF)\nQuando usamo rho=1, ele se torna do teste de log-rank usando os pesos de Peto&Peto\n\n```{r}\n# rho=1 é o teste de Harrigton-Fleming\nsurvdiff(Surv(tempos, status) ~ grupos, rho=1, data=dados)\n```\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = dados, \n    rho = 1)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 21     5.12    12.00      3.94      14.5\ngrupos=2 21    14.55     7.68      6.16      14.5\n\n Chisq= 14.5  on 1 degrees of freedom, p= 1e-04"
+    "text": "Usando pesos de Peto&Peto (HF)\nQuando usamo rho=1, ele se torna do teste de log-rank usando os pesos de Peto&Peto\n\n```{r}\n# rho=1 é o teste de Peto&Peto\nsurvdiff(Surv(tempos, status) ~ grupos, rho=1, data=dados)\n```\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = dados, \n    rho = 1)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 21     5.12    12.00      3.94      14.5\ngrupos=2 21    14.55     7.68      6.16      14.5\n\n Chisq= 14.5  on 1 degrees of freedom, p= 1e-04"
   },
   {
     "objectID": "semanas/Aula02B.html#teste-do-log-rank-para-mais-de-2-grupos",

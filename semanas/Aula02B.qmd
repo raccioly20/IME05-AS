@@ -89,7 +89,7 @@ Quando usamo rho=1, ele se torna do teste de log-rank usando os pesos de Peto&Pe
 
 ```{r}
 #| echo: fenced
-# rho=1 é o teste de Harrigton-Fleming
+# rho=1 é o teste de Peto&Peto
 survdiff(Surv(tempos, status) ~ grupos, rho=1, data=dados)
 ```
 
