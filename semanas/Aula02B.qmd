@@ -142,15 +142,6 @@ legend("topright",c("G 1","G 2", "G 3"), lty = 1:3)
 survdiff(Surv(tempos, status) ~ grupos, data = dados2,  rho=0)
 ```
 
-## Obtendo os resultados de outra forma
-
-```{r}
-#| echo: true
-teste_lr <- survdiff(Surv(tempos, status) ~ grupos, data = dados2,  rho=0)
-w <- teste_lr$obs[1:2] - teste_lr$exp[1:2]
-V <- teste_lr$var[1:2,1:2]
-t(w) %*% solve(V) %*% w
-```
 
 ## Avaliação {.smaller}
 
@@ -216,4 +207,3 @@ plot(ajusteKM_S, xlab="T(semanas)",ylab="S(t)", lty=1:4)
 legend("topright",c("Rx=0 e Sexo=M","Rx=0 e Sexo=F", "Rx=1 e Sexo=M", "Rx=1 e Sexo=F"), lty = 1:4)
 ```
 :::
-

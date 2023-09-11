@@ -618,19 +618,6 @@ grupos=3 13       13     6.49    6.5190   10.4447
 </div>
 </div>
 </section>
-<section id="obtendo-os-resultados-de-outra-forma" class="slide level2">
-<h2>Obtendo os resultados de outra forma</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>teste_lr <span class="ot">&lt;-</span> <span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> dados2,  <span class="at">rho=</span><span class="dv">0</span>)</span>
-<span id="cb15-2"><a href="#cb15-2"></a>w <span class="ot">&lt;-</span> teste_lr<span class="sc">$</span>obs[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="sc">-</span> teste_lr<span class="sc">$</span>exp[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb15-3"><a href="#cb15-3"></a>V <span class="ot">&lt;-</span> teste_lr<span class="sc">$</span>var[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="fu">t</span>(w) <span class="sc">%*%</span> <span class="fu">solve</span>(V) <span class="sc">%*%</span> w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>         [,1]
-[1,] 12.56497</code></pre>
-</div>
-</div>
-</section>
 <section id="avaliação" class="slide level2 smaller">
 <h2>Avaliação</h2>
 <p>Como a hipótese nula foi rejeitada precisamos avaliar se todas as curvas de sobrevivência são diferentes. Para isto vamos fazer comparações, duas a duas, utilizando o método de <code>Bonferroni</code>.</p>
@@ -640,7 +627,7 @@ grupos=3 13       13     6.49    6.5190   10.4447
 <section id="grupos-1-e-2" class="slide level2">
 <h2>Grupos 1 e 2</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> <span class="fu">subset</span>(dados2, grupos<span class="sc">!=</span><span class="dv">3</span>),  <span class="at">rho=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> <span class="fu">subset</span>(dados2, grupos<span class="sc">!=</span><span class="dv">3</span>),  <span class="at">rho=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 survdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, 
@@ -657,7 +644,7 @@ grupos=2 15       15     11.3      1.23      2.53
 <section id="grupos-1-e-3" class="slide level2">
 <h2>Grupos 1 e 3</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> <span class="fu">subset</span>(dados2, grupos<span class="sc">!=</span><span class="dv">2</span>),  <span class="at">rho=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> <span class="fu">subset</span>(dados2, grupos<span class="sc">!=</span><span class="dv">2</span>),  <span class="at">rho=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 survdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, 
@@ -674,7 +661,7 @@ grupos=3 13       13     7.66      3.72      7.86
 <section id="grupos-2-e-3" class="slide level2">
 <h2>Grupos 2 e 3</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> <span class="fu">subset</span>(dados2, grupos<span class="sc">!=</span><span class="dv">1</span>),  <span class="at">rho=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data =</span> <span class="fu">subset</span>(dados2, grupos<span class="sc">!=</span><span class="dv">1</span>),  <span class="at">rho=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 survdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, 
@@ -709,19 +696,19 @@ grupos=3 13       13     7.47      4.08      7.98
 <div class="tab-content">
 <div id="tabset-3-1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb23-1"><a href="#cb23-1"></a><span class="in">```{r}</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb23-3"><a href="#cb23-3"></a>dados_a <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"anderson.xlsx"</span>, <span class="at">col_names=</span>T)</span>
-<span id="cb23-4"><a href="#cb23-4"></a>ajusteKM_S <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx <span class="sc">+</span> <span class="fu">strata</span>(sexo), <span class="at">data =</span> dados_a)</span>
-<span id="cb23-5"><a href="#cb23-5"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb21-1"><a href="#cb21-1"></a><span class="in">```{r}</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb21-3"><a href="#cb21-3"></a>dados_a <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"anderson.xlsx"</span>, <span class="at">col_names=</span>T)</span>
+<span id="cb21-4"><a href="#cb21-4"></a>ajusteKM_S <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx <span class="sc">+</span> <span class="fu">strata</span>(sexo), <span class="at">data =</span> dados_a)</span>
+<span id="cb21-5"><a href="#cb21-5"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-3-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">plot</span>(ajusteKM_S, <span class="at">xlab=</span><span class="st">"T(semanas)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) </span>
-<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"Rx=0 e Sexo=M"</span>,<span class="st">"Rx=0 e Sexo=F"</span>, <span class="st">"Rx=1 e Sexo=M"</span>, <span class="st">"Rx=1 e Sexo=F"</span>), <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">plot</span>(ajusteKM_S, <span class="at">xlab=</span><span class="st">"T(semanas)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) </span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"Rx=0 e Sexo=M"</span>,<span class="st">"Rx=0 e Sexo=F"</span>, <span class="st">"Rx=1 e Sexo=M"</span>, <span class="st">"Rx=1 e Sexo=F"</span>), <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img data-src="Aula02B_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
+<p><img data-src="Aula02B_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
 </div>
 </div>
 </div>

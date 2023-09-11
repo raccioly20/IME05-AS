@@ -443,16 +443,12 @@ Prof.&nbsp;Ricardo Accioly
 <span id="cb1-8"><a href="#cb1-8"></a>status2g <span class="ot">&lt;-</span> <span class="fu">c</span>(status,status2)</span>
 <span id="cb1-9"><a href="#cb1-9"></a>grupos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">21</span>),<span class="fu">rep</span>(<span class="dv">2</span>,<span class="dv">21</span>))</span>
 <span id="cb1-10"><a href="#cb1-10"></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tempos=</span>tempo2g, <span class="at">status=</span>status2g, <span class="at">grupos=</span>grupos)</span>
-<span id="cb1-11"><a href="#cb1-11"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data=</span>dados)</span>
+<span id="cb1-11"><a href="#cb1-11"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data=</span>dados, <span class="at">conf.type=</span><span class="st">"log-log"</span>)</span>
 <span id="cb1-12"><a href="#cb1-12"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-1-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1"></a><span class="in">```{r}</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">plot</span>(ajusteKM, <span class="at">xlab=</span><span class="st">"T(semanas)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>) </span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"6-MP"</span>,<span class="st">"Placebo"</span>), <span class="at">lty =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img data-src="Aula02A_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
 </div>
@@ -464,141 +460,9 @@ Prof.&nbsp;Ricardo Accioly
 <section id="método-kaplan-meier-1" class="slide level2 smaller">
 <h2>Método Kaplan-Meier</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1"></a><span class="in">```{r}</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">summary</span>(ajusteKM)</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados)
-
-                grupos=1 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    6     21       3    0.857  0.0764        0.720        1.000
-    7     17       1    0.807  0.0869        0.653        0.996
-   10     15       1    0.753  0.0963        0.586        0.968
-   13     12       1    0.690  0.1068        0.510        0.935
-   16     11       1    0.627  0.1141        0.439        0.896
-   22      7       1    0.538  0.1282        0.337        0.858
-   23      6       1    0.448  0.1346        0.249        0.807
-
-                grupos=2 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    1     21       2   0.9048  0.0641      0.78754        1.000
-    2     19       2   0.8095  0.0857      0.65785        0.996
-    3     17       1   0.7619  0.0929      0.59988        0.968
-    4     16       2   0.6667  0.1029      0.49268        0.902
-    5     14       2   0.5714  0.1080      0.39455        0.828
-    8     12       4   0.3810  0.1060      0.22085        0.657
-   11      8       2   0.2857  0.0986      0.14529        0.562
-   12      6       2   0.1905  0.0857      0.07887        0.460
-   15      4       1   0.1429  0.0764      0.05011        0.407
-   17      3       1   0.0952  0.0641      0.02549        0.356
-   22      2       1   0.0476  0.0465      0.00703        0.322
-   23      1       1   0.0000     NaN           NA           NA</code></pre>
-</div>
-</div>
-</section>
-<section id="método-de-nelson-aalen" class="slide level2">
-<h2>Método de Nelson-Aalen</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>tempo<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">13</span>,<span class="dv">16</span>,<span class="dv">17</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">25</span>,<span class="dv">32</span>,<span class="dv">32</span>,<span class="dv">34</span>,<span class="dv">35</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>status<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>) </span>
-<span id="cb5-3"><a href="#cb5-3"></a>tempo2<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">11</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">17</span>,<span class="dv">22</span>,<span class="dv">23</span>)</span>
-<span id="cb5-4"><a href="#cb5-4"></a>status2<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>) </span>
-<span id="cb5-5"><a href="#cb5-5"></a>tempo2g <span class="ot">&lt;-</span> <span class="fu">c</span>(tempo,tempo2)</span>
-<span id="cb5-6"><a href="#cb5-6"></a>status2g <span class="ot">&lt;-</span> <span class="fu">c</span>(status,status2)</span>
-<span id="cb5-7"><a href="#cb5-7"></a>grupos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">21</span>),<span class="fu">rep</span>(<span class="dv">2</span>,<span class="dv">21</span>))</span>
-<span id="cb5-8"><a href="#cb5-8"></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tempos=</span>tempo2g, <span class="at">status=</span>status2g, <span class="at">grupos=</span>grupos)</span>
-<span id="cb5-9"><a href="#cb5-9"></a>ajusteNA <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status)<span class="sc">~</span>grupos, <span class="at">data =</span> dados, <span class="at">stype=</span><span class="dv">2</span>, <span class="at">ctype=</span><span class="dv">1</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="grafico-1" class="slide level2">
-<h2>Grafico</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1"></a><span class="in">```{r}</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">plot</span>(ajusteNA, <span class="at">xlab=</span><span class="st">"T(semanas)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>) </span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"6-MP"</span>,<span class="st">"Placebo"</span>), <span class="at">lty =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="Aula02A_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
-<section id="método-nelson-aalen" class="slide level2 smaller">
-<h2>Método Nelson-Aalen</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">summary</span>(ajusteNA)</span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados, 
-    stype = 2, ctype = 1)
-
-                grupos=1 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    6     21       3    0.867  0.0715        0.737        1.000
-    7     17       1    0.817  0.0828        0.670        0.997
-   10     15       1    0.765  0.0927        0.603        0.970
-   13     12       1    0.704  0.1035        0.527        0.939
-   16     11       1    0.642  0.1111        0.458        0.902
-   22      7       1    0.557  0.1249        0.359        0.864
-   23      6       1    0.471  0.1317        0.273        0.815
-
-                grupos=2 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    1     21       2   0.9092  0.0612      0.79674        1.000
-    2     19       2   0.8183  0.0821      0.67218        0.996
-    3     17       1   0.7716  0.0898      0.61425        0.969
-    4     16       2   0.6809  0.0995      0.51135        0.907
-    5     14       2   0.5903  0.1048      0.41673        0.836
-    8     12       4   0.4229  0.1030      0.26239        0.682
-   11      8       2   0.3294  0.0991      0.18261        0.594
-   12      6       2   0.2360  0.0902      0.11157        0.499
-   15      4       1   0.1838  0.0840      0.07509        0.450
-   17      3       1   0.1317  0.0745      0.04348        0.399
-   22      2       1   0.0799  0.0603      0.01820        0.351
-   23      1       1   0.0294  0.0368      0.00252        0.342</code></pre>
-</div>
-</div>
-</section>
-<section id="ic-através-da-normal" class="slide level2 smaller">
-<h2>IC através da Normal</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data=</span>dados, <span class="at">conf.type=</span><span class="st">"plain"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">summary</span>(ajusteKM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados, 
-    conf.type = "plain")
-
-                grupos=1 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    6     21       3    0.857  0.0764        0.707        1.000
-    7     17       1    0.807  0.0869        0.636        0.977
-   10     15       1    0.753  0.0963        0.564        0.942
-   13     12       1    0.690  0.1068        0.481        0.900
-   16     11       1    0.627  0.1141        0.404        0.851
-   22      7       1    0.538  0.1282        0.286        0.789
-   23      6       1    0.448  0.1346        0.184        0.712
-
-                grupos=2 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    1     21       2   0.9048  0.0641       0.7792        1.000
-    2     19       2   0.8095  0.0857       0.6416        0.977
-    3     17       1   0.7619  0.0929       0.5797        0.944
-    4     16       2   0.6667  0.1029       0.4650        0.868
-    5     14       2   0.5714  0.1080       0.3598        0.783
-    8     12       4   0.3810  0.1060       0.1733        0.589
-   11      8       2   0.2857  0.0986       0.0925        0.479
-   12      6       2   0.1905  0.0857       0.0225        0.358
-   15      4       1   0.1429  0.0764       0.0000        0.293
-   17      3       1   0.0952  0.0641       0.0000        0.221
-   22      2       1   0.0476  0.0465       0.0000        0.139
-   23      1       1   0.0000     NaN          NaN          NaN</code></pre>
-</div>
-</div>
-</section>
-<section id="ic-usando-a-transformação-log-log" class="slide level2 smaller">
-<h2>IC usando a transformação log-log</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status) <span class="sc">~</span> grupos, <span class="at">data=</span>dados, <span class="at">conf.type=</span><span class="st">"log-log"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">summary</span>(ajusteKM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">summary</span>(ajusteKM)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados, 
     conf.type = "log-log")
@@ -627,6 +491,83 @@ Prof.&nbsp;Ricardo Accioly
    17      3       1   0.0952  0.0641      0.01626        0.261
    22      2       1   0.0476  0.0465      0.00332        0.197
    23      1       1   0.0000     NaN           NA           NA</code></pre>
+</div>
+</div>
+</section>
+<section id="método-de-nelson-aalen" class="slide level2 smaller">
+<h2>Método de Nelson-Aalen</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>tempo<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">13</span>,<span class="dv">16</span>,<span class="dv">17</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">25</span>,<span class="dv">32</span>,<span class="dv">32</span>,<span class="dv">34</span>,<span class="dv">35</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>status<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>) </span>
+<span id="cb4-3"><a href="#cb4-3"></a>tempo2<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">8</span>,<span class="dv">11</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">17</span>,<span class="dv">22</span>,<span class="dv">23</span>)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>status2<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>) </span>
+<span id="cb4-5"><a href="#cb4-5"></a>tempo2g <span class="ot">&lt;-</span> <span class="fu">c</span>(tempo,tempo2)</span>
+<span id="cb4-6"><a href="#cb4-6"></a>status2g <span class="ot">&lt;-</span> <span class="fu">c</span>(status,status2)</span>
+<span id="cb4-7"><a href="#cb4-7"></a>grupos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">21</span>),<span class="fu">rep</span>(<span class="dv">2</span>,<span class="dv">21</span>))</span>
+<span id="cb4-8"><a href="#cb4-8"></a>dados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tempos=</span>tempo2g, <span class="at">status=</span>status2g, <span class="at">grupos=</span>grupos)</span>
+<span id="cb4-9"><a href="#cb4-9"></a>ajusteNA <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempos, status)<span class="sc">~</span>grupos, <span class="at">data =</span> dados, <span class="at">stype=</span><span class="dv">2</span>, <span class="at">ctype=</span><span class="dv">1</span>, <span class="at">conf.type=</span><span class="st">"log-log"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="gráfico-método-nelson-aalen" class="slide level2">
+<h2>Gráfico Método Nelson-Aalen</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">library</span>(survminer)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>graf <span class="ot">&lt;-</span> <span class="fu">ggsurvplot</span>(ajusteNA, <span class="at">data =</span> dados, </span>
+<span id="cb5-4"><a href="#cb5-4"></a>           <span class="at">risk.table =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb5-5"><a href="#cb5-5"></a>           <span class="at">pval =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb5-6"><a href="#cb5-6"></a>           <span class="at">conf.int =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb5-7"><a href="#cb5-7"></a>           <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">40</span>), </span>
+<span id="cb5-8"><a href="#cb5-8"></a>           <span class="at">xlab =</span> <span class="st">"Tempo em meses"</span>, </span>
+<span id="cb5-9"><a href="#cb5-9"></a>           <span class="at">ylab =</span> <span class="st">"S(t)"</span>,</span>
+<span id="cb5-10"><a href="#cb5-10"></a>           <span class="at">break.time.by =</span> <span class="dv">10</span>, </span>
+<span id="cb5-11"><a href="#cb5-11"></a>           <span class="at">ggtheme =</span> <span class="fu">theme_light</span>(), </span>
+<span id="cb5-12"><a href="#cb5-12"></a>           <span class="at">risk.table.y.text.col =</span> T, <span class="at">risk.table.y.text =</span> <span class="cn">FALSE</span> </span>
+<span id="cb5-13"><a href="#cb5-13"></a>)</span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="gráfico-do-método-nelson-aalen" class="slide level2">
+<h2>Gráfico do Método Nelson-Aalen</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>graf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="Aula02A_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="método-nelson-aalen" class="slide level2 smaller">
+<h2>Método Nelson-Aalen</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">summary</span>(ajusteNA)</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados, 
+    stype = 2, ctype = 1, conf.type = "log-log")
+
+                grupos=1 
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+    6     21       3    0.867  0.0715        0.642        0.955
+    7     17       1    0.817  0.0828        0.583        0.927
+   10     15       1    0.765  0.0927        0.522        0.895
+   13     12       1    0.704  0.1035        0.450        0.857
+   16     11       1    0.642  0.1111        0.386        0.814
+   22      7       1    0.557  0.1249        0.289        0.759
+   23      6       1    0.471  0.1317        0.211        0.696
+
+                grupos=2 
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+    1     21       2   0.9092  0.0612     0.683312        0.976
+    2     19       2   0.8183  0.0821     0.585744        0.928
+    3     17       1   0.7716  0.0898     0.535382        0.898
+    4     16       2   0.6809  0.0995     0.445010        0.833
+    5     14       2   0.5903  0.1048     0.360455        0.762
+    8     12       4   0.4229  0.1030     0.223432        0.610
+   11      8       2   0.3294  0.0991     0.151236        0.521
+   12      6       2   0.2360  0.0902     0.088391        0.423
+   15      4       1   0.1838  0.0840     0.056501        0.368
+   17      3       1   0.1317  0.0745     0.030135        0.309
+   22      2       1   0.0799  0.0603     0.010694        0.245
+   23      1       1   0.0294  0.0368     0.000845        0.172</code></pre>
 </div>
 </div>
 

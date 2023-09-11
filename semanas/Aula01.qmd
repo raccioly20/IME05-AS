@@ -188,3 +188,11 @@ graf <- ggsurvplot(ajusteKM4, data = dados,
 graf
 ```
 :::
+
+## Outra forma de sumário {.smaller}
+
+```{r}
+#| echo: true
+surv_summary(ajusteKM4)
+```
+
