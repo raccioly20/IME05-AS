@@ -444,7 +444,7 @@ Prof.&nbsp;Ricardo Accioly
 <span id="cb1-4"><a href="#cb1-4"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">subset =</span> (Rx<span class="sc">==</span><span class="dv">0</span>), <span class="at">data=</span>dados)</span>
 <span id="cb1-5"><a href="#cb1-5"></a>ajusteKM_sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajusteKM)</span>
 <span id="cb1-6"><a href="#cb1-6"></a>pesos <span class="ot">&lt;-</span> ajusteKM_sum<span class="sc">$</span>n.event<span class="sc">/</span>ajusteKM_sum<span class="sc">$</span>n.risk</span>
-<span id="cb1-7"><a href="#cb1-7"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">35</span>, <span class="at">weights =</span> pesos)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">kernel =</span> <span class="st">"epanechnikov"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">35</span>, <span class="at">weights =</span> pesos)</span>
 <span id="cb1-8"><a href="#cb1-8"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-9"><a href="#cb1-9"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span>h<span class="sc">$</span>x, <span class="at">y=</span>h<span class="sc">$</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -477,7 +477,7 @@ Prof.&nbsp;Ricardo Accioly
 <span id="cb3-5"><a href="#cb3-5"></a>ajusteKM_sum <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajusteKM)</span>
 <span id="cb3-6"><a href="#cb3-6"></a>pesos <span class="ot">&lt;-</span> ajusteKM_sum<span class="sc">$</span>n.event<span class="sc">/</span>ajusteKM_sum<span class="sc">$</span>n.risk</span>
 <span id="cb3-7"><a href="#cb3-7"></a>h <span class="ot">&lt;-</span> <span class="fu">density</span>(ajusteKM_sum<span class="sc">$</span>time, <span class="at">weights =</span> pesos,</span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">25</span>)</span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="at">kernel =</span> <span class="st">"epanechnikov"</span>, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">25</span>)</span>
 <span id="cb3-9"><a href="#cb3-9"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x=</span>h<span class="sc">$</span>x, <span class="at">y=</span>h<span class="sc">$</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>

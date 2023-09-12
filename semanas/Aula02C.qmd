@@ -50,7 +50,7 @@ dados <- read_xlsx("anderson.xlsx", col_names = TRUE)
 ajusteKM <- survfit(Surv(tempo, status) ~ 1, subset = (Rx==0), data=dados)
 ajusteKM_sum <- summary(ajusteKM)
 pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
-h <- density(ajusteKM_sum$time, kernel = "gaussian", n = 100, from = 0, to = 35, weights = pesos)
+h <- density(ajusteKM_sum$time, kernel = "epanechnikov", n = 100, from = 0, to = 35, weights = pesos)
 library(ggplot2)
 data <- data.frame(x=h$x, y=h$y)
 ```
@@ -81,7 +81,7 @@ ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
 ajusteKM_sum <- summary(ajusteKM)
 pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
 h <- density(ajusteKM_sum$time, weights = pesos,
-kernel = "gaussian", n = 100, from = 0, to = 25)
+kernel = "epanechnikov", n = 100, from = 0, to = 25)
 data <- data.frame(x=h$x, y=h$y)
 ```
 
