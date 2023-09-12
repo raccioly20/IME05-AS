@@ -689,7 +689,7 @@ grupos=3 13       13     7.47      4.08      7.98
 </ul>
 <p>Vamos ver como isto pode ser feito na função survfit.</p>
 </section>
-<section id="curva-de-sobrevivência-estratificada-1" class="slide level2">
+<section id="curva-de-sobrevivência-estratificada-1" class="slide level2 smaller">
 <h2>Curva de Sobrevivência estratificada</h2>
 <div class="panel-tabset">
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Ajuste</a></li><li><a href="#tabset-3-2">Grafico</a></li></ul>
@@ -700,13 +700,51 @@ grupos=3 13       13     7.47      4.08      7.98
 <span id="cb21-2"><a href="#cb21-2"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb21-3"><a href="#cb21-3"></a>dados_a <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"anderson.xlsx"</span>, <span class="at">col_names=</span>T)</span>
 <span id="cb21-4"><a href="#cb21-4"></a>ajusteKM_S <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx <span class="sc">+</span> <span class="fu">strata</span>(sexo), <span class="at">data =</span> dados_a)</span>
-<span id="cb21-5"><a href="#cb21-5"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-5"><a href="#cb21-5"></a><span class="fu">summary</span>(ajusteKM_S)</span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)
+
+                Rx=0, strata(sexo)=sexo=0 
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+    6     11       2    0.818   0.116        0.619            1
+    7      8       1    0.716   0.140        0.488            1
+   10      6       1    0.597   0.159        0.353            1
+   13      3       1    0.398   0.194        0.153            1
+
+                Rx=0, strata(sexo)=sexo=1 
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+    6     10       1    0.900  0.0949        0.732            1
+   16      9       1    0.800  0.1265        0.587            1
+   22      7       1    0.686  0.1515        0.445            1
+   23      6       1    0.571  0.1638        0.326            1
+
+                Rx=1, strata(sexo)=sexo=0 
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+    5     11       1   0.9091  0.0867       0.7541        1.000
+    8     10       3   0.6364  0.1450       0.4071        0.995
+   11      7       2   0.4545  0.1501       0.2379        0.868
+   12      5       2   0.2727  0.1343       0.1039        0.716
+   15      3       1   0.1818  0.1163       0.0519        0.637
+   17      2       1   0.0909  0.0867       0.0140        0.589
+   22      1       1   0.0000     NaN           NA           NA
+
+                Rx=1, strata(sexo)=sexo=1 
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+    1     10       2      0.8  0.1265       0.5868        1.000
+    2      8       2      0.6  0.1549       0.3617        0.995
+    3      6       1      0.5  0.1581       0.2690        0.929
+    4      5       2      0.3  0.1449       0.1164        0.773
+    5      3       1      0.2  0.1265       0.0579        0.691
+    8      2       1      0.1  0.0949       0.0156        0.642
+   23      1       1      0.0     NaN           NA           NA</code></pre>
+</div>
 </div>
 </div>
 <div id="tabset-3-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">plot</span>(ajusteKM_S, <span class="at">xlab=</span><span class="st">"T(semanas)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) </span>
-<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"Rx=0 e Sexo=M"</span>,<span class="st">"Rx=0 e Sexo=F"</span>, <span class="st">"Rx=1 e Sexo=M"</span>, <span class="st">"Rx=1 e Sexo=F"</span>), <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">plot</span>(ajusteKM_S, <span class="at">xlab=</span><span class="st">"T(semanas)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) </span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"Rx=0 e Sexo=F"</span>,<span class="st">"Rx=0 e Sexo=M"</span>, <span class="st">"Rx=1 e Sexo=F"</span>, <span class="st">"Rx=1 e Sexo=M"</span>), <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img data-src="Aula02B_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
 </div>
@@ -718,7 +756,7 @@ grupos=3 13       13     7.47      4.08      7.98
 <section id="teste-do-log-rank-2" class="slide level2">
 <h2>Teste do log-rank</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx, <span class="at">data =</span> dados_a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx, <span class="at">data =</span> dados_a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 survdiff(formula = Surv(tempo, status) ~ Rx, data = dados_a)
@@ -729,7 +767,7 @@ Rx=1 21       21     10.7      9.77      16.8
 
  Chisq= 16.8  on 1 degrees of freedom, p= 4e-05 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx <span class="sc">+</span> <span class="fu">strata</span>(sexo), <span class="at">data =</span> dados_a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">survdiff</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx <span class="sc">+</span> <span class="fu">strata</span>(sexo), <span class="at">data =</span> dados_a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 survdiff(formula = Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)
@@ -745,24 +783,24 @@ Rx=1 21       21     13.5      4.23       9.7
 <section id="explorando-os-dados" class="slide level2">
 <h2>Explorando os dados</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">summary</span>(<span class="fu">as.factor</span>(dados_a<span class="sc">$</span>sexo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">summary</span>(<span class="fu">as.factor</span>(dados_a<span class="sc">$</span>sexo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> 0  1 
 22 20 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 11</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 11</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">sum</span>(dados_a<span class="sc">$</span>sexo<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> dados_a<span class="sc">$</span>Rx<span class="sc">==</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10</code></pre>
 </div>

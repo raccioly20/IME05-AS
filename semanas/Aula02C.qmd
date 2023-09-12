@@ -31,7 +31,6 @@ Existem dois grupos de pacientes:
 O evento falha aqui é ocorrer uma recaída na doença.
 :::
 
-
 ## Função taxa de falhas e quantis
 
 Vamos obter uma aproximação da função taxa de falhas usando a função density
@@ -46,14 +45,12 @@ Posteriormente vamos obter o quantil usando uma função do pacote `survey`
 ```{r}
 #| echo: true
 library(survival)
-tempo<- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)
-status<- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0) 
-dados <- data.frame(tempos=tempo, status=status)
-ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
+library(readxl)
+dados <- read_xlsx("anderson.xlsx", col_names = TRUE)
+ajusteKM <- survfit(Surv(tempo, status) ~ 1, subset = (Rx==0), data=dados)
 ajusteKM_sum <- summary(ajusteKM)
 pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
-h <- density(ajusteKM_sum$time, weights = pesos,
-kernel = "gaussian", n = 100, from = 0, to = 35)
+h <- density(ajusteKM_sum$time, kernel = "gaussian", n = 100, from = 0, to = 35, weights = pesos)
 library(ggplot2)
 data <- data.frame(x=h$x, y=h$y)
 ```
@@ -61,6 +58,8 @@ data <- data.frame(x=h$x, y=h$y)
 ### Grafico
 
 ```{r}
+#| fig-width: 8
+#| fig-height: 4
 ggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20)) + theme_light() +
   theme(axis.text = element_text(size = 12),
         axis.title = element_text(size = 14)) +
@@ -89,12 +88,15 @@ data <- data.frame(x=h$x, y=h$y)
 ### Grafico
 
 ```{r}
+#| fig-width: 8
+#| fig-height: 4
 ggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20)) +  theme_light() +
   theme(axis.text = element_text(size = 12),
         axis.title = element_text(size = 14)) +
   labs(x = "Tempo [semanas]", y = "Estimativa da taxa de falhas", title = "Estimativa da taxa de falhas - Placebo")
 ```
 :::
+
 
 ## Quantis não paramétricos
 

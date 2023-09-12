@@ -187,7 +187,7 @@ O conjunto de dados tem os seguintes informação:
 
 Vamos ver como isto pode ser feito na função survfit.
 
-## Curva de Sobrevivência estratificada
+## Curva de Sobrevivência estratificada {.smaller}
 
 ::: panel-tabset
 ### Ajuste
@@ -197,18 +197,19 @@ Vamos ver como isto pode ser feito na função survfit.
 library(readxl)
 dados_a <- read_xlsx("anderson.xlsx", col_names=T)
 ajusteKM_S <- survfit(Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)
+summary(ajusteKM_S)
 ```
 
 ### Grafico
 
 ```{r}
 plot(ajusteKM_S, xlab="T(semanas)",ylab="S(t)", lty=1:4) 
-legend("topright",c("Rx=0 e Sexo=M","Rx=0 e Sexo=F", "Rx=1 e Sexo=M", "Rx=1 e Sexo=F"), lty = 1:4)
+legend("topright",c("Rx=0 e Sexo=F","Rx=0 e Sexo=M", "Rx=1 e Sexo=F", "Rx=1 e Sexo=M"), lty = 1:4)
 ```
 :::
 
-
 ## Teste do log-rank
+
 ```{r}
 survdiff(Surv(tempo, status) ~ Rx, data = dados_a)
 survdiff(Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)
@@ -224,4 +225,3 @@ sum(dados_a$sexo==1 & dados_a$Rx==0)
 sum(dados_a$sexo==0 & dados_a$Rx==1)
 sum(dados_a$sexo==1 & dados_a$Rx==1)
 ```
-
