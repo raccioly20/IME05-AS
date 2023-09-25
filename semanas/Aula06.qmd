@@ -4,16 +4,13 @@ subtitle: "Modelos Paramétricos - Outros Modelos"
 author: "Ricardo Accioly"
 format:
   revealjs:
-    theme: dark 
     slide-number: true
-    chalkboard: 
-      buttons: false
-    preview-links: auto
     css: styles.css
+    theme: dark
+    footer: "IME05-12532 - Análise de Sobrevivência"
 ---
 
 ```{r, setup}
-#| echo: true
 #| fig-width: 10
 #| fig-height: 4.5
 ```
@@ -81,21 +78,21 @@ ajuste5
 #| echo: true
 #| fig-width: 10
 #| fig-height: 4.5
-ajuste1$loglik # exponencial
-ajuste2$loglik # Weibull
-ajuste3$loglik # Lognormal
-ajuste4$loglik # LogLogistica
-ajuste5$loglik # Gama Generalizada
+modelos <- data.frame(modelos=c("exponencial", "Weibull", "lognormal", "gama generalizada"), logvero= c(ajuste1$loglik, ajuste2$loglik, ajuste3$loglik, ajuste5$loglik))
+modelos
+## Teste da Razão de verossimilhança
+## Só é possível de se usar em modelos encaixados
+## O modelo log-logístico não é encaixado no gama-generalizado
 
-# Exponencial q=σ=1
+# Exponencial H0: q=σ=1  H1:dirente de 1
 TRVe <- 2*(ajuste5$loglik - ajuste1$loglik)
-pchisq(TRVe,2, lower.tail = F)
-# Weibull q = 1
+# Weibull H0: q = 1 H1: diferente de 1
 TRVw <- 2*(ajuste5$loglik - ajuste2$loglik)
-pchisq(TRVw,1, lower.tail = F)
-# Lognormal q = 0
+# Lognormal H0: q = 0 H1: diferente de 0
 TRVlog <- 2*(ajuste5$loglik - ajuste3$loglik)
-pchisq(TRVlog,1, lower.tail = F)
+
+TRV_modelos <- data.frame(modelos=c("exponencial", "Weibull", "lognormal"), TRV= c(TRVe, TRVw, TRVlog), quiquadrado=c(pchisq(TRVe,2, lower.tail = F),pchisq(TRVw,1, lower.tail = F),pchisq(TRVlog,1, lower.tail = F)))
+TRV_modelos
 ```
 
 ## Comparando através do AIC {.smaller}
@@ -105,15 +102,10 @@ pchisq(TRVlog,1, lower.tail = F)
 #| fig-width: 10
 #| fig-height: 4.5
 aic.exp <- -2*ajuste1$loglik + 2*1
-aic.exp
 aic.wei <- -2*ajuste2$loglik + 2*2
-aic.wei
 aic.ln <- -2*ajuste3$loglik + 2*2
-aic.ln
 aic.ll <- -2*ajuste4$loglik + 2*2
-aic.ll
 aic.gg <- -2*ajuste5$loglik + 2*3
-aic.gg
 aic <- c(aic.exp, aic.wei, aic.ln, aic.ll, aic.gg)
 delta.aic <- aic - min(aic)
 delta.aic
@@ -127,12 +119,29 @@ sum(peso.aic)
 modelos <- data.frame(modelos=c("Exponencial", "Weibull",
                                 "Lognormal", "Loglogistico", "GG"),
                       p_Akaike = peso.aic)
-gt::gt(modelos)
+modelos
 ```
 
-## Curvas de Sobrevivência
+## Curvas de Sobrevivência {.smaller}
 
 ```{r}
+#| eval: false
+plot(tempost, st, ylim=range(c(0.0,1)), xlim=range(c(0,50)), ylab="S(t)", xlab="Tempo (meses)")
+lines(ajuste1, col="blue", ci=FALSE)
+lines(ajuste2, col="green", ci=FALSE)
+lines(ajuste3, col="cyan", ci=FALSE)
+lines(ajuste4,col="red", ci=FALSE)
+lines(ajuste5,col="black", ci=FALSE)
+legend("topright", lty=c(1,1,1,1), lwd=c(2,2,2,2),
+       col=c("blue", "green", "cyan","red", "black"),
+       c("Exponencial","Weibull", "Lognormal" , "LogLogistica", "Gama Generalizada"))
+```
+
+
+## Curvas de Sobrevivência 
+
+```{r}
+#| echo: false
 plot(tempost, st, ylim=range(c(0.0,1)), xlim=range(c(0,50)), ylab="S(t)", xlab="Tempo (meses)")
 lines(ajuste1, col="blue", ci=FALSE)
 lines(ajuste2, col="green", ci=FALSE)

@@ -20,8 +20,6 @@ Os códigos apresentados em aula serão colocado por aqui também.
 
 \[📖\] <a href="./semanas/Aula04.html" class="link">Aula04</a>
 
-\[📖\] <a href="./semanas/Aula05.html" class="link">Aula05</a>
-
 \[📖\] <a href="./semanas/Aula06.html" class="link">Aula06</a>
 
 \[📖\] <a href="./semanas/Aula06x.html" class="link">TFA1</a>

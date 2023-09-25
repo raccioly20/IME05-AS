@@ -195,4 +195,3 @@ graf
 #| echo: true
 surv_summary(ajusteKM4)
 ```
-

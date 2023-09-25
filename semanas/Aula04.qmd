@@ -1,6 +1,6 @@
 ---
 title: "Análise de Sobrevivência"
-subtitle: "Modelos Paramétricos"
+subtitle: "Modelos Paramétricos - Avaliação do ajuste"
 author: "Ricardo Accioly"
 format:
   revealjs:
@@ -26,7 +26,7 @@ Aqui vamos utilizar as funções existentes no pacote `survival`.
 
 Para ajustar um modelo paramétrico usamo a função `survreg`.
 
-## Metodo de Kaplan-Meier
+## Metodo de Kaplan-Meier {.smaller}
 
 ```{r}
 #| echo: true
@@ -125,7 +125,6 @@ curve(expHaz(x, rate=1/alfa), from=0, to=45,
 ## Quantis do Modelo Exponencial
 
 ::: panel-tabset
-
 ### Cálculos
 
 ```{r}
@@ -145,7 +144,6 @@ names(IC.mediana_exp) <- c("mediana Exp","ICI","ICS")
 #IC Mediana
 IC.mediana_exp
 ```
-
 :::
 
 ## Avaliação do modelo
@@ -173,13 +171,11 @@ xlab = "Quantis Teoricos (exponencial)",
 ylab = "Quantis Empiricos")
 ```
 
-
-
 ## Modelo Weibull
 
 ::: panel-tabset
-
 ### Ajuste do modelo
+
 ```{r}
 ajustWei <- survreg(Surv(tempos,status)~1, data=dados, dist='weibull')
 ajustWei
@@ -195,7 +191,6 @@ alfaw
 # Beta - parametro de forma
 betaw
 ```
-
 :::
 
 ## Taxa de Falhas NP vs Weibull {.smaller}
@@ -246,7 +241,6 @@ curve(weibHaz(x, shape=betaw, scale=alfaw),
 ## Quantis do Modelo Weibull
 
 ::: panel-tabset
-
 ### Cálculos
 
 ```{r}
@@ -260,15 +254,12 @@ names(IC.mediana_w) <- c("mediana Wei","ICI","ICS")
 
 ```
 
-
 ### Resultados
 
 ```{r}
 ## Mediana
 IC.mediana_w
 ```
-
-
 :::
 
 ## Avaliação do Modelo
@@ -296,11 +287,9 @@ xlab = "Quantis Teoricos (Weibull)",
 ylab = "Quantis Empiricos")
 ```
 
-
 ## Modelo Lognormal
 
 ::: panel-tabset
-
 ### Ajuste do modelo
 
 ```{r}
@@ -318,7 +307,6 @@ mulog
 # Desvio padrão
 sigmalog
 ```
-
 :::
 
 ## Taxa de Falhas NP vs Lognormal {.smaller}
@@ -402,11 +390,9 @@ xlab = "Quantis Teoricos (Lognormal)",
 ylab = "Quantis Empiricos")
 ```
 
-
 ## Modelo Loglogístico {.smaller}
 
 ::: panel-tabset
-
 ### Ajuste do modelo
 
 ```{r}
@@ -426,7 +412,6 @@ betall
 # Desvio padrão
 alfall
 ```
-
 :::
 
 ## Taxa de Falhas NP vs Loglogística {.smaller}
@@ -466,7 +451,6 @@ curve(llogisHaz(x, alfa=alfall, beta=betall), from=0, to=45,
       ylab="h(t)", xlab="Tempo", col="red", add=TRUE)
 ```
 
-
 ## Quantis do Modelo LogLogístico
 
 ```{r}
@@ -505,7 +489,6 @@ qqPlot(n.censurado,
        ylab = "Quantis Empiricos")
 ```
 
-
 ## Curvas de Sobrevivência {.smaller}
 
 ```{r}
@@ -521,11 +504,9 @@ cbind(tempo,st,ste,stw,stln, stll)
 ## Quantis
 
 ```{r}
-med.km
-IC.mediana_exp
-IC.mediana_w
-IC.mediana_log
-IC.mediana_llog
+names(med.km) <- c("Mediana", "ICI", "ICS")
+quantis <- rbind(med.km, IC.mediana_exp, IC.mediana_w, IC.mediana_log, IC.mediana_llog)
+quantis
 ```
 
 ## Comparação NP vs Paramétrico
@@ -574,3 +555,118 @@ plot(ekm, conf.int=F, xlab="Tempos", ylab="S(t)")
 lines(c(0,tempo),c(1,stll), lty=2)
 legend(25,0.8,lty=c(1,2),c("Kaplan-Meier", "LogLogistica"),bty="n",cex=0.8)
 ```
+
+
+## Modelos Paramétricos
+
+```{r}
+ajustExp <- survreg(Surv(tempos,status)~1, data=dados, dist='exponential')
+alfa <- exp(ajustExp$coefficients[1])
+ajustWei <- survreg(Surv(tempos,status)~1, data=dados, dist='weibull')
+alfaw <- exp(ajustWei$coefficients[1])
+betaw <- 1/ajustWei$scale
+ajustLog <- survreg(Surv(tempos,status)~1, data=dados, dist='lognorm')
+mu <- ajustLog$icoef[1]
+sigma <- exp(ajustLog$icoef[2])
+ajustLogl <- survreg(Surv(tempos,status)~1, data=dados, dist='loglogistic')
+mu1 <- ajustLogl$icoef[1]
+sigma1 <- exp(ajustLogl$icoef[2])
+
+```
+
+\`
+
+## Avaliação do Modelo Weibull
+
+```{r}
+tab.np <- summary(ekm)
+plot(log(-log(tab.np$surv)) ~ log(tab.np$time),
+     xlab="log(t)", ylab="log(-log(S(t)))", pch=20)
+mod1.lm <- lm(log(-log(tab.np$surv)) ~ log(tab.np$time))
+abline(mod1.lm)
+confint(mod1.lm)
+```
+
+## Avaliação do Modelo Lognormal
+
+```{r}
+tab.np <- summary(ekm)
+invst1 <- qnorm(tab.np$surv)
+plot(invst1 ~ log(tab.np$time),
+     xlab="log(t)", ylab=expression(Phi^-1*(S(t))), pch=20)
+mod2.lm <- lm(invst1 ~ log(tab.np$time))
+abline(mod2.lm)
+```
+
+## Avaliação do Modelo LogLogístico
+
+```{r}
+tab.np <- summary(ekm)
+invst2 <- qlogis(tab.np$surv) 
+plot(invst2 ~ log(tab.np$time),
+     xlab="log(t)", ylab=expression(Phi^-1*Logis*(S(t))), pch=20)
+mod3.lm <- lm(invst2 ~ log(tab.np$time))
+abline(mod3.lm)
+```
+
+## Teste de Razão de Verossimilhança {.smaller}
+
+No nível de significância de 𝛼=0,05 eu rejeito a hipótese de que o parametro de forma seja igual a 1.
+
+```{r}
+tab.exp <- summary(ajustExp)
+tab.wei <- summary(ajustWei)
+TRV <- 2*(tab.wei$loglik[1] - tab.exp$loglik[1])
+pchisq(TRV, 1, lower.tail = F)
+```
+
+## Calculos do peso do AIC {.smaller}
+
+```{r}
+#| echo: true
+#| fig-width: 10
+#| fig-height: 4.5
+tab.exp <- summary(ajustExp)
+tab.wei <- summary(ajustWei)
+tab.ln <- summary(ajustLog)
+tab.ll <- summary(ajustLogl)
+aic.exp <- -2*tab.exp$loglik[1] + 2*1
+aic.wei <- -2*tab.wei$loglik[1] + 2*2
+aic.ln <- -2*tab.ln$loglik[1] + 2*2
+aic.ll <- -2*tab.ll$loglik[1] + 2*2
+aic <- c(aic.exp, aic.wei, aic.ln, aic.ll)
+delta.aic <- aic - min(aic)
+peso.aic <- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))
+# Usando a função AIC para calcuar o AIC
+aic.exp1 <- AIC(ajustExp)
+aic.wei1 <- AIC(ajustWei)
+aic.ln1 <- AIC(ajustLog)
+aic.ll1 <- AIC(ajustLogl)
+aic1 <- c(aic.exp1, aic.wei1, aic.ln1, aic.ll1)
+aic
+aic1
+```
+
+## Comparando modelos através do Peso de Akaike
+
+```{r}
+modelos <- data.frame(modelos=c("Exponencial", "Weibull",
+                                "Lognormal", "Loglogistico"),
+                      p_Akaike = peso.aic)
+modelos
+```
+
+## Comparando os modelos através do BIC
+
+```{r}
+bic.exp <- BIC(ajustExp)
+bic.wei <- BIC(ajustWei)
+bic.ln <- BIC(ajustLog)
+bic.ll <- BIC(ajustLogl)
+modelos <- data.frame(modelos=c("Exponencial", "Weibull",
+                                "Lognormal", "Loglogistico"),
+                      BIC = c(bic.exp, bic.wei, bic.ln, bic.ll))
+modelos
+```
+
+

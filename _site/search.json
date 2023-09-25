@@ -830,7 +830,7 @@
     "href": "index.html",
     "title": "IME05-12532 - Análise de Sobrevivência",
     "section": "",
-    "text": "Bom dia / Boa tarde / Boa Noite,\nAqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do R. O objetivo é mostrar as possibilidades de aplicação do R nesta disciplina.\nOs códigos apresentados em aula serão colocado por aqui também.\n[📖] Aula01\n[📖] Aula02A\n[📖] Aula02B\n[📖] Aula02C\n[📖] Aula03\n[📖] Aula04\n[📖] Aula05\n[📖] Aula06\n[📖] TFA1\n[📖] TFA2\n[📖] TFA3\n[📖] Cox 1\n[📖] Cox 2\n[📖] Cox 3\n[📖] Cox 4\n[📖] Cox 5"
+    "text": "Bom dia / Boa tarde / Boa Noite,\nAqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do R. O objetivo é mostrar as possibilidades de aplicação do R nesta disciplina.\nOs códigos apresentados em aula serão colocado por aqui também.\n[📖] Aula01\n[📖] Aula02A\n[📖] Aula02B\n[📖] Aula02C\n[📖] Aula03\n[📖] Aula04\n[📖] Aula06\n[📖] TFA1\n[📖] TFA2\n[📖] TFA3\n[📖] Cox 1\n[📖] Cox 2\n[📖] Cox 3\n[📖] Cox 4\n[📖] Cox 5"
   },
   {
     "objectID": "semanas/Aula02A.html#análise-de-sobrevivência-1",
@@ -1145,7 +1145,7 @@
     "href": "semanas/Aula04.html#quantis",
     "title": "Análise de Sobrevivência",
     "section": "Quantis",
-    "text": "Quantis\n\nmed.km\n\nmediana KM        ICI        ICS \n        18         10         28 \n\nIC.mediana_exp\n\nmediana Exp         ICI         ICS \n  14.148357    8.795399   22.759175 \n\nIC.mediana_w\n\nmediana Wei         ICI         ICS \n   16.82823    11.95670    23.68456 \n\nIC.mediana_log\n\nmediana Logn          ICI          ICS \n    15.13751     10.71601     21.38334 \n\nIC.mediana_llog\n\nmediana LogL          ICI          ICS \n    15.44700     10.85399     21.98361"
+    "text": "Quantis\n\nnames(med.km) &lt;- c(\"Mediana\", \"ICI\", \"ICS\")\nquantis &lt;- rbind(med.km, IC.mediana_exp, IC.mediana_w, IC.mediana_log, IC.mediana_llog)\nquantis\n\n                 Mediana       ICI      ICS\nmed.km          18.00000 10.000000 28.00000\nIC.mediana_exp  14.14836  8.795399 22.75917\nIC.mediana_w    16.82823 11.956697 23.68456\nIC.mediana_log  15.13751 10.716009 21.38334\nIC.mediana_llog 15.44700 10.853987 21.98361"
   },
   {
     "objectID": "semanas/Aula04.html#comparação-np-vs-paramétrico",
@@ -1173,7 +1173,63 @@
     "href": "semanas/Aula04.html#comparação-np-vs-paramétrico-3",
     "title": "Análise de Sobrevivência",
     "section": "Comparação NP vs Paramétrico",
-    "text": "Comparação NP vs Paramétrico\n\npar(mfrow=c(1,2))\nplot(ekm, conf.int=F, xlab=\"Tempos\", ylab=\"S(t)\")\nlines(c(0,tempo),c(1,stln), lty=2)\nlegend(25,0.8,lty=c(1,2),c(\"Kaplan-Meier\", \"Lognormal\"),bty=\"n\",cex=0.8)\nplot(ekm, conf.int=F, xlab=\"Tempos\", ylab=\"S(t)\")\nlines(c(0,tempo),c(1,stll), lty=2)\nlegend(25,0.8,lty=c(1,2),c(\"Kaplan-Meier\", \"LogLogistica\"),bty=\"n\",cex=0.8)\n\n\n\n\nIME05-12532 - Análise de Sobrevivência"
+    "text": "Comparação NP vs Paramétrico\n\npar(mfrow=c(1,2))\nplot(ekm, conf.int=F, xlab=\"Tempos\", ylab=\"S(t)\")\nlines(c(0,tempo),c(1,stln), lty=2)\nlegend(25,0.8,lty=c(1,2),c(\"Kaplan-Meier\", \"Lognormal\"),bty=\"n\",cex=0.8)\nplot(ekm, conf.int=F, xlab=\"Tempos\", ylab=\"S(t)\")\nlines(c(0,tempo),c(1,stll), lty=2)\nlegend(25,0.8,lty=c(1,2),c(\"Kaplan-Meier\", \"LogLogistica\"),bty=\"n\",cex=0.8)"
+  },
+  {
+    "objectID": "semanas/Aula04.html#modelos-paramétricos-1",
+    "href": "semanas/Aula04.html#modelos-paramétricos-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos",
+    "text": "Modelos Paramétricos\n\najustExp &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='exponential')\nalfa &lt;- exp(ajustExp$coefficients[1])\najustWei &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='weibull')\nalfaw &lt;- exp(ajustWei$coefficients[1])\nbetaw &lt;- 1/ajustWei$scale\najustLog &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='lognorm')\nmu &lt;- ajustLog$icoef[1]\nsigma &lt;- exp(ajustLog$icoef[2])\najustLogl &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='loglogistic')\nmu1 &lt;- ajustLogl$icoef[1]\nsigma1 &lt;- exp(ajustLogl$icoef[2])\n\n`"
+  },
+  {
+    "objectID": "semanas/Aula04.html#avaliação-do-modelo-weibull-1",
+    "href": "semanas/Aula04.html#avaliação-do-modelo-weibull-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliação do Modelo Weibull",
+    "text": "Avaliação do Modelo Weibull\n\ntab.np &lt;- summary(ekm)\nplot(log(-log(tab.np$surv)) ~ log(tab.np$time),\n     xlab=\"log(t)\", ylab=\"log(-log(S(t)))\", pch=20)\nmod1.lm &lt;- lm(log(-log(tab.np$surv)) ~ log(tab.np$time))\nabline(mod1.lm)\n\nconfint(mod1.lm)\n\n                     2.5 %    97.5 %\n(Intercept)      -4.763998 -4.318050\nlog(tab.np$time)  1.442427  1.609615"
+  },
+  {
+    "objectID": "semanas/Aula04.html#avaliação-do-modelo-lognormal-1",
+    "href": "semanas/Aula04.html#avaliação-do-modelo-lognormal-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliação do Modelo Lognormal",
+    "text": "Avaliação do Modelo Lognormal\n\ntab.np &lt;- summary(ekm)\ninvst1 &lt;- qnorm(tab.np$surv)\nplot(invst1 ~ log(tab.np$time),\n     xlab=\"log(t)\", ylab=expression(Phi^-1*(S(t))), pch=20)\nmod2.lm &lt;- lm(invst1 ~ log(tab.np$time))\nabline(mod2.lm)"
+  },
+  {
+    "objectID": "semanas/Aula04.html#avaliação-do-modelo-loglogístico-1",
+    "href": "semanas/Aula04.html#avaliação-do-modelo-loglogístico-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliação do Modelo LogLogístico",
+    "text": "Avaliação do Modelo LogLogístico\n\ntab.np &lt;- summary(ekm)\ninvst2 &lt;- qlogis(tab.np$surv) \nplot(invst2 ~ log(tab.np$time),\n     xlab=\"log(t)\", ylab=expression(Phi^-1*Logis*(S(t))), pch=20)\nmod3.lm &lt;- lm(invst2 ~ log(tab.np$time))\nabline(mod3.lm)"
+  },
+  {
+    "objectID": "semanas/Aula04.html#teste-de-razão-de-verossimilhança",
+    "href": "semanas/Aula04.html#teste-de-razão-de-verossimilhança",
+    "title": "Análise de Sobrevivência",
+    "section": "Teste de Razão de Verossimilhança",
+    "text": "Teste de Razão de Verossimilhança\nNo nível de significância de 𝛼=0,05 eu rejeito a hipótese de que o parametro de forma seja igual a 1.\n\ntab.exp &lt;- summary(ajustExp)\ntab.wei &lt;- summary(ajustWei)\nTRV &lt;- 2*(tab.wei$loglik[1] - tab.exp$loglik[1])\npchisq(TRV, 1, lower.tail = F)\n\n[1] 0.03853913"
+  },
+  {
+    "objectID": "semanas/Aula04.html#calculos-do-peso-do-aic",
+    "href": "semanas/Aula04.html#calculos-do-peso-do-aic",
+    "title": "Análise de Sobrevivência",
+    "section": "Calculos do peso do AIC",
+    "text": "Calculos do peso do AIC\n\ntab.exp &lt;- summary(ajustExp)\ntab.wei &lt;- summary(ajustWei)\ntab.ln &lt;- summary(ajustLog)\ntab.ll &lt;- summary(ajustLogl)\naic.exp &lt;- -2*tab.exp$loglik[1] + 2*1\naic.wei &lt;- -2*tab.wei$loglik[1] + 2*2\naic.ln &lt;- -2*tab.ln$loglik[1] + 2*2\naic.ll &lt;- -2*tab.ll$loglik[1] + 2*2\naic &lt;- c(aic.exp, aic.wei, aic.ln, aic.ll)\ndelta.aic &lt;- aic - min(aic)\npeso.aic &lt;- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\n# Usando a função AIC para calcuar o AIC\naic.exp1 &lt;- AIC(ajustExp)\naic.wei1 &lt;- AIC(ajustWei)\naic.ln1 &lt;- AIC(ajustLog)\naic.ll1 &lt;- AIC(ajustLogl)\naic1 &lt;- c(aic.exp1, aic.wei1, aic.ln1, aic.ll1)\naic\n\n[1] 138.5478 136.2667 135.4798 136.0611\n\naic1\n\n[1] 138.5478 136.2667 135.4798 136.0611"
+  },
+  {
+    "objectID": "semanas/Aula04.html#comparando-modelos-através-do-peso-de-akaike",
+    "href": "semanas/Aula04.html#comparando-modelos-através-do-peso-de-akaike",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando modelos através do Peso de Akaike",
+    "text": "Comparando modelos através do Peso de Akaike\n\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      p_Akaike = peso.aic)\nmodelos\n\n       modelos   p_Akaike\n1  Exponencial 0.08175044\n2      Weibull 0.25575120\n3    Lognormal 0.37904837\n4 Loglogistico 0.28344999"
+  },
+  {
+    "objectID": "semanas/Aula04.html#comparando-os-modelos-através-do-bic",
+    "href": "semanas/Aula04.html#comparando-os-modelos-através-do-bic",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando os modelos através do BIC",
+    "text": "Comparando os modelos através do BIC\n\nbic.exp &lt;- BIC(ajustExp)\nbic.wei &lt;- BIC(ajustWei)\nbic.ln &lt;- BIC(ajustLog)\nbic.ll &lt;- BIC(ajustLogl)\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      BIC = c(bic.exp, bic.wei, bic.ln, bic.ll))\nmodelos\n\n       modelos      BIC\n1  Exponencial 139.5435\n2      Weibull 138.2582\n3    Lognormal 137.4713\n4 Loglogistico 138.0525\n\n\n\n\nIME05-12532 - Análise de Sobrevivência"
   },
   {
     "objectID": "semanas/Aula06.html#modelos-paramétricos",
@@ -1194,63 +1250,70 @@
     "href": "semanas/Aula06.html#biblioteca-flexsurv---exponencial",
     "title": "Análise de Sobrevivência",
     "section": "Biblioteca Flexsurv - Exponencial",
-    "text": "Biblioteca Flexsurv - Exponencial\n\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"exponential\")\n\nEstimates: \n      est     L95%    U95%    se    \nrate  0.0490  0.0305  0.0788  0.0119\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -68.27389, df = 1\nAIC = 138.5478"
+    "text": "Biblioteca Flexsurv - Exponencial\n\nlibrary(flexsurv)\najuste1 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='exponential')\najuste1\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"exponential\")\n\nEstimates: \n      est     L95%    U95%    se    \nrate  0.0490  0.0305  0.0788  0.0119\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -68.27389, df = 1\nAIC = 138.5478"
   },
   {
     "objectID": "semanas/Aula06.html#biblioteca-flexsurv---weibull",
     "href": "semanas/Aula06.html#biblioteca-flexsurv---weibull",
     "title": "Análise de Sobrevivência",
     "section": "Biblioteca Flexsurv - Weibull",
-    "text": "Biblioteca Flexsurv - Weibull\n\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"weibull\")\n\nEstimates: \n       est     L95%    U95%    se    \nshape   1.543   1.066   2.235   0.291\nscale  21.339  15.591  29.206   3.417\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -66.13336, df = 2\nAIC = 136.2667"
+    "text": "Biblioteca Flexsurv - Weibull\n\najuste2 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='weibull')\najuste2\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"weibull\")\n\nEstimates: \n       est     L95%    U95%    se    \nshape   1.543   1.066   2.235   0.291\nscale  21.339  15.591  29.206   3.417\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -66.13336, df = 2\nAIC = 136.2667"
   },
   {
     "objectID": "semanas/Aula06.html#biblioteca-flexsurv---lognormal",
     "href": "semanas/Aula06.html#biblioteca-flexsurv---lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Biblioteca Flexsurv - Lognormal",
-    "text": "Biblioteca Flexsurv - Lognormal\n\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"lognormal\")\n\nEstimates: \n         est    L95%   U95%   se   \nmeanlog  2.717  2.372  3.063  0.176\nsdlog    0.765  0.544  1.075  0.133\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -65.7399, df = 2\nAIC = 135.4798"
+    "text": "Biblioteca Flexsurv - Lognormal\n\najuste3 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='lognormal')\najuste3\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"lognormal\")\n\nEstimates: \n         est    L95%   U95%   se   \nmeanlog  2.717  2.372  3.063  0.176\nsdlog    0.765  0.544  1.075  0.133\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -65.7399, df = 2\nAIC = 135.4798"
   },
   {
     "objectID": "semanas/Aula06.html#biblioteca-flexsurv---loglogística",
     "href": "semanas/Aula06.html#biblioteca-flexsurv---loglogística",
     "title": "Análise de Sobrevivência",
     "section": "Biblioteca Flexsurv - LogLogística",
-    "text": "Biblioteca Flexsurv - LogLogística\n\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"llogis\")\n\nEstimates: \n       est    L95%   U95%   se   \nshape   2.22   1.51   3.28   0.44\nscale  15.45  10.85  21.98   2.78\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -66.03053, df = 2\nAIC = 136.0611"
+    "text": "Biblioteca Flexsurv - LogLogística\n\najuste4 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='llogis')\najuste4\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"llogis\")\n\nEstimates: \n       est    L95%   U95%   se   \nshape   2.22   1.51   3.28   0.44\nscale  15.45  10.85  21.98   2.78\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -66.03053, df = 2\nAIC = 136.0611"
   },
   {
     "objectID": "semanas/Aula06.html#biblioteca-flexsurv---gama-generalizada",
     "href": "semanas/Aula06.html#biblioteca-flexsurv---gama-generalizada",
     "title": "Análise de Sobrevivência",
     "section": "Biblioteca Flexsurv - Gama Generalizada",
-    "text": "Biblioteca Flexsurv - Gama Generalizada\n\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"gengamma\")\n\nEstimates: \n       est     L95%    U95%    se    \nmu      2.805   2.168   3.442   0.325\nsigma   0.743   0.498   1.110   0.152\nQ       0.247  -1.291   1.786   0.785\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -65.69074, df = 3\nAIC = 137.3815"
+    "text": "Biblioteca Flexsurv - Gama Generalizada\n\najuste5 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='gengamma')\najuste5\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"gengamma\")\n\nEstimates: \n       est     L95%    U95%    se    \nmu      2.805   2.168   3.442   0.325\nsigma   0.743   0.498   1.110   0.152\nQ       0.247  -1.291   1.786   0.785\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -65.69074, df = 3\nAIC = 137.3815"
   },
   {
     "objectID": "semanas/Aula06.html#teste-da-razão-de-verossimilhança",
     "href": "semanas/Aula06.html#teste-da-razão-de-verossimilhança",
     "title": "Análise de Sobrevivência",
     "section": "Teste da Razão de Verossimilhança",
-    "text": "Teste da Razão de Verossimilhança\n\najuste1$loglik # exponencial\n\n[1] -68.27389\n\najuste2$loglik # Weibull\n\n[1] -66.13336\n\najuste3$loglik # Lognormal\n\n[1] -65.7399\n\najuste4$loglik # LogLogistica\n\n[1] -66.03053\n\najuste5$loglik # Gama Generalizada\n\n[1] -65.69074\n\n# Exponencial q=σ=1\nTRVe &lt;- 2*(ajuste5$loglik - ajuste1$loglik)\npchisq(TRVe,2, lower.tail = F)\n\n[1] 0.07553559\n\n# Weibull q = 1\nTRVw &lt;- 2*(ajuste5$loglik - ajuste2$loglik)\npchisq(TRVw,1, lower.tail = F)\n\n[1] 0.3467719\n\n# Lognormal q = 0\nTRVlog &lt;- 2*(ajuste5$loglik - ajuste3$loglik)\npchisq(TRVlog,1, lower.tail = F)\n\n[1] 0.753858"
+    "text": "Teste da Razão de Verossimilhança\n\nmodelos &lt;- data.frame(modelos=c(\"exponencial\", \"Weibull\", \"lognormal\", \"gama generalizada\"), logvero= c(ajuste1$loglik, ajuste2$loglik, ajuste3$loglik, ajuste5$loglik))\nmodelos\n\n            modelos   logvero\n1       exponencial -68.27389\n2           Weibull -66.13336\n3         lognormal -65.73990\n4 gama generalizada -65.69074\n\n## Teste da Razão de verossimilhança\n## Só é possível de se usar em modelos encaixados\n## O modelo log-logístico não é encaixado no gama-generalizado\n\n# Exponencial H0: q=σ=1  H1:dirente de 1\nTRVe &lt;- 2*(ajuste5$loglik - ajuste1$loglik)\n# Weibull H0: q = 1 H1: diferente de 1\nTRVw &lt;- 2*(ajuste5$loglik - ajuste2$loglik)\n# Lognormal H0: q = 0 H1: diferente de 0\nTRVlog &lt;- 2*(ajuste5$loglik - ajuste3$loglik)\n\nTRV_modelos &lt;- data.frame(modelos=c(\"exponencial\", \"Weibull\", \"lognormal\"), TRV= c(TRVe, TRVw, TRVlog), quiquadrado=c(pchisq(TRVe,2, lower.tail = F),pchisq(TRVw,1, lower.tail = F),pchisq(TRVlog,1, lower.tail = F)))\nTRV_modelos\n\n      modelos        TRV quiquadrado\n1 exponencial 5.16630281  0.07553559\n2     Weibull 0.88523500  0.34677185\n3   lognormal 0.09831756  0.75385805"
   },
   {
     "objectID": "semanas/Aula06.html#comparando-através-do-aic",
     "href": "semanas/Aula06.html#comparando-através-do-aic",
     "title": "Análise de Sobrevivência",
     "section": "Comparando através do AIC",
-    "text": "Comparando através do AIC\n\naic.exp &lt;- -2*ajuste1$loglik + 2*1\naic.exp\n\n[1] 138.5478\n\naic.wei &lt;- -2*ajuste2$loglik + 2*2\naic.wei\n\n[1] 136.2667\n\naic.ln &lt;- -2*ajuste3$loglik + 2*2\naic.ln\n\n[1] 135.4798\n\naic.ll &lt;- -2*ajuste4$loglik + 2*2\naic.ll\n\n[1] 136.0611\n\naic.gg &lt;- -2*ajuste5$loglik + 2*3\naic.gg\n\n[1] 137.3815\n\naic &lt;- c(aic.exp, aic.wei, aic.ln, aic.ll, aic.gg)\ndelta.aic &lt;- aic - min(aic)\ndelta.aic\n\n[1] 3.0679853 0.7869174 0.0000000 0.5812562 1.9016824\n\npeso.aic &lt;- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\nsum(peso.aic)\n\n[1] 1"
+    "text": "Comparando através do AIC\n\naic.exp &lt;- -2*ajuste1$loglik + 2*1\naic.wei &lt;- -2*ajuste2$loglik + 2*2\naic.ln &lt;- -2*ajuste3$loglik + 2*2\naic.ll &lt;- -2*ajuste4$loglik + 2*2\naic.gg &lt;- -2*ajuste5$loglik + 2*3\naic &lt;- c(aic.exp, aic.wei, aic.ln, aic.ll, aic.gg)\ndelta.aic &lt;- aic - min(aic)\ndelta.aic\n\n[1] 3.0679853 0.7869174 0.0000000 0.5812562 1.9016824\n\npeso.aic &lt;- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\nsum(peso.aic)\n\n[1] 1"
   },
   {
     "objectID": "semanas/Aula06.html#peso-de-akaike",
     "href": "semanas/Aula06.html#peso-de-akaike",
     "title": "Análise de Sobrevivência",
     "section": "Peso de Akaike",
-    "text": "Peso de Akaike\n\n\n\n\n\n\n\n\n\nmodelos\np_Akaike\n\n\n\n\nExponencial\n0.0713062\n\n\nWeibull\n0.2230770\n\n\nLognormal\n0.3306221\n\n\nLoglogistico\n0.2472371\n\n\nGG\n0.1277576"
+    "text": "Peso de Akaike\n\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\", \"GG\"),\n                      p_Akaike = peso.aic)\nmodelos\n\n       modelos  p_Akaike\n1  Exponencial 0.0713062\n2      Weibull 0.2230770\n3    Lognormal 0.3306221\n4 Loglogistico 0.2472371\n5           GG 0.1277576"
   },
   {
     "objectID": "semanas/Aula06.html#curvas-de-sobrevivência",
     "href": "semanas/Aula06.html#curvas-de-sobrevivência",
     "title": "Análise de Sobrevivência",
     "section": "Curvas de Sobrevivência",
-    "text": "Curvas de Sobrevivência"
+    "text": "Curvas de Sobrevivência\n\nplot(tempost, st, ylim=range(c(0.0,1)), xlim=range(c(0,50)), ylab=\"S(t)\", xlab=\"Tempo (meses)\")\nlines(ajuste1, col=\"blue\", ci=FALSE)\nlines(ajuste2, col=\"green\", ci=FALSE)\nlines(ajuste3, col=\"cyan\", ci=FALSE)\nlines(ajuste4,col=\"red\", ci=FALSE)\nlines(ajuste5,col=\"black\", ci=FALSE)\nlegend(\"topright\", lty=c(1,1,1,1), lwd=c(2,2,2,2),\n       col=c(\"blue\", \"green\", \"cyan\",\"red\", \"black\"),\n       c(\"Exponencial\",\"Weibull\", \"Lognormal\" , \"LogLogistica\", \"Gama Generalizada\"))"
+  },
+  {
+    "objectID": "semanas/Aula06.html#curvas-de-sobrevivência-1",
+    "href": "semanas/Aula06.html#curvas-de-sobrevivência-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Curvas de Sobrevivência",
+    "text": "Curvas de Sobrevivência\n\n\n\nIME05-12532 - Análise de Sobrevivência"
   },
   {
     "objectID": "semanas/Aula06x1.html#modelos-tfa",

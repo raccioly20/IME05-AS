@@ -386,7 +386,7 @@
     }
   </style>
 <meta name="twitter:title" content="IME05-12532 - Análise de Sobrevivência">
-<meta name="twitter:description" content="Modelos Paramétricos">
+<meta name="twitter:description" content="Modelos Paramétricos - Avaliação do ajuste">
 <meta name="twitter:image" content="images/anasobre.png">
 <meta name="twitter:creator" content="@r_accioly">
 <meta name="twitter:card" content="summary_large_image">
@@ -397,7 +397,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Análise de Sobrevivência</h1>
-  <p class="subtitle">Modelos Paramétricos</p>
+  <p class="subtitle">Modelos Paramétricos - Avaliação do ajuste</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -415,7 +415,7 @@ Ricardo Accioly
 <p>Aqui vamos utilizar as funções existentes no pacote <code>survival</code>.</p>
 <p>Para ajustar um modelo paramétrico usamo a função <code>survreg</code>.</p>
 </section>
-<section id="metodo-de-kaplan-meier" class="slide level2">
+<section id="metodo-de-kaplan-meier" class="slide level2 smaller">
 <h2>Metodo de Kaplan-Meier</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(survival)</span>
@@ -971,85 +971,208 @@ n= 20 </code></pre>
 <section id="quantis" class="slide level2">
 <h2>Quantis</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a>med.km</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="fu">names</span>(med.km) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Mediana"</span>, <span class="st">"ICI"</span>, <span class="st">"ICS"</span>)</span>
+<span id="cb60-2"><a href="#cb60-2"></a>quantis <span class="ot">&lt;-</span> <span class="fu">rbind</span>(med.km, IC.mediana_exp, IC.mediana_w, IC.mediana_log, IC.mediana_llog)</span>
+<span id="cb60-3"><a href="#cb60-3"></a>quantis</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>mediana KM        ICI        ICS 
-        18         10         28 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a>IC.mediana_exp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>mediana Exp         ICI         ICS 
-  14.148357    8.795399   22.759175 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a>IC.mediana_w</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>mediana Wei         ICI         ICS 
-   16.82823    11.95670    23.68456 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a>IC.mediana_log</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>mediana Logn          ICI          ICS 
-    15.13751     10.71601     21.38334 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a>IC.mediana_llog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>mediana LogL          ICI          ICS 
-    15.44700     10.85399     21.98361 </code></pre>
+<pre><code>                 Mediana       ICI      ICS
+med.km          18.00000 10.000000 28.00000
+IC.mediana_exp  14.14836  8.795399 22.75917
+IC.mediana_w    16.82823 11.956697 23.68456
+IC.mediana_log  15.13751 10.716009 21.38334
+IC.mediana_llog 15.44700 10.853987 21.98361</code></pre>
 </div>
 </div>
 </section>
 <section id="comparação-np-vs-paramétrico" class="slide level2">
 <h2>Comparação NP vs Paramétrico</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb70-2"><a href="#cb70-2"></a><span class="fu">plot</span>(st,ste,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>, <span class="at">ylab=</span><span class="st">"S(t): exponencial"</span>)</span>
-<span id="cb70-3"><a href="#cb70-3"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span>
-<span id="cb70-4"><a href="#cb70-4"></a><span class="fu">plot</span>(st,stw,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
-<span id="cb70-5"><a href="#cb70-5"></a>     <span class="at">ylab=</span><span class="st">"S(t): Weibull"</span>)</span>
-<span id="cb70-6"><a href="#cb70-6"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb62-2"><a href="#cb62-2"></a><span class="fu">plot</span>(st,ste,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>, <span class="at">ylab=</span><span class="st">"S(t): exponencial"</span>)</span>
+<span id="cb62-3"><a href="#cb62-3"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span>
+<span id="cb62-4"><a href="#cb62-4"></a><span class="fu">plot</span>(st,stw,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
+<span id="cb62-5"><a href="#cb62-5"></a>     <span class="at">ylab=</span><span class="st">"S(t): Weibull"</span>)</span>
+<span id="cb62-6"><a href="#cb62-6"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="Aula04_files/figure-revealjs/unnamed-chunk-36-1.png" width="960" class="r-stretch"></section>
 <section id="comparação-np-vs-paramétrico-1" class="slide level2">
 <h2>Comparação NP vs Paramétrico</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb71-2"><a href="#cb71-2"></a><span class="fu">plot</span>(st,stln,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
-<span id="cb71-3"><a href="#cb71-3"></a>     <span class="at">ylab=</span><span class="st">"S(t): Log-normal"</span>)</span>
-<span id="cb71-4"><a href="#cb71-4"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span>
-<span id="cb71-5"><a href="#cb71-5"></a><span class="fu">plot</span>(st,stll,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
-<span id="cb71-6"><a href="#cb71-6"></a>     <span class="at">ylab=</span><span class="st">"S(t): log-Logistica"</span>)</span>
-<span id="cb71-7"><a href="#cb71-7"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb63-2"><a href="#cb63-2"></a><span class="fu">plot</span>(st,stln,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
+<span id="cb63-3"><a href="#cb63-3"></a>     <span class="at">ylab=</span><span class="st">"S(t): Log-normal"</span>)</span>
+<span id="cb63-4"><a href="#cb63-4"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span>
+<span id="cb63-5"><a href="#cb63-5"></a><span class="fu">plot</span>(st,stll,<span class="at">pch=</span><span class="dv">16</span>,<span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="fl">0.0</span>,<span class="dv">1</span>)), <span class="at">xlim=</span><span class="fu">range</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)), <span class="at">xlab =</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
+<span id="cb63-6"><a href="#cb63-6"></a>     <span class="at">ylab=</span><span class="st">"S(t): log-Logistica"</span>)</span>
+<span id="cb63-7"><a href="#cb63-7"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="Aula04_files/figure-revealjs/unnamed-chunk-37-1.png" width="960" class="r-stretch"></section>
 <section id="comparação-np-vs-paramétrico-2" class="slide level2">
 <h2>Comparação NP vs Paramétrico</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb72-2"><a href="#cb72-2"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
-<span id="cb72-3"><a href="#cb72-3"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,ste), <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb72-4"><a href="#cb72-4"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"Exponencial"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span>
-<span id="cb72-5"><a href="#cb72-5"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
-<span id="cb72-6"><a href="#cb72-6"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,stw), <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb72-7"><a href="#cb72-7"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"Weibull"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb64-2"><a href="#cb64-2"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
+<span id="cb64-3"><a href="#cb64-3"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,ste), <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb64-4"><a href="#cb64-4"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"Exponencial"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span>
+<span id="cb64-5"><a href="#cb64-5"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
+<span id="cb64-6"><a href="#cb64-6"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,stw), <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb64-7"><a href="#cb64-7"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"Weibull"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="Aula04_files/figure-revealjs/unnamed-chunk-38-1.png" width="960" class="r-stretch"></section>
 <section id="comparação-np-vs-paramétrico-3" class="slide level2">
 <h2>Comparação NP vs Paramétrico</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
-<span id="cb73-2"><a href="#cb73-2"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
-<span id="cb73-3"><a href="#cb73-3"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,stln), <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb73-4"><a href="#cb73-4"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"Lognormal"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span>
-<span id="cb73-5"><a href="#cb73-5"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
-<span id="cb73-6"><a href="#cb73-6"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,stll), <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb73-7"><a href="#cb73-7"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"LogLogistica"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb65-2"><a href="#cb65-2"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
+<span id="cb65-3"><a href="#cb65-3"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,stln), <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb65-4"><a href="#cb65-4"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"Lognormal"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span>
+<span id="cb65-5"><a href="#cb65-5"></a><span class="fu">plot</span>(ekm, <span class="at">conf.int=</span>F, <span class="at">xlab=</span><span class="st">"Tempos"</span>, <span class="at">ylab=</span><span class="st">"S(t)"</span>)</span>
+<span id="cb65-6"><a href="#cb65-6"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,tempo),<span class="fu">c</span>(<span class="dv">1</span>,stll), <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb65-7"><a href="#cb65-7"></a><span class="fu">legend</span>(<span class="dv">25</span>,<span class="fl">0.8</span>,<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"LogLogistica"</span>),<span class="at">bty=</span><span class="st">"n"</span>,<span class="at">cex=</span><span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-39-1.png" width="960" class="r-stretch"></section>
+<section id="modelos-paramétricos-1" class="slide level2">
+<h2>Modelos Paramétricos</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1"></a>ajustExp <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempos,status)<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados, <span class="at">dist=</span><span class="st">'exponential'</span>)</span>
+<span id="cb66-2"><a href="#cb66-2"></a>alfa <span class="ot">&lt;-</span> <span class="fu">exp</span>(ajustExp<span class="sc">$</span>coefficients[<span class="dv">1</span>])</span>
+<span id="cb66-3"><a href="#cb66-3"></a>ajustWei <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempos,status)<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados, <span class="at">dist=</span><span class="st">'weibull'</span>)</span>
+<span id="cb66-4"><a href="#cb66-4"></a>alfaw <span class="ot">&lt;-</span> <span class="fu">exp</span>(ajustWei<span class="sc">$</span>coefficients[<span class="dv">1</span>])</span>
+<span id="cb66-5"><a href="#cb66-5"></a>betaw <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>ajustWei<span class="sc">$</span>scale</span>
+<span id="cb66-6"><a href="#cb66-6"></a>ajustLog <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempos,status)<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados, <span class="at">dist=</span><span class="st">'lognorm'</span>)</span>
+<span id="cb66-7"><a href="#cb66-7"></a>mu <span class="ot">&lt;-</span> ajustLog<span class="sc">$</span>icoef[<span class="dv">1</span>]</span>
+<span id="cb66-8"><a href="#cb66-8"></a>sigma <span class="ot">&lt;-</span> <span class="fu">exp</span>(ajustLog<span class="sc">$</span>icoef[<span class="dv">2</span>])</span>
+<span id="cb66-9"><a href="#cb66-9"></a>ajustLogl <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempos,status)<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dados, <span class="at">dist=</span><span class="st">'loglogistic'</span>)</span>
+<span id="cb66-10"><a href="#cb66-10"></a>mu1 <span class="ot">&lt;-</span> ajustLogl<span class="sc">$</span>icoef[<span class="dv">1</span>]</span>
+<span id="cb66-11"><a href="#cb66-11"></a>sigma1 <span class="ot">&lt;-</span> <span class="fu">exp</span>(ajustLogl<span class="sc">$</span>icoef[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>`</p>
+</section>
+<section id="avaliação-do-modelo-weibull-1" class="slide level2">
+<h2>Avaliação do Modelo Weibull</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a>tab.np <span class="ot">&lt;-</span> <span class="fu">summary</span>(ekm)</span>
+<span id="cb67-2"><a href="#cb67-2"></a><span class="fu">plot</span>(<span class="fu">log</span>(<span class="sc">-</span><span class="fu">log</span>(tab.np<span class="sc">$</span>surv)) <span class="sc">~</span> <span class="fu">log</span>(tab.np<span class="sc">$</span>time),</span>
+<span id="cb67-3"><a href="#cb67-3"></a>     <span class="at">xlab=</span><span class="st">"log(t)"</span>, <span class="at">ylab=</span><span class="st">"log(-log(S(t)))"</span>, <span class="at">pch=</span><span class="dv">20</span>)</span>
+<span id="cb67-4"><a href="#cb67-4"></a>mod1.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(<span class="sc">-</span><span class="fu">log</span>(tab.np<span class="sc">$</span>surv)) <span class="sc">~</span> <span class="fu">log</span>(tab.np<span class="sc">$</span>time))</span>
+<span id="cb67-5"><a href="#cb67-5"></a><span class="fu">abline</span>(mod1.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-39-1.png" width="960" class="r-stretch"><div class="footer footer-default">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="fu">confint</span>(mod1.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     2.5 %    97.5 %
+(Intercept)      -4.763998 -4.318050
+log(tab.np$time)  1.442427  1.609615</code></pre>
+</div>
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-41-1.png" width="960" class="r-stretch"></section>
+<section id="avaliação-do-modelo-lognormal-1" class="slide level2">
+<h2>Avaliação do Modelo Lognormal</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a>tab.np <span class="ot">&lt;-</span> <span class="fu">summary</span>(ekm)</span>
+<span id="cb70-2"><a href="#cb70-2"></a>invst1 <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(tab.np<span class="sc">$</span>surv)</span>
+<span id="cb70-3"><a href="#cb70-3"></a><span class="fu">plot</span>(invst1 <span class="sc">~</span> <span class="fu">log</span>(tab.np<span class="sc">$</span>time),</span>
+<span id="cb70-4"><a href="#cb70-4"></a>     <span class="at">xlab=</span><span class="st">"log(t)"</span>, <span class="at">ylab=</span><span class="fu">expression</span>(Phi<span class="sc">^-</span><span class="dv">1</span><span class="sc">*</span>(<span class="fu">S</span>(t))), <span class="at">pch=</span><span class="dv">20</span>)</span>
+<span id="cb70-5"><a href="#cb70-5"></a>mod2.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(invst1 <span class="sc">~</span> <span class="fu">log</span>(tab.np<span class="sc">$</span>time))</span>
+<span id="cb70-6"><a href="#cb70-6"></a><span class="fu">abline</span>(mod2.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-42-1.png" width="960" class="r-stretch"></section>
+<section id="avaliação-do-modelo-loglogístico-1" class="slide level2">
+<h2>Avaliação do Modelo LogLogístico</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1"></a>tab.np <span class="ot">&lt;-</span> <span class="fu">summary</span>(ekm)</span>
+<span id="cb71-2"><a href="#cb71-2"></a>invst2 <span class="ot">&lt;-</span> <span class="fu">qlogis</span>(tab.np<span class="sc">$</span>surv) </span>
+<span id="cb71-3"><a href="#cb71-3"></a><span class="fu">plot</span>(invst2 <span class="sc">~</span> <span class="fu">log</span>(tab.np<span class="sc">$</span>time),</span>
+<span id="cb71-4"><a href="#cb71-4"></a>     <span class="at">xlab=</span><span class="st">"log(t)"</span>, <span class="at">ylab=</span><span class="fu">expression</span>(Phi<span class="sc">^-</span><span class="dv">1</span><span class="sc">*</span>Logis<span class="sc">*</span>(<span class="fu">S</span>(t))), <span class="at">pch=</span><span class="dv">20</span>)</span>
+<span id="cb71-5"><a href="#cb71-5"></a>mod3.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(invst2 <span class="sc">~</span> <span class="fu">log</span>(tab.np<span class="sc">$</span>time))</span>
+<span id="cb71-6"><a href="#cb71-6"></a><span class="fu">abline</span>(mod3.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="Aula04_files/figure-revealjs/unnamed-chunk-43-1.png" width="960" class="r-stretch"></section>
+<section id="teste-de-razão-de-verossimilhança" class="slide level2 smaller">
+<h2>Teste de Razão de Verossimilhança</h2>
+<p>No nível de significância de 𝛼=0,05 eu rejeito a hipótese de que o parametro de forma seja igual a 1.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a>tab.exp <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajustExp)</span>
+<span id="cb72-2"><a href="#cb72-2"></a>tab.wei <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajustWei)</span>
+<span id="cb72-3"><a href="#cb72-3"></a>TRV <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>(tab.wei<span class="sc">$</span>loglik[<span class="dv">1</span>] <span class="sc">-</span> tab.exp<span class="sc">$</span>loglik[<span class="dv">1</span>])</span>
+<span id="cb72-4"><a href="#cb72-4"></a><span class="fu">pchisq</span>(TRV, <span class="dv">1</span>, <span class="at">lower.tail =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03853913</code></pre>
+</div>
+</div>
+</section>
+<section id="calculos-do-peso-do-aic" class="slide level2 smaller">
+<h2>Calculos do peso do AIC</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1"></a>tab.exp <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajustExp)</span>
+<span id="cb74-2"><a href="#cb74-2"></a>tab.wei <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajustWei)</span>
+<span id="cb74-3"><a href="#cb74-3"></a>tab.ln <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajustLog)</span>
+<span id="cb74-4"><a href="#cb74-4"></a>tab.ll <span class="ot">&lt;-</span> <span class="fu">summary</span>(ajustLogl)</span>
+<span id="cb74-5"><a href="#cb74-5"></a>aic.exp <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>tab.exp<span class="sc">$</span>loglik[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="dv">1</span></span>
+<span id="cb74-6"><a href="#cb74-6"></a>aic.wei <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>tab.wei<span class="sc">$</span>loglik[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="dv">2</span></span>
+<span id="cb74-7"><a href="#cb74-7"></a>aic.ln <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>tab.ln<span class="sc">$</span>loglik[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="dv">2</span></span>
+<span id="cb74-8"><a href="#cb74-8"></a>aic.ll <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>tab.ll<span class="sc">$</span>loglik[<span class="dv">1</span>] <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span><span class="dv">2</span></span>
+<span id="cb74-9"><a href="#cb74-9"></a>aic <span class="ot">&lt;-</span> <span class="fu">c</span>(aic.exp, aic.wei, aic.ln, aic.ll)</span>
+<span id="cb74-10"><a href="#cb74-10"></a>delta.aic <span class="ot">&lt;-</span> aic <span class="sc">-</span> <span class="fu">min</span>(aic)</span>
+<span id="cb74-11"><a href="#cb74-11"></a>peso.aic <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>delta.aic)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>delta.aic))</span>
+<span id="cb74-12"><a href="#cb74-12"></a><span class="co"># Usando a função AIC para calcuar o AIC</span></span>
+<span id="cb74-13"><a href="#cb74-13"></a>aic.exp1 <span class="ot">&lt;-</span> <span class="fu">AIC</span>(ajustExp)</span>
+<span id="cb74-14"><a href="#cb74-14"></a>aic.wei1 <span class="ot">&lt;-</span> <span class="fu">AIC</span>(ajustWei)</span>
+<span id="cb74-15"><a href="#cb74-15"></a>aic.ln1 <span class="ot">&lt;-</span> <span class="fu">AIC</span>(ajustLog)</span>
+<span id="cb74-16"><a href="#cb74-16"></a>aic.ll1 <span class="ot">&lt;-</span> <span class="fu">AIC</span>(ajustLogl)</span>
+<span id="cb74-17"><a href="#cb74-17"></a>aic1 <span class="ot">&lt;-</span> <span class="fu">c</span>(aic.exp1, aic.wei1, aic.ln1, aic.ll1)</span>
+<span id="cb74-18"><a href="#cb74-18"></a>aic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 138.5478 136.2667 135.4798 136.0611</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1"></a>aic1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 138.5478 136.2667 135.4798 136.0611</code></pre>
+</div>
+</div>
+</section>
+<section id="comparando-modelos-através-do-peso-de-akaike" class="slide level2">
+<h2>Comparando modelos através do Peso de Akaike</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1"></a>modelos <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">modelos=</span><span class="fu">c</span>(<span class="st">"Exponencial"</span>, <span class="st">"Weibull"</span>,</span>
+<span id="cb78-2"><a href="#cb78-2"></a>                                <span class="st">"Lognormal"</span>, <span class="st">"Loglogistico"</span>),</span>
+<span id="cb78-3"><a href="#cb78-3"></a>                      <span class="at">p_Akaike =</span> peso.aic)</span>
+<span id="cb78-4"><a href="#cb78-4"></a>modelos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       modelos   p_Akaike
+1  Exponencial 0.08175044
+2      Weibull 0.25575120
+3    Lognormal 0.37904837
+4 Loglogistico 0.28344999</code></pre>
+</div>
+</div>
+</section>
+<section id="comparando-os-modelos-através-do-bic" class="slide level2">
+<h2>Comparando os modelos através do BIC</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1"></a>bic.exp <span class="ot">&lt;-</span> <span class="fu">BIC</span>(ajustExp)</span>
+<span id="cb80-2"><a href="#cb80-2"></a>bic.wei <span class="ot">&lt;-</span> <span class="fu">BIC</span>(ajustWei)</span>
+<span id="cb80-3"><a href="#cb80-3"></a>bic.ln <span class="ot">&lt;-</span> <span class="fu">BIC</span>(ajustLog)</span>
+<span id="cb80-4"><a href="#cb80-4"></a>bic.ll <span class="ot">&lt;-</span> <span class="fu">BIC</span>(ajustLogl)</span>
+<span id="cb80-5"><a href="#cb80-5"></a>modelos <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">modelos=</span><span class="fu">c</span>(<span class="st">"Exponencial"</span>, <span class="st">"Weibull"</span>,</span>
+<span id="cb80-6"><a href="#cb80-6"></a>                                <span class="st">"Lognormal"</span>, <span class="st">"Loglogistico"</span>),</span>
+<span id="cb80-7"><a href="#cb80-7"></a>                      <span class="at">BIC =</span> <span class="fu">c</span>(bic.exp, bic.wei, bic.ln, bic.ll))</span>
+<span id="cb80-8"><a href="#cb80-8"></a>modelos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       modelos      BIC
+1  Exponencial 139.5435
+2      Weibull 138.2582
+3    Lognormal 137.4713
+4 Loglogistico 138.0525</code></pre>
+</div>
+</div>
+
+<div class="footer footer-default">
 <p>IME05-12532 - Análise de Sobrevivência</p>
 </div>
 </section>
