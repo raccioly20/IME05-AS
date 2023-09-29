@@ -556,7 +556,6 @@ lines(c(0,tempo),c(1,stll), lty=2)
 legend(25,0.8,lty=c(1,2),c("Kaplan-Meier", "LogLogistica"),bty="n",cex=0.8)
 ```
 
-
 ## Modelos Paramétricos
 
 ```{r}
@@ -668,5 +667,3 @@ modelos <- data.frame(modelos=c("Exponencial", "Weibull",
                       BIC = c(bic.exp, bic.wei, bic.ln, bic.ll))
 modelos
 ```
-
-
