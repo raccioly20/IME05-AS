@@ -339,36 +339,36 @@
     "objectID": "semanas/Aula06x.html#modelo-tfa-exponencial",
     "href": "semanas/Aula06x.html#modelo-tfa-exponencial",
     "title": "Análise de Sobrevivência",
-    "section": "Modelo TFA Exponencial",
-    "text": "Modelo TFA Exponencial\nO conjunto de dados carregados a seguir são de 238 pacientes viciados com heroína.\nOs pacientes foram tratados em duas clínicas (1 e 2), além disso foram coletadas informações sobre dose de medicamento ministrado no tratamento e se o paciente já havia sido preso ou não.\nOs tempos (survt) são em dias e o evento analisado foi o tempo até a saída da clínica (status=1) ou o tempo até o término de estudo (tempo censurado (status=0).\n\nid: Identificação do paciente\nclinic: clinica em que ocorreu o tratamento\nsurvt: tempo até a saída da clínica (dias)\nstatus: censoring status 0=censored (censurado), 1=evento\nprison: 0= se nunca foi preso e 1= se já foi preso\ndose: dose do medicamento ministradp"
+    "section": "",
+    "text": "O conjunto de dados carregados a seguir são de 238 pacientes viciados com heroína.\nOs pacientes foram tratados em duas clínicas (1 e 2), além disso foram coletadas informações sobre dose de medicamento ministrado no tratamento e se o paciente já havia sido preso ou não.\nOs tempos (survt) são em dias e o evento analisado foi o tempo até a saída da clínica (status=1) ou o tempo até o término de estudo (tempo censurado (status=0).\n\nid: Identificação do paciente\nclinic: clinica em que ocorreu o tratamento\nsurvt: tempo até a saída da clínica (dias)\nstatus: censoring status 0=censored (censurado), 1=evento\nprison: 0= se nunca foi preso e 1= se já foi preso\ndose: dose do medicamento ministradp"
   },
   {
     "objectID": "semanas/Aula06x.html#carregando-os-dados",
     "href": "semanas/Aula06x.html#carregando-os-dados",
     "title": "Análise de Sobrevivência",
     "section": "Carregando os dados",
-    "text": "Carregando os dados\n\n```{r}\nlibrary(survival)\nlibrary(readxl)\ndados &lt;- read_xlsx(\"heroina.xlsx\", col_names = TRUE )\nsummary(dados)\n```\n\n       id             clinic          status           survt       \n Min.   :  1.00   Min.   :1.000   Min.   :0.0000   Min.   :   2.0  \n 1st Qu.: 65.25   1st Qu.:1.000   1st Qu.:0.0000   1st Qu.: 171.2  \n Median :131.50   Median :1.000   Median :1.0000   Median : 367.5  \n Mean   :134.13   Mean   :1.315   Mean   :0.6303   Mean   : 402.6  \n 3rd Qu.:205.75   3rd Qu.:2.000   3rd Qu.:1.0000   3rd Qu.: 585.5  \n Max.   :266.00   Max.   :2.000   Max.   :1.0000   Max.   :1076.0  \n     prison            dose      \n Min.   :0.0000   Min.   : 20.0  \n 1st Qu.:0.0000   1st Qu.: 50.0  \n Median :0.0000   Median : 60.0  \n Mean   :0.4664   Mean   : 60.4  \n 3rd Qu.:1.0000   3rd Qu.: 70.0  \n Max.   :1.0000   Max.   :110.0"
+    "text": "Carregando os dados\n\n```{r}\nlibrary(survival)\nlibrary(readxl)\ndados &lt;- read_xlsx(\"heroina.xlsx\", col_names = TRUE )\nsummary(dados)\n```\n\n#&gt;        id             clinic          status           survt       \n#&gt;  Min.   :  1.00   Min.   :1.000   Min.   :0.0000   Min.   :   2.0  \n#&gt;  1st Qu.: 65.25   1st Qu.:1.000   1st Qu.:0.0000   1st Qu.: 171.2  \n#&gt;  Median :131.50   Median :1.000   Median :1.0000   Median : 367.5  \n#&gt;  Mean   :134.13   Mean   :1.315   Mean   :0.6303   Mean   : 402.6  \n#&gt;  3rd Qu.:205.75   3rd Qu.:2.000   3rd Qu.:1.0000   3rd Qu.: 585.5  \n#&gt;  Max.   :266.00   Max.   :2.000   Max.   :1.0000   Max.   :1076.0  \n#&gt;      prison            dose      \n#&gt;  Min.   :0.0000   Min.   : 20.0  \n#&gt;  1st Qu.:0.0000   1st Qu.: 50.0  \n#&gt;  Median :0.0000   Median : 60.0  \n#&gt;  Mean   :0.4664   Mean   : 60.4  \n#&gt;  3rd Qu.:1.0000   3rd Qu.: 70.0  \n#&gt;  Max.   :1.0000   Max.   :110.0"
   },
   {
     "objectID": "semanas/Aula06x.html#avaliando-presença-de-dados-ausentes",
     "href": "semanas/Aula06x.html#avaliando-presença-de-dados-ausentes",
     "title": "Análise de Sobrevivência",
     "section": "Avaliando presença de dados ausentes",
-    "text": "Avaliando presença de dados ausentes\n\n```{r}\nnrow(dados)\nsum(complete.cases(dados))\n```\n\n[1] 238\n[1] 238"
+    "text": "Avaliando presença de dados ausentes\n\n```{r}\nnrow(dados)\nsum(complete.cases(dados))\n```\n\n#&gt; [1] 238\n#&gt; [1] 238"
   },
   {
     "objectID": "semanas/Aula06x.html#ajuste-do-modelo-exponencial",
     "href": "semanas/Aula06x.html#ajuste-do-modelo-exponencial",
     "title": "Análise de Sobrevivência",
     "section": "Ajuste do Modelo Exponencial",
-    "text": "Ajuste do Modelo Exponencial\n\n```{r}\nTFAExp &lt;- survreg(Surv(survt, status) ~ clinic + prison + dose,\n                   dist = \"exponential\", \n                   data=dados)\nsummary(TFAExp)\n```\n\n\nCall:\nsurvreg(formula = Surv(survt, status) ~ clinic + prison + dose, \n    data = dados, dist = \"exponential\")\n               Value Std. Error     z       p\n(Intercept)  3.68434    0.43072  8.55 &lt; 2e-16\nclinic       0.88058    0.21063  4.18 2.9e-05\nprison      -0.25265    0.16489 -1.53    0.13\ndose         0.02892    0.00614  4.71 2.5e-06\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -1094   Loglik(intercept only)= -1118.9\n    Chisq= 49.91 on 3 degrees of freedom, p= 8.3e-11 \nNumber of Newton-Raphson Iterations: 5 \nn= 238 \n\n\nA variável prison é marginalmente significativa considerando um nível de significância de 0,10."
+    "text": "Ajuste do Modelo Exponencial\n\n```{r}\nTFAExp &lt;- survreg(Surv(survt, status) ~ clinic + prison + dose,\n                   dist = \"exponential\", \n                   data=dados)\nsummary(TFAExp)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, \n#&gt;     data = dados, dist = \"exponential\")\n#&gt;                Value Std. Error     z       p\n#&gt; (Intercept)  3.68434    0.43072  8.55 &lt; 2e-16\n#&gt; clinic       0.88058    0.21063  4.18 2.9e-05\n#&gt; prison      -0.25265    0.16489 -1.53    0.13\n#&gt; dose         0.02892    0.00614  4.71 2.5e-06\n#&gt; \n#&gt; Scale fixed at 1 \n#&gt; \n#&gt; Exponential distribution\n#&gt; Loglik(model)= -1094   Loglik(intercept only)= -1118.9\n#&gt;  Chisq= 49.91 on 3 degrees of freedom, p= 8.3e-11 \n#&gt; Number of Newton-Raphson Iterations: 5 \n#&gt; n= 238\n\n\nA variável prison é marginalmente significativa considerando um nível de significância de 0,10."
   },
   {
     "objectID": "semanas/Aula06x.html#modelo-reajustado",
     "href": "semanas/Aula06x.html#modelo-reajustado",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Reajustado",
-    "text": "Modelo Reajustado\n\n```{r}\nTFAExp1 &lt;- survreg(Surv(survt, status) ~ clinic + dose,\n                   dist = \"exponential\", \n                   data=dados)\nsummary(TFAExp1)\n```\n\n\nCall:\nsurvreg(formula = Surv(survt, status) ~ clinic + dose, data = dados, \n    dist = \"exponential\")\n              Value Std. Error    z       p\n(Intercept) 3.64522    0.42393 8.60 &lt; 2e-16\nclinic      0.85494    0.21014 4.07 4.7e-05\ndose        0.02825    0.00606 4.66 3.2e-06\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -1095.1   Loglik(intercept only)= -1118.9\n    Chisq= 47.58 on 2 degrees of freedom, p= 4.7e-11 \nNumber of Newton-Raphson Iterations: 5 \nn= 238 \n\n\nModelo sem a variável prison."
+    "text": "Modelo Reajustado\n\n```{r}\nTFAExp1 &lt;- survreg(Surv(survt, status) ~ clinic + dose,\n                   dist = \"exponential\", \n                   data=dados)\nsummary(TFAExp1)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + dose, data = dados, \n#&gt;     dist = \"exponential\")\n#&gt;               Value Std. Error    z       p\n#&gt; (Intercept) 3.64522    0.42393 8.60 &lt; 2e-16\n#&gt; clinic      0.85494    0.21014 4.07 4.7e-05\n#&gt; dose        0.02825    0.00606 4.66 3.2e-06\n#&gt; \n#&gt; Scale fixed at 1 \n#&gt; \n#&gt; Exponential distribution\n#&gt; Loglik(model)= -1095.1   Loglik(intercept only)= -1118.9\n#&gt;  Chisq= 47.58 on 2 degrees of freedom, p= 4.7e-11 \n#&gt; Number of Newton-Raphson Iterations: 5 \n#&gt; n= 238\n\n\nModelo sem a variável prison."
   },
   {
     "objectID": "semanas/Aula06x.html#método-de-kaplan-meier",
@@ -382,14 +382,14 @@
     "href": "semanas/Aula06x.html#avaliação-dos-resultados",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação dos resultados",
-    "text": "Avaliação dos resultados\n\n```{r}\ncoefExp &lt;- coef(TFAExp1)\nexp(coefExp[2])\nexp(coefExp[3])\n```\n\n  clinic \n2.351231 \n   dose \n1.02865 \n\n\nA mudança da clinica 1 para a clinica 2 teve um fator de aceleração de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1.\nA mudança na dose aumentou ligeiramente o tempo até o evento, o fator de aceleração foi de 1,02"
+    "text": "Avaliação dos resultados\n\n```{r}\ncoefExp &lt;- coef(TFAExp1)\nexp(coefExp[2])\nexp(coefExp[3])\n```\n\n#&gt;   clinic \n#&gt; 2.351231 \n#&gt;    dose \n#&gt; 1.02865\n\n\nA mudança da clinica 1 para a clinica 2 teve um fator de aceleração de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1.\nA mudança na dose aumentou ligeiramente o tempo até o evento, o fator de aceleração foi de 1,02"
   },
   {
     "objectID": "semanas/Aula06x.html#novos-dados",
     "href": "semanas/Aula06x.html#novos-dados",
     "title": "Análise de Sobrevivência",
     "section": "Novos dados",
-    "text": "Novos dados\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = c(\"no\", \"no\"), dose = c(60, 60))\nprevis &lt;- predict(TFAExp1, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFAExp1, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n       1        2 \n144.5357 339.8368 \n       2 \n2.351231 \n       1        2 \n251.0535 590.2849 \n       2 \n2.351231 \n\n\nVeja que no modelo TFA a proporcionalidade é verificada em diferentes quantis da curva de sobrevivência"
+    "text": "Novos dados\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = c(\"no\", \"no\"), dose = c(60, 60))\nprevis &lt;- predict(TFAExp1, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFAExp1, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 144.5357 339.8368 \n#&gt;        2 \n#&gt; 2.351231 \n#&gt;        1        2 \n#&gt; 251.0535 590.2849 \n#&gt;        2 \n#&gt; 2.351231\n\n\nVeja que no modelo TFA a proporcionalidade é verificada em diferentes quantis da curva de sobrevivência"
   },
   {
     "objectID": "semanas/Aula05.html#modelos-paramétricos",
@@ -465,120 +465,120 @@
     "objectID": "semanas/Aula03.html#modelos-paramétricos",
     "href": "semanas/Aula03.html#modelos-paramétricos",
     "title": "Análise de Sobrevivência",
-    "section": "Modelos Paramétricos",
-    "text": "Modelos Paramétricos\nNesta apresentação vamos ver passo a passo como obter a função taxa de falhas e de sobrevivência para alguns modelos de probabilidade.\nAqui vamos utilizar as funções existentes no pacote stats que vem com a instalação padrão do R."
+    "section": "",
+    "text": "Nesta apresentação vamos ver passo a passo como obter a função taxa de falhas e de sobrevivência para alguns modelos de probabilidade.\nAqui vamos utilizar as funções existentes no pacote stats que vem com a instalação padrão do R."
   },
   {
     "objectID": "semanas/Aula03.html#modelos-paramétricos---exponencial",
     "href": "semanas/Aula03.html#modelos-paramétricos---exponencial",
     "title": "Análise de Sobrevivência",
     "section": "Modelos Paramétricos - Exponencial",
-    "text": "Modelos Paramétricos - Exponencial\n\n\nexpHaz &lt;- function(x, rate) { \n  dexp(x, rate=rate)/\n    pexp(x, rate=rate, lower.tail=F)\n}\ncurve(expHaz(x, rate=0.5), from=0, to=50,\n      ylab=\"h(t)\", xlab=\"Tempo\", \n      col=\"red\", ylim=c(0,1))\ncurve(expHaz(x, rate=0.3), from=0, to=50, \n      ylab=\"h(t)\", xlab=\"Tempo\",\n      col=\"blue\", add = T)\ncurve(expHaz(x, rate=0.1), from=0, to=50,\n      ylab=\"h(t)\", xlab=\"Tempo\", \n      col=\"black\", add=T)\nlegend(\"topright\", \n       legend = c(expression(paste(alfa, \" = \", 2)),\n                  expression(paste(alfa, \" = \", 3)),\n                  expression(paste(alfa, \" = \", 10))),\n                   lty=1, col = c(\"red\",\"blue\",\"black\"))"
+    "text": "Modelos Paramétricos - Exponencial"
   },
   {
     "objectID": "semanas/Aula03.html#taxa-de-falhas---exponencial",
     "href": "semanas/Aula03.html#taxa-de-falhas---exponencial",
     "title": "Análise de Sobrevivência",
     "section": "Taxa de Falhas - Exponencial",
-    "text": "Taxa de Falhas - Exponencial"
+    "text": "Taxa de Falhas - Exponencial\n\nexpHaz &lt;- function(x, rate) { \n  dexp(x, rate=rate)/\n    pexp(x, rate=rate, lower.tail=F)\n}\ncurve(expHaz(x, rate=0.5), from=0, to=50,\n      ylab=\"h(t)\", xlab=\"Tempo\", \n      col=\"red\", ylim=c(0,1))\ncurve(expHaz(x, rate=0.3), from=0, to=50, \n      ylab=\"h(t)\", xlab=\"Tempo\",\n      col=\"blue\", add = T)\ncurve(expHaz(x, rate=0.1), from=0, to=50,\n      ylab=\"h(t)\", xlab=\"Tempo\", \n      col=\"black\", add=T)\nlegend(\"topright\", \n       legend = c(expression(paste(alfa, \" = \", 2)),\n                  expression(paste(alfa, \" = \", 3)),\n                  expression(paste(alfa, \" = \", 10))),\n                   lty=1, col = c(\"red\",\"blue\",\"black\"))"
   },
   {
     "objectID": "semanas/Aula03.html#modelos-paramétricos---exponencial-1",
     "href": "semanas/Aula03.html#modelos-paramétricos---exponencial-1",
     "title": "Análise de Sobrevivência",
     "section": "Modelos Paramétricos - Exponencial",
-    "text": "Modelos Paramétricos - Exponencial\n\n\nexpSurv &lt;- function(x, rate) { \n  pexp(x, rate=rate, lower.tail=F)\n}\ncurve(expSurv(x, rate=0.5), from=0, to=50,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"red\")\ncurve(expSurv(x, rate=0.3), from=0, to=50,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"blue\", add=T)\ncurve(expSurv(x, rate=0.1), from=0, to=50,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"black\", add=T)\nlegend(\"topright\", \n       legend = c(expression(paste(alfa, \" = \", 2)),\n                  expression(paste(alfa, \" = \", 3)),\n                  expression(paste(alfa, \" = \", 10))),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+    "text": "Modelos Paramétricos - Exponencial"
   },
   {
     "objectID": "semanas/Aula03.html#curva-de-sobrevivência---exponencial",
     "href": "semanas/Aula03.html#curva-de-sobrevivência---exponencial",
     "title": "Análise de Sobrevivência",
     "section": "Curva de Sobrevivência - Exponencial",
-    "text": "Curva de Sobrevivência - Exponencial"
+    "text": "Curva de Sobrevivência - Exponencial\n\nexpSurv &lt;- function(x, rate) { \n  pexp(x, rate=rate, lower.tail=F)\n}\ncurve(expSurv(x, rate=0.5), from=0, to=50,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"red\")\ncurve(expSurv(x, rate=0.3), from=0, to=50,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"blue\", add=T)\ncurve(expSurv(x, rate=0.1), from=0, to=50,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"black\", add=T)\nlegend(\"topright\", \n       legend = c(expression(paste(alfa, \" = \", 2)),\n                  expression(paste(alfa, \" = \", 3)),\n                  expression(paste(alfa, \" = \", 10))),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
   },
   {
     "objectID": "semanas/Aula03.html#modelos-paramétricos---weibull",
     "href": "semanas/Aula03.html#modelos-paramétricos---weibull",
     "title": "Análise de Sobrevivência",
     "section": "Modelos Paramétricos - Weibull",
-    "text": "Modelos Paramétricos - Weibull\n\n\nweibHaz &lt;- function(x, shape, scale) { \n  dweibull(x, shape=shape, scale=scale)/\n  pweibull(x, shape=shape, scale=scale,\n           lower.tail=F)\n}\ncurve(weibHaz(x, shape=1.5, scale=1), \n      from=0, to=2,\n      ylab=\"h(t)\", xlab=\"Tempo\", col=\"red\")\ncurve(weibHaz(x, shape=1, scale=1), \n      from=0, to=2, \n      ylab=\"h(t)\", xlab=\"Tempo\", col=\"blue\", \n      add = T)\ncurve(weibHaz(x, shape=0.75, scale=1), \n      from=0, to=2,\n      ylab=\"h(t)\", xlab=\"Tempo\", col=\"black\", \n      add=T)\nlegend(\"topright\", \n   legend = c(expression(paste(beta, \" = \", 1.5,\" \",\n                                   alfa, \" = \", 1)),\n              expression(paste(beta, \" = \", 1,\" \",\n                                    alfa, \" = \", 1)),\n              expression(paste(beta, \" = \", 0.75,\" \",\n                                    alfa, \" = \", 1))),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+    "text": "Modelos Paramétricos - Weibull"
   },
   {
     "objectID": "semanas/Aula03.html#taxa-de-falhas---weibull",
     "href": "semanas/Aula03.html#taxa-de-falhas---weibull",
     "title": "Análise de Sobrevivência",
     "section": "Taxa de Falhas - Weibull",
-    "text": "Taxa de Falhas - Weibull"
+    "text": "Taxa de Falhas - Weibull\n\nweibHaz &lt;- function(x, shape, scale) { \n  dweibull(x, shape=shape, scale=scale)/\n  pweibull(x, shape=shape, scale=scale,\n           lower.tail=F)\n}\ncurve(weibHaz(x, shape=1.5, scale=1), \n      from=0, to=2,\n      ylab=\"h(t)\", xlab=\"Tempo\", col=\"red\")\ncurve(weibHaz(x, shape=1, scale=1), \n      from=0, to=2, \n      ylab=\"h(t)\", xlab=\"Tempo\", col=\"blue\", \n      add = T)\ncurve(weibHaz(x, shape=0.75, scale=1), \n      from=0, to=2,\n      ylab=\"h(t)\", xlab=\"Tempo\", col=\"black\", \n      add=T)\nlegend(\"topright\", \n   legend = c(expression(paste(beta, \" = \", 1.5,\" \",\n                                   alfa, \" = \", 1)),\n              expression(paste(beta, \" = \", 1,\" \",\n                                    alfa, \" = \", 1)),\n              expression(paste(beta, \" = \", 0.75,\" \",\n                                    alfa, \" = \", 1))),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
   },
   {
     "objectID": "semanas/Aula03.html#modelos-paramétricos---weibull-1",
     "href": "semanas/Aula03.html#modelos-paramétricos---weibull-1",
     "title": "Análise de Sobrevivência",
     "section": "Modelos Paramétricos - Weibull",
-    "text": "Modelos Paramétricos - Weibull\n\n\nweibSurv &lt;- function(x, shape, scale) {\n  pweibull(x, shape=shape, scale=scale,\n           lower.tail=F)\n}\ncurve(weibSurv(x, shape=1.5, scale=1), from=0, to=2,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"red\")\ncurve(weibSurv(x, shape=1, scale=1), from=0, to=2,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"blue\", add=T)\ncurve(weibSurv(x, shape=0.75, scale=1), from=0, to=2,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"black\", add=T)\nlegend(\"topright\", \n       legend = c(expression(paste(beta, \" = \", 1.5,\" \",\n                                       alfa, \" = \", 1)),\n                  expression(paste(beta, \" = \", 1,\" \",\n                                       alfa, \" = \", 1)),\n         expression(paste(beta, \" = \", 0.75,\" \",\n                                      alfa, \" = \", 1))),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+    "text": "Modelos Paramétricos - Weibull"
   },
   {
     "objectID": "semanas/Aula03.html#curva-de-sobrevivência---weibull",
     "href": "semanas/Aula03.html#curva-de-sobrevivência---weibull",
     "title": "Análise de Sobrevivência",
     "section": "Curva de Sobrevivência - Weibull",
-    "text": "Curva de Sobrevivência - Weibull"
+    "text": "Curva de Sobrevivência - Weibull\n\nweibSurv &lt;- function(x, shape, scale) {\n  pweibull(x, shape=shape, scale=scale,\n           lower.tail=F)\n}\ncurve(weibSurv(x, shape=1.5, scale=1), from=0, to=2,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"red\")\ncurve(weibSurv(x, shape=1, scale=1), from=0, to=2,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"blue\", add=T)\ncurve(weibSurv(x, shape=0.75, scale=1), from=0, to=2,\n      ylab=\"S(t)\", xlab=\"Tempo\", col=\"black\", add=T)\nlegend(\"topright\", \n       legend = c(expression(paste(beta, \" = \", 1.5,\" \",\n                                       alfa, \" = \", 1)),\n                  expression(paste(beta, \" = \", 1,\" \",\n                                       alfa, \" = \", 1)),\n         expression(paste(beta, \" = \", 0.75,\" \",\n                                      alfa, \" = \", 1))),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
   },
   {
     "objectID": "semanas/Aula03.html#modelos-paramétricos---lognormal",
     "href": "semanas/Aula03.html#modelos-paramétricos---lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Modelos Paramétricos - Lognormal",
-    "text": "Modelos Paramétricos - Lognormal\n\n\nlogHaz &lt;- function(x, meanlog, sdlog) {\n  dlnorm(x, meanlog=meanlog, sdlog=sdlog)/\n  plnorm(x, meanlog=meanlog, sdlog=sdlog, \n         lower.tail=F)\n}\ncurve(logHaz(x, meanlog=0, sdlog=0.5), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"log(Tempo)\", \n      col=\"red\", ylim=c(0,3.0))\ncurve(logHaz(x, meanlog=1, sdlog=0.7), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", \n      col=\"blue\", add=T)\ncurve(logHaz(x, meanlog=1, sdlog=1.0), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", \n      col=\"black\", add=T)\nlegend(\"topright\", c(\"lnorm(0,0.5)\", \"lnorm(1,0.7)\", \n                     \"lnorm(1,1)\"), lty=1, \n       col = c(\"red\",\"blue\",\"black\"))"
+    "text": "Modelos Paramétricos - Lognormal"
   },
   {
     "objectID": "semanas/Aula03.html#taxa-de-falhas---lognormal",
     "href": "semanas/Aula03.html#taxa-de-falhas---lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Taxa de Falhas - Lognormal",
-    "text": "Taxa de Falhas - Lognormal"
+    "text": "Taxa de Falhas - Lognormal\n\nlogHaz &lt;- function(x, meanlog, sdlog) {\n  dlnorm(x, meanlog=meanlog, sdlog=sdlog)/\n  plnorm(x, meanlog=meanlog, sdlog=sdlog, \n         lower.tail=F)\n}\ncurve(logHaz(x, meanlog=0, sdlog=0.5), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"log(Tempo)\", \n      col=\"red\", ylim=c(0,3.0))\ncurve(logHaz(x, meanlog=1, sdlog=0.7), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", \n      col=\"blue\", add=T)\ncurve(logHaz(x, meanlog=1, sdlog=1.0), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", \n      col=\"black\", add=T)\nlegend(\"topright\", c(\"lnorm(0,0.5)\", \"lnorm(1,0.7)\", \n                     \"lnorm(1,1)\"), lty=1, \n       col = c(\"red\",\"blue\",\"black\"))"
   },
   {
     "objectID": "semanas/Aula03.html#modelos-paramétricos---lognormal-1",
     "href": "semanas/Aula03.html#modelos-paramétricos---lognormal-1",
     "title": "Análise de Sobrevivência",
     "section": "Modelos Paramétricos - Lognormal",
-    "text": "Modelos Paramétricos - Lognormal\n\n\nlogSurv &lt;- function(x, meanlog, sdlog) {\n  plnorm(x, meanlog=meanlog, sdlog=sdlog, \n         lower.tail=F)\n}\ncurve(logSurv(x, meanlog=0, sdlog=0.5), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\",\n      col=\"red\")\ncurve(logSurv(x, meanlog=1, sdlog=0.7), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"blue\", add=T)\ncurve(logSurv(x, meanlog=1, sdlog=1.0),\n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\",\n      col=\"black\", add=T)\nlegend(\"topright\", c(\"lnorm(0,0.5)\", \n                     \"lnorm(1,0.7)\", \n                     \"lnorm(1,1)\"),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+    "text": "Modelos Paramétricos - Lognormal"
   },
   {
     "objectID": "semanas/Aula03.html#curva-de-sobrevivência---lognormal",
     "href": "semanas/Aula03.html#curva-de-sobrevivência---lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Curva de Sobrevivência - Lognormal",
-    "text": "Curva de Sobrevivência - Lognormal"
+    "text": "Curva de Sobrevivência - Lognormal\n\nlogSurv &lt;- function(x, meanlog, sdlog) {\n  plnorm(x, meanlog=meanlog, sdlog=sdlog, \n         lower.tail=F)\n}\ncurve(logSurv(x, meanlog=0, sdlog=0.5), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\",\n      col=\"red\")\ncurve(logSurv(x, meanlog=1, sdlog=0.7), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"blue\", add=T)\ncurve(logSurv(x, meanlog=1, sdlog=1.0),\n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\",\n      col=\"black\", add=T)\nlegend(\"topright\", c(\"lnorm(0,0.5)\", \n                     \"lnorm(1,0.7)\", \n                     \"lnorm(1,1)\"),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
   },
   {
     "objectID": "semanas/Aula03.html#modelos-paramétricos---loglogistico",
     "href": "semanas/Aula03.html#modelos-paramétricos---loglogistico",
     "title": "Análise de Sobrevivência",
     "section": "Modelos Paramétricos - Loglogistico",
-    "text": "Modelos Paramétricos - Loglogistico\n\n\nllogisHaz &lt;- function(x, alfa, beta) {\n  haz &lt;- beta/alfa*(x/alfa)^(beta-1)/(1+(x/alfa)^beta)  \n}\ncurve(llogisHaz(x, alfa=1, beta=0.5), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"red\")\ncurve(llogisHaz(x, alfa=1., beta=1), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"blue\", add=T)\ncurve(llogisHaz(x, alfa=1., beta=3), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"black\", add=T)\nlegend(\"topright\", c(\"llogis(1, 0.5)\", \"llogis(1,1)\",\n                     \"llogis(1,3)\"),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+    "text": "Modelos Paramétricos - Loglogistico\n\nllogisHaz &lt;- function(x, alfa, beta) {\n  haz &lt;- beta/alfa*(x/alfa)^(beta-1)/(1+(x/alfa)^beta)  \n}\ncurve(llogisHaz(x, alfa=1, beta=0.5), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"red\")\ncurve(llogisHaz(x, alfa=1., beta=1), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"blue\", add=T)\ncurve(llogisHaz(x, alfa=1., beta=3), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"black\", add=T)\nlegend(\"topright\", c(\"llogis(1, 0.5)\", \"llogis(1,1)\",\n                     \"llogis(1,3)\"),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
   },
   {
     "objectID": "semanas/Aula03.html#taxa-de-falhas---loglogistico",
     "href": "semanas/Aula03.html#taxa-de-falhas---loglogistico",
     "title": "Análise de Sobrevivência",
     "section": "Taxa de Falhas - Loglogistico",
-    "text": "Taxa de Falhas - Loglogistico"
+    "text": "Taxa de Falhas - Loglogistico\n\nllogisHaz &lt;- function(x, alfa, beta) {\n  haz &lt;- beta/alfa*(x/alfa)^(beta-1)/(1+(x/alfa)^beta)  \n}\ncurve(llogisHaz(x, alfa=1, beta=0.5), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"red\")\ncurve(llogisHaz(x, alfa=1., beta=1), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"blue\", add=T)\ncurve(llogisHaz(x, alfa=1., beta=3), from=0, to=log(80),\n      ylab=\"h(t)\", xlab=\"Log(Tempo)\", col=\"black\", add=T)\nlegend(\"topright\", c(\"llogis(1, 0.5)\", \"llogis(1,1)\",\n                     \"llogis(1,3)\"),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
   },
   {
     "objectID": "semanas/Aula03.html#modelos-paramétricos---loglogistico-1",
     "href": "semanas/Aula03.html#modelos-paramétricos---loglogistico-1",
     "title": "Análise de Sobrevivência",
     "section": "Modelos Paramétricos - Loglogistico",
-    "text": "Modelos Paramétricos - Loglogistico\n\n\nllogisSurv &lt;- function(x, alfa, beta) {\n          surv &lt;- 1/(1+(x/alfa)^beta)  \n}\ncurve(llogisSurv(x, alfa=1, beta=0.5), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"red\", ylim=c(0,1))\ncurve(llogisSurv(x, alfa=1, beta=1), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"blue\", add=T)\ncurve(llogisSurv(x, alfa=1, beta=3), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"black\", add=T)\nlegend(\"topright\", c(\"llogis(1, 0.5)\", \n                     \"llogis(1,1)\", \n                     \"llogis(1,3)\"),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
+    "text": "Modelos Paramétricos - Loglogistico\n\nllogisSurv &lt;- function(x, alfa, beta) {\n          surv &lt;- 1/(1+(x/alfa)^beta)  \n}\ncurve(llogisSurv(x, alfa=1, beta=0.5), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"red\", ylim=c(0,1))\ncurve(llogisSurv(x, alfa=1, beta=1), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"blue\", add=T)\ncurve(llogisSurv(x, alfa=1, beta=3), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"black\", add=T)\nlegend(\"topright\", c(\"llogis(1, 0.5)\", \n                     \"llogis(1,1)\", \n                     \"llogis(1,3)\"),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
   },
   {
     "objectID": "semanas/Aula03.html#curva-de-sobrevivência---loglogistico",
     "href": "semanas/Aula03.html#curva-de-sobrevivência---loglogistico",
     "title": "Análise de Sobrevivência",
     "section": "Curva de Sobrevivência - Loglogistico",
-    "text": "Curva de Sobrevivência - Loglogistico\n\n\n\nIME05-12532 - Análise de Sobrevivência"
+    "text": "Curva de Sobrevivência - Loglogistico\n\nllogisSurv &lt;- function(x, alfa, beta) {\n          surv &lt;- 1/(1+(x/alfa)^beta)  \n}\ncurve(llogisSurv(x, alfa=1, beta=0.5), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"red\", ylim=c(0,1))\ncurve(llogisSurv(x, alfa=1, beta=1), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"blue\", add=T)\ncurve(llogisSurv(x, alfa=1, beta=3), \n      from=0, to=log(80),\n      ylab=\"S(t)\", xlab=\"Log(Tempo)\", \n      col=\"black\", add=T)\nlegend(\"topright\", c(\"llogis(1, 0.5)\", \n                     \"llogis(1,1)\", \n                     \"llogis(1,3)\"),\n       lty=1, col = c(\"red\",\"blue\",\"black\"))"
   },
   {
     "objectID": "semanas/Aula02B.html#análise-de-sobrevivência-1",
@@ -599,35 +599,35 @@
     "href": "semanas/Aula02B.html#método-kaplan-meier",
     "title": "Análise de Sobrevivência",
     "section": "Método Kaplan-Meier",
-    "text": "Método Kaplan-Meier\n\nAjusteGrafico\n\n\n\n```{r}\nlibrary(survival)\ntempo&lt;- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)\nstatus&lt;- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0) \ntempo2&lt;- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2&lt;- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ntempo2g &lt;- c(tempo,tempo2)\nstatus2g &lt;- c(status,status2)\ngrupos &lt;- c(rep(1,21),rep(2,21))\ndados &lt;- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)\najusteKM &lt;- survfit(Surv(tempos, status) ~ grupos, data=dados)\n```\n\n\n\n\n```{r}\nplot(ajusteKM, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=2:3) \nlegend(\"topright\",c(\"6-MP\",\"Placebo\"), lty = 2:3)\n```"
+    "text": "Método Kaplan-Meier\n\n\nAjuste\nGrafico\n\n\n\n\n```{r}\nlibrary(survival)\ntempo&lt;- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)\nstatus&lt;- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0) \ntempo2&lt;- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2&lt;- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ntempo2g &lt;- c(tempo,tempo2)\nstatus2g &lt;- c(status,status2)\ngrupos &lt;- c(rep(1,21),rep(2,21))\ndados &lt;- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)\najusteKM &lt;- survfit(Surv(tempos, status) ~ grupos, data=dados)\n```\n\n\n\n\n```{r}\nplot(ajusteKM, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=2:3) \nlegend(\"topright\",c(\"6-MP\",\"Placebo\"), lty = 2:3)\n```"
   },
   {
     "objectID": "semanas/Aula02B.html#método-kaplan-meier-1",
     "href": "semanas/Aula02B.html#método-kaplan-meier-1",
     "title": "Análise de Sobrevivência",
     "section": "Método Kaplan-Meier",
-    "text": "Método Kaplan-Meier\n\n```{r}\nsummary(ajusteKM)\n```\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados)\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA"
+    "text": "Método Kaplan-Meier\n\n```{r}\nsummary(ajusteKM)\n```\n\n#&gt; Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados)\n#&gt; \n#&gt;                 grupos=1 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     6     21       3    0.857  0.0764        0.720        1.000\n#&gt;     7     17       1    0.807  0.0869        0.653        0.996\n#&gt;    10     15       1    0.753  0.0963        0.586        0.968\n#&gt;    13     12       1    0.690  0.1068        0.510        0.935\n#&gt;    16     11       1    0.627  0.1141        0.439        0.896\n#&gt;    22      7       1    0.538  0.1282        0.337        0.858\n#&gt;    23      6       1    0.448  0.1346        0.249        0.807\n#&gt; \n#&gt;                 grupos=2 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     1     21       2   0.9048  0.0641      0.78754        1.000\n#&gt;     2     19       2   0.8095  0.0857      0.65785        0.996\n#&gt;     3     17       1   0.7619  0.0929      0.59988        0.968\n#&gt;     4     16       2   0.6667  0.1029      0.49268        0.902\n#&gt;     5     14       2   0.5714  0.1080      0.39455        0.828\n#&gt;     8     12       4   0.3810  0.1060      0.22085        0.657\n#&gt;    11      8       2   0.2857  0.0986      0.14529        0.562\n#&gt;    12      6       2   0.1905  0.0857      0.07887        0.460\n#&gt;    15      4       1   0.1429  0.0764      0.05011        0.407\n#&gt;    17      3       1   0.0952  0.0641      0.02549        0.356\n#&gt;    22      2       1   0.0476  0.0465      0.00703        0.322\n#&gt;    23      1       1   0.0000     NaN           NA           NA"
   },
   {
     "objectID": "semanas/Aula02B.html#teste-do-log-rank",
     "href": "semanas/Aula02B.html#teste-do-log-rank",
     "title": "Análise de Sobrevivência",
     "section": "Teste do log-rank",
-    "text": "Teste do log-rank\n\n```{r}\nsurvdiff(Surv(tempos, status) ~ grupos, data=dados)\n```\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = dados)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 21        9     19.3      5.46      16.8\ngrupos=2 21       21     10.7      9.77      16.8\n\n Chisq= 16.8  on 1 degrees of freedom, p= 4e-05"
+    "text": "Teste do log-rank\n\n```{r}\nsurvdiff(Surv(tempos, status) ~ grupos, data=dados)\n```\n\n#&gt; Call:\n#&gt; survdiff(formula = Surv(tempos, status) ~ grupos, data = dados)\n#&gt; \n#&gt;           N Observed Expected (O-E)^2/E (O-E)^2/V\n#&gt; grupos=1 21        9     19.3      5.46      16.8\n#&gt; grupos=2 21       21     10.7      9.77      16.8\n#&gt; \n#&gt;  Chisq= 16.8  on 1 degrees of freedom, p= 4e-05"
   },
   {
     "objectID": "semanas/Aula02B.html#teste-do-log-rank-usando-pesos",
     "href": "semanas/Aula02B.html#teste-do-log-rank-usando-pesos",
     "title": "Análise de Sobrevivência",
     "section": "Teste do log-rank usando pesos",
-    "text": "Teste do log-rank usando pesos\nQuando usamo rho=0, o teste é identico ao log-rank padrão\n\n```{r}\n# rho=0 é o teste de log-rank\nsurvdiff(Surv(tempos, status) ~ grupos, rho=0, data=dados)\n```\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = dados, \n    rho = 0)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 21        9     19.3      5.46      16.8\ngrupos=2 21       21     10.7      9.77      16.8\n\n Chisq= 16.8  on 1 degrees of freedom, p= 4e-05"
+    "text": "Teste do log-rank usando pesos\nQuando usamo rho=0, o teste é identico ao log-rank padrão\n\n```{r}\n# rho=0 é o teste de log-rank\nsurvdiff(Surv(tempos, status) ~ grupos, rho=0, data=dados)\n```\n\n#&gt; Call:\n#&gt; survdiff(formula = Surv(tempos, status) ~ grupos, data = dados, \n#&gt;     rho = 0)\n#&gt; \n#&gt;           N Observed Expected (O-E)^2/E (O-E)^2/V\n#&gt; grupos=1 21        9     19.3      5.46      16.8\n#&gt; grupos=2 21       21     10.7      9.77      16.8\n#&gt; \n#&gt;  Chisq= 16.8  on 1 degrees of freedom, p= 4e-05"
   },
   {
     "objectID": "semanas/Aula02B.html#usando-pesos-de-petopeto-hf",
     "href": "semanas/Aula02B.html#usando-pesos-de-petopeto-hf",
     "title": "Análise de Sobrevivência",
     "section": "Usando pesos de Peto&Peto (HF)",
-    "text": "Usando pesos de Peto&Peto (HF)\nQuando usamo rho=1, ele se torna do teste de log-rank usando os pesos de Peto&Peto\n\n```{r}\n# rho=1 é o teste de Peto&Peto\nsurvdiff(Surv(tempos, status) ~ grupos, rho=1, data=dados)\n```\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = dados, \n    rho = 1)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 21     5.12    12.00      3.94      14.5\ngrupos=2 21    14.55     7.68      6.16      14.5\n\n Chisq= 14.5  on 1 degrees of freedom, p= 1e-04"
+    "text": "Usando pesos de Peto&Peto (HF)\nQuando usamo rho=1, ele se torna do teste de log-rank usando os pesos de Peto&Peto\n\n```{r}\n# rho=1 é o teste de Peto&Peto\nsurvdiff(Surv(tempos, status) ~ grupos, rho=1, data=dados)\n```\n\n#&gt; Call:\n#&gt; survdiff(formula = Surv(tempos, status) ~ grupos, data = dados, \n#&gt;     rho = 1)\n#&gt; \n#&gt;           N Observed Expected (O-E)^2/E (O-E)^2/V\n#&gt; grupos=1 21     5.12    12.00      3.94      14.5\n#&gt; grupos=2 21    14.55     7.68      6.16      14.5\n#&gt; \n#&gt;  Chisq= 14.5  on 1 degrees of freedom, p= 1e-04"
   },
   {
     "objectID": "semanas/Aula02B.html#teste-do-log-rank-para-mais-de-2-grupos",
@@ -648,14 +648,14 @@
     "href": "semanas/Aula02B.html#método-kaplan-meier-2",
     "title": "Análise de Sobrevivência",
     "section": "Método Kaplan-Meier",
-    "text": "Método Kaplan-Meier\n\nAjusteGrafico\n\n\n\n```{r}\ntempos &lt;- c(7,8,8,8,8,12,12,17,18,22,30,30,30,30,30,30,8,8,9,\n10,10,14,15,15,18,19,21,22,22,23,25,8,8,8,8,8,8,\n9,10,10,10,11,17,19)\nstatus &lt;- c(rep(1,10), rep(0,6), rep(1,15), rep(1,13))\ngrupos &lt;- c(rep(1,16), rep(2,15), rep(3,13))\ndados2 &lt;- data.frame(tempos, status, grupos)\najusteKM2&lt;- survfit(Surv(tempos, status) ~ grupos, data = dados2)\n```\n\n\n\n\nplot(ajusteKM2, xlab=\"T(dias)\",ylab=\"S(t)\", lty=1:3) \nlegend(\"topright\",c(\"G 1\",\"G 2\", \"G 3\"), lty = 1:3)"
+    "text": "Método Kaplan-Meier\n\n\nAjuste\nGrafico\n\n\n\n\n```{r}\ntempos &lt;- c(7,8,8,8,8,12,12,17,18,22,30,30,30,30,30,30,8,8,9,\n10,10,14,15,15,18,19,21,22,22,23,25,8,8,8,8,8,8,\n9,10,10,10,11,17,19)\nstatus &lt;- c(rep(1,10), rep(0,6), rep(1,15), rep(1,13))\ngrupos &lt;- c(rep(1,16), rep(2,15), rep(3,13))\ndados2 &lt;- data.frame(tempos, status, grupos)\najusteKM2&lt;- survfit(Surv(tempos, status) ~ grupos, data = dados2)\n```\n\n\n\n\nplot(ajusteKM2, xlab=\"T(dias)\",ylab=\"S(t)\", lty=1:3) \nlegend(\"topright\",c(\"G 1\",\"G 2\", \"G 3\"), lty = 1:3)"
   },
   {
     "objectID": "semanas/Aula02B.html#teste-do-log-rank-1",
     "href": "semanas/Aula02B.html#teste-do-log-rank-1",
     "title": "Análise de Sobrevivência",
     "section": "Teste do log-rank",
-    "text": "Teste do log-rank\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = dados2,  rho=0)\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = dados2, \n    rho = 0)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 16       10    17.00    2.8816    6.4111\ngrupos=2 15       15    14.51    0.0167    0.0317\ngrupos=3 13       13     6.49    6.5190   10.4447\n\n Chisq= 12.6  on 2 degrees of freedom, p= 0.002"
+    "text": "Teste do log-rank\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = dados2,  rho=0)\n\n#&gt; Call:\n#&gt; survdiff(formula = Surv(tempos, status) ~ grupos, data = dados2, \n#&gt;     rho = 0)\n#&gt; \n#&gt;           N Observed Expected (O-E)^2/E (O-E)^2/V\n#&gt; grupos=1 16       10    17.00    2.8816    6.4111\n#&gt; grupos=2 15       15    14.51    0.0167    0.0317\n#&gt; grupos=3 13       13     6.49    6.5190   10.4447\n#&gt; \n#&gt;  Chisq= 12.6  on 2 degrees of freedom, p= 0.002"
   },
   {
     "objectID": "semanas/Aula02B.html#avaliação",
@@ -669,21 +669,21 @@
     "href": "semanas/Aula02B.html#grupos-1-e-2",
     "title": "Análise de Sobrevivência",
     "section": "Grupos 1 e 2",
-    "text": "Grupos 1 e 2\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = subset(dados2, grupos!=3),  rho=0)\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, \n    grupos != 3), rho = 0)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 16       10     13.7      1.01      2.53\ngrupos=2 15       15     11.3      1.23      2.53\n\n Chisq= 2.5  on 1 degrees of freedom, p= 0.1"
+    "text": "Grupos 1 e 2\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = subset(dados2, grupos!=3),  rho=0)\n\n#&gt; Call:\n#&gt; survdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, \n#&gt;     grupos != 3), rho = 0)\n#&gt; \n#&gt;           N Observed Expected (O-E)^2/E (O-E)^2/V\n#&gt; grupos=1 16       10     13.7      1.01      2.53\n#&gt; grupos=2 15       15     11.3      1.23      2.53\n#&gt; \n#&gt;  Chisq= 2.5  on 1 degrees of freedom, p= 0.1"
   },
   {
     "objectID": "semanas/Aula02B.html#grupos-1-e-3",
     "href": "semanas/Aula02B.html#grupos-1-e-3",
     "title": "Análise de Sobrevivência",
     "section": "Grupos 1 e 3",
-    "text": "Grupos 1 e 3\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = subset(dados2, grupos!=2),  rho=0)\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, \n    grupos != 2), rho = 0)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=1 16       10    15.34      1.86      7.86\ngrupos=3 13       13     7.66      3.72      7.86\n\n Chisq= 7.9  on 1 degrees of freedom, p= 0.005"
+    "text": "Grupos 1 e 3\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = subset(dados2, grupos!=2),  rho=0)\n\n#&gt; Call:\n#&gt; survdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, \n#&gt;     grupos != 2), rho = 0)\n#&gt; \n#&gt;           N Observed Expected (O-E)^2/E (O-E)^2/V\n#&gt; grupos=1 16       10    15.34      1.86      7.86\n#&gt; grupos=3 13       13     7.66      3.72      7.86\n#&gt; \n#&gt;  Chisq= 7.9  on 1 degrees of freedom, p= 0.005"
   },
   {
     "objectID": "semanas/Aula02B.html#grupos-2-e-3",
     "href": "semanas/Aula02B.html#grupos-2-e-3",
     "title": "Análise de Sobrevivência",
     "section": "Grupos 2 e 3",
-    "text": "Grupos 2 e 3\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = subset(dados2, grupos!=1),  rho=0)\n\nCall:\nsurvdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, \n    grupos != 1), rho = 0)\n\n          N Observed Expected (O-E)^2/E (O-E)^2/V\ngrupos=2 15       15    20.53      1.49      7.98\ngrupos=3 13       13     7.47      4.08      7.98\n\n Chisq= 8  on 1 degrees of freedom, p= 0.005"
+    "text": "Grupos 2 e 3\n\nsurvdiff(Surv(tempos, status) ~ grupos, data = subset(dados2, grupos!=1),  rho=0)\n\n#&gt; Call:\n#&gt; survdiff(formula = Surv(tempos, status) ~ grupos, data = subset(dados2, \n#&gt;     grupos != 1), rho = 0)\n#&gt; \n#&gt;           N Observed Expected (O-E)^2/E (O-E)^2/V\n#&gt; grupos=2 15       15    20.53      1.49      7.98\n#&gt; grupos=3 13       13     7.47      4.08      7.98\n#&gt; \n#&gt;  Chisq= 8  on 1 degrees of freedom, p= 0.005"
   },
   {
     "objectID": "semanas/Aula02B.html#curva-de-sobrevivência-estratificada",
@@ -697,28 +697,28 @@
     "href": "semanas/Aula02B.html#curva-de-sobrevivência-estratificada-1",
     "title": "Análise de Sobrevivência",
     "section": "Curva de Sobrevivência estratificada",
-    "text": "Curva de Sobrevivência estratificada\n\nAjusteGrafico\n\n\n\n```{r}\nlibrary(readxl)\ndados_a &lt;- read_xlsx(\"anderson.xlsx\", col_names=T)\najusteKM_S &lt;- survfit(Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\nsummary(ajusteKM_S)\n```\n\nCall: survfit(formula = Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\n\n                Rx=0, strata(sexo)=sexo=0 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     11       2    0.818   0.116        0.619            1\n    7      8       1    0.716   0.140        0.488            1\n   10      6       1    0.597   0.159        0.353            1\n   13      3       1    0.398   0.194        0.153            1\n\n                Rx=0, strata(sexo)=sexo=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     10       1    0.900  0.0949        0.732            1\n   16      9       1    0.800  0.1265        0.587            1\n   22      7       1    0.686  0.1515        0.445            1\n   23      6       1    0.571  0.1638        0.326            1\n\n                Rx=1, strata(sexo)=sexo=0 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    5     11       1   0.9091  0.0867       0.7541        1.000\n    8     10       3   0.6364  0.1450       0.4071        0.995\n   11      7       2   0.4545  0.1501       0.2379        0.868\n   12      5       2   0.2727  0.1343       0.1039        0.716\n   15      3       1   0.1818  0.1163       0.0519        0.637\n   17      2       1   0.0909  0.0867       0.0140        0.589\n   22      1       1   0.0000     NaN           NA           NA\n\n                Rx=1, strata(sexo)=sexo=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     10       2      0.8  0.1265       0.5868        1.000\n    2      8       2      0.6  0.1549       0.3617        0.995\n    3      6       1      0.5  0.1581       0.2690        0.929\n    4      5       2      0.3  0.1449       0.1164        0.773\n    5      3       1      0.2  0.1265       0.0579        0.691\n    8      2       1      0.1  0.0949       0.0156        0.642\n   23      1       1      0.0     NaN           NA           NA\n\n\n\n\n\nplot(ajusteKM_S, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=1:4) \nlegend(\"topright\",c(\"Rx=0 e Sexo=F\",\"Rx=0 e Sexo=M\", \"Rx=1 e Sexo=F\", \"Rx=1 e Sexo=M\"), lty = 1:4)"
+    "text": "Curva de Sobrevivência estratificada\n\n\nAjuste\nGrafico\n\n\n\n\n```{r}\nlibrary(readxl)\ndados_a &lt;- read_xlsx(\"anderson.xlsx\", col_names=T)\najusteKM_S &lt;- survfit(Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\nsummary(ajusteKM_S)\n```\n\n#&gt; Call: survfit(formula = Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\n#&gt; \n#&gt;                 Rx=0, strata(sexo)=sexo=0 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     6     11       2    0.818   0.116        0.619            1\n#&gt;     7      8       1    0.716   0.140        0.488            1\n#&gt;    10      6       1    0.597   0.159        0.353            1\n#&gt;    13      3       1    0.398   0.194        0.153            1\n#&gt; \n#&gt;                 Rx=0, strata(sexo)=sexo=1 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     6     10       1    0.900  0.0949        0.732            1\n#&gt;    16      9       1    0.800  0.1265        0.587            1\n#&gt;    22      7       1    0.686  0.1515        0.445            1\n#&gt;    23      6       1    0.571  0.1638        0.326            1\n#&gt; \n#&gt;                 Rx=1, strata(sexo)=sexo=0 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     5     11       1   0.9091  0.0867       0.7541        1.000\n#&gt;     8     10       3   0.6364  0.1450       0.4071        0.995\n#&gt;    11      7       2   0.4545  0.1501       0.2379        0.868\n#&gt;    12      5       2   0.2727  0.1343       0.1039        0.716\n#&gt;    15      3       1   0.1818  0.1163       0.0519        0.637\n#&gt;    17      2       1   0.0909  0.0867       0.0140        0.589\n#&gt;    22      1       1   0.0000     NaN           NA           NA\n#&gt; \n#&gt;                 Rx=1, strata(sexo)=sexo=1 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     1     10       2      0.8  0.1265       0.5868        1.000\n#&gt;     2      8       2      0.6  0.1549       0.3617        0.995\n#&gt;     3      6       1      0.5  0.1581       0.2690        0.929\n#&gt;     4      5       2      0.3  0.1449       0.1164        0.773\n#&gt;     5      3       1      0.2  0.1265       0.0579        0.691\n#&gt;     8      2       1      0.1  0.0949       0.0156        0.642\n#&gt;    23      1       1      0.0     NaN           NA           NA\n\n\n\n\n\nplot(ajusteKM_S, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=1:4) \nlegend(\"topright\",c(\"Rx=0 e Sexo=F\",\"Rx=0 e Sexo=M\", \"Rx=1 e Sexo=F\", \"Rx=1 e Sexo=M\"), lty = 1:4)"
   },
   {
     "objectID": "semanas/Aula02B.html#teste-do-log-rank-2",
     "href": "semanas/Aula02B.html#teste-do-log-rank-2",
     "title": "Análise de Sobrevivência",
     "section": "Teste do log-rank",
-    "text": "Teste do log-rank\n\nsurvdiff(Surv(tempo, status) ~ Rx, data = dados_a)\n\nCall:\nsurvdiff(formula = Surv(tempo, status) ~ Rx, data = dados_a)\n\n      N Observed Expected (O-E)^2/E (O-E)^2/V\nRx=0 21        9     19.3      5.46      16.8\nRx=1 21       21     10.7      9.77      16.8\n\n Chisq= 16.8  on 1 degrees of freedom, p= 4e-05 \n\nsurvdiff(Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\n\nCall:\nsurvdiff(formula = Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\n\n      N Observed Expected (O-E)^2/E (O-E)^2/V\nRx=0 21        9     16.5      3.44       9.7\nRx=1 21       21     13.5      4.23       9.7\n\n Chisq= 9.7  on 1 degrees of freedom, p= 0.002"
+    "text": "Teste do log-rank\n\nsurvdiff(Surv(tempo, status) ~ Rx, data = dados_a)\n\n#&gt; Call:\n#&gt; survdiff(formula = Surv(tempo, status) ~ Rx, data = dados_a)\n#&gt; \n#&gt;       N Observed Expected (O-E)^2/E (O-E)^2/V\n#&gt; Rx=0 21        9     19.3      5.46      16.8\n#&gt; Rx=1 21       21     10.7      9.77      16.8\n#&gt; \n#&gt;  Chisq= 16.8  on 1 degrees of freedom, p= 4e-05\n\nsurvdiff(Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\n\n#&gt; Call:\n#&gt; survdiff(formula = Surv(tempo, status) ~ Rx + strata(sexo), data = dados_a)\n#&gt; \n#&gt;       N Observed Expected (O-E)^2/E (O-E)^2/V\n#&gt; Rx=0 21        9     16.5      3.44       9.7\n#&gt; Rx=1 21       21     13.5      4.23       9.7\n#&gt; \n#&gt;  Chisq= 9.7  on 1 degrees of freedom, p= 0.002"
   },
   {
     "objectID": "semanas/Aula02B.html#explorando-os-dados",
     "href": "semanas/Aula02B.html#explorando-os-dados",
     "title": "Análise de Sobrevivência",
     "section": "Explorando os dados",
-    "text": "Explorando os dados\n\nsummary(as.factor(dados_a$sexo))\n\n 0  1 \n22 20 \n\nsum(dados_a$sexo==0 & dados_a$Rx==0)\n\n[1] 11\n\nsum(dados_a$sexo==1 & dados_a$Rx==0)\n\n[1] 10\n\nsum(dados_a$sexo==0 & dados_a$Rx==1)\n\n[1] 11\n\nsum(dados_a$sexo==1 & dados_a$Rx==1)\n\n[1] 10\n\n\n\n\nIME05-12532 - Análise de Sobrevivência"
+    "text": "Explorando os dados\n\nsummary(as.factor(dados_a$sexo))\n\n#&gt;  0  1 \n#&gt; 22 20\n\nsum(dados_a$sexo==0 & dados_a$Rx==0)\n\n#&gt; [1] 11\n\nsum(dados_a$sexo==1 & dados_a$Rx==0)\n\n#&gt; [1] 10\n\nsum(dados_a$sexo==0 & dados_a$Rx==1)\n\n#&gt; [1] 11\n\nsum(dados_a$sexo==1 & dados_a$Rx==1)\n\n#&gt; [1] 10"
   },
   {
     "objectID": "semanas/Aula01.html#análise-de-sobrevivência-1",
     "href": "semanas/Aula01.html#análise-de-sobrevivência-1",
     "title": "Análise de Sobrevivência",
-    "section": "Análise de Sobrevivência (1)",
-    "text": "Análise de Sobrevivência (1)\nNesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.\nVamos inicialmente utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência."
+    "section": "",
+    "text": "Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.\nVamos inicialmente utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência."
   },
   {
     "objectID": "semanas/Aula01.html#análise-de-sobrevivência-2",
@@ -732,42 +732,42 @@
     "href": "semanas/Aula01.html#método-de-km---6mp",
     "title": "Análise de Sobrevivência",
     "section": "Método de KM - 6MP",
-    "text": "Método de KM - 6MP\n\nAjuste KMGrafico\n\n\n\n```{r}\n#| code-line-numbers: \"|4-5|7\"\nlibrary(survival)\ntempos&lt;- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)\nstatus&lt;- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0)\ndados &lt;- data.frame(tempos=tempos, status=status)\najusteKM &lt;- survfit(Surv(tempos, status) ~ 1, data=dados)\n```\n\n\n\n\nplot(ajusteKM, xlab=\"Tempo (semanas)\",ylab=\"S(t)\", lty=1, col=1, lwd=2 ) \nlegend(\"topright\",\"6-MP\", lty = 1, col = 1, lwd=2)"
+    "text": "Método de KM - 6MP\n\n\nAjuste KM\nGrafico\n\n\n\n\n```{r}\nlibrary(survival)\ntempos&lt;- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)\nstatus&lt;- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0)\ndados &lt;- data.frame(tempos=tempos, status=status)\najusteKM &lt;- survfit(Surv(tempos, status) ~ 1, data=dados)\n```\n\n\n\n\nplot(ajusteKM, xlab=\"Tempo (semanas)\",ylab=\"S(t)\", lty=1, col=1, lwd=2 ) \nlegend(\"topright\",\"6-MP\", lty = 1, col = 1, lwd=2)"
   },
   {
     "objectID": "semanas/Aula01.html#método-de-km---6mp-1",
     "href": "semanas/Aula01.html#método-de-km---6mp-1",
     "title": "Análise de Sobrevivência",
     "section": "Método de KM - 6MP",
-    "text": "Método de KM - 6MP\n\n```{r}\n#| code-line-numbers: \"|3\"\nsummary(ajusteKM)\n```\n\nCall: survfit(formula = Surv(tempos, status) ~ 1, data = dados)\n\n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807"
+    "text": "Método de KM - 6MP\n\n```{r}\nsummary(ajusteKM)\n```\n\n#&gt; Call: survfit(formula = Surv(tempos, status) ~ 1, data = dados)\n#&gt; \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     6     21       3    0.857  0.0764        0.720        1.000\n#&gt;     7     17       1    0.807  0.0869        0.653        0.996\n#&gt;    10     15       1    0.753  0.0963        0.586        0.968\n#&gt;    13     12       1    0.690  0.1068        0.510        0.935\n#&gt;    16     11       1    0.627  0.1141        0.439        0.896\n#&gt;    22      7       1    0.538  0.1282        0.337        0.858\n#&gt;    23      6       1    0.448  0.1346        0.249        0.807"
   },
   {
     "objectID": "semanas/Aula01.html#método-de-km---placebo",
     "href": "semanas/Aula01.html#método-de-km---placebo",
     "title": "Análise de Sobrevivência",
     "section": "Método de KM - Placebo",
-    "text": "Método de KM - Placebo\n\nAjusteGráfico\n\n\n\n```{r}\ntempo2&lt;- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2&lt;- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ndados2 &lt;- data.frame(tempos=tempo2, status=status2)\najusteKM2 &lt;- survfit(Surv(tempos, status) ~ 1, data=dados2)\n```\n\n\n\n\nplot(ajusteKM2, xlab=\"t(semanas)\",ylab=\"S(t)\", lty=1, col=2, lwd=2 ) \nlegend(\"topright\",\"Placebo\", lty = 1, col=2, lwd=2)"
+    "text": "Método de KM - Placebo\n\n\nAjuste\nGráfico\n\n\n\n\n```{r}\ntempo2&lt;- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2&lt;- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ndados2 &lt;- data.frame(tempos=tempo2, status=status2)\najusteKM2 &lt;- survfit(Surv(tempos, status) ~ 1, data=dados2)\n```\n\n\n\n\nplot(ajusteKM2, xlab=\"t(semanas)\",ylab=\"S(t)\", lty=1, col=2, lwd=2 ) \nlegend(\"topright\",\"Placebo\", lty = 1, col=2, lwd=2)"
   },
   {
     "objectID": "semanas/Aula01.html#método-de-km---placebo-1",
     "href": "semanas/Aula01.html#método-de-km---placebo-1",
     "title": "Análise de Sobrevivência",
     "section": "Método de KM - Placebo",
-    "text": "Método de KM - Placebo\n\n```{r}\nsummary(ajusteKM2)\n```\n\nCall: survfit(formula = Surv(tempos, status) ~ 1, data = dados2)\n\n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA"
+    "text": "Método de KM - Placebo\n\n```{r}\nsummary(ajusteKM2)\n```\n\n#&gt; Call: survfit(formula = Surv(tempos, status) ~ 1, data = dados2)\n#&gt; \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     1     21       2   0.9048  0.0641      0.78754        1.000\n#&gt;     2     19       2   0.8095  0.0857      0.65785        0.996\n#&gt;     3     17       1   0.7619  0.0929      0.59988        0.968\n#&gt;     4     16       2   0.6667  0.1029      0.49268        0.902\n#&gt;     5     14       2   0.5714  0.1080      0.39455        0.828\n#&gt;     8     12       4   0.3810  0.1060      0.22085        0.657\n#&gt;    11      8       2   0.2857  0.0986      0.14529        0.562\n#&gt;    12      6       2   0.1905  0.0857      0.07887        0.460\n#&gt;    15      4       1   0.1429  0.0764      0.05011        0.407\n#&gt;    17      3       1   0.0952  0.0641      0.02549        0.356\n#&gt;    22      2       1   0.0476  0.0465      0.00703        0.322\n#&gt;    23      1       1   0.0000     NaN           NA           NA"
   },
   {
     "objectID": "semanas/Aula01.html#análise-conjunta",
     "href": "semanas/Aula01.html#análise-conjunta",
     "title": "Análise de Sobrevivência",
     "section": "Análise conjunta",
-    "text": "Análise conjunta\n\nAjuste conjuntoGráfico\n\n\n\ntempo2g &lt;- c(tempos,tempo2)\nstatus2g &lt;- c(status,status2)\ngrupos &lt;- c(rep(1,21),rep(2,21))\ndados3 &lt;- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)\najusteKM3 &lt;- survfit(Surv(tempos, status) ~ grupos, data=dados3)\n\n\n\n\nplot(ajusteKM3, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=1, \n     col=c(1,2), lwd=2, conf.int=0.95) \nlegend(\"topright\",c(\"6-MP\",\"Placebo\"), lty = 1:1, col=c(1,2), lwd=2)"
+    "text": "Análise conjunta\n\n\nAjuste conjunto\nGráfico\n\n\n\n\ntempo2g &lt;- c(tempos,tempo2)\nstatus2g &lt;- c(status,status2)\ngrupos &lt;- c(rep(1,21),rep(2,21))\ndados3 &lt;- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)\najusteKM3 &lt;- survfit(Surv(tempos, status) ~ grupos, data=dados3)\n\n\n\n\nplot(ajusteKM3, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=1, \n     col=c(1,2), lwd=2, conf.int=0.95) \nlegend(\"topright\",c(\"6-MP\",\"Placebo\"), lty = 1:1, col=c(1,2), lwd=2)"
   },
   {
     "objectID": "semanas/Aula01.html#método-de-km---6mp-e-placebo",
     "href": "semanas/Aula01.html#método-de-km---6mp-e-placebo",
     "title": "Análise de Sobrevivência",
     "section": "Método de KM - 6MP e Placebo",
-    "text": "Método de KM - 6MP e Placebo\n\nsummary(ajusteKM3)\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3)\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA"
+    "text": "Método de KM - 6MP e Placebo\n\nsummary(ajusteKM3)\n\n#&gt; Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3)\n#&gt; \n#&gt;                 grupos=1 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     6     21       3    0.857  0.0764        0.720        1.000\n#&gt;     7     17       1    0.807  0.0869        0.653        0.996\n#&gt;    10     15       1    0.753  0.0963        0.586        0.968\n#&gt;    13     12       1    0.690  0.1068        0.510        0.935\n#&gt;    16     11       1    0.627  0.1141        0.439        0.896\n#&gt;    22      7       1    0.538  0.1282        0.337        0.858\n#&gt;    23      6       1    0.448  0.1346        0.249        0.807\n#&gt; \n#&gt;                 grupos=2 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     1     21       2   0.9048  0.0641      0.78754        1.000\n#&gt;     2     19       2   0.8095  0.0857      0.65785        0.996\n#&gt;     3     17       1   0.7619  0.0929      0.59988        0.968\n#&gt;     4     16       2   0.6667  0.1029      0.49268        0.902\n#&gt;     5     14       2   0.5714  0.1080      0.39455        0.828\n#&gt;     8     12       4   0.3810  0.1060      0.22085        0.657\n#&gt;    11      8       2   0.2857  0.0986      0.14529        0.562\n#&gt;    12      6       2   0.1905  0.0857      0.07887        0.460\n#&gt;    15      4       1   0.1429  0.0764      0.05011        0.407\n#&gt;    17      3       1   0.0952  0.0641      0.02549        0.356\n#&gt;    22      2       1   0.0476  0.0465      0.00703        0.322\n#&gt;    23      1       1   0.0000     NaN           NA           NA"
   },
   {
     "objectID": "semanas/Aula01.html#diferentes-tipos-de-intervalo-de-confiança",
@@ -781,35 +781,35 @@
     "href": "semanas/Aula01.html#ic-pleno-aproximação-pela-normal",
     "title": "Análise de Sobrevivência",
     "section": "IC Pleno (Aproximação pela Normal)",
-    "text": "IC Pleno (Aproximação pela Normal)\n\nsummary(ajusteKM4)\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3, \n    conf.type = \"plain\")\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.707        1.000\n    7     17       1    0.807  0.0869        0.636        0.977\n   10     15       1    0.753  0.0963        0.564        0.942\n   13     12       1    0.690  0.1068        0.481        0.900\n   16     11       1    0.627  0.1141        0.404        0.851\n   22      7       1    0.538  0.1282        0.286        0.789\n   23      6       1    0.448  0.1346        0.184        0.712\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641       0.7792        1.000\n    2     19       2   0.8095  0.0857       0.6416        0.977\n    3     17       1   0.7619  0.0929       0.5797        0.944\n    4     16       2   0.6667  0.1029       0.4650        0.868\n    5     14       2   0.5714  0.1080       0.3598        0.783\n    8     12       4   0.3810  0.1060       0.1733        0.589\n   11      8       2   0.2857  0.0986       0.0925        0.479\n   12      6       2   0.1905  0.0857       0.0225        0.358\n   15      4       1   0.1429  0.0764       0.0000        0.293\n   17      3       1   0.0952  0.0641       0.0000        0.221\n   22      2       1   0.0476  0.0465       0.0000        0.139\n   23      1       1   0.0000     NaN          NaN          NaN"
+    "text": "IC Pleno (Aproximação pela Normal)\n\nsummary(ajusteKM4)\n\n#&gt; Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3, \n#&gt;     conf.type = \"plain\")\n#&gt; \n#&gt;                 grupos=1 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     6     21       3    0.857  0.0764        0.707        1.000\n#&gt;     7     17       1    0.807  0.0869        0.636        0.977\n#&gt;    10     15       1    0.753  0.0963        0.564        0.942\n#&gt;    13     12       1    0.690  0.1068        0.481        0.900\n#&gt;    16     11       1    0.627  0.1141        0.404        0.851\n#&gt;    22      7       1    0.538  0.1282        0.286        0.789\n#&gt;    23      6       1    0.448  0.1346        0.184        0.712\n#&gt; \n#&gt;                 grupos=2 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     1     21       2   0.9048  0.0641       0.7792        1.000\n#&gt;     2     19       2   0.8095  0.0857       0.6416        0.977\n#&gt;     3     17       1   0.7619  0.0929       0.5797        0.944\n#&gt;     4     16       2   0.6667  0.1029       0.4650        0.868\n#&gt;     5     14       2   0.5714  0.1080       0.3598        0.783\n#&gt;     8     12       4   0.3810  0.1060       0.1733        0.589\n#&gt;    11      8       2   0.2857  0.0986       0.0925        0.479\n#&gt;    12      6       2   0.1905  0.0857       0.0225        0.358\n#&gt;    15      4       1   0.1429  0.0764       0.0000        0.293\n#&gt;    17      3       1   0.0952  0.0641       0.0000        0.221\n#&gt;    22      2       1   0.0476  0.0465       0.0000        0.139\n#&gt;    23      1       1   0.0000     NaN          NaN          NaN"
   },
   {
     "objectID": "semanas/Aula01.html#ic-log---padrão-do-r",
     "href": "semanas/Aula01.html#ic-log---padrão-do-r",
     "title": "Análise de Sobrevivência",
     "section": "IC log - Padrão do R",
-    "text": "IC log - Padrão do R\n\najusteKM5 &lt;- survfit(Surv(tempos, status) ~ grupos, data=dados3,\n                     conf.type=\"log\")\nsummary(ajusteKM5)\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3, \n    conf.type = \"log\")\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA"
+    "text": "IC log - Padrão do R\n\najusteKM5 &lt;- survfit(Surv(tempos, status) ~ grupos, data=dados3,\n                     conf.type=\"log\")\nsummary(ajusteKM5)\n\n#&gt; Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3, \n#&gt;     conf.type = \"log\")\n#&gt; \n#&gt;                 grupos=1 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     6     21       3    0.857  0.0764        0.720        1.000\n#&gt;     7     17       1    0.807  0.0869        0.653        0.996\n#&gt;    10     15       1    0.753  0.0963        0.586        0.968\n#&gt;    13     12       1    0.690  0.1068        0.510        0.935\n#&gt;    16     11       1    0.627  0.1141        0.439        0.896\n#&gt;    22      7       1    0.538  0.1282        0.337        0.858\n#&gt;    23      6       1    0.448  0.1346        0.249        0.807\n#&gt; \n#&gt;                 grupos=2 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     1     21       2   0.9048  0.0641      0.78754        1.000\n#&gt;     2     19       2   0.8095  0.0857      0.65785        0.996\n#&gt;     3     17       1   0.7619  0.0929      0.59988        0.968\n#&gt;     4     16       2   0.6667  0.1029      0.49268        0.902\n#&gt;     5     14       2   0.5714  0.1080      0.39455        0.828\n#&gt;     8     12       4   0.3810  0.1060      0.22085        0.657\n#&gt;    11      8       2   0.2857  0.0986      0.14529        0.562\n#&gt;    12      6       2   0.1905  0.0857      0.07887        0.460\n#&gt;    15      4       1   0.1429  0.0764      0.05011        0.407\n#&gt;    17      3       1   0.0952  0.0641      0.02549        0.356\n#&gt;    22      2       1   0.0476  0.0465      0.00703        0.322\n#&gt;    23      1       1   0.0000     NaN           NA           NA"
   },
   {
     "objectID": "semanas/Aula01.html#ic-log-log---kalbfleish-prentice",
     "href": "semanas/Aula01.html#ic-log-log---kalbfleish-prentice",
     "title": "Análise de Sobrevivência",
     "section": "IC log-log - Kalbfleish-Prentice",
-    "text": "IC log-log - Kalbfleish-Prentice\n\najusteKM6 &lt;- survfit(Surv(tempos, status) ~ grupos, data=dados3,\n                     conf.type=\"log-log\")\nsummary(ajusteKM6)\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3, \n    conf.type = \"log-log\")\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.620        0.952\n    7     17       1    0.807  0.0869        0.563        0.923\n   10     15       1    0.753  0.0963        0.503        0.889\n   13     12       1    0.690  0.1068        0.432        0.849\n   16     11       1    0.627  0.1141        0.368        0.805\n   22      7       1    0.538  0.1282        0.268        0.747\n   23      6       1    0.448  0.1346        0.188        0.680\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.67005        0.975\n    2     19       2   0.8095  0.0857      0.56891        0.924\n    3     17       1   0.7619  0.0929      0.51939        0.893\n    4     16       2   0.6667  0.1029      0.42535        0.825\n    5     14       2   0.5714  0.1080      0.33798        0.749\n    8     12       4   0.3810  0.1060      0.18307        0.578\n   11      8       2   0.2857  0.0986      0.11656        0.482\n   12      6       2   0.1905  0.0857      0.05948        0.377\n   15      4       1   0.1429  0.0764      0.03566        0.321\n   17      3       1   0.0952  0.0641      0.01626        0.261\n   22      2       1   0.0476  0.0465      0.00332        0.197\n   23      1       1   0.0000     NaN           NA           NA"
+    "text": "IC log-log - Kalbfleish-Prentice\n\najusteKM6 &lt;- survfit(Surv(tempos, status) ~ grupos, data=dados3,\n                     conf.type=\"log-log\")\nsummary(ajusteKM6)\n\n#&gt; Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados3, \n#&gt;     conf.type = \"log-log\")\n#&gt; \n#&gt;                 grupos=1 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     6     21       3    0.857  0.0764        0.620        0.952\n#&gt;     7     17       1    0.807  0.0869        0.563        0.923\n#&gt;    10     15       1    0.753  0.0963        0.503        0.889\n#&gt;    13     12       1    0.690  0.1068        0.432        0.849\n#&gt;    16     11       1    0.627  0.1141        0.368        0.805\n#&gt;    22      7       1    0.538  0.1282        0.268        0.747\n#&gt;    23      6       1    0.448  0.1346        0.188        0.680\n#&gt; \n#&gt;                 grupos=2 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     1     21       2   0.9048  0.0641      0.67005        0.975\n#&gt;     2     19       2   0.8095  0.0857      0.56891        0.924\n#&gt;     3     17       1   0.7619  0.0929      0.51939        0.893\n#&gt;     4     16       2   0.6667  0.1029      0.42535        0.825\n#&gt;     5     14       2   0.5714  0.1080      0.33798        0.749\n#&gt;     8     12       4   0.3810  0.1060      0.18307        0.578\n#&gt;    11      8       2   0.2857  0.0986      0.11656        0.482\n#&gt;    12      6       2   0.1905  0.0857      0.05948        0.377\n#&gt;    15      4       1   0.1429  0.0764      0.03566        0.321\n#&gt;    17      3       1   0.0952  0.0641      0.01626        0.261\n#&gt;    22      2       1   0.0476  0.0465      0.00332        0.197\n#&gt;    23      1       1   0.0000     NaN           NA           NA"
   },
   {
     "objectID": "semanas/Aula01.html#outra-forma-de-visualização",
     "href": "semanas/Aula01.html#outra-forma-de-visualização",
     "title": "Análise de Sobrevivência",
     "section": "Outra forma de visualização",
-    "text": "Outra forma de visualização\n\nSurvminerGráfico\n\n\n\nlibrary(survminer)\ndados &lt;- data.frame(tempo=tempo2g, status=status2g, grupo= grupos)\najusteKM4 &lt;- survfit(Surv(tempo2g, status2g) ~ grupo, data= dados, conf.type=\"log-log\")\ngraf &lt;- ggsurvplot(ajusteKM4, data = dados, \n           risk.table = TRUE, \n           pval = FALSE, \n           conf.int = TRUE, \n           xlim = c(0,40), \n           xlab = \"Tempo em meses\", \n           ylab = \"S(t)\",\n           break.time.by = 10, \n           ggtheme = theme_light(), \n           risk.table.y.text.col = T, risk.table.y.text = FALSE \n)"
+    "text": "Outra forma de visualização\n\n\nSurvminer\nGráfico\n\n\n\n\nlibrary(survminer)\ndados &lt;- data.frame(tempo=tempo2g, status=status2g, grupo= grupos)\najusteKM4 &lt;- survfit(Surv(tempo2g, status2g) ~ grupo, data= dados, conf.type=\"log-log\")\ngraf &lt;- ggsurvplot(ajusteKM4, data = dados, \n           risk.table = TRUE, \n           pval = FALSE, \n           conf.int = TRUE, \n           xlim = c(0,40), \n           xlab = \"Tempo em meses\", \n           ylab = \"S(t)\",\n           break.time.by = 10, \n           ggtheme = theme_light(), \n           risk.table.y.text.col = T, risk.table.y.text = FALSE \n)\n\n\n\n\ngraf"
   },
   {
     "objectID": "semanas/Aula01.html#outra-forma-de-sumário",
     "href": "semanas/Aula01.html#outra-forma-de-sumário",
     "title": "Análise de Sobrevivência",
     "section": "Outra forma de sumário",
-    "text": "Outra forma de sumário\n\nsurv_summary(ajusteKM4)\n\n   time n.risk n.event n.censor       surv    std.err     upper       lower\n1     6     21       3        1 0.85714286 0.08908708 0.9515517 0.619717955\n2     7     17       1        0 0.80672269 0.10776353 0.9228090 0.563146565\n3     9     16       0        1 0.80672269 0.10776353 0.9228090 0.563146565\n4    10     15       1        1 0.75294118 0.12796438 0.8893618 0.503199511\n5    11     13       0        1 0.75294118 0.12796438 0.8893618 0.503199511\n6    13     12       1        0 0.69019608 0.15475995 0.8490660 0.431610222\n7    16     11       1        0 0.62745098 0.18177335 0.8049122 0.367510856\n8    17     10       0        1 0.62745098 0.18177335 0.8049122 0.367510856\n9    19      9       0        1 0.62745098 0.18177335 0.8049122 0.367510856\n10   20      8       0        1 0.62745098 0.18177335 0.8049122 0.367510856\n11   22      7       1        0 0.53781513 0.23843463 0.7467907 0.267778937\n12   23      6       1        0 0.44817927 0.30030719 0.6801426 0.188052006\n13   25      5       0        1 0.44817927 0.30030719 0.6801426 0.188052006\n14   32      4       0        2 0.44817927 0.30030719 0.6801426 0.188052006\n15   34      2       0        1 0.44817927 0.30030719 0.6801426 0.188052006\n16   35      1       0        1 0.44817927 0.30030719 0.6801426 0.188052006\n17    1     21       2        0 0.90476190 0.07079923 0.9752941 0.670045882\n18    2     19       2        0 0.80952381 0.10585122 0.9238888 0.568905060\n19    3     17       1        0 0.76190476 0.12198751 0.8932571 0.519391415\n20    4     16       2        0 0.66666667 0.15430335 0.8250440 0.425350436\n21    5     14       2        0 0.57142857 0.18898224 0.7492407 0.337976954\n22    8     12       4        0 0.38095238 0.27817432 0.5777887 0.183066549\n23   11      8       2        0 0.28571429 0.34503278 0.4818196 0.116561326\n24   12      6       2        0 0.19047619 0.44986771 0.3774349 0.059481701\n25   15      4       1        0 0.14285714 0.53452248 0.3211616 0.035657355\n26   17      3       1        0 0.09523810 0.67259271 0.2612500 0.016259260\n27   22      2       1        0 0.04761905 0.97590007 0.1970449 0.003324463\n28   23      1       1        0 0.00000000        Inf        NA          NA\n    strata grupo\n1  grupo=1     1\n2  grupo=1     1\n3  grupo=1     1\n4  grupo=1     1\n5  grupo=1     1\n6  grupo=1     1\n7  grupo=1     1\n8  grupo=1     1\n9  grupo=1     1\n10 grupo=1     1\n11 grupo=1     1\n12 grupo=1     1\n13 grupo=1     1\n14 grupo=1     1\n15 grupo=1     1\n16 grupo=1     1\n17 grupo=2     2\n18 grupo=2     2\n19 grupo=2     2\n20 grupo=2     2\n21 grupo=2     2\n22 grupo=2     2\n23 grupo=2     2\n24 grupo=2     2\n25 grupo=2     2\n26 grupo=2     2\n27 grupo=2     2\n28 grupo=2     2\n\n\n\n\nIME05-12532 - Análise de Sobrevivência"
+    "text": "Outra forma de sumário\n\nsurv_summary(ajusteKM4)\n\n#&gt; Warning in .get_data(x, data = data): The `data` argument is not provided. Data\n#&gt; will be extracted from model fit.\n\n\n#&gt;    time n.risk n.event n.censor       surv    std.err     upper       lower\n#&gt; 1     6     21       3        1 0.85714286 0.08908708 0.9515517 0.619717955\n#&gt; 2     7     17       1        0 0.80672269 0.10776353 0.9228090 0.563146565\n#&gt; 3     9     16       0        1 0.80672269 0.10776353 0.9228090 0.563146565\n#&gt; 4    10     15       1        1 0.75294118 0.12796438 0.8893618 0.503199511\n#&gt; 5    11     13       0        1 0.75294118 0.12796438 0.8893618 0.503199511\n#&gt; 6    13     12       1        0 0.69019608 0.15475995 0.8490660 0.431610222\n#&gt; 7    16     11       1        0 0.62745098 0.18177335 0.8049122 0.367510856\n#&gt; 8    17     10       0        1 0.62745098 0.18177335 0.8049122 0.367510856\n#&gt; 9    19      9       0        1 0.62745098 0.18177335 0.8049122 0.367510856\n#&gt; 10   20      8       0        1 0.62745098 0.18177335 0.8049122 0.367510856\n#&gt; 11   22      7       1        0 0.53781513 0.23843463 0.7467907 0.267778937\n#&gt; 12   23      6       1        0 0.44817927 0.30030719 0.6801426 0.188052006\n#&gt; 13   25      5       0        1 0.44817927 0.30030719 0.6801426 0.188052006\n#&gt; 14   32      4       0        2 0.44817927 0.30030719 0.6801426 0.188052006\n#&gt; 15   34      2       0        1 0.44817927 0.30030719 0.6801426 0.188052006\n#&gt; 16   35      1       0        1 0.44817927 0.30030719 0.6801426 0.188052006\n#&gt; 17    1     21       2        0 0.90476190 0.07079923 0.9752941 0.670045882\n#&gt; 18    2     19       2        0 0.80952381 0.10585122 0.9238888 0.568905060\n#&gt; 19    3     17       1        0 0.76190476 0.12198751 0.8932571 0.519391415\n#&gt; 20    4     16       2        0 0.66666667 0.15430335 0.8250440 0.425350436\n#&gt; 21    5     14       2        0 0.57142857 0.18898224 0.7492407 0.337976954\n#&gt; 22    8     12       4        0 0.38095238 0.27817432 0.5777887 0.183066549\n#&gt; 23   11      8       2        0 0.28571429 0.34503278 0.4818196 0.116561326\n#&gt; 24   12      6       2        0 0.19047619 0.44986771 0.3774349 0.059481701\n#&gt; 25   15      4       1        0 0.14285714 0.53452248 0.3211616 0.035657355\n#&gt; 26   17      3       1        0 0.09523810 0.67259271 0.2612500 0.016259260\n#&gt; 27   22      2       1        0 0.04761905 0.97590007 0.1970449 0.003324463\n#&gt; 28   23      1       1        0 0.00000000        Inf        NA          NA\n#&gt;     strata grupo\n#&gt; 1  grupo=1     1\n#&gt; 2  grupo=1     1\n#&gt; 3  grupo=1     1\n#&gt; 4  grupo=1     1\n#&gt; 5  grupo=1     1\n#&gt; 6  grupo=1     1\n#&gt; 7  grupo=1     1\n#&gt; 8  grupo=1     1\n#&gt; 9  grupo=1     1\n#&gt; 10 grupo=1     1\n#&gt; 11 grupo=1     1\n#&gt; 12 grupo=1     1\n#&gt; 13 grupo=1     1\n#&gt; 14 grupo=1     1\n#&gt; 15 grupo=1     1\n#&gt; 16 grupo=1     1\n#&gt; 17 grupo=2     2\n#&gt; 18 grupo=2     2\n#&gt; 19 grupo=2     2\n#&gt; 20 grupo=2     2\n#&gt; 21 grupo=2     2\n#&gt; 22 grupo=2     2\n#&gt; 23 grupo=2     2\n#&gt; 24 grupo=2     2\n#&gt; 25 grupo=2     2\n#&gt; 26 grupo=2     2\n#&gt; 27 grupo=2     2\n#&gt; 28 grupo=2     2"
   },
   {
     "objectID": "acesso-rstudio.html",
@@ -851,14 +851,14 @@
     "href": "semanas/Aula02A.html#método-kaplan-meier",
     "title": "Análise de Sobrevivência",
     "section": "Método Kaplan-Meier",
-    "text": "Método Kaplan-Meier\n\nAjusteGrafico\n\n\n\n```{r}\nlibrary(survival)\ntempo&lt;- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)\nstatus&lt;- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0) \ntempo2&lt;- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2&lt;- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ntempo2g &lt;- c(tempo,tempo2)\nstatus2g &lt;- c(status,status2)\ngrupos &lt;- c(rep(1,21),rep(2,21))\ndados &lt;- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)\najusteKM &lt;- survfit(Surv(tempos, status) ~ grupos, data=dados, conf.type=\"log-log\")\n```"
+    "text": "Método Kaplan-Meier\n\n\nAjuste\nGrafico\n\n\n\n\n```{r}\nlibrary(survival)\ntempo&lt;- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)\nstatus&lt;- c(1,1,1,0,1,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0) \ntempo2&lt;- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2&lt;- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ntempo2g &lt;- c(tempo,tempo2)\nstatus2g &lt;- c(status,status2)\ngrupos &lt;- c(rep(1,21),rep(2,21))\ndados &lt;- data.frame(tempos=tempo2g, status=status2g, grupos=grupos)\najusteKM &lt;- survfit(Surv(tempos, status) ~ grupos, data=dados, conf.type=\"log-log\")\n```"
   },
   {
     "objectID": "semanas/Aula02A.html#método-kaplan-meier-1",
     "href": "semanas/Aula02A.html#método-kaplan-meier-1",
     "title": "Análise de Sobrevivência",
     "section": "Método Kaplan-Meier",
-    "text": "Método Kaplan-Meier\n\n```{r}\nsummary(ajusteKM)\n```\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados, \n    conf.type = \"log-log\")\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.620        0.952\n    7     17       1    0.807  0.0869        0.563        0.923\n   10     15       1    0.753  0.0963        0.503        0.889\n   13     12       1    0.690  0.1068        0.432        0.849\n   16     11       1    0.627  0.1141        0.368        0.805\n   22      7       1    0.538  0.1282        0.268        0.747\n   23      6       1    0.448  0.1346        0.188        0.680\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.67005        0.975\n    2     19       2   0.8095  0.0857      0.56891        0.924\n    3     17       1   0.7619  0.0929      0.51939        0.893\n    4     16       2   0.6667  0.1029      0.42535        0.825\n    5     14       2   0.5714  0.1080      0.33798        0.749\n    8     12       4   0.3810  0.1060      0.18307        0.578\n   11      8       2   0.2857  0.0986      0.11656        0.482\n   12      6       2   0.1905  0.0857      0.05948        0.377\n   15      4       1   0.1429  0.0764      0.03566        0.321\n   17      3       1   0.0952  0.0641      0.01626        0.261\n   22      2       1   0.0476  0.0465      0.00332        0.197\n   23      1       1   0.0000     NaN           NA           NA"
+    "text": "Método Kaplan-Meier\n\n```{r}\nsummary(ajusteKM)\n```\n\n#&gt; Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados, \n#&gt;     conf.type = \"log-log\")\n#&gt; \n#&gt;                 grupos=1 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     6     21       3    0.857  0.0764        0.620        0.952\n#&gt;     7     17       1    0.807  0.0869        0.563        0.923\n#&gt;    10     15       1    0.753  0.0963        0.503        0.889\n#&gt;    13     12       1    0.690  0.1068        0.432        0.849\n#&gt;    16     11       1    0.627  0.1141        0.368        0.805\n#&gt;    22      7       1    0.538  0.1282        0.268        0.747\n#&gt;    23      6       1    0.448  0.1346        0.188        0.680\n#&gt; \n#&gt;                 grupos=2 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     1     21       2   0.9048  0.0641      0.67005        0.975\n#&gt;     2     19       2   0.8095  0.0857      0.56891        0.924\n#&gt;     3     17       1   0.7619  0.0929      0.51939        0.893\n#&gt;     4     16       2   0.6667  0.1029      0.42535        0.825\n#&gt;     5     14       2   0.5714  0.1080      0.33798        0.749\n#&gt;     8     12       4   0.3810  0.1060      0.18307        0.578\n#&gt;    11      8       2   0.2857  0.0986      0.11656        0.482\n#&gt;    12      6       2   0.1905  0.0857      0.05948        0.377\n#&gt;    15      4       1   0.1429  0.0764      0.03566        0.321\n#&gt;    17      3       1   0.0952  0.0641      0.01626        0.261\n#&gt;    22      2       1   0.0476  0.0465      0.00332        0.197\n#&gt;    23      1       1   0.0000     NaN           NA           NA"
   },
   {
     "objectID": "semanas/Aula02A.html#método-de-nelson-aalen",
@@ -886,7 +886,7 @@
     "href": "semanas/Aula02A.html#método-nelson-aalen",
     "title": "Análise de Sobrevivência",
     "section": "Método Nelson-Aalen",
-    "text": "Método Nelson-Aalen\n\n```{r}\nsummary(ajusteNA)\n```\n\nCall: survfit(formula = Surv(tempos, status) ~ grupos, data = dados, \n    stype = 2, ctype = 1, conf.type = \"log-log\")\n\n                grupos=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.867  0.0715        0.642        0.955\n    7     17       1    0.817  0.0828        0.583        0.927\n   10     15       1    0.765  0.0927        0.522        0.895\n   13     12       1    0.704  0.1035        0.450        0.857\n   16     11       1    0.642  0.1111        0.386        0.814\n   22      7       1    0.557  0.1249        0.289        0.759\n   23      6       1    0.471  0.1317        0.211        0.696\n\n                grupos=2 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9092  0.0612     0.683312        0.976\n    2     19       2   0.8183  0.0821     0.585744        0.928\n    3     17       1   0.7716  0.0898     0.535382        0.898\n    4     16       2   0.6809  0.0995     0.445010        0.833\n    5     14       2   0.5903  0.1048     0.360455        0.762\n    8     12       4   0.4229  0.1030     0.223432        0.610\n   11      8       2   0.3294  0.0991     0.151236        0.521\n   12      6       2   0.2360  0.0902     0.088391        0.423\n   15      4       1   0.1838  0.0840     0.056501        0.368\n   17      3       1   0.1317  0.0745     0.030135        0.309\n   22      2       1   0.0799  0.0603     0.010694        0.245\n   23      1       1   0.0294  0.0368     0.000845        0.172\n\n\n\n\nIME05-12532 - Análise de Sobrevivência"
+    "text": "Método Nelson-Aalen\n\n```{r}\nsummary(ajusteNA)\n```\n\n#&gt; Call: survfit(formula = Surv(tempos, status) ~ grupos, data = dados, \n#&gt;     stype = 2, ctype = 1, conf.type = \"log-log\")\n#&gt; \n#&gt;                 grupos=1 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     6     21       3    0.867  0.0715        0.642        0.955\n#&gt;     7     17       1    0.817  0.0828        0.583        0.927\n#&gt;    10     15       1    0.765  0.0927        0.522        0.895\n#&gt;    13     12       1    0.704  0.1035        0.450        0.857\n#&gt;    16     11       1    0.642  0.1111        0.386        0.814\n#&gt;    22      7       1    0.557  0.1249        0.289        0.759\n#&gt;    23      6       1    0.471  0.1317        0.211        0.696\n#&gt; \n#&gt;                 grupos=2 \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     1     21       2   0.9092  0.0612     0.683312        0.976\n#&gt;     2     19       2   0.8183  0.0821     0.585744        0.928\n#&gt;     3     17       1   0.7716  0.0898     0.535382        0.898\n#&gt;     4     16       2   0.6809  0.0995     0.445010        0.833\n#&gt;     5     14       2   0.5903  0.1048     0.360455        0.762\n#&gt;     8     12       4   0.4229  0.1030     0.223432        0.610\n#&gt;    11      8       2   0.3294  0.0991     0.151236        0.521\n#&gt;    12      6       2   0.2360  0.0902     0.088391        0.423\n#&gt;    15      4       1   0.1838  0.0840     0.056501        0.368\n#&gt;    17      3       1   0.1317  0.0745     0.030135        0.309\n#&gt;    22      2       1   0.0799  0.0603     0.010694        0.245\n#&gt;    23      1       1   0.0294  0.0368     0.000845        0.172"
   },
   {
     "objectID": "semanas/Aula02C.html#análise-de-sobrevivência-1",
@@ -914,35 +914,35 @@
     "href": "semanas/Aula02C.html#ht-não-paramétrica---6mp",
     "title": "Análise de Sobrevivência",
     "section": "h(t) não paramétrica - 6MP",
-    "text": "h(t) não paramétrica - 6MP\n\nCodigoGrafico\n\n\n\nlibrary(survival)\nlibrary(readxl)\ndados &lt;- read_xlsx(\"anderson.xlsx\", col_names = TRUE)\najusteKM &lt;- survfit(Surv(tempo, status) ~ 1, subset = (Rx==0), data=dados)\najusteKM_sum &lt;- summary(ajusteKM)\npesos &lt;- ajusteKM_sum$n.event/ajusteKM_sum$n.risk\nh &lt;- density(ajusteKM_sum$time, kernel = \"epanechnikov\", n = 100, from = 0, to = 35, weights = pesos)\nlibrary(ggplot2)\ndata &lt;- data.frame(x=h$x, y=h$y)\n\n\n\n\nggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20)) + theme_light() +\n  theme(axis.text = element_text(size = 12),\n        axis.title = element_text(size = 14)) +\n  labs(x = \"Tempo [semanas]\", y = \"Estimativa da taxa de falhas\", title = \"Estimativa da taxa de falhas - 6MP\")"
+    "text": "h(t) não paramétrica - 6MP\n\n\nCodigo\nGrafico\n\n\n\n\nlibrary(survival)\nlibrary(readxl)\ndados &lt;- read_xlsx(\"anderson.xlsx\", col_names = TRUE)\najusteKM &lt;- survfit(Surv(tempo, status) ~ 1, subset = (Rx==0), data=dados)\najusteKM_sum &lt;- summary(ajusteKM)\npesos &lt;- ajusteKM_sum$n.event/ajusteKM_sum$n.risk\nh &lt;- density(ajusteKM_sum$time, kernel = \"epanechnikov\", n = 100, from = 0, to = 35, weights = pesos)\n\n#&gt; Warning in density.default(ajusteKM_sum$time, kernel = \"epanechnikov\", n = 100,\n#&gt; : sum(weights) != 1 não terá densidade real\n\n\n#&gt; Warning in density.default(ajusteKM_sum$time, kernel = \"epanechnikov\", n = 100,\n#&gt; : Selecting bandwidth *not* using 'weights'\n\nlibrary(ggplot2)\ndata &lt;- data.frame(x=h$x, y=h$y)\n\n\n\n\nggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20)) + theme_light() +\n  theme(axis.text = element_text(size = 12),\n        axis.title = element_text(size = 14)) +\n  labs(x = \"Tempo [semanas]\", y = \"Estimativa da taxa de falhas\", title = \"Estimativa da taxa de falhas - 6MP\")"
   },
   {
     "objectID": "semanas/Aula02C.html#ht-não-paramétrica---placebo",
     "href": "semanas/Aula02C.html#ht-não-paramétrica---placebo",
     "title": "Análise de Sobrevivência",
     "section": "h(t) não paramétrica - Placebo",
-    "text": "h(t) não paramétrica - Placebo\n\nCodigoGrafico\n\n\n\ntempo2&lt;- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2&lt;- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ndados &lt;- data.frame(tempos=tempo2, status=status2)\najusteKM &lt;- survfit(Surv(tempos, status) ~ 1, data=dados)\najusteKM_sum &lt;- summary(ajusteKM)\npesos &lt;- ajusteKM_sum$n.event/ajusteKM_sum$n.risk\nh &lt;- density(ajusteKM_sum$time, weights = pesos,\nkernel = \"epanechnikov\", n = 100, from = 0, to = 25)\ndata &lt;- data.frame(x=h$x, y=h$y)\n\n\n\n\nggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20)) +  theme_light() +\n  theme(axis.text = element_text(size = 12),\n        axis.title = element_text(size = 14)) +\n  labs(x = \"Tempo [semanas]\", y = \"Estimativa da taxa de falhas\", title = \"Estimativa da taxa de falhas - Placebo\")"
+    "text": "h(t) não paramétrica - Placebo\n\n\nCodigo\nGrafico\n\n\n\n\ntempo2&lt;- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2&lt;- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ndados &lt;- data.frame(tempos=tempo2, status=status2)\najusteKM &lt;- survfit(Surv(tempos, status) ~ 1, data=dados)\najusteKM_sum &lt;- summary(ajusteKM)\npesos &lt;- ajusteKM_sum$n.event/ajusteKM_sum$n.risk\nh &lt;- density(ajusteKM_sum$time, weights = pesos,\nkernel = \"epanechnikov\", n = 100, from = 0, to = 25)\n\n#&gt; Warning in density.default(ajusteKM_sum$time, weights = pesos, kernel =\n#&gt; \"epanechnikov\", : sum(weights) != 1 não terá densidade real\n\n\n#&gt; Warning in density.default(ajusteKM_sum$time, weights = pesos, kernel =\n#&gt; \"epanechnikov\", : Selecting bandwidth *not* using 'weights'\n\ndata &lt;- data.frame(x=h$x, y=h$y)\n\n\n\n\nggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20)) +  theme_light() +\n  theme(axis.text = element_text(size = 12),\n        axis.title = element_text(size = 14)) +\n  labs(x = \"Tempo [semanas]\", y = \"Estimativa da taxa de falhas\", title = \"Estimativa da taxa de falhas - Placebo\")"
   },
   {
     "objectID": "semanas/Aula02C.html#quantis-não-paramétricos",
     "href": "semanas/Aula02C.html#quantis-não-paramétricos",
     "title": "Análise de Sobrevivência",
     "section": "Quantis não paramétricos",
-    "text": "Quantis não paramétricos\n\nlibrary(survey)\ndados_p &lt;- svydesign(ids = ~1, data=dados)\ndados_svykm &lt;- svykm(Surv(tempos, status) ~ 1, dados_p, se=TRUE)\nquantile(dados_svykm, 0.5, ci=TRUE)\n\n0.5 \n  8 \nattr(,\"ci\")\n    0.025 0.975\n0.5     5    12\n\n\n\n\nIME05-12532 - Análise de Sobrevivência"
+    "text": "Quantis não paramétricos\n\nlibrary(survey)\ndados_p &lt;- svydesign(ids = ~1, data=dados)\ndados_svykm &lt;- svykm(Surv(tempos, status) ~ 1, dados_p, se=TRUE)\nquantile(dados_svykm, 0.5, ci=TRUE)\n\n#&gt; 0.5 \n#&gt;   8 \n#&gt; attr(,\"ci\")\n#&gt;     0.025 0.975\n#&gt; 0.5     5    12"
   },
   {
     "objectID": "semanas/Aula04.html#modelos-paramétricos",
     "href": "semanas/Aula04.html#modelos-paramétricos",
     "title": "Análise de Sobrevivência",
-    "section": "Modelos Paramétricos",
-    "text": "Modelos Paramétricos\nNeste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser.\nVamos ver passo a passo como ajustar os modelos exponencial, Weibull e lognormal.\nAqui vamos utilizar as funções existentes no pacote survival.\nPara ajustar um modelo paramétrico usamo a função survreg."
+    "section": "",
+    "text": "Neste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser.\nVamos ver passo a passo como ajustar os modelos exponencial, Weibull e lognormal.\nAqui vamos utilizar as funções existentes no pacote survival.\nPara ajustar um modelo paramétrico usamo a função survreg."
   },
   {
     "objectID": "semanas/Aula04.html#metodo-de-kaplan-meier",
     "href": "semanas/Aula04.html#metodo-de-kaplan-meier",
     "title": "Análise de Sobrevivência",
     "section": "Metodo de Kaplan-Meier",
-    "text": "Metodo de Kaplan-Meier\n\nlibrary(survival)\ntempos&lt;-c(3,5,6,7,8,9,10,10,12,15,15,18,19,20,22,25,28,30,40,45)\ncens&lt;-c(1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0)\ndados &lt;- data.frame(tempos=tempos, status=cens)\nekm &lt;- survfit(Surv(tempos,status)~1, data=dados)\nsummary(ekm)\n\nCall: survfit(formula = Surv(tempos, status) ~ 1, data = dados)\n\n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    3     20       1   0.9500  0.0487      0.85913        1.000\n    5     19       1   0.9000  0.0671      0.77767        1.000\n    6     18       1   0.8500  0.0798      0.70707        1.000\n    7     17       1   0.8000  0.0894      0.64257        0.996\n    8     16       1   0.7500  0.0968      0.58233        0.966\n    9     15       1   0.7000  0.1025      0.52541        0.933\n   10     14       1   0.6500  0.1067      0.47124        0.897\n   12     12       1   0.5958  0.1107      0.41402        0.857\n   15     11       1   0.5417  0.1131      0.35976        0.816\n   18      9       1   0.4815  0.1154      0.30096        0.770\n   19      8       1   0.4213  0.1156      0.24601        0.721\n   20      7       1   0.3611  0.1137      0.19481        0.669\n   22      6       1   0.3009  0.1095      0.14745        0.614\n   25      5       1   0.2407  0.1028      0.10422        0.556\n   28      4       1   0.1806  0.0931      0.06573        0.496\n   30      3       1   0.1204  0.0792      0.03317        0.437\n   40      2       1   0.0602  0.0581      0.00907        0.399"
+    "text": "Metodo de Kaplan-Meier\n\nlibrary(survival)\ntempos&lt;-c(3,5,6,7,8,9,10,10,12,15,15,18,19,20,22,25,28,30,40,45)\ncens&lt;-c(1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0)\ndados &lt;- data.frame(tempos=tempos, status=cens)\nekm &lt;- survfit(Surv(tempos,status)~1, data=dados)\nsummary(ekm)\n\n#&gt; Call: survfit(formula = Surv(tempos, status) ~ 1, data = dados)\n#&gt; \n#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI\n#&gt;     3     20       1   0.9500  0.0487      0.85913        1.000\n#&gt;     5     19       1   0.9000  0.0671      0.77767        1.000\n#&gt;     6     18       1   0.8500  0.0798      0.70707        1.000\n#&gt;     7     17       1   0.8000  0.0894      0.64257        0.996\n#&gt;     8     16       1   0.7500  0.0968      0.58233        0.966\n#&gt;     9     15       1   0.7000  0.1025      0.52541        0.933\n#&gt;    10     14       1   0.6500  0.1067      0.47124        0.897\n#&gt;    12     12       1   0.5958  0.1107      0.41402        0.857\n#&gt;    15     11       1   0.5417  0.1131      0.35976        0.816\n#&gt;    18      9       1   0.4815  0.1154      0.30096        0.770\n#&gt;    19      8       1   0.4213  0.1156      0.24601        0.721\n#&gt;    20      7       1   0.3611  0.1137      0.19481        0.669\n#&gt;    22      6       1   0.3009  0.1095      0.14745        0.614\n#&gt;    25      5       1   0.2407  0.1028      0.10422        0.556\n#&gt;    28      4       1   0.1806  0.0931      0.06573        0.496\n#&gt;    30      3       1   0.1204  0.0792      0.03317        0.437\n#&gt;    40      2       1   0.0602  0.0581      0.00907        0.399"
   },
   {
     "objectID": "semanas/Aula04.html#curva-de-sobrevivência-não-paramétrica",
@@ -963,14 +963,14 @@
     "href": "semanas/Aula04.html#quantis-não-parametricos",
     "title": "Análise de Sobrevivência",
     "section": "Quantis não parametricos",
-    "text": "Quantis não parametricos\n\nlibrary(survey)\ndados_p &lt;- svydesign(ids = ~1, data=dados)\ndados_svykm &lt;- svykm(Surv(tempos, status) ~ 1, dados_p, se=TRUE)\nmediana.km &lt;- quantile(dados_svykm, 0.5, ci=TRUE)\nmed.km &lt;- c(mediana.km[1], attr(mediana.km, \"ci\")[1], attr(mediana.km, \"ci\")[2])\nnames(med.km) &lt;- c(\"mediana KM\",\"ICI\",\"ICS\")\nmed.km\n\nmediana KM        ICI        ICS \n        18         10         28"
+    "text": "Quantis não parametricos\n\nlibrary(survey)\ndados_p &lt;- svydesign(ids = ~1, data=dados)\ndados_svykm &lt;- svykm(Surv(tempos, status) ~ 1, dados_p, se=TRUE)\nmediana.km &lt;- quantile(dados_svykm, 0.5, ci=TRUE)\nmed.km &lt;- c(mediana.km[1], attr(mediana.km, \"ci\")[1], attr(mediana.km, \"ci\")[2])\nnames(med.km) &lt;- c(\"mediana KM\",\"ICI\",\"ICS\")\nmed.km\n\n#&gt; mediana KM        ICI        ICS \n#&gt;         18         10         28"
   },
   {
     "objectID": "semanas/Aula04.html#modelo-exponencial",
     "href": "semanas/Aula04.html#modelo-exponencial",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Exponencial",
-    "text": "Modelo Exponencial\n\najustExp &lt;- survreg(Surv(tempos,status)~1, \n                    data=dados, dist='exponential')\najustExp\n\nCall:\nsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"exponential\")\n\nCoefficients:\n(Intercept) \n   3.016111 \n\nScale fixed at 1 \n\nLoglik(model)= -68.3   Loglik(intercept only)= -68.3\nn= 20 \n\nalfa &lt;- exp(ajustExp$coefficients[1])\nalfa\n\n(Intercept) \n   20.41176"
+    "text": "Modelo Exponencial\n\najustExp &lt;- survreg(Surv(tempos,status)~1, \n                    data=dados, dist='exponential')\najustExp\n\n#&gt; Call:\n#&gt; survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"exponential\")\n#&gt; \n#&gt; Coefficients:\n#&gt; (Intercept) \n#&gt;    3.016111 \n#&gt; \n#&gt; Scale fixed at 1 \n#&gt; \n#&gt; Loglik(model)= -68.3   Loglik(intercept only)= -68.3\n#&gt; n= 20\n\nalfa &lt;- exp(ajustExp$coefficients[1])\nalfa\n\n#&gt; (Intercept) \n#&gt;    20.41176"
   },
   {
     "objectID": "semanas/Aula04.html#taxa-de-falhas-np-vs-exp",
@@ -984,35 +984,35 @@
     "href": "semanas/Aula04.html#taxa-de-falhas-np-vs-exp-1",
     "title": "Análise de Sobrevivência",
     "section": "Taxa de falhas NP vs Exp",
-    "text": "Taxa de falhas NP vs Exp"
+    "text": "Taxa de falhas NP vs Exp\n\n\n#&gt; Warning in density.default(ajusteKM_sum$time, weights = pesos, kernel =\n#&gt; \"gaussian\", : sum(weights) != 1 não terá densidade real\n\n\n#&gt; Warning in density.default(ajusteKM_sum$time, weights = pesos, kernel =\n#&gt; \"gaussian\", : Selecting bandwidth *not* using 'weights'"
   },
   {
     "objectID": "semanas/Aula04.html#quantis-do-modelo-exponencial",
     "href": "semanas/Aula04.html#quantis-do-modelo-exponencial",
     "title": "Análise de Sobrevivência",
     "section": "Quantis do Modelo Exponencial",
-    "text": "Quantis do Modelo Exponencial\n\nCálculosResultados\n\n\n\nest_med &lt;- predict(ajustExp,type=\"uquantile\",p=0.5,se.fit=T)\nest_med1 &lt;- est_med$fit[1]\nest_med1.ep &lt;- est_med$se.fit[1]\n\nIC.mediana_exp &lt;- c(exp(est_med1),exp(est_med1-1.96*est_med1.ep),\nexp(est_med1+1.96*est_med1.ep))\nnames(IC.mediana_exp) &lt;- c(\"mediana Exp\",\"ICI\",\"ICS\")\n\n\n\n\n#IC Mediana\nIC.mediana_exp\n\nmediana Exp         ICI         ICS \n  14.148357    8.795399   22.759175"
+    "text": "Quantis do Modelo Exponencial\n\n\nCálculos\nResultados\n\n\n\n\nest_med &lt;- predict(ajustExp,type=\"uquantile\",p=0.5,se.fit=T)\nest_med1 &lt;- est_med$fit[1]\nest_med1.ep &lt;- est_med$se.fit[1]\n\nIC.mediana_exp &lt;- c(exp(est_med1),exp(est_med1-1.96*est_med1.ep),\nexp(est_med1+1.96*est_med1.ep))\nnames(IC.mediana_exp) &lt;- c(\"mediana Exp\",\"ICI\",\"ICS\")\n\n\n\n\n#IC Mediana\nIC.mediana_exp\n\n#&gt; mediana Exp         ICI         ICS \n#&gt;   14.148357    8.795399   22.759175"
   },
   {
     "objectID": "semanas/Aula04.html#avaliação-do-modelo",
     "href": "semanas/Aula04.html#avaliação-do-modelo",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação do modelo",
-    "text": "Avaliação do modelo\n\nlibrary(car)\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\ndist = \"exp\",\nrate = 1/alfa,\nxlab = \"Quantis Teoricos (exponencial)\",\nylab = \"Quantis Empiricos\")\n\n\n[1] 17 16"
+    "text": "Avaliação do modelo\n\nlibrary(car)\n\n#&gt; Carregando pacotes exigidos: carData\n\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\ndist = \"exp\",\nrate = 1/alfa,\nxlab = \"Quantis Teoricos (exponencial)\",\nylab = \"Quantis Empiricos\")\n\n\n\n\n#&gt; [1] 17 16"
   },
   {
     "objectID": "semanas/Aula04.html#avaliação-do-modelo-exponencial",
     "href": "semanas/Aula04.html#avaliação-do-modelo-exponencial",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação do modelo Exponencial",
-    "text": "Avaliação do modelo Exponencial\n\n\n\n[1] 17 16"
+    "text": "Avaliação do modelo Exponencial\n\nlibrary(car)\n\n#&gt; Carregando pacotes exigidos: carData\n\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\ndist = \"exp\",\nrate = 1/alfa,\nxlab = \"Quantis Teoricos (exponencial)\",\nylab = \"Quantis Empiricos\")\n\n\n\n\n#&gt; [1] 17 16"
   },
   {
     "objectID": "semanas/Aula04.html#modelo-weibull",
     "href": "semanas/Aula04.html#modelo-weibull",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Weibull",
-    "text": "Modelo Weibull\n\nAjuste do modeloParametros do modelo\n\n\n\najustWei &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='weibull')\najustWei\n\nCall:\nsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"weibull\")\n\nCoefficients:\n(Intercept) \n   3.060529 \n\nScale= 0.647922 \n\nLoglik(model)= -66.1   Loglik(intercept only)= -66.1\nn= 20 \n\nalfaw &lt;- exp(ajustWei$coefficients[1])\nbetaw &lt;- 1/ajustWei$scale\n\n\n\n\n# Alfa - parametro de escala\nalfaw\n\n(Intercept) \n   21.33885 \n\n# Beta - parametro de forma\nbetaw\n\n[1] 1.543396"
+    "text": "Modelo Weibull\n\n\nAjuste do modelo\nParametros do modelo\n\n\n\n\najustWei &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='weibull')\najustWei\n\n#&gt; Call:\n#&gt; survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"weibull\")\n#&gt; \n#&gt; Coefficients:\n#&gt; (Intercept) \n#&gt;    3.060529 \n#&gt; \n#&gt; Scale= 0.647922 \n#&gt; \n#&gt; Loglik(model)= -66.1   Loglik(intercept only)= -66.1\n#&gt; n= 20\n\nalfaw &lt;- exp(ajustWei$coefficients[1])\nbetaw &lt;- 1/ajustWei$scale\n\n\n\n\n# Alfa - parametro de escala\nalfaw\n\n#&gt; (Intercept) \n#&gt;    21.33885\n\n# Beta - parametro de forma\nbetaw\n\n#&gt; [1] 1.543396"
   },
   {
     "objectID": "semanas/Aula04.html#taxa-de-falhas-np-vs-weibull",
@@ -1026,35 +1026,35 @@
     "href": "semanas/Aula04.html#taxa-de-falhas-np-vs-weibull-1",
     "title": "Análise de Sobrevivência",
     "section": "Taxa de Falhas NP vs Weibull",
-    "text": "Taxa de Falhas NP vs Weibull"
+    "text": "Taxa de Falhas NP vs Weibull\n\n\n#&gt; Warning in density.default(ajusteKM_sum$time, weights = pesos, kernel =\n#&gt; \"gaussian\", : sum(weights) != 1 não terá densidade real\n\n\n#&gt; Warning in density.default(ajusteKM_sum$time, weights = pesos, kernel =\n#&gt; \"gaussian\", : Selecting bandwidth *not* using 'weights'"
   },
   {
     "objectID": "semanas/Aula04.html#quantis-do-modelo-weibull",
     "href": "semanas/Aula04.html#quantis-do-modelo-weibull",
     "title": "Análise de Sobrevivência",
     "section": "Quantis do Modelo Weibull",
-    "text": "Quantis do Modelo Weibull\n\nCálculosResultados\n\n\n\najustWei &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='weibull')\nestmedw &lt;- predict(ajustWei,type=\"uquantile\",p=0.5,se.fit=T)\nestmedw1 &lt;- estmedw$fit[1]\nestmedw1.ep &lt;- estmedw$se.fit[1]\nIC.mediana_w &lt;- c(exp(estmedw1),exp(estmedw1-1.96*estmedw1.ep),\nexp(estmedw1+1.96*estmedw1.ep))\nnames(IC.mediana_w) &lt;- c(\"mediana Wei\",\"ICI\",\"ICS\")\n\n\n\n\n## Mediana\nIC.mediana_w\n\nmediana Wei         ICI         ICS \n   16.82823    11.95670    23.68456"
+    "text": "Quantis do Modelo Weibull\n\n\nCálculos\nResultados\n\n\n\n\najustWei &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='weibull')\nestmedw &lt;- predict(ajustWei,type=\"uquantile\",p=0.5,se.fit=T)\nestmedw1 &lt;- estmedw$fit[1]\nestmedw1.ep &lt;- estmedw$se.fit[1]\nIC.mediana_w &lt;- c(exp(estmedw1),exp(estmedw1-1.96*estmedw1.ep),\nexp(estmedw1+1.96*estmedw1.ep))\nnames(IC.mediana_w) &lt;- c(\"mediana Wei\",\"ICI\",\"ICS\")\n\n\n\n\n## Mediana\nIC.mediana_w\n\n#&gt; mediana Wei         ICI         ICS \n#&gt;    16.82823    11.95670    23.68456"
   },
   {
     "objectID": "semanas/Aula04.html#avaliação-do-modelo-1",
     "href": "semanas/Aula04.html#avaliação-do-modelo-1",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação do Modelo",
-    "text": "Avaliação do Modelo\n\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\ndist = \"weibull\",\nshape = betaw,\nscale = alfaw,\nxlab = \"Quantis Teoricos (Weibull)\",\nylab = \"Quantis Empiricos\")\n\n\n[1] 17 16"
+    "text": "Avaliação do Modelo\n\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\ndist = \"weibull\",\nshape = betaw,\nscale = alfaw,\nxlab = \"Quantis Teoricos (Weibull)\",\nylab = \"Quantis Empiricos\")\n\n\n\n\n#&gt; [1] 17 16"
   },
   {
     "objectID": "semanas/Aula04.html#avaliação-do-modelo-weibull",
     "href": "semanas/Aula04.html#avaliação-do-modelo-weibull",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação do Modelo Weibull",
-    "text": "Avaliação do Modelo Weibull\n\n\n\n[1] 17 16"
+    "text": "Avaliação do Modelo Weibull\n\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\ndist = \"weibull\",\nshape = betaw,\nscale = alfaw,\nxlab = \"Quantis Teoricos (Weibull)\",\nylab = \"Quantis Empiricos\")\n\n\n\n\n#&gt; [1] 17 16"
   },
   {
     "objectID": "semanas/Aula04.html#modelo-lognormal",
     "href": "semanas/Aula04.html#modelo-lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Lognormal",
-    "text": "Modelo Lognormal\n\nAjuste do modeloParametros do modelo\n\n\n\najustLog &lt;- survreg(Surv(tempos, status)~1, data=dados, dist='lognorm')\najustLog\n\nCall:\nsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"lognorm\")\n\nCoefficients:\n(Intercept) \n   2.717176 \n\nScale= 0.7648167 \n\nLoglik(model)= -65.7   Loglik(intercept only)= -65.7\nn= 20 \n\nmulog &lt;- ajustLog$icoef[1]\nsigmalog &lt;- ajustLog$scale\n\n\n\n\n# Media\nmulog\n\n(Intercept) \n   2.717176 \n\n# Desvio padrão\nsigmalog\n\n[1] 0.7648167"
+    "text": "Modelo Lognormal\n\n\nAjuste do modelo\nParametros do modelo\n\n\n\n\najustLog &lt;- survreg(Surv(tempos, status)~1, data=dados, dist='lognorm')\najustLog\n\n#&gt; Call:\n#&gt; survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"lognorm\")\n#&gt; \n#&gt; Coefficients:\n#&gt; (Intercept) \n#&gt;    2.717176 \n#&gt; \n#&gt; Scale= 0.7648167 \n#&gt; \n#&gt; Loglik(model)= -65.7   Loglik(intercept only)= -65.7\n#&gt; n= 20\n\nmulog &lt;- ajustLog$icoef[1]\nsigmalog &lt;- ajustLog$scale\n\n\n\n\n# Media\nmulog\n\n#&gt; (Intercept) \n#&gt;    2.717176\n\n# Desvio padrão\nsigmalog\n\n#&gt; [1] 0.7648167"
   },
   {
     "objectID": "semanas/Aula04.html#taxa-de-falhas-np-vs-lognormal",
@@ -1068,35 +1068,35 @@
     "href": "semanas/Aula04.html#taxa-de-falhas-np-vs-lognormal-1",
     "title": "Análise de Sobrevivência",
     "section": "Taxa de Falhas NP vs Lognormal",
-    "text": "Taxa de Falhas NP vs Lognormal"
+    "text": "Taxa de Falhas NP vs Lognormal\n\n\n#&gt; Warning in density.default(ajusteKM_sum$time, weights = pesos, kernel =\n#&gt; \"gaussian\", : sum(weights) != 1 não terá densidade real\n\n\n#&gt; Warning in density.default(ajusteKM_sum$time, weights = pesos, kernel =\n#&gt; \"gaussian\", : Selecting bandwidth *not* using 'weights'"
   },
   {
     "objectID": "semanas/Aula04.html#quantis-do-modelo-lognormal",
     "href": "semanas/Aula04.html#quantis-do-modelo-lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Quantis do Modelo Lognormal",
-    "text": "Quantis do Modelo Lognormal\n\najustLog &lt;- survreg(Surv(tempos, status)~1, data=dados, dist='lognorm')\nestmedl &lt;- predict(ajustLog,type=\"uquantile\",p=0.5,se.fit=T)\nestmedl1 &lt;- estmedl$fit[1]\nestmedl1.ep &lt;- estmedl$se.fit[1]\nIC.mediana_log &lt;- c(exp(estmedl1),exp(estmedl1-1.96*estmedl1.ep),\nexp(estmedl1+1.96*estmedl1.ep))\nnames(IC.mediana_log) &lt;- c(\"mediana Logn\",\"ICI\",\"ICS\")\nIC.mediana_log\n\nmediana Logn          ICI          ICS \n    15.13751     10.71601     21.38334"
+    "text": "Quantis do Modelo Lognormal\n\najustLog &lt;- survreg(Surv(tempos, status)~1, data=dados, dist='lognorm')\nestmedl &lt;- predict(ajustLog,type=\"uquantile\",p=0.5,se.fit=T)\nestmedl1 &lt;- estmedl$fit[1]\nestmedl1.ep &lt;- estmedl$se.fit[1]\nIC.mediana_log &lt;- c(exp(estmedl1),exp(estmedl1-1.96*estmedl1.ep),\nexp(estmedl1+1.96*estmedl1.ep))\nnames(IC.mediana_log) &lt;- c(\"mediana Logn\",\"ICI\",\"ICS\")\nIC.mediana_log\n\n#&gt; mediana Logn          ICI          ICS \n#&gt;     15.13751     10.71601     21.38334"
   },
   {
     "objectID": "semanas/Aula04.html#avaliação-do-modelo-2",
     "href": "semanas/Aula04.html#avaliação-do-modelo-2",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação do Modelo",
-    "text": "Avaliação do Modelo\n\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\ndist = \"lnorm\",\nmeanlog = mulog,\nsdlog = sigmalog,\nxlab = \"Quantis Teoricos (Lognormal)\",\nylab = \"Quantis Empiricos\")\n\n\n[1] 17 16"
+    "text": "Avaliação do Modelo\n\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\ndist = \"lnorm\",\nmeanlog = mulog,\nsdlog = sigmalog,\nxlab = \"Quantis Teoricos (Lognormal)\",\nylab = \"Quantis Empiricos\")\n\n\n\n\n#&gt; [1] 17 16"
   },
   {
     "objectID": "semanas/Aula04.html#avaliação-do-modelo-lognormal",
     "href": "semanas/Aula04.html#avaliação-do-modelo-lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação do Modelo Lognormal",
-    "text": "Avaliação do Modelo Lognormal\n\n\n\n[1] 17 16"
+    "text": "Avaliação do Modelo Lognormal\n\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\ndist = \"lnorm\",\nmeanlog = mulog,\nsdlog = sigmalog,\nxlab = \"Quantis Teoricos (Lognormal)\",\nylab = \"Quantis Empiricos\")\n\n\n\n\n#&gt; [1] 17 16"
   },
   {
     "objectID": "semanas/Aula04.html#modelo-loglogístico",
     "href": "semanas/Aula04.html#modelo-loglogístico",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Loglogístico",
-    "text": "Modelo Loglogístico\n\nAjuste do modeloParametros do modelo\n\n\n\najustLLog &lt;- survreg(Surv(tempos, status)~1, data=dados, dist='loglogistic')\najustLLog\n\nCall:\nsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"loglogistic\")\n\nCoefficients:\n(Intercept) \n   2.737415 \n\nScale= 0.4496653 \n\nLoglik(model)= -66   Loglik(intercept only)= -66\nn= 20 \n\nbetall&lt;- ajustLLog$icoef[1]\nalfall &lt;- ajustLLog$scale\nmullog &lt;- betall\nsigmallog &lt;- alfall\n\n\n\n\n# Media\nbetall\n\n(Intercept) \n   2.737415 \n\n# Desvio padrão\nalfall\n\n[1] 0.4496653"
+    "text": "Modelo Loglogístico\n\n\nAjuste do modelo\nParametros do modelo\n\n\n\n\najustLLog &lt;- survreg(Surv(tempos, status)~1, data=dados, dist='loglogistic')\najustLLog\n\n#&gt; Call:\n#&gt; survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = \"loglogistic\")\n#&gt; \n#&gt; Coefficients:\n#&gt; (Intercept) \n#&gt;    2.737415 \n#&gt; \n#&gt; Scale= 0.4496653 \n#&gt; \n#&gt; Loglik(model)= -66   Loglik(intercept only)= -66\n#&gt; n= 20\n\nbetall&lt;- ajustLLog$icoef[1]\nalfall &lt;- ajustLLog$scale\nmullog &lt;- betall\nsigmallog &lt;- alfall\n\n\n\n\n# Media\nbetall\n\n#&gt; (Intercept) \n#&gt;    2.737415\n\n# Desvio padrão\nalfall\n\n#&gt; [1] 0.4496653"
   },
   {
     "objectID": "semanas/Aula04.html#taxa-de-falhas-np-vs-loglogística",
@@ -1110,42 +1110,42 @@
     "href": "semanas/Aula04.html#taxa-de-falhas-np-vs-loglogística-1",
     "title": "Análise de Sobrevivência",
     "section": "Taxa de Falhas NP vs Loglogística",
-    "text": "Taxa de Falhas NP vs Loglogística"
+    "text": "Taxa de Falhas NP vs Loglogística\n\n\n#&gt; Warning in density.default(ajusteKM_sum$time, weights = pesos, kernel =\n#&gt; \"gaussian\", : sum(weights) != 1 não terá densidade real\n\n\n#&gt; Warning in density.default(ajusteKM_sum$time, weights = pesos, kernel =\n#&gt; \"gaussian\", : Selecting bandwidth *not* using 'weights'"
   },
   {
     "objectID": "semanas/Aula04.html#quantis-do-modelo-loglogístico",
     "href": "semanas/Aula04.html#quantis-do-modelo-loglogístico",
     "title": "Análise de Sobrevivência",
     "section": "Quantis do Modelo LogLogístico",
-    "text": "Quantis do Modelo LogLogístico\n\najustLLog &lt;- survreg(Surv(tempos, status)~1, data=dados, dist='loglogistic')\nestmedll &lt;- predict(ajustLLog,type=\"uquantile\",p=0.5,se.fit=T)\nestmedll1 &lt;- estmedll$fit[1]\nestmedll1.ep &lt;- estmedll$se.fit[1]\nIC.mediana_llog &lt;- c(exp(estmedll1),exp(estmedll1-1.96*estmedll1.ep),\nexp(estmedll1+1.96*estmedll1.ep))\nnames(IC.mediana_llog) &lt;- c(\"mediana LogL\",\"ICI\",\"ICS\")\nIC.mediana_llog\n\nmediana LogL          ICI          ICS \n    15.44700     10.85399     21.98361"
+    "text": "Quantis do Modelo LogLogístico\n\najustLLog &lt;- survreg(Surv(tempos, status)~1, data=dados, dist='loglogistic')\nestmedll &lt;- predict(ajustLLog,type=\"uquantile\",p=0.5,se.fit=T)\nestmedll1 &lt;- estmedll$fit[1]\nestmedll1.ep &lt;- estmedll$se.fit[1]\nIC.mediana_llog &lt;- c(exp(estmedll1),exp(estmedll1-1.96*estmedll1.ep),\nexp(estmedll1+1.96*estmedll1.ep))\nnames(IC.mediana_llog) &lt;- c(\"mediana LogL\",\"ICI\",\"ICS\")\nIC.mediana_llog\n\n#&gt; mediana LogL          ICI          ICS \n#&gt;     15.44700     10.85399     21.98361"
   },
   {
     "objectID": "semanas/Aula04.html#avaliação-do-modelo-3",
     "href": "semanas/Aula04.html#avaliação-do-modelo-3",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação do Modelo",
-    "text": "Avaliação do Modelo\n\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\n       dist = \"llogis\",\n       shape = betall,\n       scale = alfall,\n       xlab = \"Quantis Teoricos (LogLogistico)\",\n       ylab = \"Quantis Empiricos\")\n\n\n[1] 17 16"
+    "text": "Avaliação do Modelo\n\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\n       dist = \"llogis\",\n       shape = betall,\n       scale = alfall,\n       xlab = \"Quantis Teoricos (LogLogistico)\",\n       ylab = \"Quantis Empiricos\")\n\n\n\n\n#&gt; [1] 17 16"
   },
   {
     "objectID": "semanas/Aula04.html#avaliação-do-modelo-loglogístico",
     "href": "semanas/Aula04.html#avaliação-do-modelo-loglogístico",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação do Modelo LogLogístico",
-    "text": "Avaliação do Modelo LogLogístico\n\n\n\n[1] 17 16"
+    "text": "Avaliação do Modelo LogLogístico\n\ntab.np &lt;- summary(ekm)\ninvst2 &lt;- qlogis(tab.np$surv) \nplot(invst2 ~ log(tab.np$time),\n     xlab=\"log(t)\", ylab=expression(Phi^-1*Logis*(S(t))), pch=20)\nmod3.lm &lt;- lm(invst2 ~ log(tab.np$time))\nabline(mod3.lm)"
   },
   {
     "objectID": "semanas/Aula04.html#curvas-de-sobrevivência",
     "href": "semanas/Aula04.html#curvas-de-sobrevivência",
     "title": "Análise de Sobrevivência",
     "section": "Curvas de Sobrevivência",
-    "text": "Curvas de Sobrevivência\n\ntempo &lt;- ekm$time\nst &lt;- ekm$surv\nste &lt;- exp(-tempo/alfa)\nstw &lt;- exp(-(tempo/alfaw)^betaw)\nstln &lt;- pnorm((-log(tempo) + mulog)/sigmalog)\nstll &lt;- plogis((-log(tempo) + mullog)/sigmallog)\ncbind(tempo,st,ste,stw,stln, stll)\n\n      tempo         st       ste        stw       stln      stll\n [1,]     3 0.95000000 0.8633164 0.95274148 0.98283934 0.9745310\n [2,]     5 0.90000000 0.7827384 0.89897484 0.92624322 0.9247343\n [3,]     6 0.85000000 0.7453152 0.86839357 0.88685752 0.8911964\n [4,]     7 0.80000000 0.7096812 0.83609525 0.84337638 0.8532358\n [5,]     8 0.75000000 0.6757509 0.80253272 0.79781416 0.8120295\n [6,]     9 0.70000000 0.6434428 0.76809812 0.75169629 0.7687589\n [7,]    10 0.65000000 0.6126794 0.73313414 0.70611769 0.7245227\n [8,]    12 0.59583333 0.5554947 0.66278292 0.61931883 0.6368104\n [9,]    15 0.54166667 0.4795676 0.55966698 0.50475984 0.5163200\n[10,]    18 0.48148148 0.4140186 0.46346069 0.41042396 0.4157713\n[11,]    19 0.42129630 0.3942241 0.43345774 0.38317692 0.3868919\n[12,]    20 0.36111111 0.3753760 0.40461041 0.35784922 0.3602069\n[13,]    22 0.30092593 0.3403401 0.35056108 0.31248031 0.3129370\n[14,]    25 0.24074074 0.2938212 0.27891623 0.25592025 0.2552681\n[15,]    28 0.18055556 0.2536607 0.21851514 0.21065456 0.2103630\n[16,]    30 0.12037037 0.2299851 0.18419003 0.18556452 0.1860066\n[17,]    40 0.06018519 0.1409071 0.07154720 0.10195229 0.1075572\n[18,]    45 0.06018519 0.1102934 0.04229094 0.07714984 0.0848755"
+    "text": "Curvas de Sobrevivência\n\ntempo &lt;- ekm$time\nst &lt;- ekm$surv\nste &lt;- exp(-tempo/alfa)\nstw &lt;- exp(-(tempo/alfaw)^betaw)\nstln &lt;- pnorm((-log(tempo) + mulog)/sigmalog)\nstll &lt;- plogis((-log(tempo) + mullog)/sigmallog)\ncbind(tempo,st,ste,stw,stln, stll)\n\n#&gt;       tempo         st       ste        stw       stln      stll\n#&gt;  [1,]     3 0.95000000 0.8633164 0.95274148 0.98283934 0.9745310\n#&gt;  [2,]     5 0.90000000 0.7827384 0.89897484 0.92624322 0.9247343\n#&gt;  [3,]     6 0.85000000 0.7453152 0.86839357 0.88685752 0.8911964\n#&gt;  [4,]     7 0.80000000 0.7096812 0.83609525 0.84337638 0.8532358\n#&gt;  [5,]     8 0.75000000 0.6757509 0.80253272 0.79781416 0.8120295\n#&gt;  [6,]     9 0.70000000 0.6434428 0.76809812 0.75169629 0.7687589\n#&gt;  [7,]    10 0.65000000 0.6126794 0.73313414 0.70611769 0.7245227\n#&gt;  [8,]    12 0.59583333 0.5554947 0.66278292 0.61931883 0.6368104\n#&gt;  [9,]    15 0.54166667 0.4795676 0.55966698 0.50475984 0.5163200\n#&gt; [10,]    18 0.48148148 0.4140186 0.46346069 0.41042396 0.4157713\n#&gt; [11,]    19 0.42129630 0.3942241 0.43345774 0.38317692 0.3868919\n#&gt; [12,]    20 0.36111111 0.3753760 0.40461041 0.35784922 0.3602069\n#&gt; [13,]    22 0.30092593 0.3403401 0.35056108 0.31248031 0.3129370\n#&gt; [14,]    25 0.24074074 0.2938212 0.27891623 0.25592025 0.2552681\n#&gt; [15,]    28 0.18055556 0.2536607 0.21851514 0.21065456 0.2103630\n#&gt; [16,]    30 0.12037037 0.2299851 0.18419003 0.18556452 0.1860066\n#&gt; [17,]    40 0.06018519 0.1409071 0.07154720 0.10195229 0.1075572\n#&gt; [18,]    45 0.06018519 0.1102934 0.04229094 0.07714984 0.0848755"
   },
   {
     "objectID": "semanas/Aula04.html#quantis",
     "href": "semanas/Aula04.html#quantis",
     "title": "Análise de Sobrevivência",
     "section": "Quantis",
-    "text": "Quantis\n\nnames(med.km) &lt;- c(\"Mediana\", \"ICI\", \"ICS\")\nquantis &lt;- rbind(med.km, IC.mediana_exp, IC.mediana_w, IC.mediana_log, IC.mediana_llog)\nquantis\n\n                 Mediana       ICI      ICS\nmed.km          18.00000 10.000000 28.00000\nIC.mediana_exp  14.14836  8.795399 22.75917\nIC.mediana_w    16.82823 11.956697 23.68456\nIC.mediana_log  15.13751 10.716009 21.38334\nIC.mediana_llog 15.44700 10.853987 21.98361"
+    "text": "Quantis\n\nnames(med.km) &lt;- c(\"Mediana\", \"ICI\", \"ICS\")\nquantis &lt;- rbind(med.km, IC.mediana_exp, IC.mediana_w, IC.mediana_log, IC.mediana_llog)\nquantis\n\n#&gt;                  Mediana       ICI      ICS\n#&gt; med.km          18.00000 10.000000 28.00000\n#&gt; IC.mediana_exp  14.14836  8.795399 22.75917\n#&gt; IC.mediana_w    16.82823 11.956697 23.68456\n#&gt; IC.mediana_log  15.13751 10.716009 21.38334\n#&gt; IC.mediana_llog 15.44700 10.853987 21.98361"
   },
   {
     "objectID": "semanas/Aula04.html#comparação-np-vs-paramétrico",
@@ -1180,14 +1180,14 @@
     "href": "semanas/Aula04.html#modelos-paramétricos-1",
     "title": "Análise de Sobrevivência",
     "section": "Modelos Paramétricos",
-    "text": "Modelos Paramétricos\n\najustExp &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='exponential')\nalfa &lt;- exp(ajustExp$coefficients[1])\najustWei &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='weibull')\nalfaw &lt;- exp(ajustWei$coefficients[1])\nbetaw &lt;- 1/ajustWei$scale\najustLog &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='lognorm')\nmu &lt;- ajustLog$icoef[1]\nsigma &lt;- exp(ajustLog$icoef[2])\najustLogl &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='loglogistic')\nmu1 &lt;- ajustLogl$icoef[1]\nsigma1 &lt;- exp(ajustLogl$icoef[2])\n\n`"
+    "text": "Modelos Paramétricos\n\najustExp &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='exponential')\nalfa &lt;- exp(ajustExp$coefficients[1])\najustWei &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='weibull')\nalfaw &lt;- exp(ajustWei$coefficients[1])\nbetaw &lt;- 1/ajustWei$scale\najustLog &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='lognorm')\nmu &lt;- ajustLog$icoef[1]\nsigma &lt;- exp(ajustLog$icoef[2])\najustLogl &lt;- survreg(Surv(tempos,status)~1, data=dados, dist='loglogistic')\nmu1 &lt;- ajustLogl$icoef[1]\nsigma1 &lt;- exp(ajustLogl$icoef[2])"
   },
   {
     "objectID": "semanas/Aula04.html#avaliação-do-modelo-weibull-1",
     "href": "semanas/Aula04.html#avaliação-do-modelo-weibull-1",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação do Modelo Weibull",
-    "text": "Avaliação do Modelo Weibull\n\ntab.np &lt;- summary(ekm)\nplot(log(-log(tab.np$surv)) ~ log(tab.np$time),\n     xlab=\"log(t)\", ylab=\"log(-log(S(t)))\", pch=20)\nmod1.lm &lt;- lm(log(-log(tab.np$surv)) ~ log(tab.np$time))\nabline(mod1.lm)\n\nconfint(mod1.lm)\n\n                     2.5 %    97.5 %\n(Intercept)      -4.763998 -4.318050\nlog(tab.np$time)  1.442427  1.609615"
+    "text": "Avaliação do Modelo Weibull\n\ntab.np &lt;- summary(ekm)\nplot(log(-log(tab.np$surv)) ~ log(tab.np$time),\n     xlab=\"log(t)\", ylab=\"log(-log(S(t)))\", pch=20)\nmod1.lm &lt;- lm(log(-log(tab.np$surv)) ~ log(tab.np$time))\nabline(mod1.lm)\n\n\n\nconfint(mod1.lm)\n\n#&gt;                      2.5 %    97.5 %\n#&gt; (Intercept)      -4.763998 -4.318050\n#&gt; log(tab.np$time)  1.442427  1.609615"
   },
   {
     "objectID": "semanas/Aula04.html#avaliação-do-modelo-lognormal-1",
@@ -1208,35 +1208,35 @@
     "href": "semanas/Aula04.html#teste-de-razão-de-verossimilhança",
     "title": "Análise de Sobrevivência",
     "section": "Teste de Razão de Verossimilhança",
-    "text": "Teste de Razão de Verossimilhança\nNo nível de significância de 𝛼=0,05 eu rejeito a hipótese de que o parametro de forma seja igual a 1.\n\ntab.exp &lt;- summary(ajustExp)\ntab.wei &lt;- summary(ajustWei)\nTRV &lt;- 2*(tab.wei$loglik[1] - tab.exp$loglik[1])\npchisq(TRV, 1, lower.tail = F)\n\n[1] 0.03853913"
+    "text": "Teste de Razão de Verossimilhança\nNo nível de significância de 𝛼=0,05 eu rejeito a hipótese de que o parametro de forma seja igual a 1.\n\ntab.exp &lt;- summary(ajustExp)\ntab.wei &lt;- summary(ajustWei)\nTRV &lt;- 2*(tab.wei$loglik[1] - tab.exp$loglik[1])\npchisq(TRV, 1, lower.tail = F)\n\n#&gt; [1] 0.03853913"
   },
   {
     "objectID": "semanas/Aula04.html#calculos-do-peso-do-aic",
     "href": "semanas/Aula04.html#calculos-do-peso-do-aic",
     "title": "Análise de Sobrevivência",
     "section": "Calculos do peso do AIC",
-    "text": "Calculos do peso do AIC\n\ntab.exp &lt;- summary(ajustExp)\ntab.wei &lt;- summary(ajustWei)\ntab.ln &lt;- summary(ajustLog)\ntab.ll &lt;- summary(ajustLogl)\naic.exp &lt;- -2*tab.exp$loglik[1] + 2*1\naic.wei &lt;- -2*tab.wei$loglik[1] + 2*2\naic.ln &lt;- -2*tab.ln$loglik[1] + 2*2\naic.ll &lt;- -2*tab.ll$loglik[1] + 2*2\naic &lt;- c(aic.exp, aic.wei, aic.ln, aic.ll)\ndelta.aic &lt;- aic - min(aic)\npeso.aic &lt;- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\n# Usando a função AIC para calcuar o AIC\naic.exp1 &lt;- AIC(ajustExp)\naic.wei1 &lt;- AIC(ajustWei)\naic.ln1 &lt;- AIC(ajustLog)\naic.ll1 &lt;- AIC(ajustLogl)\naic1 &lt;- c(aic.exp1, aic.wei1, aic.ln1, aic.ll1)\naic\n\n[1] 138.5478 136.2667 135.4798 136.0611\n\naic1\n\n[1] 138.5478 136.2667 135.4798 136.0611"
+    "text": "Calculos do peso do AIC\n\ntab.exp &lt;- summary(ajustExp)\ntab.wei &lt;- summary(ajustWei)\ntab.ln &lt;- summary(ajustLog)\ntab.ll &lt;- summary(ajustLogl)\naic.exp &lt;- -2*tab.exp$loglik[1] + 2*1\naic.wei &lt;- -2*tab.wei$loglik[1] + 2*2\naic.ln &lt;- -2*tab.ln$loglik[1] + 2*2\naic.ll &lt;- -2*tab.ll$loglik[1] + 2*2\naic &lt;- c(aic.exp, aic.wei, aic.ln, aic.ll)\ndelta.aic &lt;- aic - min(aic)\npeso.aic &lt;- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\n# Usando a função AIC para calcuar o AIC\naic.exp1 &lt;- AIC(ajustExp)\naic.wei1 &lt;- AIC(ajustWei)\naic.ln1 &lt;- AIC(ajustLog)\naic.ll1 &lt;- AIC(ajustLogl)\naic1 &lt;- c(aic.exp1, aic.wei1, aic.ln1, aic.ll1)\naic\n\n#&gt; [1] 138.5478 136.2667 135.4798 136.0611\n\naic1\n\n#&gt; [1] 138.5478 136.2667 135.4798 136.0611"
   },
   {
     "objectID": "semanas/Aula04.html#comparando-modelos-através-do-peso-de-akaike",
     "href": "semanas/Aula04.html#comparando-modelos-através-do-peso-de-akaike",
     "title": "Análise de Sobrevivência",
     "section": "Comparando modelos através do Peso de Akaike",
-    "text": "Comparando modelos através do Peso de Akaike\n\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      p_Akaike = peso.aic)\nmodelos\n\n       modelos   p_Akaike\n1  Exponencial 0.08175044\n2      Weibull 0.25575120\n3    Lognormal 0.37904837\n4 Loglogistico 0.28344999"
+    "text": "Comparando modelos através do Peso de Akaike\n\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      p_Akaike = peso.aic)\nmodelos\n\n#&gt;        modelos   p_Akaike\n#&gt; 1  Exponencial 0.08175044\n#&gt; 2      Weibull 0.25575120\n#&gt; 3    Lognormal 0.37904837\n#&gt; 4 Loglogistico 0.28344999"
   },
   {
     "objectID": "semanas/Aula04.html#comparando-os-modelos-através-do-bic",
     "href": "semanas/Aula04.html#comparando-os-modelos-através-do-bic",
     "title": "Análise de Sobrevivência",
     "section": "Comparando os modelos através do BIC",
-    "text": "Comparando os modelos através do BIC\n\nbic.exp &lt;- BIC(ajustExp)\nbic.wei &lt;- BIC(ajustWei)\nbic.ln &lt;- BIC(ajustLog)\nbic.ll &lt;- BIC(ajustLogl)\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      BIC = c(bic.exp, bic.wei, bic.ln, bic.ll))\nmodelos\n\n       modelos      BIC\n1  Exponencial 139.5435\n2      Weibull 138.2582\n3    Lognormal 137.4713\n4 Loglogistico 138.0525\n\n\n\n\nIME05-12532 - Análise de Sobrevivência"
+    "text": "Comparando os modelos através do BIC\n\nbic.exp &lt;- BIC(ajustExp)\nbic.wei &lt;- BIC(ajustWei)\nbic.ln &lt;- BIC(ajustLog)\nbic.ll &lt;- BIC(ajustLogl)\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      BIC = c(bic.exp, bic.wei, bic.ln, bic.ll))\nmodelos\n\n#&gt;        modelos      BIC\n#&gt; 1  Exponencial 139.5435\n#&gt; 2      Weibull 138.2582\n#&gt; 3    Lognormal 137.4713\n#&gt; 4 Loglogistico 138.0525"
   },
   {
     "objectID": "semanas/Aula06.html#modelos-paramétricos",
     "href": "semanas/Aula06.html#modelos-paramétricos",
     "title": "Análise de Sobrevivência",
-    "section": "Modelos Paramétricos",
-    "text": "Modelos Paramétricos\nNeste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser. Aqui vamos utilizar as funções existentes no pacote survival e flexsurv.\nPara ajustar um modelo paramétrico usamos a função survreg."
+    "section": "",
+    "text": "Neste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser. Aqui vamos utilizar as funções existentes no pacote survival e flexsurv.\nPara ajustar um modelo paramétrico usamos a função survreg."
   },
   {
     "objectID": "semanas/Aula06.html#metodo-de-kaplan-meier",
@@ -1250,56 +1250,56 @@
     "href": "semanas/Aula06.html#biblioteca-flexsurv---exponencial",
     "title": "Análise de Sobrevivência",
     "section": "Biblioteca Flexsurv - Exponencial",
-    "text": "Biblioteca Flexsurv - Exponencial\n\nlibrary(flexsurv)\najuste1 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='exponential')\najuste1\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"exponential\")\n\nEstimates: \n      est     L95%    U95%    se    \nrate  0.0490  0.0305  0.0788  0.0119\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -68.27389, df = 1\nAIC = 138.5478"
+    "text": "Biblioteca Flexsurv - Exponencial\n\nlibrary(flexsurv)\najuste1 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='exponential')\najuste1\n\n#&gt; Call:\n#&gt; flexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n#&gt;     dist = \"exponential\")\n#&gt; \n#&gt; Estimates: \n#&gt;       est     L95%    U95%    se    \n#&gt; rate  0.0490  0.0305  0.0788  0.0119\n#&gt; \n#&gt; N = 20,  Events: 17,  Censored: 3\n#&gt; Total time at risk: 347\n#&gt; Log-likelihood = -68.27389, df = 1\n#&gt; AIC = 138.5478"
   },
   {
     "objectID": "semanas/Aula06.html#biblioteca-flexsurv---weibull",
     "href": "semanas/Aula06.html#biblioteca-flexsurv---weibull",
     "title": "Análise de Sobrevivência",
     "section": "Biblioteca Flexsurv - Weibull",
-    "text": "Biblioteca Flexsurv - Weibull\n\najuste2 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='weibull')\najuste2\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"weibull\")\n\nEstimates: \n       est     L95%    U95%    se    \nshape   1.543   1.066   2.235   0.291\nscale  21.339  15.591  29.206   3.417\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -66.13336, df = 2\nAIC = 136.2667"
+    "text": "Biblioteca Flexsurv - Weibull\n\najuste2 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='weibull')\najuste2\n\n#&gt; Call:\n#&gt; flexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n#&gt;     dist = \"weibull\")\n#&gt; \n#&gt; Estimates: \n#&gt;        est     L95%    U95%    se    \n#&gt; shape   1.543   1.066   2.235   0.291\n#&gt; scale  21.339  15.591  29.206   3.417\n#&gt; \n#&gt; N = 20,  Events: 17,  Censored: 3\n#&gt; Total time at risk: 347\n#&gt; Log-likelihood = -66.13336, df = 2\n#&gt; AIC = 136.2667"
   },
   {
     "objectID": "semanas/Aula06.html#biblioteca-flexsurv---lognormal",
     "href": "semanas/Aula06.html#biblioteca-flexsurv---lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Biblioteca Flexsurv - Lognormal",
-    "text": "Biblioteca Flexsurv - Lognormal\n\najuste3 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='lognormal')\najuste3\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"lognormal\")\n\nEstimates: \n         est    L95%   U95%   se   \nmeanlog  2.717  2.372  3.063  0.176\nsdlog    0.765  0.544  1.075  0.133\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -65.7399, df = 2\nAIC = 135.4798"
+    "text": "Biblioteca Flexsurv - Lognormal\n\najuste3 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='lognormal')\najuste3\n\n#&gt; Call:\n#&gt; flexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n#&gt;     dist = \"lognormal\")\n#&gt; \n#&gt; Estimates: \n#&gt;          est    L95%   U95%   se   \n#&gt; meanlog  2.717  2.372  3.063  0.176\n#&gt; sdlog    0.765  0.544  1.075  0.133\n#&gt; \n#&gt; N = 20,  Events: 17,  Censored: 3\n#&gt; Total time at risk: 347\n#&gt; Log-likelihood = -65.7399, df = 2\n#&gt; AIC = 135.4798"
   },
   {
     "objectID": "semanas/Aula06.html#biblioteca-flexsurv---loglogística",
     "href": "semanas/Aula06.html#biblioteca-flexsurv---loglogística",
     "title": "Análise de Sobrevivência",
     "section": "Biblioteca Flexsurv - LogLogística",
-    "text": "Biblioteca Flexsurv - LogLogística\n\najuste4 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='llogis')\najuste4\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"llogis\")\n\nEstimates: \n       est    L95%   U95%   se   \nshape   2.22   1.51   3.28   0.44\nscale  15.45  10.85  21.98   2.78\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -66.03053, df = 2\nAIC = 136.0611"
+    "text": "Biblioteca Flexsurv - LogLogística\n\najuste4 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='llogis')\najuste4\n\n#&gt; Call:\n#&gt; flexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n#&gt;     dist = \"llogis\")\n#&gt; \n#&gt; Estimates: \n#&gt;        est    L95%   U95%   se   \n#&gt; shape   2.22   1.51   3.28   0.44\n#&gt; scale  15.45  10.85  21.98   2.78\n#&gt; \n#&gt; N = 20,  Events: 17,  Censored: 3\n#&gt; Total time at risk: 347\n#&gt; Log-likelihood = -66.03053, df = 2\n#&gt; AIC = 136.0611"
   },
   {
     "objectID": "semanas/Aula06.html#biblioteca-flexsurv---gama-generalizada",
     "href": "semanas/Aula06.html#biblioteca-flexsurv---gama-generalizada",
     "title": "Análise de Sobrevivência",
     "section": "Biblioteca Flexsurv - Gama Generalizada",
-    "text": "Biblioteca Flexsurv - Gama Generalizada\n\najuste5 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='gengamma')\najuste5\n\nCall:\nflexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n    dist = \"gengamma\")\n\nEstimates: \n       est     L95%    U95%    se    \nmu      2.805   2.168   3.442   0.325\nsigma   0.743   0.498   1.110   0.152\nQ       0.247  -1.291   1.786   0.785\n\nN = 20,  Events: 17,  Censored: 3\nTotal time at risk: 347\nLog-likelihood = -65.69074, df = 3\nAIC = 137.3815"
+    "text": "Biblioteca Flexsurv - Gama Generalizada\n\najuste5 &lt;- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='gengamma')\najuste5\n\n#&gt; Call:\n#&gt; flexsurvreg(formula = Surv(tempos, status) ~ 1, data = dados, \n#&gt;     dist = \"gengamma\")\n#&gt; \n#&gt; Estimates: \n#&gt;        est     L95%    U95%    se    \n#&gt; mu      2.805   2.168   3.442   0.325\n#&gt; sigma   0.743   0.498   1.110   0.152\n#&gt; Q       0.247  -1.291   1.786   0.785\n#&gt; \n#&gt; N = 20,  Events: 17,  Censored: 3\n#&gt; Total time at risk: 347\n#&gt; Log-likelihood = -65.69074, df = 3\n#&gt; AIC = 137.3815"
   },
   {
     "objectID": "semanas/Aula06.html#teste-da-razão-de-verossimilhança",
     "href": "semanas/Aula06.html#teste-da-razão-de-verossimilhança",
     "title": "Análise de Sobrevivência",
     "section": "Teste da Razão de Verossimilhança",
-    "text": "Teste da Razão de Verossimilhança\n\nmodelos &lt;- data.frame(modelos=c(\"exponencial\", \"Weibull\", \"lognormal\", \"gama generalizada\"), logvero= c(ajuste1$loglik, ajuste2$loglik, ajuste3$loglik, ajuste5$loglik))\nmodelos\n\n            modelos   logvero\n1       exponencial -68.27389\n2           Weibull -66.13336\n3         lognormal -65.73990\n4 gama generalizada -65.69074\n\n## Teste da Razão de verossimilhança\n## Só é possível de se usar em modelos encaixados\n## O modelo log-logístico não é encaixado no gama-generalizado\n\n# Exponencial H0: q=σ=1  H1:dirente de 1\nTRVe &lt;- 2*(ajuste5$loglik - ajuste1$loglik)\n# Weibull H0: q = 1 H1: diferente de 1\nTRVw &lt;- 2*(ajuste5$loglik - ajuste2$loglik)\n# Lognormal H0: q = 0 H1: diferente de 0\nTRVlog &lt;- 2*(ajuste5$loglik - ajuste3$loglik)\n\nTRV_modelos &lt;- data.frame(modelos=c(\"exponencial\", \"Weibull\", \"lognormal\"), TRV= c(TRVe, TRVw, TRVlog), quiquadrado=c(pchisq(TRVe,2, lower.tail = F),pchisq(TRVw,1, lower.tail = F),pchisq(TRVlog,1, lower.tail = F)))\nTRV_modelos\n\n      modelos        TRV quiquadrado\n1 exponencial 5.16630281  0.07553559\n2     Weibull 0.88523500  0.34677185\n3   lognormal 0.09831756  0.75385805"
+    "text": "Teste da Razão de Verossimilhança\n\nmodelos &lt;- data.frame(modelos=c(\"exponencial\", \"Weibull\", \"lognormal\", \"gama generalizada\"), logvero= c(ajuste1$loglik, ajuste2$loglik, ajuste3$loglik, ajuste5$loglik))\nmodelos\n\n#&gt;             modelos   logvero\n#&gt; 1       exponencial -68.27389\n#&gt; 2           Weibull -66.13336\n#&gt; 3         lognormal -65.73990\n#&gt; 4 gama generalizada -65.69074\n\n## Teste da Razão de verossimilhança\n## Só é possível de se usar em modelos encaixados\n## O modelo log-logístico não é encaixado no gama-generalizado\n\n# Exponencial H0: q=σ=1  H1:dirente de 1\nTRVe &lt;- 2*(ajuste5$loglik - ajuste1$loglik)\n# Weibull H0: q = 1 H1: diferente de 1\nTRVw &lt;- 2*(ajuste5$loglik - ajuste2$loglik)\n# Lognormal H0: q = 0 H1: diferente de 0\nTRVlog &lt;- 2*(ajuste5$loglik - ajuste3$loglik)\n\nTRV_modelos &lt;- data.frame(modelos=c(\"exponencial\", \"Weibull\", \"lognormal\"), TRV= c(TRVe, TRVw, TRVlog), quiquadrado=c(pchisq(TRVe,2, lower.tail = F),pchisq(TRVw,1, lower.tail = F),pchisq(TRVlog,1, lower.tail = F)))\nTRV_modelos\n\n#&gt;       modelos        TRV quiquadrado\n#&gt; 1 exponencial 5.16630281  0.07553559\n#&gt; 2     Weibull 0.88523500  0.34677185\n#&gt; 3   lognormal 0.09831756  0.75385805"
   },
   {
     "objectID": "semanas/Aula06.html#comparando-através-do-aic",
     "href": "semanas/Aula06.html#comparando-através-do-aic",
     "title": "Análise de Sobrevivência",
     "section": "Comparando através do AIC",
-    "text": "Comparando através do AIC\n\naic.exp &lt;- -2*ajuste1$loglik + 2*1\naic.wei &lt;- -2*ajuste2$loglik + 2*2\naic.ln &lt;- -2*ajuste3$loglik + 2*2\naic.ll &lt;- -2*ajuste4$loglik + 2*2\naic.gg &lt;- -2*ajuste5$loglik + 2*3\naic &lt;- c(aic.exp, aic.wei, aic.ln, aic.ll, aic.gg)\ndelta.aic &lt;- aic - min(aic)\ndelta.aic\n\n[1] 3.0679853 0.7869174 0.0000000 0.5812562 1.9016824\n\npeso.aic &lt;- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\nsum(peso.aic)\n\n[1] 1"
+    "text": "Comparando através do AIC\n\naic.exp &lt;- -2*ajuste1$loglik + 2*1\naic.wei &lt;- -2*ajuste2$loglik + 2*2\naic.ln &lt;- -2*ajuste3$loglik + 2*2\naic.ll &lt;- -2*ajuste4$loglik + 2*2\naic.gg &lt;- -2*ajuste5$loglik + 2*3\naic &lt;- c(aic.exp, aic.wei, aic.ln, aic.ll, aic.gg)\ndelta.aic &lt;- aic - min(aic)\ndelta.aic\n\n#&gt; [1] 3.0679853 0.7869174 0.0000000 0.5812562 1.9016824\n\npeso.aic &lt;- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\nsum(peso.aic)\n\n#&gt; [1] 1"
   },
   {
     "objectID": "semanas/Aula06.html#peso-de-akaike",
     "href": "semanas/Aula06.html#peso-de-akaike",
     "title": "Análise de Sobrevivência",
     "section": "Peso de Akaike",
-    "text": "Peso de Akaike\n\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\", \"GG\"),\n                      p_Akaike = peso.aic)\nmodelos\n\n       modelos  p_Akaike\n1  Exponencial 0.0713062\n2      Weibull 0.2230770\n3    Lognormal 0.3306221\n4 Loglogistico 0.2472371\n5           GG 0.1277576"
+    "text": "Peso de Akaike\n\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\", \"GG\"),\n                      p_Akaike = peso.aic)\nmodelos\n\n#&gt;        modelos  p_Akaike\n#&gt; 1  Exponencial 0.0713062\n#&gt; 2      Weibull 0.2230770\n#&gt; 3    Lognormal 0.3306221\n#&gt; 4 Loglogistico 0.2472371\n#&gt; 5           GG 0.1277576"
   },
   {
     "objectID": "semanas/Aula06.html#curvas-de-sobrevivência",
@@ -1319,64 +1319,64 @@
     "objectID": "semanas/Aula06x1.html#modelos-tfa",
     "href": "semanas/Aula06x1.html#modelos-tfa",
     "title": "Análise de Sobrevivência",
-    "section": "Modelos TFA",
-    "text": "Modelos TFA\nO conjunto de dados carregados a seguir são de 238 pacientes viciados com heroína.\nOs pacientes foram tratados em duas clínicas (1 e 2), além disso foram coletadas informações sobre dose de medicamento ministrado no tratamento e se o paciente já havia sido preso ou não.\nOs tempos (survt) são em dias e o evento analisado foi o tempo até a saída da clínica (status=1) ou o tempo até o término de estudo (tempo censurado (status=0).\n\nid: Identificação do paciente\nclinic: clinica em que ocorreu o tratamento\nsurvt: tempo até a saída da clínica (dias)\nstatus: censoring status 0=censored (censurado), 1=evento\nprison: 0= se nunca foi preso e 1= se já foi preso\ndose: dose do medicamento ministradp"
+    "section": "",
+    "text": "O conjunto de dados carregados a seguir são de 238 pacientes viciados com heroína.\nOs pacientes foram tratados em duas clínicas (1 e 2), além disso foram coletadas informações sobre dose de medicamento ministrado no tratamento e se o paciente já havia sido preso ou não.\nOs tempos (survt) são em dias e o evento analisado foi o tempo até a saída da clínica (status=1) ou o tempo até o término de estudo (tempo censurado (status=0).\n\nid: Identificação do paciente\nclinic: clinica em que ocorreu o tratamento\nsurvt: tempo até a saída da clínica (dias)\nstatus: censoring status 0=censored (censurado), 1=evento\nprison: 0= se nunca foi preso e 1= se já foi preso\ndose: dose do medicamento ministradp"
   },
   {
     "objectID": "semanas/Aula06x1.html#carregando-os-dados",
     "href": "semanas/Aula06x1.html#carregando-os-dados",
     "title": "Análise de Sobrevivência",
     "section": "Carregando os dados",
-    "text": "Carregando os dados\n\n```{r}\nlibrary(survival)\nlibrary(readxl)\ndados &lt;- read_xlsx(\"heroina.xlsx\", col_names = TRUE )\nsummary(dados)\n```\n\n       id             clinic          status           survt       \n Min.   :  1.00   Min.   :1.000   Min.   :0.0000   Min.   :   2.0  \n 1st Qu.: 65.25   1st Qu.:1.000   1st Qu.:0.0000   1st Qu.: 171.2  \n Median :131.50   Median :1.000   Median :1.0000   Median : 367.5  \n Mean   :134.13   Mean   :1.315   Mean   :0.6303   Mean   : 402.6  \n 3rd Qu.:205.75   3rd Qu.:2.000   3rd Qu.:1.0000   3rd Qu.: 585.5  \n Max.   :266.00   Max.   :2.000   Max.   :1.0000   Max.   :1076.0  \n     prison            dose      \n Min.   :0.0000   Min.   : 20.0  \n 1st Qu.:0.0000   1st Qu.: 50.0  \n Median :0.0000   Median : 60.0  \n Mean   :0.4664   Mean   : 60.4  \n 3rd Qu.:1.0000   3rd Qu.: 70.0  \n Max.   :1.0000   Max.   :110.0"
+    "text": "Carregando os dados\n\n```{r}\nlibrary(survival)\nlibrary(readxl)\ndados &lt;- read_xlsx(\"heroina.xlsx\", col_names = TRUE )\nsummary(dados)\n```\n\n#&gt;        id             clinic          status           survt       \n#&gt;  Min.   :  1.00   Min.   :1.000   Min.   :0.0000   Min.   :   2.0  \n#&gt;  1st Qu.: 65.25   1st Qu.:1.000   1st Qu.:0.0000   1st Qu.: 171.2  \n#&gt;  Median :131.50   Median :1.000   Median :1.0000   Median : 367.5  \n#&gt;  Mean   :134.13   Mean   :1.315   Mean   :0.6303   Mean   : 402.6  \n#&gt;  3rd Qu.:205.75   3rd Qu.:2.000   3rd Qu.:1.0000   3rd Qu.: 585.5  \n#&gt;  Max.   :266.00   Max.   :2.000   Max.   :1.0000   Max.   :1076.0  \n#&gt;      prison            dose      \n#&gt;  Min.   :0.0000   Min.   : 20.0  \n#&gt;  1st Qu.:0.0000   1st Qu.: 50.0  \n#&gt;  Median :0.0000   Median : 60.0  \n#&gt;  Mean   :0.4664   Mean   : 60.4  \n#&gt;  3rd Qu.:1.0000   3rd Qu.: 70.0  \n#&gt;  Max.   :1.0000   Max.   :110.0"
   },
   {
     "objectID": "semanas/Aula06x1.html#avaliando-presença-de-dados-ausentes",
     "href": "semanas/Aula06x1.html#avaliando-presença-de-dados-ausentes",
     "title": "Análise de Sobrevivência",
     "section": "Avaliando presença de dados ausentes",
-    "text": "Avaliando presença de dados ausentes\n\n```{r}\nnrow(dados)\nsum(complete.cases(dados))\n```\n\n[1] 238\n[1] 238"
+    "text": "Avaliando presença de dados ausentes\n\n```{r}\nnrow(dados)\nsum(complete.cases(dados))\n```\n\n#&gt; [1] 238\n#&gt; [1] 238"
   },
   {
     "objectID": "semanas/Aula06x1.html#ajuste-do-modelo-exponencial",
     "href": "semanas/Aula06x1.html#ajuste-do-modelo-exponencial",
     "title": "Análise de Sobrevivência",
     "section": "Ajuste do Modelo Exponencial",
-    "text": "Ajuste do Modelo Exponencial\n\n```{r}\najustExp &lt;- survreg(Surv(survt,status)~1,dist='exponential', data=dados)\najustExp\nalfa &lt;- exp(ajustExp$coefficients[1])\n```\n\nCall:\nsurvreg(formula = Surv(survt, status) ~ 1, data = dados, dist = \"exponential\")\n\nCoefficients:\n(Intercept) \n   6.459508 \n\nScale fixed at 1 \n\nLoglik(model)= -1118.9   Loglik(intercept only)= -1118.9\nn= 238"
+    "text": "Ajuste do Modelo Exponencial\n\n```{r}\najustExp &lt;- survreg(Surv(survt,status)~1,dist='exponential', data=dados)\najustExp\nalfa &lt;- exp(ajustExp$coefficients[1])\n```\n\n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ 1, data = dados, dist = \"exponential\")\n#&gt; \n#&gt; Coefficients:\n#&gt; (Intercept) \n#&gt;    6.459508 \n#&gt; \n#&gt; Scale fixed at 1 \n#&gt; \n#&gt; Loglik(model)= -1118.9   Loglik(intercept only)= -1118.9\n#&gt; n= 238"
   },
   {
     "objectID": "semanas/Aula06x1.html#ajuste-do-modelo-weibull",
     "href": "semanas/Aula06x1.html#ajuste-do-modelo-weibull",
     "title": "Análise de Sobrevivência",
     "section": "Ajuste do Modelo Weibull",
-    "text": "Ajuste do Modelo Weibull\n\n```{r}\najustWei &lt;- survreg(Surv(survt, status)~1,dist='weibull', data=dados)\najustWei\nalfaw &lt;- exp(ajustWei$coefficients[1])\nbetaw &lt;- 1/ajustWei$scale\n```\n\nCall:\nsurvreg(formula = Surv(survt, status) ~ 1, data = dados, dist = \"weibull\")\n\nCoefficients:\n(Intercept) \n   6.425148 \n\nScale= 0.8153819 \n\nLoglik(model)= -1114.9   Loglik(intercept only)= -1114.9\nn= 238"
+    "text": "Ajuste do Modelo Weibull\n\n```{r}\najustWei &lt;- survreg(Surv(survt, status)~1,dist='weibull', data=dados)\najustWei\nalfaw &lt;- exp(ajustWei$coefficients[1])\nbetaw &lt;- 1/ajustWei$scale\n```\n\n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ 1, data = dados, dist = \"weibull\")\n#&gt; \n#&gt; Coefficients:\n#&gt; (Intercept) \n#&gt;    6.425148 \n#&gt; \n#&gt; Scale= 0.8153819 \n#&gt; \n#&gt; Loglik(model)= -1114.9   Loglik(intercept only)= -1114.9\n#&gt; n= 238"
   },
   {
     "objectID": "semanas/Aula06x1.html#ajuste-do-modelo-lognormal",
     "href": "semanas/Aula06x1.html#ajuste-do-modelo-lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Ajuste do Modelo Lognormal",
-    "text": "Ajuste do Modelo Lognormal\n\n```{r}\najustLog &lt;- survreg(Surv(survt,status)~1,dist='lognorm', data=dados)\najustLog\nmu &lt;- ajustLog$icoef[1]\nsigma &lt;- exp(ajustLog$icoef[2])\n```\n\nCall:\nsurvreg(formula = Surv(survt, status) ~ 1, data = dados, dist = \"lognorm\")\n\nCoefficients:\n(Intercept) \n   6.059725 \n\nScale= 1.210284 \n\nLoglik(model)= -1123.7   Loglik(intercept only)= -1123.7\nn= 238"
+    "text": "Ajuste do Modelo Lognormal\n\n```{r}\najustLog &lt;- survreg(Surv(survt,status)~1,dist='lognorm', data=dados)\najustLog\nmu &lt;- ajustLog$icoef[1]\nsigma &lt;- exp(ajustLog$icoef[2])\n```\n\n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ 1, data = dados, dist = \"lognorm\")\n#&gt; \n#&gt; Coefficients:\n#&gt; (Intercept) \n#&gt;    6.059725 \n#&gt; \n#&gt; Scale= 1.210284 \n#&gt; \n#&gt; Loglik(model)= -1123.7   Loglik(intercept only)= -1123.7\n#&gt; n= 238"
   },
   {
     "objectID": "semanas/Aula06x1.html#ajuste-do-modelo-loglogístico",
     "href": "semanas/Aula06x1.html#ajuste-do-modelo-loglogístico",
     "title": "Análise de Sobrevivência",
     "section": "Ajuste do Modelo Loglogístico",
-    "text": "Ajuste do Modelo Loglogístico\n\n```{r}\najustLogl &lt;- survreg(Surv(survt,status)~1, data=dados, dist='loglogistic')\najustLogl\nmu1 &lt;- ajustLogl$icoef[1]\nsigma1 &lt;- exp(ajustLogl$icoef[2])\n```\n\nCall:\nsurvreg(formula = Surv(survt, status) ~ 1, data = dados, dist = \"loglogistic\")\n\nCoefficients:\n(Intercept) \n    6.09544 \n\nScale= 0.6637981 \n\nLoglik(model)= -1120   Loglik(intercept only)= -1120\nn= 238"
+    "text": "Ajuste do Modelo Loglogístico\n\n```{r}\najustLogl &lt;- survreg(Surv(survt,status)~1, data=dados, dist='loglogistic')\najustLogl\nmu1 &lt;- ajustLogl$icoef[1]\nsigma1 &lt;- exp(ajustLogl$icoef[2])\n```\n\n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ 1, data = dados, dist = \"loglogistic\")\n#&gt; \n#&gt; Coefficients:\n#&gt; (Intercept) \n#&gt;     6.09544 \n#&gt; \n#&gt; Scale= 0.6637981 \n#&gt; \n#&gt; Loglik(model)= -1120   Loglik(intercept only)= -1120\n#&gt; n= 238"
   },
   {
     "objectID": "semanas/Aula06x1.html#comparação-dos-modelos",
     "href": "semanas/Aula06x1.html#comparação-dos-modelos",
     "title": "Análise de Sobrevivência",
     "section": "Comparação dos Modelos",
-    "text": "Comparação dos Modelos\n\n```{r}\nekm &lt;- survfit(Surv(survt,status)~1, data=dados)\ntempo &lt;- ekm$time\nst &lt;- ekm$surv\nste &lt;- exp(-tempo/alfa)\nstw &lt;- exp(-(tempo/alfaw)^betaw)\nstln &lt;- pnorm((-log(tempo) + mu)/sigma)\nstll &lt;- plogis((-log(tempo) + mu1)/sigma1)\nknitr::kable(head(cbind(tempo,st,ste,stw,stln,stll),15))\n```\n\n\n\n\ntempo\nst\nste\nstw\nstln\nstll\n\n\n\n\n2\n1.0000000\n0.9968738\n0.9991153\n0.9999954\n0.9997080\n\n\n7\n0.9957627\n0.9891009\n0.9958947\n0.9996619\n0.9980756\n\n\n13\n0.9915254\n0.9798534\n0.9912492\n0.9980588\n0.9951244\n\n\n17\n0.9872881\n0.9737364\n0.9878608\n0.9961610\n0.9927140\n\n\n19\n0.9830508\n0.9706923\n0.9860991\n0.9949737\n0.9913963\n\n\n26\n0.9788136\n0.9601126\n0.9796444\n0.9896895\n0.9862708\n\n\n28\n0.9788136\n0.9571111\n0.9777293\n0.9878899\n0.9846741\n\n\n29\n0.9745393\n0.9556138\n0.9767614\n0.9869468\n0.9838555\n\n\n30\n0.9702650\n0.9541189\n0.9757869\n0.9859760\n0.9830239\n\n\n33\n0.9659907\n0.9496482\n0.9728257\n0.9829067\n0.9804540\n\n\n35\n0.9574421\n0.9466794\n0.9708222\n0.9807385\n0.9786809\n\n\n37\n0.9531678\n0.9437198\n0.9687968\n0.9784805\n0.9768624\n\n\n41\n0.9446192\n0.9378285\n0.9646851\n0.9737197\n0.9730969\n\n\n47\n0.9403449\n0.9290603\n0.9583814\n0.9660499\n0.9671529\n\n\n49\n0.9360706\n0.9261559\n0.9562475\n0.9633723\n0.9650990"
+    "text": "Comparação dos Modelos\n\n```{r}\nekm &lt;- survfit(Surv(survt,status)~1, data=dados)\ntempo &lt;- ekm$time\nst &lt;- ekm$surv\nste &lt;- exp(-tempo/alfa)\nstw &lt;- exp(-(tempo/alfaw)^betaw)\nstln &lt;- pnorm((-log(tempo) + mu)/sigma)\nstll &lt;- plogis((-log(tempo) + mu1)/sigma1)\nknitr::kable(head(cbind(tempo,st,ste,stw,stln,stll),15))\n```\n\n\n\ntempo\nst\nste\nstw\nstln\nstll\n\n\n\n2\n1.0000000\n0.9968738\n0.9991153\n0.9999954\n0.9997080\n\n\n7\n0.9957627\n0.9891009\n0.9958947\n0.9996619\n0.9980756\n\n\n13\n0.9915254\n0.9798534\n0.9912492\n0.9980588\n0.9951244\n\n\n17\n0.9872881\n0.9737364\n0.9878608\n0.9961610\n0.9927140\n\n\n19\n0.9830508\n0.9706923\n0.9860991\n0.9949737\n0.9913963\n\n\n26\n0.9788136\n0.9601126\n0.9796444\n0.9896895\n0.9862708\n\n\n28\n0.9788136\n0.9571111\n0.9777293\n0.9878899\n0.9846741\n\n\n29\n0.9745393\n0.9556138\n0.9767614\n0.9869468\n0.9838555\n\n\n30\n0.9702650\n0.9541189\n0.9757869\n0.9859760\n0.9830239\n\n\n33\n0.9659907\n0.9496482\n0.9728257\n0.9829067\n0.9804540\n\n\n35\n0.9574421\n0.9466794\n0.9708222\n0.9807385\n0.9786809\n\n\n37\n0.9531678\n0.9437198\n0.9687968\n0.9784805\n0.9768624\n\n\n41\n0.9446192\n0.9378285\n0.9646851\n0.9737197\n0.9730969\n\n\n47\n0.9403449\n0.9290603\n0.9583814\n0.9660499\n0.9671529\n\n\n49\n0.9360706\n0.9261559\n0.9562475\n0.9633723\n0.9650990"
   },
   {
     "objectID": "semanas/Aula06x1.html#comparação-dos-modelos-1",
     "href": "semanas/Aula06x1.html#comparação-dos-modelos-1",
     "title": "Análise de Sobrevivência",
     "section": "Comparação dos Modelos",
-    "text": "Comparação dos Modelos\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\npar(mfrow=c(2,2))\nplot(st,ste,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = \"S(t): Kaplan-Meier\", ylab=\"S(t): exponencial\")\nlines(c(0,1), c(0,1), type=\"l\", lty=1)\nplot(st,stw,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = \"S(t): Kaplan-Meier\",\n     ylab=\"S(t): Weibull\")\nlines(c(0,1), c(0,1), type=\"l\", lty=1)\nplot(st,stln,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = \"S(t): Kaplan-Meier\",\n     ylab=\"S(t): log-normal\")\nlines(c(0,1), c(0,1), type=\"l\", lty=1)\nplot(st,stll,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), \n     xlab = \"S(t): Kaplan-Meier\", ylab=\"S(t): loglogística\")\nlines(c(0,1), c(0,1), type=\"l\", lty=1)\n```"
+    "text": "Comparação dos Modelos\n\n```{r}\npar(mfrow=c(2,2))\nplot(st,ste,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = \"S(t): Kaplan-Meier\", ylab=\"S(t): exponencial\")\nlines(c(0,1), c(0,1), type=\"l\", lty=1)\nplot(st,stw,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = \"S(t): Kaplan-Meier\",\n     ylab=\"S(t): Weibull\")\nlines(c(0,1), c(0,1), type=\"l\", lty=1)\nplot(st,stln,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), xlab = \"S(t): Kaplan-Meier\",\n     ylab=\"S(t): log-normal\")\nlines(c(0,1), c(0,1), type=\"l\", lty=1)\nplot(st,stll,pch=16,ylim=range(c(0.0,1)), xlim=range(c(0,1)), \n     xlab = \"S(t): Kaplan-Meier\", ylab=\"S(t): loglogística\")\nlines(c(0,1), c(0,1), type=\"l\", lty=1)\n```"
   },
   {
     "objectID": "semanas/Aula06x1.html#comparação-dos-modelos-1-output",
@@ -1390,7 +1390,7 @@
     "href": "semanas/Aula06x1.html#comparação-dos-modelos-2",
     "title": "Análise de Sobrevivência",
     "section": "Comparação dos Modelos",
-    "text": "Comparação dos Modelos\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\npar(mfrow=c(1,3))\ntab.np &lt;- summary(ekm)\ninvst1 &lt;- qnorm(tab.np$surv)\ninvst2 &lt;- qlogis(tab.np$surv) \nplot(log(tab.np$time), log(-log(tab.np$surv)),\n     xlab=\"log(t)\", ylab=\"log(-log(S(t)))\", pch=20)\nplot(log(tab.np$time), invst1,\n     xlab=\"log(t)\", ylab=expression(Phi^-1*(S(t))), pch=20)\nplot(log(tab.np$time), invst2,\n     xlab=\"log(t)\", ylab=expression(Phi^-1*Logis*(S(t))), pch=20)\n```"
+    "text": "Comparação dos Modelos\n\n```{r}\npar(mfrow=c(1,3))\ntab.np &lt;- summary(ekm)\ninvst1 &lt;- qnorm(tab.np$surv)\ninvst2 &lt;- qlogis(tab.np$surv) \nplot(log(tab.np$time), log(-log(tab.np$surv)),\n     xlab=\"log(t)\", ylab=\"log(-log(S(t)))\", pch=20)\nplot(log(tab.np$time), invst1,\n     xlab=\"log(t)\", ylab=expression(Phi^-1*(S(t))), pch=20)\nplot(log(tab.np$time), invst2,\n     xlab=\"log(t)\", ylab=expression(Phi^-1*Logis*(S(t))), pch=20)\n```"
   },
   {
     "objectID": "semanas/Aula06x1.html#comparação-dos-modelos-2-output",
@@ -1404,14 +1404,14 @@
     "href": "semanas/Aula06x1.html#modelo-weibull",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Weibull",
-    "text": "Modelo Weibull\n\n```{r}\nTFAWei &lt;- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,\n                   dist = \"weibull\", \n                   data=dados)\nsummary(TFAWei)\n```\n\n\nCall:\nsurvreg(formula = Surv(survt, status) ~ clinic + factor(prison) + \n    dose, data = dados, dist = \"weibull\")\n                   Value Std. Error     z       p\n(Intercept)      4.10485    0.32806 12.51 &lt; 2e-16\nclinic           0.70904    0.15722  4.51 6.5e-06\nfactor(prison)1 -0.22947    0.12079 -1.90   0.057\ndose             0.02443    0.00459  5.32 1.0e-07\nLog(scale)      -0.31495    0.06756 -4.66 3.1e-06\n\nScale= 0.73 \n\nWeibull distribution\nLoglik(model)= -1084.5   Loglik(intercept only)= -1114.9\n    Chisq= 60.89 on 3 degrees of freedom, p= 3.8e-13 \nNumber of Newton-Raphson Iterations: 7 \nn= 238"
+    "text": "Modelo Weibull\n\n```{r}\nTFAWei &lt;- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,\n                   dist = \"weibull\", \n                   data=dados)\nsummary(TFAWei)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + factor(prison) + \n#&gt;     dose, data = dados, dist = \"weibull\")\n#&gt;                    Value Std. Error     z       p\n#&gt; (Intercept)      4.10485    0.32806 12.51 &lt; 2e-16\n#&gt; clinic           0.70904    0.15722  4.51 6.5e-06\n#&gt; factor(prison)1 -0.22947    0.12079 -1.90   0.057\n#&gt; dose             0.02443    0.00459  5.32 1.0e-07\n#&gt; Log(scale)      -0.31495    0.06756 -4.66 3.1e-06\n#&gt; \n#&gt; Scale= 0.73 \n#&gt; \n#&gt; Weibull distribution\n#&gt; Loglik(model)= -1084.5   Loglik(intercept only)= -1114.9\n#&gt;  Chisq= 60.89 on 3 degrees of freedom, p= 3.8e-13 \n#&gt; Number of Newton-Raphson Iterations: 7 \n#&gt; n= 238"
   },
   {
     "objectID": "semanas/Aula06x1.html#previsões",
     "href": "semanas/Aula06x1.html#previsões",
     "title": "Análise de Sobrevivência",
     "section": "Previsões",
-    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = factor(c(0, 0)), dose = c(60, 60))\nprevis &lt;- predict(TFAWei, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFAWei, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n       1        2 \n200.9142 408.2661 \n       2 \n2.032042 \n       1        2 \n300.6186 610.8697 \n       2 \n2.032042"
+    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = factor(c(0, 0)), dose = c(60, 60))\nprevis &lt;- predict(TFAWei, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFAWei, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 200.9142 408.2661 \n#&gt;        2 \n#&gt; 2.032042 \n#&gt;        1        2 \n#&gt; 300.6186 610.8697 \n#&gt;        2 \n#&gt; 2.032042"
   },
   {
     "objectID": "semanas/Aula06x1.html#função-auxiliar",
@@ -1425,7 +1425,7 @@
     "href": "semanas/Aula06x1.html#diagnóstico-do-modelo",
     "title": "Análise de Sobrevivência",
     "section": "Diagnóstico do Modelo",
-    "text": "Diagnóstico do Modelo\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\nlibrary(car)\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFAWei, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1/TFAWei$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Weibull\", ylab = \"Quantis empiricos\")\n```"
+    "text": "Diagnóstico do Modelo\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\nlibrary(car)\n```\n\n#&gt; Carregando pacotes exigidos: carData\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFAWei, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1/TFAWei$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Weibull\", ylab = \"Quantis empiricos\")\n```\n\n#&gt; [1] 69  8"
   },
   {
     "objectID": "semanas/Aula06x1.html#diagnóstico-do-modelo-output",
@@ -1439,21 +1439,21 @@
     "href": "semanas/Aula06x1.html#modelo-lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Lognormal",
-    "text": "Modelo Lognormal\n\n```{r}\nTFALn &lt;- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,\n                   dist = \"lognormal\", \n                   data=dados)\nsummary(TFALn)\n```\n\n\nCall:\nsurvreg(formula = Surv(survt, status) ~ clinic + factor(prison) + \n    dose, data = dados, dist = \"lognormal\")\n                   Value Std. Error     z      p\n(Intercept)      3.40684    0.39769  8.57 &lt;2e-16\nclinic           0.57649    0.17648  3.27 0.0011\nfactor(prison)1 -0.30904    0.15431 -2.00 0.0452\ndose             0.03367    0.00568  5.93  3e-09\nLog(scale)       0.07476    0.05930  1.26 0.2074\n\nScale= 1.08 \n\nLog Normal distribution\nLoglik(model)= -1097.8   Loglik(intercept only)= -1123.7\n    Chisq= 51.85 on 3 degrees of freedom, p= 3.2e-11 \nNumber of Newton-Raphson Iterations: 4 \nn= 238"
+    "text": "Modelo Lognormal\n\n```{r}\nTFALn &lt;- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,\n                   dist = \"lognormal\", \n                   data=dados)\nsummary(TFALn)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + factor(prison) + \n#&gt;     dose, data = dados, dist = \"lognormal\")\n#&gt;                    Value Std. Error     z      p\n#&gt; (Intercept)      3.40684    0.39769  8.57 &lt;2e-16\n#&gt; clinic           0.57649    0.17648  3.27 0.0011\n#&gt; factor(prison)1 -0.30904    0.15431 -2.00 0.0452\n#&gt; dose             0.03367    0.00568  5.93  3e-09\n#&gt; Log(scale)       0.07476    0.05930  1.26 0.2074\n#&gt; \n#&gt; Scale= 1.08 \n#&gt; \n#&gt; Log Normal distribution\n#&gt; Loglik(model)= -1097.8   Loglik(intercept only)= -1123.7\n#&gt;  Chisq= 51.85 on 3 degrees of freedom, p= 3.2e-11 \n#&gt; Number of Newton-Raphson Iterations: 4 \n#&gt; n= 238"
   },
   {
     "objectID": "semanas/Aula06x1.html#previsões-1",
     "href": "semanas/Aula06x1.html#previsões-1",
     "title": "Análise de Sobrevivência",
     "section": "Previsões",
-    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = factor(c(0, 0)), dose = c(60, 60))\nprevis &lt;- predict(TFALn, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFALn, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n       1        2 \n227.5381 404.9681 \n       2 \n1.779782 \n       1        2 \n400.3836 712.5953 \n       2 \n1.779782"
+    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = factor(c(0, 0)), dose = c(60, 60))\nprevis &lt;- predict(TFALn, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFALn, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 227.5381 404.9681 \n#&gt;        2 \n#&gt; 1.779782 \n#&gt;        1        2 \n#&gt; 400.3836 712.5953 \n#&gt;        2 \n#&gt; 1.779782"
   },
   {
     "objectID": "semanas/Aula06x1.html#diagnóstico-do-modelo-1",
     "href": "semanas/Aula06x1.html#diagnóstico-do-modelo-1",
     "title": "Análise de Sobrevivência",
     "section": "Diagnóstico do Modelo",
-    "text": "Diagnóstico do Modelo\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFALn, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(log.resid, dist = \"norm\", sd=TFALn$scale, \nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Lognormal\", ylab = \"Quantis empiricos\")\n```"
+    "text": "Diagnóstico do Modelo\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFALn, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(log.resid, dist = \"norm\", sd=TFALn$scale, \nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Lognormal\", ylab = \"Quantis empiricos\")\n```\n\n#&gt; [1]  86 110"
   },
   {
     "objectID": "semanas/Aula06x1.html#diagnóstico-do-modelo-1-output",
@@ -1467,21 +1467,21 @@
     "href": "semanas/Aula06x1.html#modeleo-loglogistico",
     "title": "Análise de Sobrevivência",
     "section": "Modeleo Loglogistico",
-    "text": "Modeleo Loglogistico\n\n```{r}\nTFALl &lt;- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,\n                   dist = \"loglogistic\", \n                   data=dados)\nsummary(TFALl)\n```\n\n\nCall:\nsurvreg(formula = Surv(survt, status) ~ clinic + factor(prison) + \n    dose, data = dados, dist = \"loglogistic\")\n                   Value Std. Error     z       p\n(Intercept)      3.56327    0.38945  9.15 &lt; 2e-16\nclinic           0.58060    0.17157  3.38 0.00071\nfactor(prison)1 -0.29127    0.14396 -2.02 0.04305\ndose             0.03161    0.00552  5.73 1.0e-08\nLog(scale)      -0.53314    0.06863 -7.77 7.9e-15\n\nScale= 0.587 \n\nLog logistic distribution\nLoglik(model)= -1093.9   Loglik(intercept only)= -1120\n    Chisq= 52.18 on 3 degrees of freedom, p= 2.7e-11 \nNumber of Newton-Raphson Iterations: 4 \nn= 238"
+    "text": "Modeleo Loglogistico\n\n```{r}\nTFALl &lt;- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,\n                   dist = \"loglogistic\", \n                   data=dados)\nsummary(TFALl)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + factor(prison) + \n#&gt;     dose, data = dados, dist = \"loglogistic\")\n#&gt;                    Value Std. Error     z       p\n#&gt; (Intercept)      3.56327    0.38945  9.15 &lt; 2e-16\n#&gt; clinic           0.58060    0.17157  3.38 0.00071\n#&gt; factor(prison)1 -0.29127    0.14396 -2.02 0.04305\n#&gt; dose             0.03161    0.00552  5.73 1.0e-08\n#&gt; Log(scale)      -0.53314    0.06863 -7.77 7.9e-15\n#&gt; \n#&gt; Scale= 0.587 \n#&gt; \n#&gt; Log logistic distribution\n#&gt; Loglik(model)= -1093.9   Loglik(intercept only)= -1120\n#&gt;  Chisq= 52.18 on 3 degrees of freedom, p= 2.7e-11 \n#&gt; Number of Newton-Raphson Iterations: 4 \n#&gt; n= 238"
   },
   {
     "objectID": "semanas/Aula06x1.html#previsões-2",
     "href": "semanas/Aula06x1.html#previsões-2",
     "title": "Análise de Sobrevivência",
     "section": "Previsões",
-    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = factor(c(0, 0)), dose = c(60, 60))\nprevis &lt;- predict(TFALl, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFALl, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n       1        2 \n235.1125 420.1710 \n       2 \n1.787106 \n       1        2 \n386.5353 690.7797 \n       2 \n1.787106"
+    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = factor(c(0, 0)), dose = c(60, 60))\nprevis &lt;- predict(TFALl, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFALl, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 235.1125 420.1710 \n#&gt;        2 \n#&gt; 1.787106 \n#&gt;        1        2 \n#&gt; 386.5353 690.7797 \n#&gt;        2 \n#&gt; 1.787106"
   },
   {
     "objectID": "semanas/Aula06x1.html#diagnóstico-do-modelo-2",
     "href": "semanas/Aula06x1.html#diagnóstico-do-modelo-2",
     "title": "Análise de Sobrevivência",
     "section": "Diagnóstico do Modelo",
-    "text": "Diagnóstico do Modelo\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFALl, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(log.resid, dist = \"logis\", \nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Logistica\", ylab = \"Quantis empiricos\")\n```"
+    "text": "Diagnóstico do Modelo\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFALl, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(log.resid, dist = \"logis\", \nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Logistica\", ylab = \"Quantis empiricos\")\n```\n\n#&gt; [1]  86 110"
   },
   {
     "objectID": "semanas/Aula06x1.html#diagnóstico-do-modelo-2-output",
@@ -1495,7 +1495,7 @@
     "href": "semanas/Aula06x1.html#usando-o-stepaic",
     "title": "Análise de Sobrevivência",
     "section": "Usando o stepAIC",
-    "text": "Usando o stepAIC\n\n```{r}\nlibrary(MASS)\nTFAWei &lt;- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,\n                   dist = \"weibull\", \n                   data=dados)\nTFAWei_AIC &lt;- stepAIC(TFAWei, trace=FALSE)\nsummary(TFAWei_AIC)\n```\n\n\nCall:\nsurvreg(formula = Surv(survt, status) ~ clinic + factor(prison) + \n    dose, data = dados, dist = \"weibull\")\n                   Value Std. Error     z       p\n(Intercept)      4.10485    0.32806 12.51 &lt; 2e-16\nclinic           0.70904    0.15722  4.51 6.5e-06\nfactor(prison)1 -0.22947    0.12079 -1.90   0.057\ndose             0.02443    0.00459  5.32 1.0e-07\nLog(scale)      -0.31495    0.06756 -4.66 3.1e-06\n\nScale= 0.73 \n\nWeibull distribution\nLoglik(model)= -1084.5   Loglik(intercept only)= -1114.9\n    Chisq= 60.89 on 3 degrees of freedom, p= 3.8e-13 \nNumber of Newton-Raphson Iterations: 7 \nn= 238"
+    "text": "Usando o stepAIC\n\n```{r}\nlibrary(MASS)\nTFAWei &lt;- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,\n                   dist = \"weibull\", \n                   data=dados)\nTFAWei_AIC &lt;- stepAIC(TFAWei, trace=FALSE)\nsummary(TFAWei_AIC)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + factor(prison) + \n#&gt;     dose, data = dados, dist = \"weibull\")\n#&gt;                    Value Std. Error     z       p\n#&gt; (Intercept)      4.10485    0.32806 12.51 &lt; 2e-16\n#&gt; clinic           0.70904    0.15722  4.51 6.5e-06\n#&gt; factor(prison)1 -0.22947    0.12079 -1.90   0.057\n#&gt; dose             0.02443    0.00459  5.32 1.0e-07\n#&gt; Log(scale)      -0.31495    0.06756 -4.66 3.1e-06\n#&gt; \n#&gt; Scale= 0.73 \n#&gt; \n#&gt; Weibull distribution\n#&gt; Loglik(model)= -1084.5   Loglik(intercept only)= -1114.9\n#&gt;  Chisq= 60.89 on 3 degrees of freedom, p= 3.8e-13 \n#&gt; Number of Newton-Raphson Iterations: 7 \n#&gt; n= 238"
   },
   {
     "objectID": "semanas/Aula08.html",
@@ -1706,5 +1706,152 @@
     "title": "Análise de Sobrevivência",
     "section": "Grafico",
     "text": "Grafico\n\n```{r}\najuste_aux1 &lt;- survfit(ajusteCoxE1)\nplot(ajuste_aux1, mark.time=FALSE, col=c(1:3), lwd=3, las=1, bty='n', xlab='Tempo (anos)', ylab='Sobrevivência')\nlegend(\"topright\", levels(dados$fkarno), lwd=3, col=c(1:3))\n```"
+  },
+  {
+    "objectID": "semanas/Aula01.html",
+    "href": "semanas/Aula01.html",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.\nVamos inicialmente utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência.\nVamos usar neste exemplo dados de pacientes com leucemia.\nO objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença.\nExistem dois grupos de pacientes:\n\n21 receberam 6MP que é um medicamento para tratar leucemia\nOs outros 21 receberam placebo.\n\n\nO evento falha aqui é ocorrer uma recaída na doença."
+  },
+  {
+    "objectID": "semanas/Aula04.html",
+    "href": "semanas/Aula04.html",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Neste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser.\nVamos ver passo a passo como ajustar os modelos exponencial, Weibull e lognormal.\nAqui vamos utilizar as funções existentes no pacote survival.\nPara ajustar um modelo paramétrico usamo a função survreg."
+  },
+  {
+    "objectID": "semanas/Aula02A.html",
+    "href": "semanas/Aula02A.html",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.\nVamos inicialmente utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência.\nVamos usar neste exemplo dados de pacientes com leucemia.\nO objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença.\nExistem dois grupos de pacientes:\n\n21 receberam 6MP que é um medicamento para tratar leucemia\nOs outros 21 receberam placebo.\n\n\nO evento falha aqui é ocorrer uma recaída na doença."
+  },
+  {
+    "objectID": "semanas/Aula02A.html#análise-de-sobrevivência",
+    "href": "semanas/Aula02A.html#análise-de-sobrevivência",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.\nVamos inicialmente utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência.\nVamos usar neste exemplo dados de pacientes com leucemia.\nO objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença.\nExistem dois grupos de pacientes:\n\n21 receberam 6MP que é um medicamento para tratar leucemia\nOs outros 21 receberam placebo.\n\n\nO evento falha aqui é ocorrer uma recaída na doença."
+  },
+  {
+    "objectID": "semanas/Aula02B.html",
+    "href": "semanas/Aula02B.html",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.\nVamos inicialmente utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência.\nVamos usar neste exemplo dados de pacientes com leucemia.\nO objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença.\nExistem dois grupos de pacientes:\n\n21 receberam 6MP que é um medicamento para tratar leucemia\nOs outros 21 receberam placebo.\n\n\nO evento falha aqui é ocorrer uma recaída na doença."
+  },
+  {
+    "objectID": "semanas/Aula02B.html#análise-de-sobrevivência",
+    "href": "semanas/Aula02B.html#análise-de-sobrevivência",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.\nVamos inicialmente utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência.\nVamos usar neste exemplo dados de pacientes com leucemia.\nO objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença.\nExistem dois grupos de pacientes:\n\n21 receberam 6MP que é um medicamento para tratar leucemia\nOs outros 21 receberam placebo.\n\n\nO evento falha aqui é ocorrer uma recaída na doença."
+  },
+  {
+    "objectID": "semanas/Aula02C.html",
+    "href": "semanas/Aula02C.html",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.\nVamos inicialmente utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência.\nVamos usar neste exemplo dados de pacientes com leucemia.\nO objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença.\nExistem dois grupos de pacientes:\n\n21 receberam 6MP que é um medicamento para tratar leucemia\nOs outros 21 receberam placebo.\n\n\nO evento falha aqui é ocorrer uma recaída na doença."
+  },
+  {
+    "objectID": "semanas/Aula02C.html#análise-de-sobrevivência",
+    "href": "semanas/Aula02C.html#análise-de-sobrevivência",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.\nVamos inicialmente utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência.\nVamos usar neste exemplo dados de pacientes com leucemia.\nO objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença.\nExistem dois grupos de pacientes:\n\n21 receberam 6MP que é um medicamento para tratar leucemia\nOs outros 21 receberam placebo.\n\n\nO evento falha aqui é ocorrer uma recaída na doença."
+  },
+  {
+    "objectID": "semanas/Aula02C.html#taxa-de-falhas-ht-não-paramétrica---6mp",
+    "href": "semanas/Aula02C.html#taxa-de-falhas-ht-não-paramétrica---6mp",
+    "title": "Análise de Sobrevivência",
+    "section": "Taxa de falhas h(t) não paramétrica - 6MP",
+    "text": "Taxa de falhas h(t) não paramétrica - 6MP\n\n\nCodigo\nGrafico\n\n\n\n\nlibrary(survival)\nlibrary(readxl)\ndados &lt;- read_xlsx(\"anderson.xlsx\", col_names = TRUE)\najusteKM &lt;- survfit(Surv(tempo, status) ~ 1, subset = (Rx==0), data=dados)\najusteKM_sum &lt;- summary(ajusteKM)\npesos &lt;- ajusteKM_sum$n.event/ajusteKM_sum$n.risk\nh &lt;- density(ajusteKM_sum$time, kernel = \"epanechnikov\", n = 100, from = 0, to = 35, weights = pesos)\nlibrary(ggplot2)\ndata &lt;- data.frame(x=h$x, y=h$y)\n\n\n\n\nggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20)) + theme_light() +\n  theme(axis.text = element_text(size = 12),\n        axis.title = element_text(size = 14)) +\n  labs(x = \"Tempo [semanas]\", y = \"Estimativa da taxa de falhas\", title = \"Estimativa da taxa de falhas - 6MP\")"
+  },
+  {
+    "objectID": "semanas/Aula02C.html#taxa-de-falhas-ht-não-paramétrica---placebo",
+    "href": "semanas/Aula02C.html#taxa-de-falhas-ht-não-paramétrica---placebo",
+    "title": "Análise de Sobrevivência",
+    "section": "Taxa de falhas h(t) não paramétrica - Placebo",
+    "text": "Taxa de falhas h(t) não paramétrica - Placebo\n\n\nCodigo\nGrafico\n\n\n\n\ntempo2&lt;- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)\nstatus2&lt;- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) \ndados &lt;- data.frame(tempos=tempo2, status=status2)\najusteKM &lt;- survfit(Surv(tempos, status) ~ 1, data=dados)\najusteKM_sum &lt;- summary(ajusteKM)\npesos &lt;- ajusteKM_sum$n.event/ajusteKM_sum$n.risk\nh &lt;- density(ajusteKM_sum$time, weights = pesos,\nkernel = \"epanechnikov\", n = 100, from = 0, to = 25)\ndata &lt;- data.frame(x=h$x, y=h$y)\n\n\n\n\nggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20)) +  theme_light() +\n  theme(axis.text = element_text(size = 12),\n        axis.title = element_text(size = 14)) +\n  labs(x = \"Tempo [semanas]\", y = \"Estimativa da taxa de falhas\", title = \"Estimativa da taxa de falhas - Placebo\")"
+  },
+  {
+    "objectID": "semanas/Aula01.html#análise-de-sobrevivência",
+    "href": "semanas/Aula01.html#análise-de-sobrevivência",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.\nVamos inicialmente utilizar o pacote survival que é a principal referência em modelos de análise de sobrevivência.\nVamos usar neste exemplo dados de pacientes com leucemia.\nO objetivo é verificar se o tratamento proposto, 6MP, tem efeito sobre a doença.\nExistem dois grupos de pacientes:\n\n21 receberam 6MP que é um medicamento para tratar leucemia\nOs outros 21 receberam placebo.\n\n\nO evento falha aqui é ocorrer uma recaída na doença."
+  },
+  {
+    "objectID": "semanas/Aula03.html",
+    "href": "semanas/Aula03.html",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Nesta apresentação vamos ver passo a passo como obter a função taxa de falhas e de sobrevivência para alguns modelos de probabilidade.\nAqui vamos utilizar as funções existentes no pacote stats que vem com a instalação padrão do R."
+  },
+  {
+    "objectID": "semanas/Aula03.html#modelos-paramétricos---log-logistico",
+    "href": "semanas/Aula03.html#modelos-paramétricos---log-logistico",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos - Log-logistico",
+    "text": "Modelos Paramétricos - Log-logistico"
+  },
+  {
+    "objectID": "semanas/Aula03.html#modelos-paramétricos---log-logistico-1",
+    "href": "semanas/Aula03.html#modelos-paramétricos---log-logistico-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelos Paramétricos - Log-logistico",
+    "text": "Modelos Paramétricos - Log-logistico"
+  },
+  {
+    "objectID": "semanas/Aula04.html#quantis-do-modelo-log-logístico",
+    "href": "semanas/Aula04.html#quantis-do-modelo-log-logístico",
+    "title": "Análise de Sobrevivência",
+    "section": "Quantis do Modelo Log-Logístico",
+    "text": "Quantis do Modelo Log-Logístico\n\najustLLog &lt;- survreg(Surv(tempos, status)~1, data=dados, dist='loglogistic')\nestmedll &lt;- predict(ajustLLog,type=\"uquantile\",p=0.5,se.fit=T)\nestmedll1 &lt;- estmedll$fit[1]\nestmedll1.ep &lt;- estmedll$se.fit[1]\nIC.mediana_llog &lt;- c(exp(estmedll1),exp(estmedll1-1.96*estmedll1.ep),\nexp(estmedll1+1.96*estmedll1.ep))\nnames(IC.mediana_llog) &lt;- c(\"mediana LogL\",\"ICI\",\"ICS\")\nIC.mediana_llog\n\n#&gt; mediana LogL          ICI          ICS \n#&gt;     15.44700     10.85399     21.98361"
+  },
+  {
+    "objectID": "semanas/Aula04.html#avaliação-do-modelo-log-logístico",
+    "href": "semanas/Aula04.html#avaliação-do-modelo-log-logístico",
+    "title": "Análise de Sobrevivência",
+    "section": "Avaliação do Modelo Log-Logístico",
+    "text": "Avaliação do Modelo Log-Logístico\n\nn.censurado &lt;- dados$tempos[dados$status == 1]\nqqPlot(n.censurado,\n       dist = \"llogis\",\n       shape = betall,\n       scale = alfall,\n       xlab = \"Quantis Teoricos (LogLogistico)\",\n       ylab = \"Quantis Empiricos\")\n\n\n\n\n#&gt; [1] 17 16"
+  },
+  {
+    "objectID": "semanas/Aula04.html#curvas-de-sobrevivência-dos-modelos",
+    "href": "semanas/Aula04.html#curvas-de-sobrevivência-dos-modelos",
+    "title": "Análise de Sobrevivência",
+    "section": "Curvas de Sobrevivência dos Modelos",
+    "text": "Curvas de Sobrevivência dos Modelos\n\ntempo &lt;- ekm$time\nst &lt;- ekm$surv\nste &lt;- exp(-tempo/alfa)\nstw &lt;- exp(-(tempo/alfaw)^betaw)\nstln &lt;- pnorm((-log(tempo) + mulog)/sigmalog)\nstll &lt;- plogis((-log(tempo) + mullog)/sigmallog)\ncbind(tempo,st,ste,stw,stln, stll)\n\n#&gt;       tempo         st       ste        stw       stln      stll\n#&gt;  [1,]     3 0.95000000 0.8633164 0.95274148 0.98283934 0.9745310\n#&gt;  [2,]     5 0.90000000 0.7827384 0.89897484 0.92624322 0.9247343\n#&gt;  [3,]     6 0.85000000 0.7453152 0.86839357 0.88685752 0.8911964\n#&gt;  [4,]     7 0.80000000 0.7096812 0.83609525 0.84337638 0.8532358\n#&gt;  [5,]     8 0.75000000 0.6757509 0.80253272 0.79781416 0.8120295\n#&gt;  [6,]     9 0.70000000 0.6434428 0.76809812 0.75169629 0.7687589\n#&gt;  [7,]    10 0.65000000 0.6126794 0.73313414 0.70611769 0.7245227\n#&gt;  [8,]    12 0.59583333 0.5554947 0.66278292 0.61931883 0.6368104\n#&gt;  [9,]    15 0.54166667 0.4795676 0.55966698 0.50475984 0.5163200\n#&gt; [10,]    18 0.48148148 0.4140186 0.46346069 0.41042396 0.4157713\n#&gt; [11,]    19 0.42129630 0.3942241 0.43345774 0.38317692 0.3868919\n#&gt; [12,]    20 0.36111111 0.3753760 0.40461041 0.35784922 0.3602069\n#&gt; [13,]    22 0.30092593 0.3403401 0.35056108 0.31248031 0.3129370\n#&gt; [14,]    25 0.24074074 0.2938212 0.27891623 0.25592025 0.2552681\n#&gt; [15,]    28 0.18055556 0.2536607 0.21851514 0.21065456 0.2103630\n#&gt; [16,]    30 0.12037037 0.2299851 0.18419003 0.18556452 0.1860066\n#&gt; [17,]    40 0.06018519 0.1409071 0.07154720 0.10195229 0.1075572\n#&gt; [18,]    45 0.06018519 0.1102934 0.04229094 0.07714984 0.0848755"
+  },
+  {
+    "objectID": "semanas/Aula04.html#quantis-dos-modelos",
+    "href": "semanas/Aula04.html#quantis-dos-modelos",
+    "title": "Análise de Sobrevivência",
+    "section": "Quantis dos Modelos",
+    "text": "Quantis dos Modelos\n\nnames(med.km) &lt;- c(\"Mediana\", \"ICI\", \"ICS\")\nquantis &lt;- rbind(med.km, IC.mediana_exp, IC.mediana_w, IC.mediana_log, IC.mediana_llog)\nquantis\n\n#&gt;                  Mediana       ICI      ICS\n#&gt; med.km          18.00000 10.000000 28.00000\n#&gt; IC.mediana_exp  14.14836  8.795399 22.75917\n#&gt; IC.mediana_w    16.82823 11.956697 23.68456\n#&gt; IC.mediana_log  15.13751 10.716009 21.38334\n#&gt; IC.mediana_llog 15.44700 10.853987 21.98361"
+  },
+  {
+    "objectID": "semanas/Aula06.html",
+    "href": "semanas/Aula06.html",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "Neste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser. Aqui vamos utilizar as funções existentes no pacote survival e flexsurv.\nPara ajustar um modelo paramétrico usamos a função survreg."
+  },
+  {
+    "objectID": "semanas/Aula06x.html",
+    "href": "semanas/Aula06x.html",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "O conjunto de dados carregados a seguir são de 238 pacientes viciados com heroína.\nOs pacientes foram tratados em duas clínicas (1 e 2), além disso foram coletadas informações sobre dose de medicamento ministrado no tratamento e se o paciente já havia sido preso ou não.\nOs tempos (survt) são em dias e o evento analisado foi o tempo até a saída da clínica (status=1) ou o tempo até o término de estudo (tempo censurado (status=0).\n\nid: Identificação do paciente\nclinic: clinica em que ocorreu o tratamento\nsurvt: tempo até a saída da clínica (dias)\nstatus: censoring status 0=censored (censurado), 1=evento\nprison: 0= se nunca foi preso e 1= se já foi preso\ndose: dose do medicamento ministradp"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html",
+    "href": "semanas/Aula06x1.html",
+    "title": "Análise de Sobrevivência",
+    "section": "",
+    "text": "O conjunto de dados carregados a seguir são de 238 pacientes viciados com heroína.\nOs pacientes foram tratados em duas clínicas (1 e 2), além disso foram coletadas informações sobre dose de medicamento ministrado no tratamento e se o paciente já havia sido preso ou não.\nOs tempos (survt) são em dias e o evento analisado foi o tempo até a saída da clínica (status=1) ou o tempo até o término de estudo (tempo censurado (status=0).\n\nid: Identificação do paciente\nclinic: clinica em que ocorreu o tratamento\nsurvt: tempo até a saída da clínica (dias)\nstatus: censoring status 0=censored (censurado), 1=evento\nprison: 0= se nunca foi preso e 1= se já foi preso\ndose: dose do medicamento ministradp"
   }
 ]

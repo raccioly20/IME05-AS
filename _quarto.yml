@@ -55,11 +55,11 @@ website:
           - href: semanas/Aula01.qmd
             text: "Aula01"
           - href: semanas/Aula02A.qmd
-            text: "Aula02"
+            text: "Aula02A"
           - href: semanas/Aula02B.qmd
-            text: "Aula02"
+            text: "Aula02B"
           - href: semanas/Aula02C.qmd
-            text: "Aula02"
+            text: "Aula02C"
           - href: semanas/Aula03.qmd
             text: "Aula03"
           - href: semanas/Aula04.qmd

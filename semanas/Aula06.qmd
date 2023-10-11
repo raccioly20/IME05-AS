@@ -3,17 +3,16 @@ title: "Análise de Sobrevivência"
 subtitle: "Modelos Paramétricos - Outros Modelos"
 author: "Ricardo Accioly"
 format:
-  revealjs:
-    slide-number: true
-    css: styles.css
-    theme: dark
-    footer: "IME05-12532 - Análise de Sobrevivência"
+ html:
+    code-link: true
+    fig-width: 9
+    fig-height: 7
+    fig-dpi: 300
+knitr:
+  opts_chunk: 
+    out.width: 90%
+    comment: "#>"
 ---
-
-```{r, setup}
-#| fig-width: 10
-#| fig-height: 4.5
-```
 
 ## Modelos Paramétricos
 
@@ -72,12 +71,10 @@ ajuste5 <- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='gengamma')
 ajuste5
 ```
 
-## Teste da Razão de Verossimilhança {.smaller}
+## Teste da Razão de Verossimilhança 
 
 ```{r}
 #| echo: true
-#| fig-width: 10
-#| fig-height: 4.5
 modelos <- data.frame(modelos=c("exponencial", "Weibull", "lognormal", "gama generalizada"), logvero= c(ajuste1$loglik, ajuste2$loglik, ajuste3$loglik, ajuste5$loglik))
 modelos
 ## Teste da Razão de verossimilhança
@@ -95,7 +92,7 @@ TRV_modelos <- data.frame(modelos=c("exponencial", "Weibull", "lognormal"), TRV=
 TRV_modelos
 ```
 
-## Comparando através do AIC {.smaller}
+## Comparando através do AIC
 
 ```{r}
 #| echo: true
@@ -122,10 +119,9 @@ modelos <- data.frame(modelos=c("Exponencial", "Weibull",
 modelos
 ```
 
-## Curvas de Sobrevivência {.smaller}
+## Curvas de Sobrevivência
 
 ```{r}
-#| eval: false
 plot(tempost, st, ylim=range(c(0.0,1)), xlim=range(c(0,50)), ylab="S(t)", xlab="Tempo (meses)")
 lines(ajuste1, col="blue", ci=FALSE)
 lines(ajuste2, col="green", ci=FALSE)
@@ -137,18 +133,3 @@ legend("topright", lty=c(1,1,1,1), lwd=c(2,2,2,2),
        c("Exponencial","Weibull", "Lognormal" , "LogLogistica", "Gama Generalizada"))
 ```
 
-
-## Curvas de Sobrevivência 
-
-```{r}
-#| echo: false
-plot(tempost, st, ylim=range(c(0.0,1)), xlim=range(c(0,50)), ylab="S(t)", xlab="Tempo (meses)")
-lines(ajuste1, col="blue", ci=FALSE)
-lines(ajuste2, col="green", ci=FALSE)
-lines(ajuste3, col="cyan", ci=FALSE)
-lines(ajuste4,col="red", ci=FALSE)
-lines(ajuste5,col="black", ci=FALSE)
-legend("topright", lty=c(1,1,1,1), lwd=c(2,2,2,2),
-       col=c("blue", "green", "cyan","red", "black"),
-       c("Exponencial","Weibull", "Lognormal" , "LogLogistica", "Gama Generalizada"))
-```

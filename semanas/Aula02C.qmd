@@ -3,20 +3,22 @@ title: "Análise de Sobrevivência"
 subtitle: "Modelos não Paramétricos"
 author: "Prof. Ricardo Accioly"
 format:
-  revealjs:
-    slide-number: true
-    css: styles.css
-    theme: dark
-    footer: "IME05-12532 - Análise de Sobrevivência"
+ html:
+    code-link: true
+    fig-width: 9
+    fig-height: 7
+    fig-dpi: 300
+knitr:
+  opts_chunk: 
+    out.width: 90%
+    comment: "#>"
 ---
 
-## Análise de Sobrevivência (1)
+## Análise de Sobrevivência
 
 Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.
 
 Vamos inicialmente utilizar o pacote `survival` que é a principal referência em modelos de análise de sobrevivência.
-
-## Análise de Sobrevivência (2)
 
 Vamos usar neste exemplo dados de pacientes com leucemia.
 
@@ -37,13 +39,15 @@ Vamos obter uma aproximação da função taxa de falhas usando a função densi
 
 Posteriormente vamos obter o quantil usando uma função do pacote `survey`
 
-## h(t) não paramétrica - 6MP {.smaller}
+## Taxa de falhas h(t) não paramétrica - 6MP 
 
 ::: panel-tabset
 ### Codigo
 
 ```{r}
 #| echo: true
+#| message: false
+#| warning: false
 library(survival)
 library(readxl)
 dados <- read_xlsx("anderson.xlsx", col_names = TRUE)
@@ -60,6 +64,7 @@ data <- data.frame(x=h$x, y=h$y)
 ```{r}
 #| fig-width: 8
 #| fig-height: 4
+#| message: false
 ggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20)) + theme_light() +
   theme(axis.text = element_text(size = 12),
         axis.title = element_text(size = 14)) +
@@ -67,13 +72,15 @@ ggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20))
 ```
 :::
 
-## h(t) não paramétrica - Placebo {.smaller}
+## Taxa de falhas h(t) não paramétrica - Placebo
 
 ::: panel-tabset
 ### Codigo
 
 ```{r}
 #| echo: true
+#| message: false
+#| warning: false
 tempo2<- c(1,1,2,2,3,4,4,5,5,8,8,8,8,11,11,12,12,15,17,22,23)
 status2<- c(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1) 
 dados <- data.frame(tempos=tempo2, status=status2)
@@ -97,11 +104,12 @@ ggplot(data, aes(x=x, y=y)) + geom_line() + scale_y_continuous(limits=c(0,0.20))
 ```
 :::
 
-
 ## Quantis não paramétricos
 
 ```{r}
 #| echo: true
+#| message: false
+#| warning: false
 library(survey)
 dados_p <- svydesign(ids = ~1, data=dados)
 dados_svykm <- svykm(Surv(tempos, status) ~ 1, dados_p, se=TRUE)

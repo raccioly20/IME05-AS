@@ -3,20 +3,22 @@ title: "Análise de Sobrevivência"
 subtitle: "Modelos não Paramétricos"
 author: "Prof. Ricardo Accioly"
 format:
-  revealjs:
-    slide-number: true
-    css: styles.css
-    theme: dark
-    footer: "IME05-12532 - Análise de Sobrevivência"
+ html:
+    code-link: true
+    fig-width: 9
+    fig-height: 7
+    fig-dpi: 300
+knitr:
+  opts_chunk: 
+    out.width: 90%
+    comment: "#>"
 ---
 
-## Análise de Sobrevivência (1)
+## Análise de Sobrevivência
 
 Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.
 
 Vamos inicialmente utilizar o pacote `survival` que é a principal referência em modelos de análise de sobrevivência.
-
-## Análise de Sobrevivência (2)
 
 Vamos usar neste exemplo dados de pacientes com leucemia.
 
@@ -54,29 +56,30 @@ ajusteKM <- survfit(Surv(tempos, status) ~ grupos, data=dados, conf.type="log-lo
 
 ```{r}
 #| echo: false
+#| message: false
 library(survminer)
 ggsurvplot(ajusteKM, data = dados, 
-           risk.table = TRUE, 
+           risk.table = TRUE,   # mostra o num. pessoa sob risco
            pval = FALSE, 
-           conf.int = TRUE, 
-           xlim = c(0,40), 
+           conf.int = TRUE,  # mostra IC
+           xlim = c(0,40),  # faixa de valores de tempo
            xlab = "Tempo em meses", 
            ylab = "S(t)",
-           break.time.by = 10, 
+           break.time.by = 10,  # quebras de tempo
            ggtheme = theme_light(), 
            risk.table.y.text.col = T, risk.table.y.text = FALSE 
 )
 ```
 :::
 
-## Método Kaplan-Meier {.smaller}
+## Método Kaplan-Meier 
 
 ```{r}
 #| echo: fenced
 summary(ajusteKM)
 ```
 
-## Método de Nelson-Aalen {.smaller}
+## Método de Nelson-Aalen 
 
 ```{r}
 tempo<- c(6,6,6,6,7,9,10,10,11,13,16,17,19,20,22,23,25,32,32,34,35)
@@ -114,12 +117,9 @@ graf <- ggsurvplot(ajusteNA, data = dados,
 graf
 ```
 
-
-
-## Método Nelson-Aalen {.smaller}
+## Método Nelson-Aalen 
 
 ```{r}
 #| echo: fenced
 summary(ajusteNA)
 ```
-

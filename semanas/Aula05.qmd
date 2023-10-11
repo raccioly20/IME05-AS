@@ -3,13 +3,15 @@ title: "Análise de Sobrevivência"
 subtitle: "Modelos Paramétricos - Verificação do Ajuste"
 author: "Ricardo Accioly"
 format:
-  revealjs:
-    theme: league 
-    slide-number: true
-    chalkboard: 
-      buttons: false
-    preview-links: auto
-    css: styles.css
+ html:
+    code-link: true
+    fig-width: 9
+    fig-height: 7
+    fig-dpi: 300
+knitr:
+  opts_chunk: 
+    out.width: 90%
+    comment: "#>"
 ---
 
 ```{r setup}
@@ -27,7 +29,6 @@ Nesta apresentação vamos verificar graficamente através de gráficos Q-Q se o
 Aqui vamos utilizar as funções existentes no pacote `survival`.
 
 Para ajustar um modelo paramétrico usamos a função `survreg`.
-
 
 ## Metodo Kaplan-Meier
 
@@ -62,9 +63,10 @@ mu1 <- ajustLogl$icoef[1]
 sigma1 <- exp(ajustLogl$icoef[2])
 
 ```
-`
 
-## Avaliação do Modelo Weibull 
+\`
+
+## Avaliação do Modelo Weibull
 
 ```{r}
 tab.np <- summary(ekm)
@@ -97,11 +99,9 @@ mod3.lm <- lm(invst2 ~ log(tab.np$time))
 abline(mod3.lm)
 ```
 
-
 ## Teste de Razão de Verossimilhança {.smaller}
 
 No nível de significância de 𝛼=0,05 eu rejeito a hipótese de que o parametro de forma seja igual a 1.
-
 
 ```{r}
 tab.exp <- summary(ajustExp)
@@ -145,4 +145,3 @@ modelos <- data.frame(modelos=c("Exponencial", "Weibull",
                       p_Akaike = peso.aic)
 gt::gt(modelos)
 ```
-

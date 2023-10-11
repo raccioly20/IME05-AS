@@ -3,20 +3,22 @@ title: "Análise de Sobrevivência"
 subtitle: "Modelos não Paramétricos"
 author: "Prof. Ricardo Accioly"
 format:
-  revealjs:
-    slide-number: true
-    css: styles.css
-    theme: dark
-    footer: "IME05-12532 - Análise de Sobrevivência"
+ html:
+    code-link: true
+    fig-width: 9
+    fig-height: 7
+    fig-dpi: 300
+knitr:
+  opts_chunk: 
+    out.width: 90%
+    comment: "#>"
 ---
 
-## Análise de Sobrevivência (1)
+## Análise de Sobrevivência
 
 Nesta apresentação vamos ver passo a passo como obter uma estimativa da curva de sobrevivência através do método de Kaplan-Meier.
 
 Vamos inicialmente utilizar o pacote `survival` que é a principal referência em modelos de análise de sobrevivência.
-
-## Análise de Sobrevivência (2)
 
 Vamos usar neste exemplo dados de pacientes com leucemia.
 
@@ -31,7 +33,7 @@ Existem dois grupos de pacientes:
 O evento falha aqui é ocorrer uma recaída na doença.
 :::
 
-## Método Kaplan-Meier {.smaller}
+## Método Kaplan-Meier
 
 ::: panel-tabset
 ### Ajuste
