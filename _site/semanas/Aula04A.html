@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Ricardo Accioly">
+<title>IME05-12532 - Análise de Sobrevivência</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<meta name="twitter:title" content="IME05-12532 - Análise de Sobrevivência">
+<meta name="twitter:description" content="Modelos Paramétricos - Avaliação do ajuste">
+<meta name="twitter:image" content="images/anasobre.png">
+<meta name="twitter:creator" content="@r_accioly">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Análise de Sobrevivência</li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/anasobre.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
+      <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/raccioly20" rel="" title="GitHub" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/r_accioly" rel="" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Informação da disciplina</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../visao-do-curso.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visão Geral</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Sobre</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sobre</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">RStudio Cloud</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../acesso-rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acesso</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Conteúdo Semanal</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula01</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula02A.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula02A</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula02B.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula02B</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula02C.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula02C</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula03</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula04</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula06</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula06x.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TFA1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula06x1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TFA2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TFA3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cox 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cox 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cox 3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cox 4</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../semanas/Aula12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cox 5</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+   
+  <ul>
+<li><a href="#modelos-param%C3%A9tricos" id="toc-modelos-paramétricos" class="nav-link active" data-scroll-target="#modelos-param%C3%A9tricos">Modelos Paramétricos</a></li>
+  <li><a href="#metodo-de-kaplan-meier" id="toc-metodo-de-kaplan-meier" class="nav-link" data-scroll-target="#metodo-de-kaplan-meier">Metodo de Kaplan-Meier</a></li>
+  <li><a href="#curva-de-sobreviv%C3%AAncia-n%C3%A3o-param%C3%A9trica" id="toc-curva-de-sobrevivência-não-paramétrica" class="nav-link" data-scroll-target="#curva-de-sobreviv%C3%AAncia-n%C3%A3o-param%C3%A9trica">Curva de Sobrevivência não paramétrica</a></li>
+  <li><a href="#taxa-de-falhas-n%C3%A3o-param%C3%A9trica" id="toc-taxa-de-falhas-não-paramétrica" class="nav-link" data-scroll-target="#taxa-de-falhas-n%C3%A3o-param%C3%A9trica">Taxa de Falhas não paramétrica</a></li>
+  <li><a href="#quantis-n%C3%A3o-parametricos" id="toc-quantis-não-parametricos" class="nav-link" data-scroll-target="#quantis-n%C3%A3o-parametricos">Quantis não parametricos</a></li>
+  <li><a href="#modelo-exponencial" id="toc-modelo-exponencial" class="nav-link" data-scroll-target="#modelo-exponencial">Modelo Exponencial</a></li>
+  <li><a href="#taxa-de-falhas-np-vs-exp" id="toc-taxa-de-falhas-np-vs-exp" class="nav-link" data-scroll-target="#taxa-de-falhas-np-vs-exp">Taxa de falhas NP vs Exp</a></li>
+  <li><a href="#quantis-do-modelo-exponencial" id="toc-quantis-do-modelo-exponencial" class="nav-link" data-scroll-target="#quantis-do-modelo-exponencial">Quantis do Modelo Exponencial</a></li>
+  <li><a href="#avalia%C3%A7%C3%A3o-do-modelo-exponencial" id="toc-avaliação-do-modelo-exponencial" class="nav-link" data-scroll-target="#avalia%C3%A7%C3%A3o-do-modelo-exponencial">Avaliação do modelo Exponencial</a></li>
+  <li><a href="#modelo-weibull" id="toc-modelo-weibull" class="nav-link" data-scroll-target="#modelo-weibull">Modelo Weibull</a></li>
+  <li><a href="#taxa-de-falhas-np-vs-weibull" id="toc-taxa-de-falhas-np-vs-weibull" class="nav-link" data-scroll-target="#taxa-de-falhas-np-vs-weibull">Taxa de Falhas NP vs Weibull</a></li>
+  <li><a href="#quantis-do-modelo-weibull" id="toc-quantis-do-modelo-weibull" class="nav-link" data-scroll-target="#quantis-do-modelo-weibull">Quantis do Modelo Weibull</a></li>
+  <li><a href="#avalia%C3%A7%C3%A3o-do-modelo-weibull" id="toc-avaliação-do-modelo-weibull" class="nav-link" data-scroll-target="#avalia%C3%A7%C3%A3o-do-modelo-weibull">Avaliação do Modelo Weibull</a></li>
+  <li><a href="#modelo-lognormal" id="toc-modelo-lognormal" class="nav-link" data-scroll-target="#modelo-lognormal">Modelo Lognormal</a></li>
+  <li><a href="#taxa-de-falhas-np-vs-lognormal" id="toc-taxa-de-falhas-np-vs-lognormal" class="nav-link" data-scroll-target="#taxa-de-falhas-np-vs-lognormal">Taxa de Falhas NP vs Lognormal</a></li>
+  <li><a href="#quantis-do-modelo-lognormal" id="toc-quantis-do-modelo-lognormal" class="nav-link" data-scroll-target="#quantis-do-modelo-lognormal">Quantis do Modelo Lognormal</a></li>
+  <li><a href="#avalia%C3%A7%C3%A3o-do-modelo-lognormal" id="toc-avaliação-do-modelo-lognormal" class="nav-link" data-scroll-target="#avalia%C3%A7%C3%A3o-do-modelo-lognormal">Avaliação do Modelo Lognormal</a></li>
+  <li><a href="#modelo-loglog%C3%ADstico" id="toc-modelo-loglogístico" class="nav-link" data-scroll-target="#modelo-loglog%C3%ADstico">Modelo Loglogístico</a></li>
+  <li><a href="#taxa-de-falhas-np-vs-loglog%C3%ADstica" id="toc-taxa-de-falhas-np-vs-loglogística" class="nav-link" data-scroll-target="#taxa-de-falhas-np-vs-loglog%C3%ADstica">Taxa de Falhas NP vs Loglogística</a></li>
+  <li><a href="#quantis-do-modelo-log-log%C3%ADstico" id="toc-quantis-do-modelo-log-logístico" class="nav-link" data-scroll-target="#quantis-do-modelo-log-log%C3%ADstico">Quantis do Modelo Log-Logístico</a></li>
+  <li><a href="#avalia%C3%A7%C3%A3o-do-modelo-log-log%C3%ADstico" id="toc-avaliação-do-modelo-log-logístico" class="nav-link" data-scroll-target="#avalia%C3%A7%C3%A3o-do-modelo-log-log%C3%ADstico">Avaliação do Modelo Log-Logístico</a></li>
+  <li><a href="#curvas-de-sobreviv%C3%AAncia-dos-modelos" id="toc-curvas-de-sobrevivência-dos-modelos" class="nav-link" data-scroll-target="#curvas-de-sobreviv%C3%AAncia-dos-modelos">Curvas de Sobrevivência dos Modelos</a></li>
+  <li><a href="#quantis-dos-modelos" id="toc-quantis-dos-modelos" class="nav-link" data-scroll-target="#quantis-dos-modelos">Quantis dos Modelos</a></li>
+  <li><a href="#compara%C3%A7%C3%A3o-np-vs-param%C3%A9trico" id="toc-comparação-np-vs-paramétrico" class="nav-link" data-scroll-target="#compara%C3%A7%C3%A3o-np-vs-param%C3%A9trico">Comparação NP vs Paramétrico</a></li>
+  <li><a href="#compara%C3%A7%C3%A3o-np-vs-param%C3%A9trico-1" id="toc-comparação-np-vs-paramétrico-1" class="nav-link" data-scroll-target="#compara%C3%A7%C3%A3o-np-vs-param%C3%A9trico-1">Comparação NP vs Paramétrico</a></li>
+  <li><a href="#compara%C3%A7%C3%A3o-np-vs-param%C3%A9trico-2" id="toc-comparação-np-vs-paramétrico-2" class="nav-link" data-scroll-target="#compara%C3%A7%C3%A3o-np-vs-param%C3%A9trico-2">Comparação NP vs Paramétrico</a></li>
+  <li><a href="#compara%C3%A7%C3%A3o-np-vs-param%C3%A9trico-3" id="toc-comparação-np-vs-paramétrico-3" class="nav-link" data-scroll-target="#compara%C3%A7%C3%A3o-np-vs-param%C3%A9trico-3">Comparação NP vs Paramétrico</a></li>
+  <li><a href="#modelos-param%C3%A9tricos-1" id="toc-modelos-paramétricos-1" class="nav-link" data-scroll-target="#modelos-param%C3%A9tricos-1">Modelos Paramétricos</a></li>
+  <li><a href="#avalia%C3%A7%C3%A3o-do-modelo-weibull-1" id="toc-avaliação-do-modelo-weibull-1" class="nav-link" data-scroll-target="#avalia%C3%A7%C3%A3o-do-modelo-weibull-1">Avaliação do Modelo Weibull</a></li>
+  <li><a href="#avalia%C3%A7%C3%A3o-do-modelo-lognormal-1" id="toc-avaliação-do-modelo-lognormal-1" class="nav-link" data-scroll-target="#avalia%C3%A7%C3%A3o-do-modelo-lognormal-1">Avaliação do Modelo Lognormal</a></li>
+  <li><a href="#avalia%C3%A7%C3%A3o-do-modelo-loglog%C3%ADstico" id="toc-avaliação-do-modelo-loglogístico" class="nav-link" data-scroll-target="#avalia%C3%A7%C3%A3o-do-modelo-loglog%C3%ADstico">Avaliação do Modelo LogLogístico</a></li>
+  <li><a href="#teste-de-raz%C3%A3o-de-verossimilhan%C3%A7a" id="toc-teste-de-razão-de-verossimilhança" class="nav-link" data-scroll-target="#teste-de-raz%C3%A3o-de-verossimilhan%C3%A7a">Teste de Razão de Verossimilhança</a></li>
+  <li><a href="#calculos-do-peso-do-aic" id="toc-calculos-do-peso-do-aic" class="nav-link" data-scroll-target="#calculos-do-peso-do-aic">Calculos do peso do AIC</a></li>
+  <li><a href="#comparando-modelos-atrav%C3%A9s-do-peso-de-akaike" id="toc-comparando-modelos-através-do-peso-de-akaike" class="nav-link" data-scroll-target="#comparando-modelos-atrav%C3%A9s-do-peso-de-akaike">Comparando modelos através do Peso de Akaike</a></li>
+  <li><a href="#comparando-os-modelos-atrav%C3%A9s-do-bic" id="toc-comparando-os-modelos-através-do-bic" class="nav-link" data-scroll-target="#comparando-os-modelos-atrav%C3%A9s-do-bic">Comparando os modelos através do BIC</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Análise de Sobrevivência</h1>
+<p class="subtitle lead">Modelos Paramétricos - Avaliação do ajuste</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ricardo Accioly </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header><section id="modelos-paramétricos" class="level2"><h2 class="anchored" data-anchor-id="modelos-paramétricos">Modelos Paramétricos</h2>
+<p>Neste exemplo são considerados os tempos de reincidência, em semanas, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser.</p>
+<p>Vamos ver passo a passo como ajustar os modelos exponencial, Weibull e lognormal.</p>
+<p>Aqui vamos utilizar as funções existentes no pacote <code>survival</code>.</p>
+<p>Para ajustar um modelo paramétrico usamo a função <code>survreg</code>.</p>
+</section><section id="metodo-de-kaplan-meier" class="level2"><h2 class="anchored" data-anchor-id="metodo-de-kaplan-meier">Metodo de Kaplan-Meier</h2>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span>
+<span><span class="va">tempos</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">9</span>,<span class="fl">13</span>,<span class="fl">13</span>,<span class="fl">18</span>,<span class="fl">23</span>,<span class="fl">28</span>,<span class="fl">31</span>,<span class="fl">34</span>,<span class="fl">150</span>,<span class="fl">48</span>,<span class="fl">161</span>,<span class="fl">5</span>,<span class="fl">5</span>,<span class="fl">8</span>,<span class="fl">8</span>,<span class="fl">12</span>,<span class="fl">16</span>,<span class="fl">23</span>,<span class="fl">27</span>,<span class="fl">30</span>,<span class="fl">33</span>,<span class="fl">43</span>,<span class="fl">150</span><span class="op">)</span></span>
+<span><span class="va">cens</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">dados</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>tempos<span class="op">=</span><span class="va">tempos</span>, status<span class="op">=</span><span class="va">cens</span>, grupo<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">11</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">12</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ekm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ekm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Call: survfit(formula = Surv(tempos, status) ~ 1, data = dados)
+#&gt; 
+#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+#&gt;     5     23       2    0.913  0.0588       0.8049        1.000
+#&gt;     8     21       2    0.826  0.0790       0.6848        0.996
+#&gt;     9     19       1    0.783  0.0860       0.6310        0.971
+#&gt;    12     18       1    0.739  0.0916       0.5798        0.942
+#&gt;    13     17       1    0.696  0.0959       0.5309        0.912
+#&gt;    18     14       1    0.646  0.1011       0.4753        0.878
+#&gt;    23     13       2    0.547  0.1073       0.3721        0.803
+#&gt;    27     11       1    0.497  0.1084       0.3240        0.762
+#&gt;    30      9       1    0.442  0.1095       0.2717        0.718
+#&gt;    31      8       1    0.386  0.1089       0.2225        0.671
+#&gt;    33      7       1    0.331  0.1064       0.1765        0.622
+#&gt;    34      6       1    0.276  0.1020       0.1338        0.569
+#&gt;    43      5       1    0.221  0.0954       0.0947        0.515
+#&gt;    48      4       1    0.166  0.0860       0.0598        0.458
+#&gt;   150      3       1    0.110  0.0730       0.0302        0.403</code></pre>
+</div>
+</div>
+</section><section id="curva-de-sobrevivência-não-paramétrica" class="level2"><h2 class="anchored" data-anchor-id="curva-de-sobrevivência-não-paramétrica">Curva de Sobrevivência não paramétrica</h2>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ekm</span>, xlab<span class="op">=</span><span class="st">"Tempo (semanas)"</span>,ylab<span class="op">=</span><span class="st">"S(t) estimada"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="taxa-de-falhas-não-paramétrica" class="level2"><h2 class="anchored" data-anchor-id="taxa-de-falhas-não-paramétrica">Taxa de Falhas não paramétrica</h2>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajusteKM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
+<span><span class="va">ajusteKM_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajusteKM</span><span class="op">)</span></span>
+<span><span class="va">pesos</span> <span class="op">&lt;-</span> <span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">n.event</span><span class="op">/</span><span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">n.risk</span></span>
+<span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">time</span>, weights <span class="op">=</span> <span class="va">pesos</span>, </span>
+<span>             kernel <span class="op">=</span> <span class="st">"gaussian"</span>, n <span class="op">=</span> <span class="fl">100</span>, from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">h</span><span class="op">$</span><span class="va">x</span>, <span class="va">h</span><span class="op">$</span><span class="va">y</span>, type <span class="op">=</span> <span class="st">"l"</span>, xlab <span class="op">=</span> <span class="st">"Tempo (semanas)"</span>, ylab <span class="op">=</span> <span class="st">"Taxa de Falhas"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="quantis-não-parametricos" class="level2"><h2 class="anchored" data-anchor-id="quantis-não-parametricos">Quantis não parametricos</h2>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://r-survey.r-forge.r-project.org/survey/">survey</a></span><span class="op">)</span></span>
+<span><span class="va">dados_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survey/man/svydesign.html">svydesign</a></span><span class="op">(</span>ids <span class="op">=</span> <span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
+<span><span class="va">dados_svykm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survey/man/svykm.html">svykm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">dados_p</span>, se<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">mediana.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">dados_svykm</span>, <span class="fl">0.5</span>, ci<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">med.km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">mediana.km</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">mediana.km</span>, <span class="st">"ci"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">mediana.km</span>, <span class="st">"ci"</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">med.km</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mediana KM"</span>,<span class="st">"ICI"</span>,<span class="st">"ICS"</span><span class="op">)</span></span>
+<span><span class="va">med.km</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; mediana KM        ICI        ICS 
+#&gt;         30         18         48</code></pre>
+</div>
+</div>
+</section><section id="modelo-exponencial" class="level2"><h2 class="anchored" data-anchor-id="modelo-exponencial">Modelo Exponencial</h2>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajustExp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, </span>
+<span>                    data<span class="op">=</span><span class="va">dados</span>, dist<span class="op">=</span><span class="st">'exponential'</span><span class="op">)</span></span>
+<span><span class="va">ajustExp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Call:
+#&gt; survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = "exponential")
+#&gt; 
+#&gt; Coefficients:
+#&gt; (Intercept) 
+#&gt;      3.8986 
+#&gt; 
+#&gt; Scale fixed at 1 
+#&gt; 
+#&gt; Loglik(model)= -88.2   Loglik(intercept only)= -88.2
+#&gt; n= 23</code></pre>
+</div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">alfa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">ajustExp</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">alfa</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; (Intercept) 
+#&gt;    49.33333</code></pre>
+</div>
+</div>
+</section><section id="taxa-de-falhas-np-vs-exp" class="level2"><h2 class="anchored" data-anchor-id="taxa-de-falhas-np-vs-exp">Taxa de falhas NP vs Exp</h2>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajusteKM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
+<span><span class="va">ajusteKM_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajusteKM</span><span class="op">)</span></span>
+<span><span class="va">pesos</span> <span class="op">&lt;-</span> <span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">n.event</span><span class="op">/</span><span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">n.risk</span></span>
+<span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">time</span>, weights <span class="op">=</span> <span class="va">pesos</span>, </span>
+<span>             kernel <span class="op">=</span> <span class="st">"gaussian"</span>, n <span class="op">=</span> <span class="fl">100</span>, from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">h</span><span class="op">$</span><span class="va">x</span>, <span class="va">h</span><span class="op">$</span><span class="va">y</span>, type <span class="op">=</span> <span class="st">"l"</span>, xlab <span class="op">=</span> <span class="st">"Tempo (semanas)"</span>, ylab <span class="op">=</span> <span class="st">"Taxa de Falhas"</span><span class="op">)</span></span>
+<span><span class="va">expHaz</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">rate</span><span class="op">)</span> <span class="op">{</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">dexp</a></span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="va">rate</span><span class="op">)</span><span class="op">/</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">pexp</a></span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="va">rate</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">expHaz</span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="fl">1</span><span class="op">/</span><span class="va">alfa</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">150</span>,</span>
+<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, </span>
+<span>      col<span class="op">=</span><span class="st">"red"</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,</span>
+<span>      add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="quantis-do-modelo-exponencial" class="level2"><h2 class="anchored" data-anchor-id="quantis-do-modelo-exponencial">Quantis do Modelo Exponencial</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Cálculos</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Resultados</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">est_med</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">ajustExp</span>,type<span class="op">=</span><span class="st">"uquantile"</span>,p<span class="op">=</span><span class="fl">0.5</span>,se.fit<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">est_med1</span> <span class="op">&lt;-</span> <span class="va">est_med</span><span class="op">$</span><span class="va">fit</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">est_med1.ep</span> <span class="op">&lt;-</span> <span class="va">est_med</span><span class="op">$</span><span class="va">se.fit</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">IC.mediana_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">est_med1</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">est_med1</span><span class="op">-</span><span class="fl">1.96</span><span class="op">*</span><span class="va">est_med1.ep</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">est_med1</span><span class="op">+</span><span class="fl">1.96</span><span class="op">*</span><span class="va">est_med1.ep</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">IC.mediana_exp</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mediana Exp"</span>,<span class="st">"ICI"</span>,<span class="st">"ICS"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#IC Mediana</span></span>
+<span><span class="va">IC.mediana_exp</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; mediana Exp         ICI         ICS 
+#&gt;    34.19526    21.54429    54.27499</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="avaliação-do-modelo-exponencial" class="level2"><h2 class="anchored" data-anchor-id="avaliação-do-modelo-exponencial">Avaliação do modelo Exponencial</h2>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Carregando pacotes exigidos: carData</code></pre>
+</div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n.censurado</span> <span class="op">&lt;-</span> <span class="va">dados</span><span class="op">$</span><span class="va">tempos</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot</a></span><span class="op">(</span><span class="va">n.censurado</span>,</span>
+<span>dist <span class="op">=</span> <span class="st">"exp"</span>,</span>
+<span>rate <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">alfa</span>,</span>
+<span>xlab <span class="op">=</span> <span class="st">"Quantis Teoricos (exponencial)"</span>,</span>
+<span>ylab <span class="op">=</span> <span class="st">"Quantis Empiricos"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 18  8</code></pre>
+</div>
+</div>
+</section><section id="modelo-weibull" class="level2"><h2 class="anchored" data-anchor-id="modelo-weibull">Modelo Weibull</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Ajuste do modelo</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Parametros do modelo</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajustWei</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span>, dist<span class="op">=</span><span class="st">'weibull'</span><span class="op">)</span></span>
+<span><span class="va">ajustWei</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Call:
+#&gt; survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = "weibull")
+#&gt; 
+#&gt; Coefficients:
+#&gt; (Intercept) 
+#&gt;    3.875751 
+#&gt; 
+#&gt; Scale= 1.101577 
+#&gt; 
+#&gt; Loglik(model)= -88   Loglik(intercept only)= -88
+#&gt; n= 23</code></pre>
+</div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">alfaw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">ajustWei</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">betaw</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="va">ajustWei</span><span class="op">$</span><span class="va">scale</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Alfa - parametro de escala</span></span>
+<span><span class="va">alfaw</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; (Intercept) 
+#&gt;    48.21892</code></pre>
+</div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Beta - parametro de forma</span></span>
+<span><span class="va">betaw</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 0.9077897</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="taxa-de-falhas-np-vs-weibull" class="level2"><h2 class="anchored" data-anchor-id="taxa-de-falhas-np-vs-weibull">Taxa de Falhas NP vs Weibull</h2>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajusteKM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
+<span><span class="va">ajusteKM_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajusteKM</span><span class="op">)</span></span>
+<span><span class="va">pesos</span> <span class="op">&lt;-</span> <span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">n.event</span><span class="op">/</span><span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">n.risk</span></span>
+<span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">time</span>, weights <span class="op">=</span> <span class="va">pesos</span>, </span>
+<span>             kernel <span class="op">=</span> <span class="st">"gaussian"</span>, n <span class="op">=</span> <span class="fl">100</span>, from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">h</span><span class="op">$</span><span class="va">x</span>, <span class="va">h</span><span class="op">$</span><span class="va">y</span>, type <span class="op">=</span> <span class="st">"l"</span>, xlab <span class="op">=</span> <span class="st">"Tempo (semanas)"</span>, ylab <span class="op">=</span> <span class="st">"Taxa de Falhas"</span>,</span>
+<span>     ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">weibHaz</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">shape</span>, <span class="va">scale</span><span class="op">)</span> <span class="op">{</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">dweibull</a></span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="va">shape</span>, scale<span class="op">=</span><span class="va">scale</span><span class="op">)</span><span class="op">/</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="va">shape</span>, scale<span class="op">=</span><span class="va">scale</span>,</span>
+<span>           lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">weibHaz</span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="va">betaw</span>, scale<span class="op">=</span><span class="va">alfaw</span><span class="op">)</span>, </span>
+<span>      from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">150</span>,</span>
+<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, col<span class="op">=</span><span class="st">"red"</span>,</span>
+<span>      add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="quantis-do-modelo-weibull" class="level2"><h2 class="anchored" data-anchor-id="quantis-do-modelo-weibull">Quantis do Modelo Weibull</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">Cálculos</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Resultados</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajustWei</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span>, dist<span class="op">=</span><span class="st">'weibull'</span><span class="op">)</span></span>
+<span><span class="va">estmedw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">ajustWei</span>,type<span class="op">=</span><span class="st">"uquantile"</span>,p<span class="op">=</span><span class="fl">0.5</span>,se.fit<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">estmedw1</span> <span class="op">&lt;-</span> <span class="va">estmedw</span><span class="op">$</span><span class="va">fit</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">estmedw1.ep</span> <span class="op">&lt;-</span> <span class="va">estmedw</span><span class="op">$</span><span class="va">se.fit</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">IC.mediana_w</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">estmedw1</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">estmedw1</span><span class="op">-</span><span class="fl">1.96</span><span class="op">*</span><span class="va">estmedw1.ep</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">estmedw1</span><span class="op">+</span><span class="fl">1.96</span><span class="op">*</span><span class="va">estmedw1.ep</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">IC.mediana_w</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mediana Wei"</span>,<span class="st">"ICI"</span>,<span class="st">"ICS"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Mediana</span></span>
+<span><span class="va">IC.mediana_w</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; mediana Wei         ICI         ICS 
+#&gt;    32.20138    18.58445    55.79549</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="avaliação-do-modelo-weibull" class="level2"><h2 class="anchored" data-anchor-id="avaliação-do-modelo-weibull">Avaliação do Modelo Weibull</h2>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n.censurado</span> <span class="op">&lt;-</span> <span class="va">dados</span><span class="op">$</span><span class="va">tempos</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot</a></span><span class="op">(</span><span class="va">n.censurado</span>,</span>
+<span>dist <span class="op">=</span> <span class="st">"weibull"</span>,</span>
+<span>shape <span class="op">=</span> <span class="va">betaw</span>,</span>
+<span>scale <span class="op">=</span> <span class="va">alfaw</span>,</span>
+<span>xlab <span class="op">=</span> <span class="st">"Quantis Teoricos (Weibull)"</span>,</span>
+<span>ylab <span class="op">=</span> <span class="st">"Quantis Empiricos"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 18  8</code></pre>
+</div>
+</div>
+</section><section id="modelo-lognormal" class="level2"><h2 class="anchored" data-anchor-id="modelo-lognormal">Modelo Lognormal</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Ajuste do modelo</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Parametros do modelo</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajustLog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>, <span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span>, dist<span class="op">=</span><span class="st">'lognorm'</span><span class="op">)</span></span>
+<span><span class="va">ajustLog</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Call:
+#&gt; survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = "lognorm")
+#&gt; 
+#&gt; Coefficients:
+#&gt; (Intercept) 
+#&gt;    3.327415 
+#&gt; 
+#&gt; Scale= 1.109202 
+#&gt; 
+#&gt; Loglik(model)= -85.1   Loglik(intercept only)= -85.1
+#&gt; n= 23</code></pre>
+</div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mulog</span> <span class="op">&lt;-</span> <span class="va">ajustLog</span><span class="op">$</span><span class="va">icoef</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">sigmalog</span> <span class="op">&lt;-</span> <span class="va">ajustLog</span><span class="op">$</span><span class="va">scale</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Media</span></span>
+<span><span class="va">mulog</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; (Intercept) 
+#&gt;    3.327415</code></pre>
+</div>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Desvio padrão</span></span>
+<span><span class="va">sigmalog</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 1.109202</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="taxa-de-falhas-np-vs-lognormal" class="level2"><h2 class="anchored" data-anchor-id="taxa-de-falhas-np-vs-lognormal">Taxa de Falhas NP vs Lognormal</h2>
+<div class="cell">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajusteKM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
+<span><span class="va">ajusteKM_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajusteKM</span><span class="op">)</span></span>
+<span><span class="va">pesos</span> <span class="op">&lt;-</span> <span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">n.event</span><span class="op">/</span><span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">n.risk</span></span>
+<span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">time</span>, weights <span class="op">=</span> <span class="va">pesos</span>, </span>
+<span>             kernel <span class="op">=</span> <span class="st">"gaussian"</span>, n <span class="op">=</span> <span class="fl">100</span>, from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">h</span><span class="op">$</span><span class="va">x</span>, <span class="va">h</span><span class="op">$</span><span class="va">y</span>, type <span class="op">=</span> <span class="st">"l"</span>, xlab <span class="op">=</span> <span class="st">"Tempo (semanas)"</span>, ylab <span class="op">=</span> <span class="st">"Taxa de Falhas"</span>,</span>
+<span>     ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">logHaz</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">meanlog</span>, <span class="va">sdlog</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">dlnorm</a></span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="va">meanlog</span>, sdlog<span class="op">=</span><span class="va">sdlog</span><span class="op">)</span><span class="op">/</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">plnorm</a></span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="va">meanlog</span>, sdlog<span class="op">=</span><span class="va">sdlog</span>, </span>
+<span>         lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">logHaz</span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="va">mulog</span>, sdlog<span class="op">=</span><span class="va">sigmalog</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">150</span>,</span>
+<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, </span>
+<span>      col<span class="op">=</span><span class="st">"red"</span>,</span>
+<span>      add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="quantis-do-modelo-lognormal" class="level2"><h2 class="anchored" data-anchor-id="quantis-do-modelo-lognormal">Quantis do Modelo Lognormal</h2>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajustLog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>, <span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span>, dist<span class="op">=</span><span class="st">'lognorm'</span><span class="op">)</span></span>
+<span><span class="va">estmedl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">ajustLog</span>,type<span class="op">=</span><span class="st">"uquantile"</span>,p<span class="op">=</span><span class="fl">0.5</span>,se.fit<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">estmedl1</span> <span class="op">&lt;-</span> <span class="va">estmedl</span><span class="op">$</span><span class="va">fit</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">estmedl1.ep</span> <span class="op">&lt;-</span> <span class="va">estmedl</span><span class="op">$</span><span class="va">se.fit</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">IC.mediana_log</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">estmedl1</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">estmedl1</span><span class="op">-</span><span class="fl">1.96</span><span class="op">*</span><span class="va">estmedl1.ep</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">estmedl1</span><span class="op">+</span><span class="fl">1.96</span><span class="op">*</span><span class="va">estmedl1.ep</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">IC.mediana_log</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mediana Logn"</span>,<span class="st">"ICI"</span>,<span class="st">"ICS"</span><span class="op">)</span></span>
+<span><span class="va">IC.mediana_log</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; mediana Logn          ICI          ICS 
+#&gt;     27.86621     17.32943     44.80965</code></pre>
+</div>
+</div>
+</section><section id="avaliação-do-modelo-lognormal" class="level2"><h2 class="anchored" data-anchor-id="avaliação-do-modelo-lognormal">Avaliação do Modelo Lognormal</h2>
+<div class="cell">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n.censurado</span> <span class="op">&lt;-</span> <span class="va">dados</span><span class="op">$</span><span class="va">tempos</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot</a></span><span class="op">(</span><span class="va">n.censurado</span>,</span>
+<span>dist <span class="op">=</span> <span class="st">"lnorm"</span>,</span>
+<span>meanlog <span class="op">=</span> <span class="va">mulog</span>,</span>
+<span>sdlog <span class="op">=</span> <span class="va">sigmalog</span>,</span>
+<span>xlab <span class="op">=</span> <span class="st">"Quantis Teoricos (Lognormal)"</span>,</span>
+<span>ylab <span class="op">=</span> <span class="st">"Quantis Empiricos"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 18  8</code></pre>
+</div>
+</div>
+</section><section id="modelo-loglogístico" class="level2"><h2 class="anchored" data-anchor-id="modelo-loglogístico">Modelo Loglogístico</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Ajuste do modelo</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Parametros do modelo</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajustLLog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>, <span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span>, dist<span class="op">=</span><span class="st">'loglogistic'</span><span class="op">)</span></span>
+<span><span class="va">ajustLLog</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; Call:
+#&gt; survreg(formula = Surv(tempos, status) ~ 1, data = dados, dist = "loglogistic")
+#&gt; 
+#&gt; Coefficients:
+#&gt; (Intercept) 
+#&gt;    3.256546 
+#&gt; 
+#&gt; Scale= 0.634186 
+#&gt; 
+#&gt; Loglik(model)= -85.1   Loglik(intercept only)= -85.1
+#&gt; n= 23</code></pre>
+</div>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">betall</span><span class="op">&lt;-</span> <span class="va">ajustLLog</span><span class="op">$</span><span class="va">icoef</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">alfall</span> <span class="op">&lt;-</span> <span class="va">ajustLLog</span><span class="op">$</span><span class="va">scale</span></span>
+<span><span class="va">mullog</span> <span class="op">&lt;-</span> <span class="va">betall</span></span>
+<span><span class="va">sigmallog</span> <span class="op">&lt;-</span> <span class="va">alfall</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="cell">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Media</span></span>
+<span><span class="va">betall</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; (Intercept) 
+#&gt;    3.256546</code></pre>
+</div>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Desvio padrão</span></span>
+<span><span class="va">alfall</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 0.634186</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section><section id="taxa-de-falhas-np-vs-loglogística" class="level2"><h2 class="anchored" data-anchor-id="taxa-de-falhas-np-vs-loglogística">Taxa de Falhas NP vs Loglogística</h2>
+<div class="cell">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajusteKM</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
+<span><span class="va">ajusteKM_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajusteKM</span><span class="op">)</span></span>
+<span><span class="va">pesos</span> <span class="op">&lt;-</span> <span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">n.event</span><span class="op">/</span><span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">n.risk</span></span>
+<span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/density.html">density</a></span><span class="op">(</span><span class="va">ajusteKM_sum</span><span class="op">$</span><span class="va">time</span>, weights <span class="op">=</span> <span class="va">pesos</span>, </span>
+<span>             kernel <span class="op">=</span> <span class="st">"gaussian"</span>, n <span class="op">=</span> <span class="fl">100</span>, from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">h</span><span class="op">$</span><span class="va">x</span>, <span class="va">h</span><span class="op">$</span><span class="va">y</span>, type <span class="op">=</span> <span class="st">"l"</span>, xlab <span class="op">=</span> <span class="st">"Tempo (semanas)"</span>, ylab <span class="op">=</span> <span class="st">"Taxa de Falhas"</span>,</span>
+<span>     ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0.15</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/chjackson/flexsurv-dev">flexsurv</a></span><span class="op">)</span></span>
+<span><span class="va">llogisHaz</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">alfa</span>, <span class="va">beta</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">haz</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/flexsurv/man/Llogis.html">hllogis</a></span><span class="op">(</span><span class="va">x</span>, shape <span class="op">=</span> <span class="va">beta</span>, scale <span class="op">=</span> <span class="va">alfa</span>, log <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">llogisHaz</span><span class="op">(</span><span class="va">x</span>, alfa<span class="op">=</span><span class="va">alfall</span>, beta<span class="op">=</span><span class="va">betall</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">150</span>,</span>
+<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, col<span class="op">=</span><span class="st">"red"</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="quantis-do-modelo-log-logístico" class="level2"><h2 class="anchored" data-anchor-id="quantis-do-modelo-log-logístico">Quantis do Modelo Log-Logístico</h2>
+<div class="cell">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajustLLog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>, <span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span>, dist<span class="op">=</span><span class="st">'loglogistic'</span><span class="op">)</span></span>
+<span><span class="va">estmedll</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">ajustLLog</span>,type<span class="op">=</span><span class="st">"uquantile"</span>,p<span class="op">=</span><span class="fl">0.5</span>,se.fit<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">estmedll1</span> <span class="op">&lt;-</span> <span class="va">estmedll</span><span class="op">$</span><span class="va">fit</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">estmedll1.ep</span> <span class="op">&lt;-</span> <span class="va">estmedll</span><span class="op">$</span><span class="va">se.fit</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">IC.mediana_llog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">estmedll1</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">estmedll1</span><span class="op">-</span><span class="fl">1.96</span><span class="op">*</span><span class="va">estmedll1.ep</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">estmedll1</span><span class="op">+</span><span class="fl">1.96</span><span class="op">*</span><span class="va">estmedll1.ep</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">IC.mediana_llog</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mediana LogL"</span>,<span class="st">"ICI"</span>,<span class="st">"ICS"</span><span class="op">)</span></span>
+<span><span class="va">IC.mediana_llog</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; mediana LogL          ICI          ICS 
+#&gt;     25.95973     16.34324     41.23464</code></pre>
+</div>
+</div>
+</section><section id="avaliação-do-modelo-log-logístico" class="level2"><h2 class="anchored" data-anchor-id="avaliação-do-modelo-log-logístico">Avaliação do Modelo Log-Logístico</h2>
+<div class="cell">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n.censurado</span> <span class="op">&lt;-</span> <span class="va">dados</span><span class="op">$</span><span class="va">tempos</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot</a></span><span class="op">(</span><span class="va">n.censurado</span>,</span>
+<span>       dist <span class="op">=</span> <span class="st">"llogis"</span>,</span>
+<span>       shape <span class="op">=</span> <span class="va">betall</span>,</span>
+<span>       scale <span class="op">=</span> <span class="va">alfall</span>,</span>
+<span>       xlab <span class="op">=</span> <span class="st">"Quantis Teoricos (LogLogistico)"</span>,</span>
+<span>       ylab <span class="op">=</span> <span class="st">"Quantis Empiricos"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 18  8</code></pre>
+</div>
+</div>
+</section><section id="curvas-de-sobrevivência-dos-modelos" class="level2"><h2 class="anchored" data-anchor-id="curvas-de-sobrevivência-dos-modelos">Curvas de Sobrevivência dos Modelos</h2>
+<div class="cell">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tempo</span> <span class="op">&lt;-</span> <span class="va">ekm</span><span class="op">$</span><span class="va">time</span></span>
+<span><span class="va">st</span> <span class="op">&lt;-</span> <span class="va">ekm</span><span class="op">$</span><span class="va">surv</span></span>
+<span><span class="va">ste</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="va">tempo</span><span class="op">/</span><span class="va">alfa</span><span class="op">)</span></span>
+<span><span class="va">stw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="op">(</span><span class="va">tempo</span><span class="op">/</span><span class="va">alfaw</span><span class="op">)</span><span class="op">^</span><span class="va">betaw</span><span class="op">)</span></span>
+<span><span class="va">stln</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">tempo</span><span class="op">)</span> <span class="op">+</span> <span class="va">mulog</span><span class="op">)</span><span class="op">/</span><span class="va">sigmalog</span><span class="op">)</span></span>
+<span><span class="va">stll</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span><span class="op">(</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">tempo</span><span class="op">)</span> <span class="op">+</span> <span class="va">mullog</span><span class="op">)</span><span class="op">/</span><span class="va">sigmallog</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">tempo</span>,<span class="va">st</span>,<span class="va">ste</span>,<span class="va">stw</span>,<span class="va">stln</span>, <span class="va">stll</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;       tempo        st        ste        stw       stln       stll
+#&gt;  [1,]     5 0.9130435 0.90361549 0.88003469 0.93929001 0.93068123
+#&gt;  [2,]     8 0.8260870 0.85030331 0.82217827 0.86972867 0.86484030
+#&gt;  [3,]     9 0.7826087 0.83324094 0.80421117 0.84588006 0.84162443
+#&gt;  [4,]    12 0.7391304 0.78408077 0.75358080 0.77624198 0.77148943
+#&gt;  [5,]    13 0.6956522 0.76834724 0.73768249 0.75408472 0.74848099
+#&gt;  [6,]    16 0.6956522 0.72301571 0.69256708 0.69153396 0.68202995
+#&gt;  [7,]    18 0.6459627 0.69429047 0.66444392 0.65321535 0.64046736
+#&gt;  [8,]    23 0.5465839 0.62737162 0.60008301 0.56868447 0.54757517
+#&gt;  [9,]    27 0.4968944 0.57851124 0.55393724 0.51135599 0.48451643
+#&gt; [10,]    28 0.4968944 0.56690272 0.54306244 0.49827732 0.47021045
+#&gt; [11,]    30 0.4416839 0.54437980 0.52204996 0.47348248 0.44322365
+#&gt; [12,]    31 0.3864734 0.53345616 0.51189761 0.46172842 0.43050454
+#&gt; [13,]    33 0.3312629 0.51226208 0.49226654 0.43941782 0.40651851
+#&gt; [14,]    34 0.2760524 0.50198292 0.48277506 0.42882778 0.39521348
+#&gt; [15,]    43 0.2208420 0.41827272 0.40606758 0.34786949 0.31093531
+#&gt; [16,]    48 0.1656315 0.37795771 0.36939907 0.31197849 0.27503951
+#&gt; [17,]   150 0.1104210 0.04780904 0.06070515 0.06456946 0.05919548
+#&gt; [18,]   161 0.1104210 0.03825376 0.05040692 0.05690381 0.05327807</code></pre>
+</div>
+</div>
+</section><section id="quantis-dos-modelos" class="level2"><h2 class="anchored" data-anchor-id="quantis-dos-modelos">Quantis dos Modelos</h2>
+<div class="cell">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">med.km</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mediana"</span>, <span class="st">"ICI"</span>, <span class="st">"ICS"</span><span class="op">)</span></span>
+<span><span class="va">quantis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">med.km</span>, <span class="va">IC.mediana_exp</span>, <span class="va">IC.mediana_w</span>, <span class="va">IC.mediana_log</span>, <span class="va">IC.mediana_llog</span><span class="op">)</span></span>
+<span><span class="va">quantis</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;                  Mediana      ICI      ICS
+#&gt; med.km          30.00000 18.00000 48.00000
+#&gt; IC.mediana_exp  34.19526 21.54429 54.27499
+#&gt; IC.mediana_w    32.20138 18.58445 55.79549
+#&gt; IC.mediana_log  27.86621 17.32943 44.80965
+#&gt; IC.mediana_llog 25.95973 16.34324 41.23464</code></pre>
+</div>
+</div>
+</section><section id="comparação-np-vs-paramétrico" class="level2"><h2 class="anchored" data-anchor-id="comparação-np-vs-paramétrico">Comparação NP vs Paramétrico</h2>
+<div class="cell">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">st</span>,<span class="va">ste</span>,pch<span class="op">=</span><span class="fl">16</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="st">"S(t): Kaplan-Meier"</span>, ylab<span class="op">=</span><span class="st">"S(t): exponencial"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, type<span class="op">=</span><span class="st">"l"</span>, lty<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">st</span>,<span class="va">stw</span>,pch<span class="op">=</span><span class="fl">16</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
+<span>     ylab<span class="op">=</span><span class="st">"S(t): Weibull"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, type<span class="op">=</span><span class="st">"l"</span>, lty<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="comparação-np-vs-paramétrico-1" class="level2"><h2 class="anchored" data-anchor-id="comparação-np-vs-paramétrico-1">Comparação NP vs Paramétrico</h2>
+<div class="cell">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">st</span>,<span class="va">stln</span>,pch<span class="op">=</span><span class="fl">16</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
+<span>     ylab<span class="op">=</span><span class="st">"S(t): Log-normal"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, type<span class="op">=</span><span class="st">"l"</span>, lty<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">st</span>,<span class="va">stll</span>,pch<span class="op">=</span><span class="fl">16</span>,ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>, xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/range.html">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>, xlab <span class="op">=</span> <span class="st">"S(t): Kaplan-Meier"</span>,</span>
+<span>     ylab<span class="op">=</span><span class="st">"S(t): log-Logistica"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>, type<span class="op">=</span><span class="st">"l"</span>, lty<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="comparação-np-vs-paramétrico-2" class="level2"><h2 class="anchored" data-anchor-id="comparação-np-vs-paramétrico-2">Comparação NP vs Paramétrico</h2>
+<div class="cell">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ekm</span>, conf.int<span class="op">=</span><span class="cn">F</span>, xlab<span class="op">=</span><span class="st">"Tempos"</span>, ylab<span class="op">=</span><span class="st">"S(t)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">tempo</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="va">ste</span><span class="op">)</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="fl">25</span>,<span class="fl">0.8</span>,lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Kaplan-Meier"</span>, <span class="st">"Exponencial"</span><span class="op">)</span>,bty<span class="op">=</span><span class="st">"n"</span>,cex<span class="op">=</span><span class="fl">0.8</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ekm</span>, conf.int<span class="op">=</span><span class="cn">F</span>, xlab<span class="op">=</span><span class="st">"Tempos"</span>, ylab<span class="op">=</span><span class="st">"S(t)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">tempo</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="va">stw</span><span class="op">)</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="fl">25</span>,<span class="fl">0.8</span>,lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Kaplan-Meier"</span>, <span class="st">"Weibull"</span><span class="op">)</span>,bty<span class="op">=</span><span class="st">"n"</span>,cex<span class="op">=</span><span class="fl">0.8</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="comparação-np-vs-paramétrico-3" class="level2"><h2 class="anchored" data-anchor-id="comparação-np-vs-paramétrico-3">Comparação NP vs Paramétrico</h2>
+<div class="cell">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ekm</span>, conf.int<span class="op">=</span><span class="cn">F</span>, xlab<span class="op">=</span><span class="st">"Tempos"</span>, ylab<span class="op">=</span><span class="st">"S(t)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">tempo</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="va">stln</span><span class="op">)</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="fl">25</span>,<span class="fl">0.8</span>,lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Kaplan-Meier"</span>, <span class="st">"Lognormal"</span><span class="op">)</span>,bty<span class="op">=</span><span class="st">"n"</span>,cex<span class="op">=</span><span class="fl">0.8</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ekm</span>, conf.int<span class="op">=</span><span class="cn">F</span>, xlab<span class="op">=</span><span class="st">"Tempos"</span>, ylab<span class="op">=</span><span class="st">"S(t)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="va">tempo</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="va">stll</span><span class="op">)</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="fl">25</span>,<span class="fl">0.8</span>,lty<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Kaplan-Meier"</span>, <span class="st">"LogLogistica"</span><span class="op">)</span>,bty<span class="op">=</span><span class="st">"n"</span>,cex<span class="op">=</span><span class="fl">0.8</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="modelos-paramétricos-1" class="level2"><h2 class="anchored" data-anchor-id="modelos-paramétricos-1">Modelos Paramétricos</h2>
+<div class="cell">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajustExp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span>, dist<span class="op">=</span><span class="st">'exponential'</span><span class="op">)</span></span>
+<span><span class="va">alfa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">ajustExp</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">ajustWei</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span>, dist<span class="op">=</span><span class="st">'weibull'</span><span class="op">)</span></span>
+<span><span class="va">alfaw</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">ajustWei</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">betaw</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="va">ajustWei</span><span class="op">$</span><span class="va">scale</span></span>
+<span><span class="va">ajustLog</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span>, dist<span class="op">=</span><span class="st">'lognorm'</span><span class="op">)</span></span>
+<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="va">ajustLog</span><span class="op">$</span><span class="va">icoef</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">ajustLog</span><span class="op">$</span><span class="va">icoef</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">ajustLogl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="fl">1</span>, data<span class="op">=</span><span class="va">dados</span>, dist<span class="op">=</span><span class="st">'loglogistic'</span><span class="op">)</span></span>
+<span><span class="va">mu1</span> <span class="op">&lt;-</span> <span class="va">ajustLogl</span><span class="op">$</span><span class="va">icoef</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">sigma1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">ajustLogl</span><span class="op">$</span><span class="va">icoef</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="avaliação-do-modelo-weibull-1" class="level2"><h2 class="anchored" data-anchor-id="avaliação-do-modelo-weibull-1">Avaliação do Modelo Weibull</h2>
+<div class="cell">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab.np</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ekm</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">tab.np</span><span class="op">$</span><span class="va">surv</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">tab.np</span><span class="op">$</span><span class="va">time</span><span class="op">)</span>,</span>
+<span>     xlab<span class="op">=</span><span class="st">"log(t)"</span>, ylab<span class="op">=</span><span class="st">"log(-log(S(t)))"</span>, pch<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span>
+<span><span class="va">mod1.lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">tab.np</span><span class="op">$</span><span class="va">surv</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">tab.np</span><span class="op">$</span><span class="va">time</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="va">mod1.lm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">mod1.lm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;                       2.5 %    97.5 %
+#&gt; (Intercept)      -4.2828851 -3.122890
+#&gt; log(tab.np$time)  0.8481692  1.208094</code></pre>
+</div>
+</div>
+</section><section id="avaliação-do-modelo-lognormal-1" class="level2"><h2 class="anchored" data-anchor-id="avaliação-do-modelo-lognormal-1">Avaliação do Modelo Lognormal</h2>
+<div class="cell">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab.np</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ekm</span><span class="op">)</span></span>
+<span><span class="va">invst1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span><span class="op">(</span><span class="va">tab.np</span><span class="op">$</span><span class="va">surv</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">invst1</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">tab.np</span><span class="op">$</span><span class="va">time</span><span class="op">)</span>,</span>
+<span>     xlab<span class="op">=</span><span class="st">"log(t)"</span>, ylab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">Phi</span><span class="op">^</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/car/man/S.html">S</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span>
+<span><span class="va">mod2.lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">invst1</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">tab.np</span><span class="op">$</span><span class="va">time</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="va">mod2.lm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="avaliação-do-modelo-loglogístico" class="level2"><h2 class="anchored" data-anchor-id="avaliação-do-modelo-loglogístico">Avaliação do Modelo LogLogístico</h2>
+<div class="cell">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab.np</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ekm</span><span class="op">)</span></span>
+<span><span class="va">invst2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">qlogis</a></span><span class="op">(</span><span class="va">tab.np</span><span class="op">$</span><span class="va">surv</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">invst2</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">tab.np</span><span class="op">$</span><span class="va">time</span><span class="op">)</span>,</span>
+<span>     xlab<span class="op">=</span><span class="st">"log(t)"</span>, ylab<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">Phi</span><span class="op">^</span><span class="op">-</span><span class="fl">1</span><span class="op">*</span><span class="va">Logis</span><span class="op">*</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/car/man/S.html">S</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, pch<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span>
+<span><span class="va">mod3.lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">invst2</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">tab.np</span><span class="op">$</span><span class="va">time</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span><span class="va">mod3.lm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula04A_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" style="width:90.0%"></p>
+</div>
+</div>
+</section><section id="teste-de-razão-de-verossimilhança" class="level2"><h2 class="anchored" data-anchor-id="teste-de-razão-de-verossimilhança">Teste de Razão de Verossimilhança</h2>
+<p>No nível de significância de 𝛼=0,05 eu rejeito a hipótese de que o parametro de forma seja igual a 1.</p>
+<div class="cell">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab.exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajustExp</span><span class="op">)</span></span>
+<span><span class="va">tab.wei</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajustWei</span><span class="op">)</span></span>
+<span><span class="va">TRV</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">*</span><span class="op">(</span><span class="va">tab.wei</span><span class="op">$</span><span class="va">loglik</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">tab.exp</span><span class="op">$</span><span class="va">loglik</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">pchisq</a></span><span class="op">(</span><span class="va">TRV</span>, <span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 0.5693228</code></pre>
+</div>
+</div>
+</section><section id="calculos-do-peso-do-aic" class="level2"><h2 class="anchored" data-anchor-id="calculos-do-peso-do-aic">Calculos do peso do AIC</h2>
+<div class="cell">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab.exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajustExp</span><span class="op">)</span></span>
+<span><span class="va">tab.wei</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajustWei</span><span class="op">)</span></span>
+<span><span class="va">tab.ln</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajustLog</span><span class="op">)</span></span>
+<span><span class="va">tab.ll</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajustLogl</span><span class="op">)</span></span>
+<span><span class="va">aic.exp</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">2</span><span class="op">*</span><span class="va">tab.exp</span><span class="op">$</span><span class="va">loglik</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fl">2</span><span class="op">*</span><span class="fl">1</span></span>
+<span><span class="va">aic.wei</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">2</span><span class="op">*</span><span class="va">tab.wei</span><span class="op">$</span><span class="va">loglik</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fl">2</span><span class="op">*</span><span class="fl">2</span></span>
+<span><span class="va">aic.ln</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">2</span><span class="op">*</span><span class="va">tab.ln</span><span class="op">$</span><span class="va">loglik</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fl">2</span><span class="op">*</span><span class="fl">2</span></span>
+<span><span class="va">aic.ll</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">2</span><span class="op">*</span><span class="va">tab.ll</span><span class="op">$</span><span class="va">loglik</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fl">2</span><span class="op">*</span><span class="fl">2</span></span>
+<span><span class="va">aic</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">aic.exp</span>, <span class="va">aic.wei</span>, <span class="va">aic.ln</span>, <span class="va">aic.ll</span><span class="op">)</span></span>
+<span><span class="va">delta.aic</span> <span class="op">&lt;-</span> <span class="va">aic</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">aic</span><span class="op">)</span></span>
+<span><span class="va">peso.aic</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span><span class="op">*</span><span class="va">delta.aic</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span><span class="op">*</span><span class="va">delta.aic</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Usando a função AIC para calcuar o AIC</span></span>
+<span><span class="va">aic.exp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">ajustExp</span><span class="op">)</span></span>
+<span><span class="va">aic.wei1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">ajustWei</span><span class="op">)</span></span>
+<span><span class="va">aic.ln1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">ajustLog</span><span class="op">)</span></span>
+<span><span class="va">aic.ll1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">ajustLogl</span><span class="op">)</span></span>
+<span><span class="va">aic1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">aic.exp1</span>, <span class="va">aic.wei1</span>, <span class="va">aic.ln1</span>, <span class="va">aic.ll1</span><span class="op">)</span></span>
+<span><span class="va">aic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 178.3496 180.0258 174.2856 174.2261</code></pre>
+</div>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aic1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 178.3496 180.0258 174.2856 174.2261</code></pre>
+</div>
+</div>
+</section><section id="comparando-modelos-através-do-peso-de-akaike" class="level2"><h2 class="anchored" data-anchor-id="comparando-modelos-através-do-peso-de-akaike">Comparando modelos através do Peso de Akaike</h2>
+<div class="cell">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>modelos<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Exponencial"</span>, <span class="st">"Weibull"</span>,</span>
+<span>                                <span class="st">"Lognormal"</span>, <span class="st">"Loglogistico"</span><span class="op">)</span>,</span>
+<span>                      p_Akaike <span class="op">=</span> <span class="va">peso.aic</span><span class="op">)</span></span>
+<span><span class="va">modelos</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        modelos   p_Akaike
+#&gt; 1  Exponencial 0.05909587
+#&gt; 2      Weibull 0.02556105
+#&gt; 3    Lognormal 0.45085617
+#&gt; 4 Loglogistico 0.46448692</code></pre>
+</div>
+</div>
+</section><section id="comparando-os-modelos-através-do-bic" class="level2"><h2 class="anchored" data-anchor-id="comparando-os-modelos-através-do-bic">Comparando os modelos através do BIC</h2>
+<div class="cell">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bic.exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">BIC</a></span><span class="op">(</span><span class="va">ajustExp</span><span class="op">)</span></span>
+<span><span class="va">bic.wei</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">BIC</a></span><span class="op">(</span><span class="va">ajustWei</span><span class="op">)</span></span>
+<span><span class="va">bic.ln</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">BIC</a></span><span class="op">(</span><span class="va">ajustLog</span><span class="op">)</span></span>
+<span><span class="va">bic.ll</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">BIC</a></span><span class="op">(</span><span class="va">ajustLogl</span><span class="op">)</span></span>
+<span><span class="va">modelos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>modelos<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Exponencial"</span>, <span class="st">"Weibull"</span>,</span>
+<span>                                <span class="st">"Lognormal"</span>, <span class="st">"Loglogistico"</span><span class="op">)</span>,</span>
+<span>                      BIC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">bic.exp</span>, <span class="va">bic.wei</span>, <span class="va">bic.ln</span>, <span class="va">bic.ll</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">modelos</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        modelos      BIC
+#&gt; 1  Exponencial 179.4851
+#&gt; 2      Weibull 182.2968
+#&gt; 3    Lognormal 176.5566
+#&gt; 4 Loglogistico 176.4970</code></pre>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Baseado em https://sta210-s22.github.io/website/</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+</body></html>

@@ -47,7 +47,6 @@ legend("topright",
                    lty=1, col = c("red","blue","black"))
 ```
 
-
 ## Modelos Paramétricos - Exponencial
 
 ## Curva de Sobrevivência - Exponencial
@@ -69,7 +68,6 @@ legend("topright",
                   expression(paste(alfa, " = ", 10))),
        lty=1, col = c("red","blue","black"))
 ```
-
 
 ## Modelos Paramétricos - Weibull
 
@@ -103,7 +101,6 @@ legend("topright",
        lty=1, col = c("red","blue","black"))
 ```
 
-
 ## Modelos Paramétricos - Weibull
 
 ## Curva de Sobrevivência - Weibull
@@ -130,8 +127,6 @@ legend("topright",
        lty=1, col = c("red","blue","black"))
 ```
 
-
-
 ## Modelos Paramétricos - Lognormal
 
 ## Taxa de Falhas - Lognormal
@@ -156,8 +151,6 @@ legend("topright", c("lnorm(0,0.5)", "lnorm(1,0.7)",
                      "lnorm(1,1)"), lty=1, 
        col = c("red","blue","black"))
 ```
-
-
 
 ## Modelos Paramétricos - Lognormal
 
@@ -187,7 +180,6 @@ legend("topright", c("lnorm(0,0.5)",
        lty=1, col = c("red","blue","black"))
 ```
 
-
 ## Modelos Paramétricos - Log-logistico
 
 ## Taxa de Falhas - Loglogistico
@@ -208,8 +200,6 @@ legend("topright", c("llogis(1, 0.5)", "llogis(1,1)",
                      "llogis(1,3)"),
        lty=1, col = c("red","blue","black"))
 ```
-
-
 
 ## Modelos Paramétricos - Log-logistico
 
@@ -239,4 +229,3 @@ legend("topright", c("llogis(1, 0.5)",
                      "llogis(1,3)"),
        lty=1, col = c("red","blue","black"))
 ```
-

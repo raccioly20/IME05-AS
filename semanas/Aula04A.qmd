@@ -16,7 +16,7 @@ knitr:
 
 ## Modelos Paramétricos
 
-Neste exemplo são considerados os tempos de reincidência, em meses, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser.
+Neste exemplo são considerados os tempos de reincidência, em semanas, de um grupo de 20 pacientes com cancer de bexiga que foram submetidos a um procedimento cirurgico feito por laser.
 
 Vamos ver passo a passo como ajustar os modelos exponencial, Weibull e lognormal.
 
@@ -29,10 +29,10 @@ Para ajustar um modelo paramétrico usamo a função `survreg`.
 ```{r}
 #| echo: true
 library(survival)
-tempos<-c(3,5,6,7,8,9,10,10,12,15,15,18,19,20,22,25,28,30,40,45)
-cens<-c(1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0)
-dados <- data.frame(tempos=tempos, status=cens)
-ekm <- survfit(Surv(tempos,status)~1, data=dados)
+tempos<-c(9,13,13,18,23,28,31,34,150,48,161,5,5,8,8,12,16,23,27,30,33,43,150)
+cens<-c(1,1,0,1,1,0,1,1,0,1,0,1,1,1,1,1,0,1,1,1,1,1,1)
+dados <- data.frame(tempos=tempos, status=cens, grupo=c(rep(1,11), rep(2,12)))
+ekm <- survfit(Surv(tempos,status)~grupo, data=dados)
 summary(ekm)
 ```
 
@@ -40,7 +40,7 @@ summary(ekm)
 
 ```{r}
 #| echo: true
-plot(ekm, xlab="Tempo (meses)",ylab="S(t) estimada")
+plot(ekm, xlab="Tempo (semanas)",ylab="S(t) estimada")
 ```
 
 ## Taxa de Falhas não paramétrica
@@ -52,8 +52,8 @@ ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
 ajusteKM_sum <- summary(ajusteKM)
 pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
 h <- density(ajusteKM_sum$time, weights = pesos, 
-             kernel = "gaussian", n = 100, from = 0, to = 45)
-plot(h$x, h$y, type = "l", xlab = "Tempo (meses)", ylab = "Taxa de Falhas")
+             kernel = "gaussian", n = 100, from = 0, to = 150)
+plot(h$x, h$y, type = "l", xlab = "Tempo (semanas)", ylab = "Taxa de Falhas")
 
 ```
 
@@ -90,13 +90,13 @@ ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
 ajusteKM_sum <- summary(ajusteKM)
 pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
 h <- density(ajusteKM_sum$time, weights = pesos, 
-             kernel = "gaussian", n = 100, from = 0, to = 45)
-plot(h$x, h$y, type = "l", xlab = "Tempo (meses)", ylab = "Taxa de Falhas")
+             kernel = "gaussian", n = 100, from = 0, to = 150)
+plot(h$x, h$y, type = "l", xlab = "Tempo (semanas)", ylab = "Taxa de Falhas")
 expHaz <- function(x, rate) { 
   dexp(x, rate=rate)/
     pexp(x, rate=rate, lower.tail=F)
 }
-curve(expHaz(x, rate=1/alfa), from=0, to=45,
+curve(expHaz(x, rate=1/alfa), from=0, to=150,
       ylab="h(t)", xlab="Tempo", 
       col="red", ylim=c(0,1),
       add=TRUE)
@@ -169,8 +169,8 @@ ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
 ajusteKM_sum <- summary(ajusteKM)
 pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
 h <- density(ajusteKM_sum$time, weights = pesos, 
-             kernel = "gaussian", n = 100, from = 0, to = 45)
-plot(h$x, h$y, type = "l", xlab = "Tempo (meses)", ylab = "Taxa de Falhas",
+             kernel = "gaussian", n = 100, from = 0, to = 150)
+plot(h$x, h$y, type = "l", xlab = "Tempo (semanas)", ylab = "Taxa de Falhas",
      ylim=c(0,0.10))
 weibHaz <- function(x, shape, scale) { 
   dweibull(x, shape=shape, scale=scale)/
@@ -178,7 +178,7 @@ weibHaz <- function(x, shape, scale) {
            lower.tail=F)
 }
 curve(weibHaz(x, shape=betaw, scale=alfaw), 
-      from=0, to=45,
+      from=0, to=150,
       ylab="h(t)", xlab="Tempo", col="red",
       add=TRUE)
 
@@ -251,15 +251,15 @@ ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
 ajusteKM_sum <- summary(ajusteKM)
 pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
 h <- density(ajusteKM_sum$time, weights = pesos, 
-             kernel = "gaussian", n = 100, from = 0, to = 45)
-plot(h$x, h$y, type = "l", xlab = "Tempo (meses)", ylab = "Taxa de Falhas",
+             kernel = "gaussian", n = 100, from = 0, to = 150)
+plot(h$x, h$y, type = "l", xlab = "Tempo (semanas)", ylab = "Taxa de Falhas",
      ylim=c(0,0.10))
 logHaz <- function(x, meanlog, sdlog) {
   dlnorm(x, meanlog=meanlog, sdlog=sdlog)/
   plnorm(x, meanlog=meanlog, sdlog=sdlog, 
          lower.tail=F)
 }
-curve(logHaz(x, meanlog=mulog, sdlog=sigmalog), from=0, to=45,
+curve(logHaz(x, meanlog=mulog, sdlog=sigmalog), from=0, to=150,
       ylab="h(t)", xlab="Tempo", 
       col="red",
       add=TRUE)
@@ -323,14 +323,14 @@ ajusteKM <- survfit(Surv(tempos, status) ~ 1, data=dados)
 ajusteKM_sum <- summary(ajusteKM)
 pesos <- ajusteKM_sum$n.event/ajusteKM_sum$n.risk
 h <- density(ajusteKM_sum$time, weights = pesos, 
-             kernel = "gaussian", n = 100, from = 0, to = 45)
-plot(h$x, h$y, type = "l", xlab = "Tempo (meses)", ylab = "Taxa de Falhas",
+             kernel = "gaussian", n = 100, from = 0, to = 150)
+plot(h$x, h$y, type = "l", xlab = "Tempo (semanas)", ylab = "Taxa de Falhas",
      ylim=c(0,0.15))
 library(flexsurv)
 llogisHaz <- function(x, alfa, beta) {
   haz <- hllogis(x, shape = beta, scale = alfa, log = FALSE)
 }
-curve(llogisHaz(x, alfa=alfall, beta=betall), from=0, to=45,
+curve(llogisHaz(x, alfa=alfall, beta=betall), from=0, to=150,
       ylab="h(t)", xlab="Tempo", col="red", add=TRUE)
 ```
 
