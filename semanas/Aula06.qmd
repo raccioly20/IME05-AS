@@ -71,7 +71,7 @@ ajuste5 <- flexsurvreg(Surv(tempos,status)~1,data=dados, dist='gengamma')
 ajuste5
 ```
 
-## Teste da Razão de Verossimilhança 
+## Teste da Razão de Verossimilhança
 
 ```{r}
 #| echo: true
@@ -132,4 +132,3 @@ legend("topright", lty=c(1,1,1,1), lwd=c(2,2,2,2),
        col=c("blue", "green", "cyan","red", "black"),
        c("Exponencial","Weibull", "Lognormal" , "LogLogistica", "Gama Generalizada"))
 ```
-

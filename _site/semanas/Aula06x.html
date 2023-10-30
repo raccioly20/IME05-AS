@@ -300,7 +300,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#carregando-os-dados" id="toc-carregando-os-dados" class="nav-link" data-scroll-target="#carregando-os-dados">Carregando os dados</a></li>
   <li><a href="#avaliando-presen%C3%A7a-de-dados-ausentes" id="toc-avaliando-presença-de-dados-ausentes" class="nav-link" data-scroll-target="#avaliando-presen%C3%A7a-de-dados-ausentes">Avaliando presença de dados ausentes</a></li>
   <li><a href="#ajuste-do-modelo-exponencial" id="toc-ajuste-do-modelo-exponencial" class="nav-link" data-scroll-target="#ajuste-do-modelo-exponencial">Ajuste do Modelo Exponencial</a></li>
-  <li><a href="#modelo-reajustado" id="toc-modelo-reajustado" class="nav-link" data-scroll-target="#modelo-reajustado">Modelo Reajustado</a></li>
+  <li><a href="#usando-o-aic" id="toc-usando-o-aic" class="nav-link" data-scroll-target="#usando-o-aic">Usando o AIC</a></li>
   <li><a href="#m%C3%A9todo-de-kaplan-meier" id="toc-método-de-kaplan-meier" class="nav-link" data-scroll-target="#m%C3%A9todo-de-kaplan-meier">Método de Kaplan-Meier</a></li>
   <li><a href="#avalia%C3%A7%C3%A3o-dos-resultados" id="toc-avaliação-dos-resultados" class="nav-link" data-scroll-target="#avalia%C3%A7%C3%A3o-dos-resultados">Avaliação dos resultados</a></li>
   <li><a href="#novos-dados" id="toc-novos-dados" class="nav-link" data-scroll-target="#novos-dados">Novos dados</a></li>
@@ -404,35 +404,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>A variável prison é marginalmente significativa considerando um nível de significância de 0,10.</p>
-</section><section id="modelo-reajustado" class="level2"><h2 class="anchored" data-anchor-id="modelo-reajustado">Modelo Reajustado</h2>
+</section><section id="usando-o-aic" class="level2"><h2 class="anchored" data-anchor-id="usando-o-aic">Usando o AIC</h2>
+<p>Vamos usar o AIC para selecionar variáveis e verificar se devemos retirar a variável prison</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>TFAExp1 <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(survt, status) <span class="sc">~</span> clinic <span class="sc">+</span> dose,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dist =</span> <span class="st">"exponential"</span>, </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data=</span>dados)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(TFAExp1)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span></span>
+<span><span class="va">TFAExp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html">stepAIC</a></span><span class="op">(</span><span class="va">TFAExp</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">TFAExp1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 
 #&gt; Call:
-#&gt; survreg(formula = Surv(survt, status) ~ clinic + dose, data = dados, 
-#&gt;     dist = "exponential")
-#&gt;               Value Std. Error    z       p
-#&gt; (Intercept) 3.64522    0.42393 8.60 &lt; 2e-16
-#&gt; clinic      0.85494    0.21014 4.07 4.7e-05
-#&gt; dose        0.02825    0.00606 4.66 3.2e-06
+#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, 
+#&gt;     data = dados, dist = "exponential")
+#&gt;                Value Std. Error     z       p
+#&gt; (Intercept)  3.68434    0.43072  8.55 &lt; 2e-16
+#&gt; clinic       0.88058    0.21063  4.18 2.9e-05
+#&gt; prison      -0.25265    0.16489 -1.53    0.13
+#&gt; dose         0.02892    0.00614  4.71 2.5e-06
 #&gt; 
 #&gt; Scale fixed at 1 
 #&gt; 
 #&gt; Exponential distribution
-#&gt; Loglik(model)= -1095.1   Loglik(intercept only)= -1118.9
-#&gt;  Chisq= 47.58 on 2 degrees of freedom, p= 4.7e-11 
+#&gt; Loglik(model)= -1094   Loglik(intercept only)= -1118.9
+#&gt;  Chisq= 49.91 on 3 degrees of freedom, p= 8.3e-11 
 #&gt; Number of Newton-Raphson Iterations: 5 
 #&gt; n= 238</code></pre>
 </div>
 </div>
-<p>Modelo sem a variável prison.</p>
+<p>Vemos que através do AIC não há evidências de que devemos retirar prison do modelo.</p>
 </section><section id="método-de-kaplan-meier" class="level2"><h2 class="anchored" data-anchor-id="método-de-kaplan-meier">Método de Kaplan-Meier</h2>
+<p>Vamos suar o método de Kaplan-Meier para visualizar a diferença entre a clinica 1 e a clinica 2</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ajusteKM <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(survt, status) <span class="sc">~</span> clinic, <span class="at">data =</span> dados)</span>
@@ -445,44 +445,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section><section id="avaliação-dos-resultados" class="level2"><h2 class="anchored" data-anchor-id="avaliação-dos-resultados">Avaliação dos resultados</h2>
+<p>Fator de aceleração/desacelaração obtido</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>coefExp <span class="ot">&lt;-</span> <span class="fu">coef</span>(TFAExp1)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(coefExp[<span class="dv">2</span>])</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(coefExp[<span class="dv">3</span>])</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(coefExp[<span class="dv">4</span>])</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;   clinic 
-#&gt; 2.351231 
-#&gt;    dose 
-#&gt; 1.02865</code></pre>
+#&gt; 2.412303 
+#&gt;    prison 
+#&gt; 0.7767404 
+#&gt;     dose 
+#&gt; 1.029339</code></pre>
 </div>
 </div>
-<p>A mudança da clinica 1 para a clinica 2 teve um fator de aceleração de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1.</p>
-<p>A mudança na dose aumentou ligeiramente o tempo até o evento, o fator de aceleração foi de 1,02</p>
+<p>A mudança da clinica 1 para a clinica 2 teve um fator de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1.</p>
+<p>A ausência de prisão anterior reduziu i tempo até o tempo até o evento, o fator de desaceleração foi de 0,77.</p>
+<p>A mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1,02</p>
 </section><section id="novos-dados" class="level2"><h2 class="anchored" data-anchor-id="novos-dados">Novos dados</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>novosdados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">clinic =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>),</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">prison =</span> <span class="fu">c</span>(<span class="st">"no"</span>, <span class="st">"no"</span>), <span class="at">dose =</span> <span class="fu">c</span>(<span class="dv">60</span>, <span class="dv">60</span>))</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFAExp1, <span class="at">type =</span> <span class="st">"quantile"</span>, </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.5</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>previs</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFAExp1, <span class="at">type =</span> <span class="st">"quantile"</span>, </span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>                  <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.7</span>)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>previs</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">prison =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">dose =</span> <span class="fu">c</span>(<span class="dv">60</span>, <span class="dv">60</span>))</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFAExp1, <span class="at">type =</span> <span class="st">"quantile"</span>, <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.5</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>previs</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFAExp1, <span class="at">type =</span> <span class="st">"quantile"</span>, </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.7</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>previs</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;        1        2 
-#&gt; 144.5357 339.8368 
+#&gt; 156.4648 377.4406 
 #&gt;        2 
-#&gt; 2.351231 
+#&gt; 2.412303 
 #&gt;        1        2 
-#&gt; 251.0535 590.2849 
+#&gt; 271.7740 655.6013 
 #&gt;        2 
-#&gt; 2.351231</code></pre>
+#&gt; 2.412303</code></pre>
 </div>
 </div>
 <p>Veja que no modelo TFA a proporcionalidade é verificada em diferentes quantis da curva de sobrevivência</p>

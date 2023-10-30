@@ -59,19 +59,23 @@ summary(TFAExp)
 
 A variável prison é marginalmente significativa considerando um nível de significância de 0,10.
 
-## Modelo Reajustado
+
+## Usando o AIC
+
+Vamos usar o AIC para selecionar variáveis e verificar se devemos retirar a variável prison
 
 ```{r}
-#| echo: fenced
-TFAExp1 <- survreg(Surv(survt, status) ~ clinic + dose,
-                   dist = "exponential", 
-                   data=dados)
+library(MASS)
+TFAExp1 <- stepAIC(TFAExp, trace = FALSE)
 summary(TFAExp1)
 ```
 
-Modelo sem a variável prison.
+Vemos que através do AIC não há evidências de que devemos retirar prison do modelo.
+
 
 ## Método de Kaplan-Meier
+
+Vamos suar o método de Kaplan-Meier para visualizar a diferença entre a clinica 1 e a clinica 2
 
 ```{r}
 #| echo: fenced
@@ -83,25 +87,29 @@ legend = sprintf("clinic %d", 1:2))
 
 ## Avaliação dos resultados
 
+Fator de aceleração/desacelaração obtido
+
 ```{r}
 #| echo: fenced
 coefExp <- coef(TFAExp1)
 exp(coefExp[2])
 exp(coefExp[3])
+exp(coefExp[4])
 ```
 
-A mudança da clinica 1 para a clinica 2 teve um fator de aceleração de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1.
+A mudança da clinica 1 para a clinica 2 teve um fator de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1.
 
-A mudança na dose aumentou ligeiramente o tempo até o evento, o fator de aceleração foi de 1,02
+A ausência de prisão anterior reduziu i tempo até o tempo até o evento, o fator de desaceleração foi de 0,77.
+
+A mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1,02
 
 ## Novos dados
 
 ```{r}
 #| echo: fenced
 novosdados <- data.frame(clinic = c("1", "2"),
-                         prison = c("no", "no"), dose = c(60, 60))
-previs <- predict(TFAExp1, type = "quantile", 
-                  newdata = novosdados, p = 0.5)
+                         prison = c(0, 0), dose = c(60, 60))
+previs <- predict(TFAExp1, type = "quantile", newdata = novosdados, p = 0.5)
 previs
 previs[2]/previs[1]
 previs <- predict(TFAExp1, type = "quantile", 

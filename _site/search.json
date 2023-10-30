@@ -382,21 +382,21 @@
     "href": "semanas/Aula06x.html#método-de-kaplan-meier",
     "title": "Análise de Sobrevivência",
     "section": "Método de Kaplan-Meier",
-    "text": "Método de Kaplan-Meier\n\n```{r}\najusteKM &lt;- survfit(Surv(survt, status) ~ clinic, data = dados)\nplot(ajusteKM, xlab=\"T(dias)\",ylab=\"S(t)\", lty=1:2, col = 1:2) \nlegend(\"topright\", bty = \"n\", lty = 1:2, col = 1:2,\nlegend = sprintf(\"clinic %d\", 1:2))\n```"
+    "text": "Método de Kaplan-Meier\nVamos suar o método de Kaplan-Meier para visualizar a diferença entre a clinica 1 e a clinica 2\n\n```{r}\najusteKM &lt;- survfit(Surv(survt, status) ~ clinic, data = dados)\nplot(ajusteKM, xlab=\"T(dias)\",ylab=\"S(t)\", lty=1:2, col = 1:2) \nlegend(\"topright\", bty = \"n\", lty = 1:2, col = 1:2,\nlegend = sprintf(\"clinic %d\", 1:2))\n```"
   },
   {
     "objectID": "semanas/Aula06x.html#avaliação-dos-resultados",
     "href": "semanas/Aula06x.html#avaliação-dos-resultados",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação dos resultados",
-    "text": "Avaliação dos resultados\n\n```{r}\ncoefExp &lt;- coef(TFAExp1)\nexp(coefExp[2])\nexp(coefExp[3])\n```\n\n#&gt;   clinic \n#&gt; 2.351231 \n#&gt;    dose \n#&gt; 1.02865\n\n\nA mudança da clinica 1 para a clinica 2 teve um fator de aceleração de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1.\nA mudança na dose aumentou ligeiramente o tempo até o evento, o fator de aceleração foi de 1,02"
+    "text": "Avaliação dos resultados\nFator de aceleração/desacelaração obtido\n\n```{r}\ncoefExp &lt;- coef(TFAExp1)\nexp(coefExp[2])\nexp(coefExp[3])\nexp(coefExp[4])\n```\n\n#&gt;   clinic \n#&gt; 2.412303 \n#&gt;    prison \n#&gt; 0.7767404 \n#&gt;     dose \n#&gt; 1.029339\n\n\nA mudança da clinica 1 para a clinica 2 teve um fator de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1.\nA ausência de prisão anterior reduziu i tempo até o tempo até o evento, o fator de desaceleração foi de 0,77.\nA mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1,02"
   },
   {
     "objectID": "semanas/Aula06x.html#novos-dados",
     "href": "semanas/Aula06x.html#novos-dados",
     "title": "Análise de Sobrevivência",
     "section": "Novos dados",
-    "text": "Novos dados\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = c(\"no\", \"no\"), dose = c(60, 60))\nprevis &lt;- predict(TFAExp1, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFAExp1, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 144.5357 339.8368 \n#&gt;        2 \n#&gt; 2.351231 \n#&gt;        1        2 \n#&gt; 251.0535 590.2849 \n#&gt;        2 \n#&gt; 2.351231\n\n\nVeja que no modelo TFA a proporcionalidade é verificada em diferentes quantis da curva de sobrevivência"
+    "text": "Novos dados\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = c(0, 0), dose = c(60, 60))\nprevis &lt;- predict(TFAExp1, type = \"quantile\", newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFAExp1, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 156.4648 377.4406 \n#&gt;        2 \n#&gt; 2.412303 \n#&gt;        1        2 \n#&gt; 271.7740 655.6013 \n#&gt;        2 \n#&gt; 2.412303\n\n\nVeja que no modelo TFA a proporcionalidade é verificada em diferentes quantis da curva de sobrevivência"
   },
   {
     "objectID": "semanas/Aula05.html",
@@ -1376,7 +1376,7 @@
     "href": "semanas/Aula06x1.html#previsões",
     "title": "Análise de Sobrevivência",
     "section": "Previsões",
-    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = factor(c(0, 0)), dose = c(60, 60))\nprevis &lt;- predict(TFAWei, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFAWei, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 200.9142 408.2661 \n#&gt;        2 \n#&gt; 2.032042 \n#&gt;        1        2 \n#&gt; 300.6186 610.8697 \n#&gt;        2 \n#&gt; 2.032042"
+    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = c(0, 0), dose = c(60, 60))\nprevis &lt;- predict(TFAWei, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFAWei, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 200.9142 408.2661 \n#&gt;        2 \n#&gt; 2.032042 \n#&gt;        1        2 \n#&gt; 300.6186 610.8697 \n#&gt;        2 \n#&gt; 2.032042"
   },
   {
     "objectID": "semanas/Aula06x1.html#função-auxiliar",
@@ -1390,49 +1390,49 @@
     "href": "semanas/Aula06x1.html#diagnóstico-do-modelo",
     "title": "Análise de Sobrevivência",
     "section": "Diagnóstico do Modelo",
-    "text": "Diagnóstico do Modelo\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\nlibrary(car)\n```\n\n#&gt; Carregando pacotes exigidos: carData\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFAWei, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1/TFAWei$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Weibull\", ylab = \"Quantis empiricos\")\n```\n\n#&gt; [1] 69  8"
+    "text": "Diagnóstico do Modelo\n\nlibrary(car)\n\n#&gt; Carregando pacotes exigidos: carData\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFAWei, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1/TFAWei$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Weibull\", ylab = \"Quantis empiricos\")\n\n\n\n\n#&gt; [1] 69  8"
   },
   {
     "objectID": "semanas/Aula06x1.html#modelo-lognormal",
     "href": "semanas/Aula06x1.html#modelo-lognormal",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Lognormal",
-    "text": "Modelo Lognormal\n\n```{r}\nTFALn &lt;- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,\n                   dist = \"lognormal\", \n                   data=dados)\nsummary(TFALn)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + factor(prison) + \n#&gt;     dose, data = dados, dist = \"lognormal\")\n#&gt;                    Value Std. Error     z      p\n#&gt; (Intercept)      3.40684    0.39769  8.57 &lt;2e-16\n#&gt; clinic           0.57649    0.17648  3.27 0.0011\n#&gt; factor(prison)1 -0.30904    0.15431 -2.00 0.0452\n#&gt; dose             0.03367    0.00568  5.93  3e-09\n#&gt; Log(scale)       0.07476    0.05930  1.26 0.2074\n#&gt; \n#&gt; Scale= 1.08 \n#&gt; \n#&gt; Log Normal distribution\n#&gt; Loglik(model)= -1097.8   Loglik(intercept only)= -1123.7\n#&gt;  Chisq= 51.85 on 3 degrees of freedom, p= 3.2e-11 \n#&gt; Number of Newton-Raphson Iterations: 4 \n#&gt; n= 238"
+    "text": "Modelo Lognormal\n\n```{r}\nTFALn &lt;- survreg(Surv(survt, status) ~ clinic + prison + dose,\n                   dist = \"lognormal\", \n                   data=dados)\nsummary(TFALn)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, \n#&gt;     data = dados, dist = \"lognormal\")\n#&gt;                Value Std. Error     z      p\n#&gt; (Intercept)  3.40684    0.39769  8.57 &lt;2e-16\n#&gt; clinic       0.57649    0.17648  3.27 0.0011\n#&gt; prison      -0.30904    0.15431 -2.00 0.0452\n#&gt; dose         0.03367    0.00568  5.93  3e-09\n#&gt; Log(scale)   0.07476    0.05930  1.26 0.2074\n#&gt; \n#&gt; Scale= 1.08 \n#&gt; \n#&gt; Log Normal distribution\n#&gt; Loglik(model)= -1097.8   Loglik(intercept only)= -1123.7\n#&gt;  Chisq= 51.85 on 3 degrees of freedom, p= 3.2e-11 \n#&gt; Number of Newton-Raphson Iterations: 4 \n#&gt; n= 238"
   },
   {
     "objectID": "semanas/Aula06x1.html#previsões-1",
     "href": "semanas/Aula06x1.html#previsões-1",
     "title": "Análise de Sobrevivência",
     "section": "Previsões",
-    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = factor(c(0, 0)), dose = c(60, 60))\nprevis &lt;- predict(TFALn, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFALn, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 227.5381 404.9681 \n#&gt;        2 \n#&gt; 1.779782 \n#&gt;        1        2 \n#&gt; 400.3836 712.5953 \n#&gt;        2 \n#&gt; 1.779782"
+    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = c(0, 0), dose = c(60, 60))\nprevis &lt;- predict(TFALn, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFALn, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 227.5381 404.9681 \n#&gt;        2 \n#&gt; 1.779782 \n#&gt;        1        2 \n#&gt; 400.3836 712.5953 \n#&gt;        2 \n#&gt; 1.779782"
   },
   {
     "objectID": "semanas/Aula06x1.html#diagnóstico-do-modelo-1",
     "href": "semanas/Aula06x1.html#diagnóstico-do-modelo-1",
     "title": "Análise de Sobrevivência",
     "section": "Diagnóstico do Modelo",
-    "text": "Diagnóstico do Modelo\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFALn, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(log.resid, dist = \"norm\", sd=TFALn$scale, \nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Lognormal\", ylab = \"Quantis empiricos\")\n```\n\n#&gt; [1]  86 110"
+    "text": "Diagnóstico do Modelo\n\n```{r}\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFALn, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(log.resid, dist = \"norm\", sd=TFALn$scale, \nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Lognormal\", ylab = \"Quantis empiricos\")\n```\n\n#&gt; [1]  86 110"
   },
   {
     "objectID": "semanas/Aula06x1.html#modeleo-loglogistico",
     "href": "semanas/Aula06x1.html#modeleo-loglogistico",
     "title": "Análise de Sobrevivência",
     "section": "Modeleo Loglogistico",
-    "text": "Modeleo Loglogistico\n\n```{r}\nTFALl &lt;- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,\n                   dist = \"loglogistic\", \n                   data=dados)\nsummary(TFALl)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + factor(prison) + \n#&gt;     dose, data = dados, dist = \"loglogistic\")\n#&gt;                    Value Std. Error     z       p\n#&gt; (Intercept)      3.56327    0.38945  9.15 &lt; 2e-16\n#&gt; clinic           0.58060    0.17157  3.38 0.00071\n#&gt; factor(prison)1 -0.29127    0.14396 -2.02 0.04305\n#&gt; dose             0.03161    0.00552  5.73 1.0e-08\n#&gt; Log(scale)      -0.53314    0.06863 -7.77 7.9e-15\n#&gt; \n#&gt; Scale= 0.587 \n#&gt; \n#&gt; Log logistic distribution\n#&gt; Loglik(model)= -1093.9   Loglik(intercept only)= -1120\n#&gt;  Chisq= 52.18 on 3 degrees of freedom, p= 2.7e-11 \n#&gt; Number of Newton-Raphson Iterations: 4 \n#&gt; n= 238"
+    "text": "Modeleo Loglogistico\n\n```{r}\nTFALl &lt;- survreg(Surv(survt, status) ~ clinic + prison + dose,\n                   dist = \"loglogistic\", \n                   data=dados)\nsummary(TFALl)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, \n#&gt;     data = dados, dist = \"loglogistic\")\n#&gt;                Value Std. Error     z       p\n#&gt; (Intercept)  3.56327    0.38945  9.15 &lt; 2e-16\n#&gt; clinic       0.58060    0.17157  3.38 0.00071\n#&gt; prison      -0.29127    0.14396 -2.02 0.04305\n#&gt; dose         0.03161    0.00552  5.73 1.0e-08\n#&gt; Log(scale)  -0.53314    0.06863 -7.77 7.9e-15\n#&gt; \n#&gt; Scale= 0.587 \n#&gt; \n#&gt; Log logistic distribution\n#&gt; Loglik(model)= -1093.9   Loglik(intercept only)= -1120\n#&gt;  Chisq= 52.18 on 3 degrees of freedom, p= 2.7e-11 \n#&gt; Number of Newton-Raphson Iterations: 4 \n#&gt; n= 238"
   },
   {
     "objectID": "semanas/Aula06x1.html#previsões-2",
     "href": "semanas/Aula06x1.html#previsões-2",
     "title": "Análise de Sobrevivência",
     "section": "Previsões",
-    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = factor(c(0, 0)), dose = c(60, 60))\nprevis &lt;- predict(TFALl, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFALl, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 235.1125 420.1710 \n#&gt;        2 \n#&gt; 1.787106 \n#&gt;        1        2 \n#&gt; 386.5353 690.7797 \n#&gt;        2 \n#&gt; 1.787106"
+    "text": "Previsões\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = c(0, 0), dose = c(60, 60))\nprevis &lt;- predict(TFALl, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFALl, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 235.1125 420.1710 \n#&gt;        2 \n#&gt; 1.787106 \n#&gt;        1        2 \n#&gt; 386.5353 690.7797 \n#&gt;        2 \n#&gt; 1.787106"
   },
   {
     "objectID": "semanas/Aula06x1.html#diagnóstico-do-modelo-2",
     "href": "semanas/Aula06x1.html#diagnóstico-do-modelo-2",
     "title": "Análise de Sobrevivência",
     "section": "Diagnóstico do Modelo",
-    "text": "Diagnóstico do Modelo\n\n```{r}\n#| output-location: slide\n#| fig-width: 15\n#| fig-height: 8\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFALl, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(log.resid, dist = \"logis\", \nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Logistica\", ylab = \"Quantis empiricos\")\n```\n\n#&gt; [1]  86 110"
+    "text": "Diagnóstico do Modelo\n\n```{r}\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(TFALl, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$survt[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(log.resid, dist = \"logis\", \nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos Logistica\", ylab = \"Quantis empiricos\")\n```\n\n#&gt; [1]  86 110"
   },
   {
     "objectID": "semanas/Aula06x1.html#usando-o-stepaic",
@@ -1902,5 +1902,26 @@
     "title": "Análise de Sobrevivência",
     "section": "Comparando os modelos através do BIC",
     "text": "Comparando os modelos através do BIC\n\nbic.exp &lt;- BIC(ajustExp)\nbic.wei &lt;- BIC(ajustWei)\nbic.ln &lt;- BIC(ajustLog)\nbic.ll &lt;- BIC(ajustLogl)\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      BIC = c(bic.exp, bic.wei, bic.ln, bic.ll))\nmodelos\n\n#&gt;        modelos      BIC\n#&gt; 1  Exponencial 179.4851\n#&gt; 2      Weibull 182.2968\n#&gt; 3    Lognormal 176.5566\n#&gt; 4 Loglogistico 176.4970"
+  },
+  {
+    "objectID": "semanas/Aula06x.html#comparando-modelos",
+    "href": "semanas/Aula06x.html#comparando-modelos",
+    "title": "Análise de Sobrevivência",
+    "section": "Comparando Modelos",
+    "text": "Comparando Modelos\n\nanova(TFAExp,TFAExp1)\n\n#&gt;                    Terms Resid. Df    -2*LL Test Df  Deviance  Pr(&gt;Chi)\n#&gt; 1 clinic + prison + dose       234 2187.942      NA        NA        NA\n#&gt; 2          clinic + dose       235 2190.269    = -1 -2.327102 0.1271384"
+  },
+  {
+    "objectID": "semanas/Aula06x.html#usando-o-aic",
+    "href": "semanas/Aula06x.html#usando-o-aic",
+    "title": "Análise de Sobrevivência",
+    "section": "Usando o AIC",
+    "text": "Usando o AIC\nVamos usar o AIC para selecionar variáveis e verificar se devemos retirar a variável prison\n\nlibrary(MASS)\nTFAExp1 &lt;- stepAIC(TFAExp, trace = FALSE)\nsummary(TFAExp1)\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, \n#&gt;     data = dados, dist = \"exponential\")\n#&gt;                Value Std. Error     z       p\n#&gt; (Intercept)  3.68434    0.43072  8.55 &lt; 2e-16\n#&gt; clinic       0.88058    0.21063  4.18 2.9e-05\n#&gt; prison      -0.25265    0.16489 -1.53    0.13\n#&gt; dose         0.02892    0.00614  4.71 2.5e-06\n#&gt; \n#&gt; Scale fixed at 1 \n#&gt; \n#&gt; Exponential distribution\n#&gt; Loglik(model)= -1094   Loglik(intercept only)= -1118.9\n#&gt;  Chisq= 49.91 on 3 degrees of freedom, p= 8.3e-11 \n#&gt; Number of Newton-Raphson Iterations: 5 \n#&gt; n= 238\n\n\nVemos que através do AIC não há evidências de que devemos retirar prison do modelo."
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#modelo-exponencial",
+    "href": "semanas/Aula06x1.html#modelo-exponencial",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelo Exponencial",
+    "text": "Modelo Exponencial\n\n```{r}\nTFAExp &lt;- survreg(Surv(survt,status)~ clinic + prison + dose,dist='exponential', data=dados)\nsummary(TFAExp)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, \n#&gt;     data = dados, dist = \"exponential\")\n#&gt;                Value Std. Error     z       p\n#&gt; (Intercept)  3.68434    0.43072  8.55 &lt; 2e-16\n#&gt; clinic       0.88058    0.21063  4.18 2.9e-05\n#&gt; prison      -0.25265    0.16489 -1.53    0.13\n#&gt; dose         0.02892    0.00614  4.71 2.5e-06\n#&gt; \n#&gt; Scale fixed at 1 \n#&gt; \n#&gt; Exponential distribution\n#&gt; Loglik(model)= -1094   Loglik(intercept only)= -1118.9\n#&gt;  Chisq= 49.91 on 3 degrees of freedom, p= 8.3e-11 \n#&gt; Number of Newton-Raphson Iterations: 5 \n#&gt; n= 238"
   }
 ]
