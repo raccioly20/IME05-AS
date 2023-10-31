@@ -59,13 +59,15 @@ summary(TFAExp)
 
 ```{r}
 #| echo: fenced
-TFAWei <- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,
+TFAWei <- survreg(Surv(survt, status) ~ clinic + prison + dose,
                    dist = "weibull", 
                    data=dados)
 summary(TFAWei)
 ```
 
-## Previsões
+## Previsão na mediana do tempo entre eventos
+
+Aqui estamos mantendo as variáveis prisão e dose fixas somente variando a clínica
 
 ```{r}
 #| echo: fenced
@@ -74,14 +76,32 @@ novosdados <- data.frame(clinic = c("1", "2"),
 previs <- predict(TFAWei, type = "quantile", 
                   newdata = novosdados, p = 0.5)
 previs
-previs[2]/previs[1]
-previs <- predict(TFAWei, type = "quantile", 
-                  newdata = novosdados, p = 0.7)
-previs
+```
+
+## Razão entre as previsões dos dois grupos
+
+```{r}
 previs[2]/previs[1]
 ```
 
+## Previsão em outro Quantil
+
+```{r}
+previs <- predict(TFAWei, type = "quantile", 
+                  newdata = novosdados, p = 0.7)
+previs
+```
+
+## Razão entre as previsões dos dois grupos
+
+```{r}
+previs[2]/previs[1]
+```
+
+
 ## Função auxiliar
+
+Uma função para suavizar os pontos da nuvem de resíduos do modelo
 
 ```{r}
 smoothSEcurve <- function(yy, xx) {
@@ -124,21 +144,37 @@ TFALn <- survreg(Surv(survt, status) ~ clinic + prison + dose,
 summary(TFALn)
 ```
 
-## Previsões
+## Previsões na mediana
 
 ```{r}
 #| echo: fenced
-novosdados <- data.frame(clinic = c("1", "2"),
-                         prison = c(0, 0), dose = c(60, 60))
 previs <- predict(TFALn, type = "quantile", 
                   newdata = novosdados, p = 0.5)
 previs
+```
+
+## Razão das previsões na mediana
+
+```{r}
 previs[2]/previs[1]
+
+```
+
+
+## Outro Quantil
+
+```{r}
 previs <- predict(TFALn, type = "quantile", 
                   newdata = novosdados, p = 0.7)
 previs
+```
+
+## Razão das previsões noutro quantil
+
+```{r}
 previs[2]/previs[1]
 ```
+
 
 ## Diagnóstico do Modelo
 
@@ -154,7 +190,7 @@ qqPlot(log.resid, dist = "norm", sd=TFALn$scale,
 main = "Grafico Q-Q", xlab = "Quantis teoricos Lognormal", ylab = "Quantis empiricos")
 ```
 
-## Modeleo Loglogistico
+## Modelo Loglogistico
 
 ```{r}
 #| echo: fenced
@@ -164,21 +200,36 @@ TFALl <- survreg(Surv(survt, status) ~ clinic + prison + dose,
 summary(TFALl)
 ```
 
-## Previsões
+## Previsões na mediana
 
 ```{r}
 #| echo: fenced
-novosdados <- data.frame(clinic = c("1", "2"),
-                         prison = c(0, 0), dose = c(60, 60))
 previs <- predict(TFALl, type = "quantile", 
                   newdata = novosdados, p = 0.5)
 previs
+```
+
+
+## Razão das previsões na mediana
+
+```{r}
 previs[2]/previs[1]
+```
+
+## Outro quantil
+
+```{r}
 previs <- predict(TFALl, type = "quantile", 
                   newdata = novosdados, p = 0.7)
 previs
+```
+
+## Razão das previsões 
+
+```{r}
 previs[2]/previs[1]
 ```
+
 
 ## Diagnóstico do Modelo
 

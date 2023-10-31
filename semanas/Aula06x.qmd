@@ -59,7 +59,6 @@ summary(TFAExp)
 
 A variável prison é marginalmente significativa considerando um nível de significância de 0,10.
 
-
 ## Usando o AIC
 
 Vamos usar o AIC para selecionar variáveis e verificar se devemos retirar a variável prison
@@ -71,7 +70,6 @@ summary(TFAExp1)
 ```
 
 Vemos que através do AIC não há evidências de que devemos retirar prison do modelo.
-
 
 ## Método de Kaplan-Meier
 
@@ -97,9 +95,9 @@ exp(coefExp[3])
 exp(coefExp[4])
 ```
 
-A mudança da clinica 1 para a clinica 2 teve um fator de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1.
+A mudança da clinica 1 para a clinica 2 teve um fator de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1, ou seja, desacelerou.
 
-A ausência de prisão anterior reduziu i tempo até o tempo até o evento, o fator de desaceleração foi de 0,77.
+A prisão anterior reduziu o tempo até o evento, o fator foi de 0,77, ou seja, o tempo foi acelerado.
 
 A mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1,02
 

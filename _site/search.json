@@ -221,7 +221,7 @@
     "href": "semanas/Aula07.html#verificando-o-modelo",
     "title": "Análise de Sobrevivência",
     "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\nsmoothSEcurve &lt;- function(yy, xx) {\n# usar depois de chamar um grafico\n# Ajusta um curva lowess curve com IC de 95%\n## Facilita a avaliação dos resíduos\nxx.list &lt;- min(xx) + ((0:100)/100)*(max(xx) - min(xx))\nyy.xx &lt;- predict(loess(yy ~ xx), se=T,\nnewdata=data.frame(xx=xx.list))\nlines(yy.xx$fit ~ xx.list, lwd=2)\nlines(yy.xx$fit -\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\nlines(yy.xx$fit +\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\n}\n\n\nlibrary(car)\n\nCarregando pacotes exigidos: carData\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(leuc.exp.sel, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 16"
+    "text": "Verificando o modelo\n\nsmoothSEcurve &lt;- function(yy, xx) {\n# usar depois de chamar um grafico\n# Ajusta um curva lowess curve com IC de 95%\n## Facilita a avaliação dos resíduos\nxx.list &lt;- min(xx) + ((0:100)/100)*(max(xx) - min(xx))\nyy.xx &lt;- predict(loess(yy ~ xx), se=T,\nnewdata=data.frame(xx=xx.list))\nlines(yy.xx$fit ~ xx.list, lwd=2)\nlines(yy.xx$fit -\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\nlines(yy.xx$fit +\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\n}\n\n\nlibrary(car)\n\nCarregando pacotes exigidos: carData\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(leuc.exp.sel, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 28 19"
   },
   {
     "objectID": "semanas/Aula07.html#modelo-weibull",
@@ -256,7 +256,7 @@
     "href": "semanas/Aula07.html#verificando-o-modelo-1",
     "title": "Análise de Sobrevivência",
     "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(leuc.wei.sel, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1/leuc.wei.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 16"
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(leuc.wei.sel, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"weibull\",\nshape = 1/leuc.wei.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 28 19"
   },
   {
     "objectID": "semanas/Aula07.html#modelo-lognormal",
@@ -291,7 +291,7 @@
     "href": "semanas/Aula07.html#verificando-o-modelo-2",
     "title": "Análise de Sobrevivência",
     "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(leuc.logn.sel, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"norm\",\nsd = leuc.logn.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 12"
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(leuc.logn.sel, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"norm\",\nsd = leuc.logn.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 28 26"
   },
   {
     "objectID": "semanas/Aula07.html#modelo-loglogistico",
@@ -326,14 +326,14 @@
     "href": "semanas/Aula07.html#verificando-o-modelo-3",
     "title": "Análise de Sobrevivência",
     "section": "Verificando o modelo",
-    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(leuc.logl.sel, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"logis\",\nscale = leuc.logl.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 11 12"
+    "text": "Verificando o modelo\n\npar(mfrow = c(1, 2), cex = 0.6)\npred.lin &lt;- predict(leuc.logl.sel, type = \"lp\")[dados$status == 1]\nlog.resid &lt;- log(dados$tempo[dados$status == 1]) - pred.lin\nplot(pred.lin, log.resid, main = \"Grafico TA\",\nxlab = \"log(valores ajustados)\", ylab = \"log(residuos)\")\nsmoothSEcurve(log.resid, pred.lin)\nqqPlot(exp(log.resid), dist = \"logis\",\nscale = leuc.logl.sel$scale,\nmain = \"Grafico Q-Q\", xlab = \"Quantis teoricos\", ylab = \"Quantis Empiricos\")\n\n\n\n\n[1] 28 26"
   },
   {
     "objectID": "semanas/Aula07.html#comparação-dos-modelos",
     "href": "semanas/Aula07.html#comparação-dos-modelos",
     "title": "Análise de Sobrevivência",
     "section": "Comparação dos modelos",
-    "text": "Comparação dos modelos\n\ntab.exp &lt;- summary(leuc.exp.sel)\ntab.exp\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"exponential\")\n             Value Std. Error     z       p\n(Intercept)  5.958      0.699  8.52 &lt; 2e-16\nlogwbc      -0.884      0.216 -4.10 4.2e-05\nRx          -1.093      0.413 -2.65  0.0082\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.8   Loglik(intercept only)= -116.8\n    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42 \n\ntab.wei &lt;- summary(leuc.wei.sel)\ntab.wei\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"weibull\")\n             Value Std. Error     z       p\n(Intercept)  5.399      0.364 14.84 &lt; 2e-16\nlogwbc      -0.807      0.108 -7.45 9.7e-14\nRx          -0.659      0.189 -3.49 0.00049\nLog(scale)  -0.793      0.142 -5.58 2.5e-08\n\nScale= 0.452 \n\nWeibull distribution\nLoglik(model)= -90.1   Loglik(intercept only)= -116.4\n    Chisq= 52.68 on 2 degrees of freedom, p= 3.6e-12 \nNumber of Newton-Raphson Iterations: 7 \nn= 42 \n\nTRV &lt;- 2*(tab.wei$loglik[1] - tab.exp$loglik[1])\npchisq(TRV, 1, lower.tail = F)\n\n[1] 0.3953251\n\ntab.ln &lt;- summary(leuc.logn.sel)\ntab.ln\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"lognormal\")\n             Value Std. Error     z       p\n(Intercept)  4.982      0.394 12.65 &lt; 2e-16\nlogwbc      -0.716      0.123 -5.80 6.6e-09\nRx          -0.848      0.232 -3.66 0.00025\nLog(scale)  -0.437      0.129 -3.39 0.00070\n\nScale= 0.646 \n\nLog Normal distribution\nLoglik(model)= -93.9   Loglik(intercept only)= -115.4\n    Chisq= 42.9 on 2 degrees of freedom, p= 4.8e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\ntab.ll &lt;- summary(leuc.logl.sel)\ntab.ll\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"loglogistic\")\n             Value Std. Error     z       p\n(Intercept)  5.008      0.348 14.40 &lt; 2e-16\nlogwbc      -0.733      0.108 -6.81 9.8e-12\nRx          -0.743      0.210 -3.54   4e-04\nLog(scale)  -1.089      0.151 -7.22 5.3e-13\n\nScale= 0.337 \n\nLog logistic distribution\nLoglik(model)= -92.3   Loglik(intercept only)= -115.4\n    Chisq= 46.04 on 2 degrees of freedom, p= 1e-10 \nNumber of Newton-Raphson Iterations: 6 \nn= 42 \n\naic.exp &lt;- -2*tab.exp$loglik[1] + 2*3\naic.exp\n\n[1] 239.5333\n\naic.wei &lt;- -2*tab.wei$loglik[1] + 2*4\naic.wei\n\n[1] 240.8108\n\naic.ln &lt;- -2*tab.ln$loglik[1] + 2*4\naic.ln\n\n[1] 238.786\n\naic.ll &lt;- -2*tab.ll$loglik[1] + 2*4\naic.ll\n\n[1] 238.7022\n\naic &lt;- c(aic.exp, aic.wei, aic.ln, aic.ll)\ndelta.aic &lt;- aic - min(aic)\ndelta.aic\n\n[1] 0.83108732 2.10858745 0.08373248 0.00000000\n\npeso.aic &lt;- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\nsum(peso.aic)\n\n[1] 1\n\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      p_Akaike = peso.aic)\ngt::gt(modelos)\n\n\n\n\n\n\n\n\nmodelos\np_Akaike\n\n\n\n\nExponencial\n0.2224093\n\n\nWeibull\n0.1174214\n\n\nLognormal\n0.3231759\n\n\nLoglogistico\n0.3369933"
+    "text": "Comparação dos modelos\n\naic.exp &lt;- AIC(leuc.exp.sel)\naic.wei &lt;- AIC(leuc.wei.sel)\naic.ln &lt;- AIC(leuc.logn.sel)\naic.ll &lt;- AIC(leuc.logl.sel)\naic &lt;- c(aic.exp, aic.wei, aic.ln, aic.ll)\ndelta.aic &lt;- aic - min(aic)\ndelta.aic\n\n[1] 19.420362  0.000000  7.755986  4.535873\n\npeso.aic &lt;- exp(-0.5*delta.aic)/sum(exp(-0.5*delta.aic))\nsum(peso.aic)\n\n[1] 1\n\nmodelos &lt;- data.frame(modelos=c(\"Exponencial\", \"Weibull\",\n                                \"Lognormal\", \"Loglogistico\"),\n                      p_Akaike = peso.aic)\n\nlibrary(tidyverse)\nlibrary(gt)\nmodelos %&gt;% gt() %&gt;% fmt_number(columns = contains(\"Akaike\"),\n                                decimals = 3,\n                                use_seps = FALSE)\n\n\n\n\n\n  \n    \n    \n      modelos\n      p_Akaike\n    \n  \n  \n    Exponencial\n0.000\n    Weibull\n0.889\n    Lognormal\n0.018\n    Loglogistico\n0.092"
   },
   {
     "objectID": "semanas/Aula06x.html",
@@ -389,7 +389,7 @@
     "href": "semanas/Aula06x.html#avaliação-dos-resultados",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação dos resultados",
-    "text": "Avaliação dos resultados\nFator de aceleração/desacelaração obtido\n\n```{r}\ncoefExp &lt;- coef(TFAExp1)\nexp(coefExp[2])\nexp(coefExp[3])\nexp(coefExp[4])\n```\n\n#&gt;   clinic \n#&gt; 2.412303 \n#&gt;    prison \n#&gt; 0.7767404 \n#&gt;     dose \n#&gt; 1.029339\n\n\nA mudança da clinica 1 para a clinica 2 teve um fator de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1.\nA ausência de prisão anterior reduziu i tempo até o tempo até o evento, o fator de desaceleração foi de 0,77.\nA mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1,02"
+    "text": "Avaliação dos resultados\nFator de aceleração/desacelaração obtido\n\n```{r}\ncoefExp &lt;- coef(TFAExp1)\nexp(coefExp[2])\nexp(coefExp[3])\nexp(coefExp[4])\n```\n\n#&gt;   clinic \n#&gt; 2.412303 \n#&gt;    prison \n#&gt; 0.7767404 \n#&gt;     dose \n#&gt; 1.029339\n\n\nA mudança da clinica 1 para a clinica 2 teve um fator de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1, ou seja, desacelerou.\nA prisão anterior reduziu o tempo até o evento, o fator foi de 0,77, ou seja, o tempo foi acelerado.\nA mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1,02"
   },
   {
     "objectID": "semanas/Aula06x.html#novos-dados",
@@ -1369,7 +1369,7 @@
     "href": "semanas/Aula06x1.html#modelo-weibull",
     "title": "Análise de Sobrevivência",
     "section": "Modelo Weibull",
-    "text": "Modelo Weibull\n\n```{r}\nTFAWei &lt;- survreg(Surv(survt, status) ~ clinic + factor(prison) + dose,\n                   dist = \"weibull\", \n                   data=dados)\nsummary(TFAWei)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + factor(prison) + \n#&gt;     dose, data = dados, dist = \"weibull\")\n#&gt;                    Value Std. Error     z       p\n#&gt; (Intercept)      4.10485    0.32806 12.51 &lt; 2e-16\n#&gt; clinic           0.70904    0.15722  4.51 6.5e-06\n#&gt; factor(prison)1 -0.22947    0.12079 -1.90   0.057\n#&gt; dose             0.02443    0.00459  5.32 1.0e-07\n#&gt; Log(scale)      -0.31495    0.06756 -4.66 3.1e-06\n#&gt; \n#&gt; Scale= 0.73 \n#&gt; \n#&gt; Weibull distribution\n#&gt; Loglik(model)= -1084.5   Loglik(intercept only)= -1114.9\n#&gt;  Chisq= 60.89 on 3 degrees of freedom, p= 3.8e-13 \n#&gt; Number of Newton-Raphson Iterations: 7 \n#&gt; n= 238"
+    "text": "Modelo Weibull\n\n```{r}\nTFAWei &lt;- survreg(Surv(survt, status) ~ clinic + prison + dose,\n                   dist = \"weibull\", \n                   data=dados)\nsummary(TFAWei)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, \n#&gt;     data = dados, dist = \"weibull\")\n#&gt;                Value Std. Error     z       p\n#&gt; (Intercept)  4.10485    0.32806 12.51 &lt; 2e-16\n#&gt; clinic       0.70904    0.15722  4.51 6.5e-06\n#&gt; prison      -0.22947    0.12079 -1.90   0.057\n#&gt; dose         0.02443    0.00459  5.32 1.0e-07\n#&gt; Log(scale)  -0.31495    0.06756 -4.66 3.1e-06\n#&gt; \n#&gt; Scale= 0.73 \n#&gt; \n#&gt; Weibull distribution\n#&gt; Loglik(model)= -1084.5   Loglik(intercept only)= -1114.9\n#&gt;  Chisq= 60.89 on 3 degrees of freedom, p= 3.8e-13 \n#&gt; Number of Newton-Raphson Iterations: 7 \n#&gt; n= 238"
   },
   {
     "objectID": "semanas/Aula06x1.html#previsões",
@@ -1383,7 +1383,7 @@
     "href": "semanas/Aula06x1.html#função-auxiliar",
     "title": "Análise de Sobrevivência",
     "section": "Função auxiliar",
-    "text": "Função auxiliar\n\nsmoothSEcurve &lt;- function(yy, xx) {\n# usar depois de chamar um grafico\n# Ajusta um curva lowess curve com IC de 95%\n## Facilita a avaliação dos resíduos\nxx.list &lt;- min(xx) + ((0:100)/100)*(max(xx) - min(xx))\nyy.xx &lt;- predict(loess(yy ~ xx), se=T,\nnewdata=data.frame(xx=xx.list))\nlines(yy.xx$fit ~ xx.list, lwd=2)\nlines(yy.xx$fit -\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\nlines(yy.xx$fit +\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\n}"
+    "text": "Função auxiliar\nUma função para suavizar os pontos da nuvem de resíduos do modelo\n\nsmoothSEcurve &lt;- function(yy, xx) {\n# usar depois de chamar um grafico\n# Ajusta um curva lowess curve com IC de 95%\n## Facilita a avaliação dos resíduos\nxx.list &lt;- min(xx) + ((0:100)/100)*(max(xx) - min(xx))\nyy.xx &lt;- predict(loess(yy ~ xx), se=T,\nnewdata=data.frame(xx=xx.list))\nlines(yy.xx$fit ~ xx.list, lwd=2)\nlines(yy.xx$fit -\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\nlines(yy.xx$fit +\nqt(0.975, yy.xx$df)*yy.xx$se.fit ~ xx.list, lty=2)\n}"
   },
   {
     "objectID": "semanas/Aula06x1.html#diagnóstico-do-modelo",
@@ -1923,5 +1923,96 @@
     "title": "Análise de Sobrevivência",
     "section": "Modelo Exponencial",
     "text": "Modelo Exponencial\n\n```{r}\nTFAExp &lt;- survreg(Surv(survt,status)~ clinic + prison + dose,dist='exponential', data=dados)\nsummary(TFAExp)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, \n#&gt;     data = dados, dist = \"exponential\")\n#&gt;                Value Std. Error     z       p\n#&gt; (Intercept)  3.68434    0.43072  8.55 &lt; 2e-16\n#&gt; clinic       0.88058    0.21063  4.18 2.9e-05\n#&gt; prison      -0.25265    0.16489 -1.53    0.13\n#&gt; dose         0.02892    0.00614  4.71 2.5e-06\n#&gt; \n#&gt; Scale fixed at 1 \n#&gt; \n#&gt; Exponential distribution\n#&gt; Loglik(model)= -1094   Loglik(intercept only)= -1118.9\n#&gt;  Chisq= 49.91 on 3 degrees of freedom, p= 8.3e-11 \n#&gt; Number of Newton-Raphson Iterations: 5 \n#&gt; n= 238"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#previsão-na-mediana-do-tempo-entre-eventos",
+    "href": "semanas/Aula06x1.html#previsão-na-mediana-do-tempo-entre-eventos",
+    "title": "Análise de Sobrevivência",
+    "section": "Previsão na mediana do tempo entre eventos",
+    "text": "Previsão na mediana do tempo entre eventos\nAqui estamos mantendo as variáveis prisão e dose fixas somente variando a clínica\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = c(0, 0), dose = c(60, 60))\nprevis &lt;- predict(TFAWei, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\n```\n\n#&gt;        1        2 \n#&gt; 200.9142 408.2661"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#razão-entre-as-previsões-dos-dois-grupos",
+    "href": "semanas/Aula06x1.html#razão-entre-as-previsões-dos-dois-grupos",
+    "title": "Análise de Sobrevivência",
+    "section": "Razão entre as previsões dos dois grupos",
+    "text": "Razão entre as previsões dos dois grupos\n\nprevis[2]/previs[1]\n\n#&gt;        2 \n#&gt; 2.032042"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#previsão-em-outro-quantil",
+    "href": "semanas/Aula06x1.html#previsão-em-outro-quantil",
+    "title": "Análise de Sobrevivência",
+    "section": "Previsão em outro Quantil",
+    "text": "Previsão em outro Quantil\n\nprevis &lt;- predict(TFAWei, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\n\n#&gt;        1        2 \n#&gt; 300.6186 610.8697"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#razão-entre-as-previsões-dos-dois-grupos-1",
+    "href": "semanas/Aula06x1.html#razão-entre-as-previsões-dos-dois-grupos-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Razão entre as previsões dos dois grupos",
+    "text": "Razão entre as previsões dos dois grupos\n\nprevis[2]/previs[1]\n\n#&gt;        2 \n#&gt; 2.032042"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#previsões-na-mediana",
+    "href": "semanas/Aula06x1.html#previsões-na-mediana",
+    "title": "Análise de Sobrevivência",
+    "section": "Previsões na mediana",
+    "text": "Previsões na mediana\n\n```{r}\nprevis &lt;- predict(TFALn, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\n```\n\n#&gt;        1        2 \n#&gt; 227.5381 404.9681"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#razão-das-previsões-na-mediana",
+    "href": "semanas/Aula06x1.html#razão-das-previsões-na-mediana",
+    "title": "Análise de Sobrevivência",
+    "section": "Razão das previsões na mediana",
+    "text": "Razão das previsões na mediana\n\nprevis[2]/previs[1]\n\n#&gt;        2 \n#&gt; 1.779782"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#outro-quantil",
+    "href": "semanas/Aula06x1.html#outro-quantil",
+    "title": "Análise de Sobrevivência",
+    "section": "Outro Quantil",
+    "text": "Outro Quantil\n\nprevis &lt;- predict(TFALn, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\n\n#&gt;        1        2 \n#&gt; 400.3836 712.5953"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#razão-das-previsões-noutro-quantil",
+    "href": "semanas/Aula06x1.html#razão-das-previsões-noutro-quantil",
+    "title": "Análise de Sobrevivência",
+    "section": "Razão das previsões noutro quantil",
+    "text": "Razão das previsões noutro quantil\n\nprevis[2]/previs[1]\n\n#&gt;        2 \n#&gt; 1.779782"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#modelo-loglogistico",
+    "href": "semanas/Aula06x1.html#modelo-loglogistico",
+    "title": "Análise de Sobrevivência",
+    "section": "Modelo Loglogistico",
+    "text": "Modelo Loglogistico\n\n```{r}\nTFALl &lt;- survreg(Surv(survt, status) ~ clinic + prison + dose,\n                   dist = \"loglogistic\", \n                   data=dados)\nsummary(TFALl)\n```\n\n#&gt; \n#&gt; Call:\n#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, \n#&gt;     data = dados, dist = \"loglogistic\")\n#&gt;                Value Std. Error     z       p\n#&gt; (Intercept)  3.56327    0.38945  9.15 &lt; 2e-16\n#&gt; clinic       0.58060    0.17157  3.38 0.00071\n#&gt; prison      -0.29127    0.14396 -2.02 0.04305\n#&gt; dose         0.03161    0.00552  5.73 1.0e-08\n#&gt; Log(scale)  -0.53314    0.06863 -7.77 7.9e-15\n#&gt; \n#&gt; Scale= 0.587 \n#&gt; \n#&gt; Log logistic distribution\n#&gt; Loglik(model)= -1093.9   Loglik(intercept only)= -1120\n#&gt;  Chisq= 52.18 on 3 degrees of freedom, p= 2.7e-11 \n#&gt; Number of Newton-Raphson Iterations: 4 \n#&gt; n= 238"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#previsões-na-mediana-1",
+    "href": "semanas/Aula06x1.html#previsões-na-mediana-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Previsões na mediana",
+    "text": "Previsões na mediana\n\n```{r}\nprevis &lt;- predict(TFALl, type = \"quantile\", \n                  newdata = novosdados, p = 0.5)\nprevis\n```\n\n#&gt;        1        2 \n#&gt; 235.1125 420.1710"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#razão-das-previsões-na-mediana-1",
+    "href": "semanas/Aula06x1.html#razão-das-previsões-na-mediana-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Razão das previsões na mediana",
+    "text": "Razão das previsões na mediana\n\nprevis[2]/previs[1]\n\n#&gt;        2 \n#&gt; 1.787106"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#outro-quantil-1",
+    "href": "semanas/Aula06x1.html#outro-quantil-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Outro quantil",
+    "text": "Outro quantil\n\nprevis &lt;- predict(TFALl, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\n\n#&gt;        1        2 \n#&gt; 386.5353 690.7797"
+  },
+  {
+    "objectID": "semanas/Aula06x1.html#razão-das-previsões",
+    "href": "semanas/Aula06x1.html#razão-das-previsões",
+    "title": "Análise de Sobrevivência",
+    "section": "Razão das previsões",
+    "text": "Razão das previsões\n\nprevis[2]/previs[1]\n\n#&gt;        2 \n#&gt; 1.787106"
   }
 ]

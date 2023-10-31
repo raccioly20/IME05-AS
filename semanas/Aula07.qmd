@@ -260,24 +260,12 @@ main = "Grafico Q-Q", xlab = "Quantis teoricos", ylab = "Quantis Empiricos")
 ## Comparação dos modelos
 
 ```{r}
-tab.exp <- summary(leuc.exp.sel)
-tab.exp
-tab.wei <- summary(leuc.wei.sel)
-tab.wei
-TRV <- 2*(tab.wei$loglik[1] - tab.exp$loglik[1])
-pchisq(TRV, 1, lower.tail = F)
-tab.ln <- summary(leuc.logn.sel)
-tab.ln
-tab.ll <- summary(leuc.logl.sel)
-tab.ll
-aic.exp <- -2*tab.exp$loglik[1] + 2*3
-aic.exp
-aic.wei <- -2*tab.wei$loglik[1] + 2*4
-aic.wei
-aic.ln <- -2*tab.ln$loglik[1] + 2*4
-aic.ln
-aic.ll <- -2*tab.ll$loglik[1] + 2*4
-aic.ll
+#| message: false
+#| warning: false
+aic.exp <- AIC(leuc.exp.sel)
+aic.wei <- AIC(leuc.wei.sel)
+aic.ln <- AIC(leuc.logn.sel)
+aic.ll <- AIC(leuc.logl.sel)
 aic <- c(aic.exp, aic.wei, aic.ln, aic.ll)
 delta.aic <- aic - min(aic)
 delta.aic
@@ -286,6 +274,10 @@ sum(peso.aic)
 modelos <- data.frame(modelos=c("Exponencial", "Weibull",
                                 "Lognormal", "Loglogistico"),
                       p_Akaike = peso.aic)
-gt::gt(modelos)
 
+library(tidyverse)
+library(gt)
+modelos %>% gt() %>% fmt_number(columns = contains("Akaike"),
+                                decimals = 3,
+                                use_seps = FALSE)
 ```
