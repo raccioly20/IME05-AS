@@ -63,7 +63,7 @@ predict(leuc.exp.sel, type="lp", newdata=novosdados)
 ```{r}
 prev1 <-predict(leuc.exp.sel, type="quantile", newdata=novosdados, p=0.5)
 prev1
-prev1[1]/prev1[2]
+prev1[2]/prev1[1]
 ```
 
 ## Comparando com outro quantil
@@ -71,7 +71,7 @@ prev1[1]/prev1[2]
 ```{r}
 prev2 <-predict(leuc.exp.sel, type="quantile", newdata=novosdados, p=0.7)
 prev2
-prev2[1]/prev2[2]
+prev2[2]/prev2[1]
 ```
 
 ## Verificando o modelo
@@ -131,7 +131,7 @@ predict(leuc.wei.sel, type="lp", newdata=novosdados)
 ```{r}
 prev1 <-predict(leuc.wei.sel, type="quantile", newdata=novosdados, p=0.5)
 prev1
-prev1[1]/prev1[2]
+prev1[2]/prev1[1]
 ```
 
 ## Comparando com outro quantil
@@ -139,7 +139,7 @@ prev1[1]/prev1[2]
 ```{r}
 prev2 <-predict(leuc.wei.sel, type="quantile", newdata=novosdados, p=0.7)
 prev2
-prev2[1]/prev2[2]
+prev2[2]/prev2[1]
 ```
 
 ## Verificando o modelo
@@ -181,7 +181,7 @@ predict(leuc.logn.sel, type="lp", newdata=novosdados)
 ```{r}
 prev1 <-predict(leuc.logn.sel, type="quantile", newdata=novosdados, p=0.5)
 prev1
-prev1[1]/prev1[2]
+prev1[2]/prev1[1]
 ```
 
 ## Comparando com outro quantil
@@ -189,7 +189,7 @@ prev1[1]/prev1[2]
 ```{r}
 prev2 <-predict(leuc.logn.sel, type="quantile", newdata=novosdados, p=0.7)
 prev2
-prev2[1]/prev2[2]
+prev2[2]/prev2[1]
 ```
 
 ## Verificando o modelo
@@ -231,7 +231,7 @@ predict(leuc.logl.sel, type="lp", newdata=novosdados)
 ```{r}
 prev1 <-predict(leuc.logl.sel, type="quantile", newdata=novosdados, p=0.5)
 prev1
-prev1[1]/prev1[2]
+prev1[2]/prev1[1]
 ```
 
 ## Comparando com outro quantil
@@ -239,7 +239,7 @@ prev1[1]/prev1[2]
 ```{r}
 prev2 <-predict(leuc.logl.sel, type="quantile", newdata=novosdados, p=0.7)
 prev2
-prev2[1]/prev2[2]
+prev2[2]/prev2[1]
 ```
 
 ## Verificando o modelo

@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.433">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
 <meta name="author" content="Ricardo Accioly">
+
 <title>IME05-12532 - Análise de Sobrevivência</title>
 <style>
 code{white-space: pre-wrap;}
@@ -54,6 +57,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -72,7 +76,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -92,16 +97,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+
+
 <meta name="twitter:title" content="IME05-12532 - Análise de Sobrevivência">
 <meta name="twitter:description" content="Modelos Paramétricos">
 <meta name="twitter:image" content="images/anasobre.png">
 <meta name="twitter:creator" content="@r_accioly">
 <meta name="twitter:card" content="summary_large_image">
 </head>
+
 <body class="nav-sidebar docked">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -112,11 +122,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-center sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../images/anasobre.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
+      <img src="../images/anasobre.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
       <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/raccioly20" rel="" title="GitHub" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
     <a href="https://twitter.com/r_accioly" rel="" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
@@ -130,7 +145,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item sidebar-item-section">
+        <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
  <span class="menu-text">Informação da disciplina</span></a>
@@ -138,8 +153,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../visao-do-curso.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Visão Geral</span></a>
@@ -152,7 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
@@ -161,15 +176,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Sobre</span></a>
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
@@ -178,15 +193,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../acesso-rstudio.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Acesso</span></a>
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
@@ -195,8 +210,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../semanas/Aula01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Aula01</span></a>
@@ -287,36 +302,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li><a href="#modelos-param%C3%A9tricos" id="toc-modelos-paramétricos" class="nav-link active" data-scroll-target="#modelos-param%C3%A9tricos">Modelos Paramétricos</a></li>
-  <li><a href="#modelos-param%C3%A9tricos---exponencial" id="toc-modelos-paramétricos---exponencial" class="nav-link" data-scroll-target="#modelos-param%C3%A9tricos---exponencial">Modelos Paramétricos - Exponencial</a></li>
+  <li><a href="#modelos-paramétricos" id="toc-modelos-paramétricos" class="nav-link active" data-scroll-target="#modelos-paramétricos">Modelos Paramétricos</a></li>
+  <li><a href="#modelos-paramétricos---exponencial" id="toc-modelos-paramétricos---exponencial" class="nav-link" data-scroll-target="#modelos-paramétricos---exponencial">Modelos Paramétricos - Exponencial</a></li>
   <li><a href="#taxa-de-falhas---exponencial" id="toc-taxa-de-falhas---exponencial" class="nav-link" data-scroll-target="#taxa-de-falhas---exponencial">Taxa de Falhas - Exponencial</a></li>
-  <li><a href="#modelos-param%C3%A9tricos---exponencial-1" id="toc-modelos-paramétricos---exponencial-1" class="nav-link" data-scroll-target="#modelos-param%C3%A9tricos---exponencial-1">Modelos Paramétricos - Exponencial</a></li>
-  <li><a href="#curva-de-sobreviv%C3%AAncia---exponencial" id="toc-curva-de-sobrevivência---exponencial" class="nav-link" data-scroll-target="#curva-de-sobreviv%C3%AAncia---exponencial">Curva de Sobrevivência - Exponencial</a></li>
-  <li><a href="#modelos-param%C3%A9tricos---weibull" id="toc-modelos-paramétricos---weibull" class="nav-link" data-scroll-target="#modelos-param%C3%A9tricos---weibull">Modelos Paramétricos - Weibull</a></li>
+  <li><a href="#modelos-paramétricos---exponencial-1" id="toc-modelos-paramétricos---exponencial-1" class="nav-link" data-scroll-target="#modelos-paramétricos---exponencial-1">Modelos Paramétricos - Exponencial</a></li>
+  <li><a href="#curva-de-sobrevivência---exponencial" id="toc-curva-de-sobrevivência---exponencial" class="nav-link" data-scroll-target="#curva-de-sobrevivência---exponencial">Curva de Sobrevivência - Exponencial</a></li>
+  <li><a href="#modelos-paramétricos---weibull" id="toc-modelos-paramétricos---weibull" class="nav-link" data-scroll-target="#modelos-paramétricos---weibull">Modelos Paramétricos - Weibull</a></li>
   <li><a href="#taxa-de-falhas---weibull" id="toc-taxa-de-falhas---weibull" class="nav-link" data-scroll-target="#taxa-de-falhas---weibull">Taxa de Falhas - Weibull</a></li>
-  <li><a href="#modelos-param%C3%A9tricos---weibull-1" id="toc-modelos-paramétricos---weibull-1" class="nav-link" data-scroll-target="#modelos-param%C3%A9tricos---weibull-1">Modelos Paramétricos - Weibull</a></li>
-  <li><a href="#curva-de-sobreviv%C3%AAncia---weibull" id="toc-curva-de-sobrevivência---weibull" class="nav-link" data-scroll-target="#curva-de-sobreviv%C3%AAncia---weibull">Curva de Sobrevivência - Weibull</a></li>
-  <li><a href="#modelos-param%C3%A9tricos---lognormal" id="toc-modelos-paramétricos---lognormal" class="nav-link" data-scroll-target="#modelos-param%C3%A9tricos---lognormal">Modelos Paramétricos - Lognormal</a></li>
+  <li><a href="#modelos-paramétricos---weibull-1" id="toc-modelos-paramétricos---weibull-1" class="nav-link" data-scroll-target="#modelos-paramétricos---weibull-1">Modelos Paramétricos - Weibull</a></li>
+  <li><a href="#curva-de-sobrevivência---weibull" id="toc-curva-de-sobrevivência---weibull" class="nav-link" data-scroll-target="#curva-de-sobrevivência---weibull">Curva de Sobrevivência - Weibull</a></li>
+  <li><a href="#modelos-paramétricos---lognormal" id="toc-modelos-paramétricos---lognormal" class="nav-link" data-scroll-target="#modelos-paramétricos---lognormal">Modelos Paramétricos - Lognormal</a></li>
   <li><a href="#taxa-de-falhas---lognormal" id="toc-taxa-de-falhas---lognormal" class="nav-link" data-scroll-target="#taxa-de-falhas---lognormal">Taxa de Falhas - Lognormal</a></li>
-  <li><a href="#modelos-param%C3%A9tricos---lognormal-1" id="toc-modelos-paramétricos---lognormal-1" class="nav-link" data-scroll-target="#modelos-param%C3%A9tricos---lognormal-1">Modelos Paramétricos - Lognormal</a></li>
-  <li><a href="#curva-de-sobreviv%C3%AAncia---lognormal" id="toc-curva-de-sobrevivência---lognormal" class="nav-link" data-scroll-target="#curva-de-sobreviv%C3%AAncia---lognormal">Curva de Sobrevivência - Lognormal</a></li>
-  <li><a href="#modelos-param%C3%A9tricos---log-logistico" id="toc-modelos-paramétricos---log-logistico" class="nav-link" data-scroll-target="#modelos-param%C3%A9tricos---log-logistico">Modelos Paramétricos - Log-logistico</a></li>
+  <li><a href="#modelos-paramétricos---lognormal-1" id="toc-modelos-paramétricos---lognormal-1" class="nav-link" data-scroll-target="#modelos-paramétricos---lognormal-1">Modelos Paramétricos - Lognormal</a></li>
+  <li><a href="#curva-de-sobrevivência---lognormal" id="toc-curva-de-sobrevivência---lognormal" class="nav-link" data-scroll-target="#curva-de-sobrevivência---lognormal">Curva de Sobrevivência - Lognormal</a></li>
+  <li><a href="#modelos-paramétricos---log-logistico" id="toc-modelos-paramétricos---log-logistico" class="nav-link" data-scroll-target="#modelos-paramétricos---log-logistico">Modelos Paramétricos - Log-logistico</a></li>
   <li><a href="#taxa-de-falhas---loglogistico" id="toc-taxa-de-falhas---loglogistico" class="nav-link" data-scroll-target="#taxa-de-falhas---loglogistico">Taxa de Falhas - Loglogistico</a></li>
-  <li><a href="#modelos-param%C3%A9tricos---log-logistico-1" id="toc-modelos-paramétricos---log-logistico-1" class="nav-link" data-scroll-target="#modelos-param%C3%A9tricos---log-logistico-1">Modelos Paramétricos - Log-logistico</a></li>
-  <li><a href="#curva-de-sobreviv%C3%AAncia---loglogistico" id="toc-curva-de-sobrevivência---loglogistico" class="nav-link" data-scroll-target="#curva-de-sobreviv%C3%AAncia---loglogistico">Curva de Sobrevivência - Loglogistico</a></li>
-  </ul></nav>
+  <li><a href="#modelos-paramétricos---log-logistico-1" id="toc-modelos-paramétricos---log-logistico-1" class="nav-link" data-scroll-target="#modelos-paramétricos---log-logistico-1">Modelos Paramétricos - Log-logistico</a></li>
+  <li><a href="#curva-de-sobrevivência---loglogistico" id="toc-curva-de-sobrevivência---loglogistico" class="nav-link" data-scroll-target="#curva-de-sobrevivência---loglogistico">Curva de Sobrevivência - Loglogistico</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
 <h1 class="title">Análise de Sobrevivência</h1>
 <p class="subtitle lead">Modelos Paramétricos</p>
 </div>
@@ -337,210 +358,248 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="modelos-paramétricos" class="level2"><h2 class="anchored" data-anchor-id="modelos-paramétricos">Modelos Paramétricos</h2>
+</header>
+
+<section id="modelos-paramétricos" class="level2">
+<h2 class="anchored" data-anchor-id="modelos-paramétricos">Modelos Paramétricos</h2>
 <p>Nesta apresentação vamos ver passo a passo como obter a função taxa de falhas e de sobrevivência para alguns modelos de probabilidade.</p>
 <p>Aqui vamos utilizar as funções existentes no pacote <code>stats</code> que vem com a instalação padrão do R.</p>
-</section><section id="modelos-paramétricos---exponencial" class="level2"><h2 class="anchored" data-anchor-id="modelos-paramétricos---exponencial">Modelos Paramétricos - Exponencial</h2>
-</section><section id="taxa-de-falhas---exponencial" class="level2"><h2 class="anchored" data-anchor-id="taxa-de-falhas---exponencial">Taxa de Falhas - Exponencial</h2>
+</section>
+<section id="modelos-paramétricos---exponencial" class="level2">
+<h2 class="anchored" data-anchor-id="modelos-paramétricos---exponencial">Modelos Paramétricos - Exponencial</h2>
+</section>
+<section id="taxa-de-falhas---exponencial" class="level2">
+<h2 class="anchored" data-anchor-id="taxa-de-falhas---exponencial">Taxa de Falhas - Exponencial</h2>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">expHaz</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">rate</span><span class="op">)</span> <span class="op">{</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">dexp</a></span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="va">rate</span><span class="op">)</span><span class="op">/</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">pexp</a></span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="va">rate</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">expHaz</span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">50</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, </span>
-<span>      col<span class="op">=</span><span class="st">"red"</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">expHaz</span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="fl">0.3</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">50</span>, </span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>,</span>
-<span>      col<span class="op">=</span><span class="st">"blue"</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">expHaz</span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">50</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, </span>
-<span>      col<span class="op">=</span><span class="st">"black"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, </span>
-<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                  <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                  <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                   lty<span class="op">=</span><span class="fl">1</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>expHaz <span class="ot">&lt;-</span> <span class="cf">function</span>(x, rate) { </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dexp</span>(x, <span class="at">rate=</span>rate)<span class="sc">/</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pexp</span>(x, <span class="at">rate=</span>rate, <span class="at">lower.tail=</span>F)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">expHaz</span>(x, <span class="at">rate=</span><span class="fl">0.5</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">50</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"red"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">expHaz</span>(x, <span class="at">rate=</span><span class="fl">0.3</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">50</span>, </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">add =</span> T)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">expHaz</span>(x, <span class="at">rate=</span><span class="fl">0.1</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">50</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"black"</span>, <span class="at">add=</span>T)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(alfa, <span class="st">" = "</span>, <span class="dv">2</span>)),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">expression</span>(<span class="fu">paste</span>(alfa, <span class="st">" = "</span>, <span class="dv">3</span>)),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">expression</span>(<span class="fu">paste</span>(alfa, <span class="st">" = "</span>, <span class="dv">10</span>))),</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aula03_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section><section id="modelos-paramétricos---exponencial-1" class="level2"><h2 class="anchored" data-anchor-id="modelos-paramétricos---exponencial-1">Modelos Paramétricos - Exponencial</h2>
-</section><section id="curva-de-sobrevivência---exponencial" class="level2"><h2 class="anchored" data-anchor-id="curva-de-sobrevivência---exponencial">Curva de Sobrevivência - Exponencial</h2>
+</section>
+<section id="modelos-paramétricos---exponencial-1" class="level2">
+<h2 class="anchored" data-anchor-id="modelos-paramétricos---exponencial-1">Modelos Paramétricos - Exponencial</h2>
+</section>
+<section id="curva-de-sobrevivência---exponencial" class="level2">
+<h2 class="anchored" data-anchor-id="curva-de-sobrevivência---exponencial">Curva de Sobrevivência - Exponencial</h2>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">expSurv</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">rate</span><span class="op">)</span> <span class="op">{</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Exponential.html">pexp</a></span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="va">rate</span>, lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">expSurv</span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">50</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">expSurv</span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="fl">0.3</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">50</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, col<span class="op">=</span><span class="st">"blue"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">expSurv</span><span class="op">(</span><span class="va">x</span>, rate<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">50</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, col<span class="op">=</span><span class="st">"black"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, </span>
-<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                  <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                  <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>       lty<span class="op">=</span><span class="fl">1</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>expSurv <span class="ot">&lt;-</span> <span class="cf">function</span>(x, rate) { </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pexp</span>(x, <span class="at">rate=</span>rate, <span class="at">lower.tail=</span>F)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">expSurv</span>(x, <span class="at">rate=</span><span class="fl">0.5</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">50</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, <span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">expSurv</span>(x, <span class="at">rate=</span><span class="fl">0.3</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">50</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">add=</span>T)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">expSurv</span>(x, <span class="at">rate=</span><span class="fl">0.1</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">50</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, <span class="at">col=</span><span class="st">"black"</span>, <span class="at">add=</span>T)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(alfa, <span class="st">" = "</span>, <span class="dv">2</span>)),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">expression</span>(<span class="fu">paste</span>(alfa, <span class="st">" = "</span>, <span class="dv">3</span>)),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">expression</span>(<span class="fu">paste</span>(alfa, <span class="st">" = "</span>, <span class="dv">10</span>))),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aula03_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section><section id="modelos-paramétricos---weibull" class="level2"><h2 class="anchored" data-anchor-id="modelos-paramétricos---weibull">Modelos Paramétricos - Weibull</h2>
-</section><section id="taxa-de-falhas---weibull" class="level2"><h2 class="anchored" data-anchor-id="taxa-de-falhas---weibull">Taxa de Falhas - Weibull</h2>
+</section>
+<section id="modelos-paramétricos---weibull" class="level2">
+<h2 class="anchored" data-anchor-id="modelos-paramétricos---weibull">Modelos Paramétricos - Weibull</h2>
+</section>
+<section id="taxa-de-falhas---weibull" class="level2">
+<h2 class="anchored" data-anchor-id="taxa-de-falhas---weibull">Taxa de Falhas - Weibull</h2>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">weibHaz</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">shape</span>, <span class="va">scale</span><span class="op">)</span> <span class="op">{</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">dweibull</a></span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="va">shape</span>, scale<span class="op">=</span><span class="va">scale</span><span class="op">)</span><span class="op">/</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="va">shape</span>, scale<span class="op">=</span><span class="va">scale</span>,</span>
-<span>           lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">weibHaz</span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="fl">1.5</span>, scale<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span>
-<span>      from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">2</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">weibHaz</span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="fl">1</span>, scale<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span>
-<span>      from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">2</span>, </span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, col<span class="op">=</span><span class="st">"blue"</span>, </span>
-<span>      add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">weibHaz</span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="fl">0.75</span>, scale<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span>
-<span>      from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">2</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, col<span class="op">=</span><span class="st">"black"</span>, </span>
-<span>      add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, </span>
-<span>   legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">beta</span>, <span class="st">" = "</span>, <span class="fl">1.5</span>,<span class="st">" "</span>,</span>
-<span>                                   <span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>              <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">beta</span>, <span class="st">" = "</span>, <span class="fl">1</span>,<span class="st">" "</span>,</span>
-<span>                                    <span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>              <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">beta</span>, <span class="st">" = "</span>, <span class="fl">0.75</span>,<span class="st">" "</span>,</span>
-<span>                                    <span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>       lty<span class="op">=</span><span class="fl">1</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>weibHaz <span class="ot">&lt;-</span> <span class="cf">function</span>(x, shape, scale) { </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dweibull</span>(x, <span class="at">shape=</span>shape, <span class="at">scale=</span>scale)<span class="sc">/</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pweibull</span>(x, <span class="at">shape=</span>shape, <span class="at">scale=</span>scale,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">lower.tail=</span>F)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">weibHaz</span>(x, <span class="at">shape=</span><span class="fl">1.5</span>, <span class="at">scale=</span><span class="dv">1</span>), </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">2</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, <span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">weibHaz</span>(x, <span class="at">shape=</span><span class="dv">1</span>, <span class="at">scale=</span><span class="dv">1</span>), </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">2</span>, </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, <span class="at">col=</span><span class="st">"blue"</span>, </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">add =</span> T)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">weibHaz</span>(x, <span class="at">shape=</span><span class="fl">0.75</span>, <span class="at">scale=</span><span class="dv">1</span>), </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">2</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, <span class="at">col=</span><span class="st">"black"</span>, </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">add=</span>T)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>   <span class="at">legend =</span> <span class="fu">c</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(beta, <span class="st">" = "</span>, <span class="fl">1.5</span>,<span class="st">" "</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                                   alfa, <span class="st">" = "</span>, <span class="dv">1</span>)),</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>              <span class="fu">expression</span>(<span class="fu">paste</span>(beta, <span class="st">" = "</span>, <span class="dv">1</span>,<span class="st">" "</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                                    alfa, <span class="st">" = "</span>, <span class="dv">1</span>)),</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>              <span class="fu">expression</span>(<span class="fu">paste</span>(beta, <span class="st">" = "</span>, <span class="fl">0.75</span>,<span class="st">" "</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>                                    alfa, <span class="st">" = "</span>, <span class="dv">1</span>))),</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aula03_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section><section id="modelos-paramétricos---weibull-1" class="level2"><h2 class="anchored" data-anchor-id="modelos-paramétricos---weibull-1">Modelos Paramétricos - Weibull</h2>
-</section><section id="curva-de-sobrevivência---weibull" class="level2"><h2 class="anchored" data-anchor-id="curva-de-sobrevivência---weibull">Curva de Sobrevivência - Weibull</h2>
+</section>
+<section id="modelos-paramétricos---weibull-1" class="level2">
+<h2 class="anchored" data-anchor-id="modelos-paramétricos---weibull-1">Modelos Paramétricos - Weibull</h2>
+</section>
+<section id="curva-de-sobrevivência---weibull" class="level2">
+<h2 class="anchored" data-anchor-id="curva-de-sobrevivência---weibull">Curva de Sobrevivência - Weibull</h2>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">weibSurv</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">shape</span>, <span class="va">scale</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Weibull.html">pweibull</a></span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="va">shape</span>, scale<span class="op">=</span><span class="va">scale</span>,</span>
-<span>           lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">weibSurv</span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="fl">1.5</span>, scale<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">2</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">weibSurv</span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="fl">1</span>, scale<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">2</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, col<span class="op">=</span><span class="st">"blue"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">weibSurv</span><span class="op">(</span><span class="va">x</span>, shape<span class="op">=</span><span class="fl">0.75</span>, scale<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fl">2</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Tempo"</span>, col<span class="op">=</span><span class="st">"black"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, </span>
-<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">beta</span>, <span class="st">" = "</span>, <span class="fl">1.5</span>,<span class="st">" "</span>,</span>
-<span>                                       <span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                  <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">beta</span>, <span class="st">" = "</span>, <span class="fl">1</span>,<span class="st">" "</span>,</span>
-<span>                                       <span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>         <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">beta</span>, <span class="st">" = "</span>, <span class="fl">0.75</span>,<span class="st">" "</span>,</span>
-<span>                                      <span class="va">alfa</span>, <span class="st">" = "</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>       lty<span class="op">=</span><span class="fl">1</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>weibSurv <span class="ot">&lt;-</span> <span class="cf">function</span>(x, shape, scale) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pweibull</span>(x, <span class="at">shape=</span>shape, <span class="at">scale=</span>scale,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">lower.tail=</span>F)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">weibSurv</span>(x, <span class="at">shape=</span><span class="fl">1.5</span>, <span class="at">scale=</span><span class="dv">1</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">2</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, <span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">weibSurv</span>(x, <span class="at">shape=</span><span class="dv">1</span>, <span class="at">scale=</span><span class="dv">1</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">2</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">add=</span>T)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">weibSurv</span>(x, <span class="at">shape=</span><span class="fl">0.75</span>, <span class="at">scale=</span><span class="dv">1</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="dv">2</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Tempo"</span>, <span class="at">col=</span><span class="st">"black"</span>, <span class="at">add=</span>T)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="fu">expression</span>(<span class="fu">paste</span>(beta, <span class="st">" = "</span>, <span class="fl">1.5</span>,<span class="st">" "</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                                       alfa, <span class="st">" = "</span>, <span class="dv">1</span>)),</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">expression</span>(<span class="fu">paste</span>(beta, <span class="st">" = "</span>, <span class="dv">1</span>,<span class="st">" "</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                                       alfa, <span class="st">" = "</span>, <span class="dv">1</span>)),</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>         <span class="fu">expression</span>(<span class="fu">paste</span>(beta, <span class="st">" = "</span>, <span class="fl">0.75</span>,<span class="st">" "</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>                                      alfa, <span class="st">" = "</span>, <span class="dv">1</span>))),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aula03_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section><section id="modelos-paramétricos---lognormal" class="level2"><h2 class="anchored" data-anchor-id="modelos-paramétricos---lognormal">Modelos Paramétricos - Lognormal</h2>
-</section><section id="taxa-de-falhas---lognormal" class="level2"><h2 class="anchored" data-anchor-id="taxa-de-falhas---lognormal">Taxa de Falhas - Lognormal</h2>
+</section>
+<section id="modelos-paramétricos---lognormal" class="level2">
+<h2 class="anchored" data-anchor-id="modelos-paramétricos---lognormal">Modelos Paramétricos - Lognormal</h2>
+</section>
+<section id="taxa-de-falhas---lognormal" class="level2">
+<h2 class="anchored" data-anchor-id="taxa-de-falhas---lognormal">Taxa de Falhas - Lognormal</h2>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">logHaz</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">meanlog</span>, <span class="va">sdlog</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">dlnorm</a></span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="va">meanlog</span>, sdlog<span class="op">=</span><span class="va">sdlog</span><span class="op">)</span><span class="op">/</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">plnorm</a></span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="va">meanlog</span>, sdlog<span class="op">=</span><span class="va">sdlog</span>, </span>
-<span>         lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">logHaz</span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="fl">0</span>, sdlog<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"log(Tempo)"</span>, </span>
-<span>      col<span class="op">=</span><span class="st">"red"</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">3.0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">logHaz</span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="fl">1</span>, sdlog<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Log(Tempo)"</span>, </span>
-<span>      col<span class="op">=</span><span class="st">"blue"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">logHaz</span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="fl">1</span>, sdlog<span class="op">=</span><span class="fl">1.0</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Log(Tempo)"</span>, </span>
-<span>      col<span class="op">=</span><span class="st">"black"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lnorm(0,0.5)"</span>, <span class="st">"lnorm(1,0.7)"</span>, </span>
-<span>                     <span class="st">"lnorm(1,1)"</span><span class="op">)</span>, lty<span class="op">=</span><span class="fl">1</span>, </span>
-<span>       col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>logHaz <span class="ot">&lt;-</span> <span class="cf">function</span>(x, meanlog, sdlog) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dlnorm</span>(x, <span class="at">meanlog=</span>meanlog, <span class="at">sdlog=</span>sdlog)<span class="sc">/</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plnorm</span>(x, <span class="at">meanlog=</span>meanlog, <span class="at">sdlog=</span>sdlog, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower.tail=</span>F)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">logHaz</span>(x, <span class="at">meanlog=</span><span class="dv">0</span>, <span class="at">sdlog=</span><span class="fl">0.5</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"log(Tempo)"</span>, </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"red"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">3.0</span>))</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">logHaz</span>(x, <span class="at">meanlog=</span><span class="dv">1</span>, <span class="at">sdlog=</span><span class="fl">0.7</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Log(Tempo)"</span>, </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">add=</span>T)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">logHaz</span>(x, <span class="at">meanlog=</span><span class="dv">1</span>, <span class="at">sdlog=</span><span class="fl">1.0</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Log(Tempo)"</span>, </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"black"</span>, <span class="at">add=</span>T)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"lnorm(0,0.5)"</span>, <span class="st">"lnorm(1,0.7)"</span>, </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"lnorm(1,1)"</span>), <span class="at">lty=</span><span class="dv">1</span>, </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aula03_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section><section id="modelos-paramétricos---lognormal-1" class="level2"><h2 class="anchored" data-anchor-id="modelos-paramétricos---lognormal-1">Modelos Paramétricos - Lognormal</h2>
-</section><section id="curva-de-sobrevivência---lognormal" class="level2"><h2 class="anchored" data-anchor-id="curva-de-sobrevivência---lognormal">Curva de Sobrevivência - Lognormal</h2>
+</section>
+<section id="modelos-paramétricos---lognormal-1" class="level2">
+<h2 class="anchored" data-anchor-id="modelos-paramétricos---lognormal-1">Modelos Paramétricos - Lognormal</h2>
+</section>
+<section id="curva-de-sobrevivência---lognormal" class="level2">
+<h2 class="anchored" data-anchor-id="curva-de-sobrevivência---lognormal">Curva de Sobrevivência - Lognormal</h2>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">logSurv</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">meanlog</span>, <span class="va">sdlog</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html">plnorm</a></span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="va">meanlog</span>, sdlog<span class="op">=</span><span class="va">sdlog</span>, </span>
-<span>         lower.tail<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">logSurv</span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="fl">0</span>, sdlog<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>, </span>
-<span>      from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Log(Tempo)"</span>,</span>
-<span>      col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">logSurv</span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="fl">1</span>, sdlog<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span>, </span>
-<span>      from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Log(Tempo)"</span>, </span>
-<span>      col<span class="op">=</span><span class="st">"blue"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">logSurv</span><span class="op">(</span><span class="va">x</span>, meanlog<span class="op">=</span><span class="fl">1</span>, sdlog<span class="op">=</span><span class="fl">1.0</span><span class="op">)</span>,</span>
-<span>      from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Log(Tempo)"</span>,</span>
-<span>      col<span class="op">=</span><span class="st">"black"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lnorm(0,0.5)"</span>, </span>
-<span>                     <span class="st">"lnorm(1,0.7)"</span>, </span>
-<span>                     <span class="st">"lnorm(1,1)"</span><span class="op">)</span>,</span>
-<span>       lty<span class="op">=</span><span class="fl">1</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>logSurv <span class="ot">&lt;-</span> <span class="cf">function</span>(x, meanlog, sdlog) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plnorm</span>(x, <span class="at">meanlog=</span>meanlog, <span class="at">sdlog=</span>sdlog, </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">lower.tail=</span>F)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">logSurv</span>(x, <span class="at">meanlog=</span><span class="dv">0</span>, <span class="at">sdlog=</span><span class="fl">0.5</span>), </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Log(Tempo)"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">logSurv</span>(x, <span class="at">meanlog=</span><span class="dv">1</span>, <span class="at">sdlog=</span><span class="fl">0.7</span>), </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Log(Tempo)"</span>, </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">add=</span>T)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">logSurv</span>(x, <span class="at">meanlog=</span><span class="dv">1</span>, <span class="at">sdlog=</span><span class="fl">1.0</span>),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Log(Tempo)"</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"black"</span>, <span class="at">add=</span>T)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"lnorm(0,0.5)"</span>, </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"lnorm(1,0.7)"</span>, </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"lnorm(1,1)"</span>),</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aula03_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section><section id="modelos-paramétricos---log-logistico" class="level2"><h2 class="anchored" data-anchor-id="modelos-paramétricos---log-logistico">Modelos Paramétricos - Log-logistico</h2>
-</section><section id="taxa-de-falhas---loglogistico" class="level2"><h2 class="anchored" data-anchor-id="taxa-de-falhas---loglogistico">Taxa de Falhas - Loglogistico</h2>
+</section>
+<section id="modelos-paramétricos---log-logistico" class="level2">
+<h2 class="anchored" data-anchor-id="modelos-paramétricos---log-logistico">Modelos Paramétricos - Log-logistico</h2>
+</section>
+<section id="taxa-de-falhas---loglogistico" class="level2">
+<h2 class="anchored" data-anchor-id="taxa-de-falhas---loglogistico">Taxa de Falhas - Loglogistico</h2>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">llogisHaz</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">alfa</span>, <span class="va">beta</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">haz</span> <span class="op">&lt;-</span> <span class="va">beta</span><span class="op">/</span><span class="va">alfa</span><span class="op">*</span><span class="op">(</span><span class="va">x</span><span class="op">/</span><span class="va">alfa</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="va">beta</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="op">(</span><span class="va">x</span><span class="op">/</span><span class="va">alfa</span><span class="op">)</span><span class="op">^</span><span class="va">beta</span><span class="op">)</span>  </span>
-<span><span class="op">}</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">llogisHaz</span><span class="op">(</span><span class="va">x</span>, alfa<span class="op">=</span><span class="fl">1</span>, beta<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Log(Tempo)"</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">llogisHaz</span><span class="op">(</span><span class="va">x</span>, alfa<span class="op">=</span><span class="fl">1.</span>, beta<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Log(Tempo)"</span>, col<span class="op">=</span><span class="st">"blue"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">llogisHaz</span><span class="op">(</span><span class="va">x</span>, alfa<span class="op">=</span><span class="fl">1.</span>, beta<span class="op">=</span><span class="fl">3</span><span class="op">)</span>, from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"h(t)"</span>, xlab<span class="op">=</span><span class="st">"Log(Tempo)"</span>, col<span class="op">=</span><span class="st">"black"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"llogis(1, 0.5)"</span>, <span class="st">"llogis(1,1)"</span>,</span>
-<span>                     <span class="st">"llogis(1,3)"</span><span class="op">)</span>,</span>
-<span>       lty<span class="op">=</span><span class="fl">1</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>llogisHaz <span class="ot">&lt;-</span> <span class="cf">function</span>(x, alfa, beta) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  haz <span class="ot">&lt;-</span> beta<span class="sc">/</span>alfa<span class="sc">*</span>(x<span class="sc">/</span>alfa)<span class="sc">^</span>(beta<span class="dv">-1</span>)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>(x<span class="sc">/</span>alfa)<span class="sc">^</span>beta)  </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">llogisHaz</span>(x, <span class="at">alfa=</span><span class="dv">1</span>, <span class="at">beta=</span><span class="fl">0.5</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Log(Tempo)"</span>, <span class="at">col=</span><span class="st">"red"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">llogisHaz</span>(x, <span class="at">alfa=</span><span class="fl">1.</span>, <span class="at">beta=</span><span class="dv">1</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Log(Tempo)"</span>, <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">add=</span>T)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">llogisHaz</span>(x, <span class="at">alfa=</span><span class="fl">1.</span>, <span class="at">beta=</span><span class="dv">3</span>), <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"h(t)"</span>, <span class="at">xlab=</span><span class="st">"Log(Tempo)"</span>, <span class="at">col=</span><span class="st">"black"</span>, <span class="at">add=</span>T)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"llogis(1, 0.5)"</span>, <span class="st">"llogis(1,1)"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"llogis(1,3)"</span>),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aula03_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section><section id="modelos-paramétricos---log-logistico-1" class="level2"><h2 class="anchored" data-anchor-id="modelos-paramétricos---log-logistico-1">Modelos Paramétricos - Log-logistico</h2>
-</section><section id="curva-de-sobrevivência---loglogistico" class="level2"><h2 class="anchored" data-anchor-id="curva-de-sobrevivência---loglogistico">Curva de Sobrevivência - Loglogistico</h2>
+</section>
+<section id="modelos-paramétricos---log-logistico-1" class="level2">
+<h2 class="anchored" data-anchor-id="modelos-paramétricos---log-logistico-1">Modelos Paramétricos - Log-logistico</h2>
+</section>
+<section id="curva-de-sobrevivência---loglogistico" class="level2">
+<h2 class="anchored" data-anchor-id="curva-de-sobrevivência---loglogistico">Curva de Sobrevivência - Loglogistico</h2>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">llogisSurv</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">alfa</span>, <span class="va">beta</span><span class="op">)</span> <span class="op">{</span></span>
-<span>          <span class="va">surv</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="fl">1</span><span class="op">+</span><span class="op">(</span><span class="va">x</span><span class="op">/</span><span class="va">alfa</span><span class="op">)</span><span class="op">^</span><span class="va">beta</span><span class="op">)</span>  </span>
-<span><span class="op">}</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">llogisSurv</span><span class="op">(</span><span class="va">x</span>, alfa<span class="op">=</span><span class="fl">1</span>, beta<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span>, </span>
-<span>      from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Log(Tempo)"</span>, </span>
-<span>      col<span class="op">=</span><span class="st">"red"</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">llogisSurv</span><span class="op">(</span><span class="va">x</span>, alfa<span class="op">=</span><span class="fl">1</span>, beta<span class="op">=</span><span class="fl">1</span><span class="op">)</span>, </span>
-<span>      from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Log(Tempo)"</span>, </span>
-<span>      col<span class="op">=</span><span class="st">"blue"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu">llogisSurv</span><span class="op">(</span><span class="va">x</span>, alfa<span class="op">=</span><span class="fl">1</span>, beta<span class="op">=</span><span class="fl">3</span><span class="op">)</span>, </span>
-<span>      from<span class="op">=</span><span class="fl">0</span>, to<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">80</span><span class="op">)</span>,</span>
-<span>      ylab<span class="op">=</span><span class="st">"S(t)"</span>, xlab<span class="op">=</span><span class="st">"Log(Tempo)"</span>, </span>
-<span>      col<span class="op">=</span><span class="st">"black"</span>, add<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"llogis(1, 0.5)"</span>, </span>
-<span>                     <span class="st">"llogis(1,1)"</span>, </span>
-<span>                     <span class="st">"llogis(1,3)"</span><span class="op">)</span>,</span>
-<span>       lty<span class="op">=</span><span class="fl">1</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>llogisSurv <span class="ot">&lt;-</span> <span class="cf">function</span>(x, alfa, beta) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>          surv <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span>(x<span class="sc">/</span>alfa)<span class="sc">^</span>beta)  </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">llogisSurv</span>(x, <span class="at">alfa=</span><span class="dv">1</span>, <span class="at">beta=</span><span class="fl">0.5</span>), </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Log(Tempo)"</span>, </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"red"</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">llogisSurv</span>(x, <span class="at">alfa=</span><span class="dv">1</span>, <span class="at">beta=</span><span class="dv">1</span>), </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Log(Tempo)"</span>, </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">add=</span>T)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">llogisSurv</span>(x, <span class="at">alfa=</span><span class="dv">1</span>, <span class="at">beta=</span><span class="dv">3</span>), </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">from=</span><span class="dv">0</span>, <span class="at">to=</span><span class="fu">log</span>(<span class="dv">80</span>),</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">xlab=</span><span class="st">"Log(Tempo)"</span>, </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">col=</span><span class="st">"black"</span>, <span class="at">add=</span>T)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"llogis(1, 0.5)"</span>, </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"llogis(1,1)"</span>, </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"llogis(1,3)"</span>),</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aula03_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -887,7 +946,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
       <a href="../semanas/Aula02C.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Aula02C</span>
       </a>          
@@ -899,7 +960,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">Baseado em https://sta210-s22.github.io/website/</div>   
     <div class="nav-footer-center">
       &nbsp;
@@ -909,6 +971,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+
 
 
 </body></html>
