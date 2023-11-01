@@ -221,14 +221,10 @@ summary(leuc.logl.sel)
 
 ## Fazendo Previsões
 
-```{r}
-novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
-predict(leuc.logl.sel, type="lp", newdata=novosdados)
-```
-
 ## Tempo Mediano
 
 ```{r}
+novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
 prev1 <-predict(leuc.logl.sel, type="quantile", newdata=novosdados, p=0.5)
 prev1
 prev1[2]/prev1[1]

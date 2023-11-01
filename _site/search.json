@@ -305,14 +305,14 @@
     "href": "semanas/Aula07.html#fazendo-previsões-3",
     "title": "Análise de Sobrevivência",
     "section": "Fazendo Previsões",
-    "text": "Fazendo Previsões\n\nnovosdados &lt;- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.logl.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n3.542894 2.800346"
+    "text": "Fazendo Previsões"
   },
   {
     "objectID": "semanas/Aula07.html#tempo-mediano-3",
     "href": "semanas/Aula07.html#tempo-mediano-3",
     "title": "Análise de Sobrevivência",
     "section": "Tempo Mediano",
-    "text": "Tempo Mediano\n\nprev1 &lt;-predict(leuc.logl.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n34.56680 16.45034 \n\nprev1[2]/prev1[1]\n\n     2 \n0.4759"
+    "text": "Tempo Mediano\n\nnovosdados &lt;- data.frame(logwbc=c(2,2), Rx=c(0,1))\nprev1 &lt;-predict(leuc.logl.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n34.56680 16.45034 \n\nprev1[2]/prev1[1]\n\n     2 \n0.4759"
   },
   {
     "objectID": "semanas/Aula07.html#comparando-com-outro-quantil-3",

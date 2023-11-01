@@ -854,25 +854,18 @@ n= 42 </code></pre>
 </section>
 <section id="fazendo-previsões-3" class="level2">
 <h2 class="anchored" data-anchor-id="fazendo-previsões-3">Fazendo Previsões</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>novosdados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">logwbc=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">Rx=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(leuc.logl.sel, <span class="at">type=</span><span class="st">"lp"</span>, <span class="at">newdata=</span>novosdados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>       1        2 
-3.542894 2.800346 </code></pre>
-</div>
-</div>
 </section>
 <section id="tempo-mediano-3" class="level2">
 <h2 class="anchored" data-anchor-id="tempo-mediano-3">Tempo Mediano</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>prev1 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logl.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.5</span>)</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>prev1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>novosdados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">logwbc=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">Rx=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>prev1 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logl.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.5</span>)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>prev1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       1        2 
 34.56680 16.45034 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>prev1[<span class="dv">2</span>]<span class="sc">/</span>prev1[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>prev1[<span class="dv">2</span>]<span class="sc">/</span>prev1[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     2 
 0.4759 </code></pre>
@@ -882,13 +875,13 @@ n= 42 </code></pre>
 <section id="comparando-com-outro-quantil-3" class="level2">
 <h2 class="anchored" data-anchor-id="comparando-com-outro-quantil-3">Comparando com outro quantil</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>prev2 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logl.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.7</span>)</span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>prev2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>prev2 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logl.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.7</span>)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>prev2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       1        2 
 45.97221 21.87818 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>prev2[<span class="dv">2</span>]<span class="sc">/</span>prev2[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>prev2[<span class="dv">2</span>]<span class="sc">/</span>prev2[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     2 
 0.4759 </code></pre>
@@ -898,17 +891,17 @@ n= 42 </code></pre>
 <section id="verificando-o-modelo-3" class="level2">
 <h2 class="anchored" data-anchor-id="verificando-o-modelo-3">Verificando o modelo</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(leuc.logl.sel, <span class="at">type =</span> <span class="st">"lp"</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>tempo[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
-<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">"Grafico TA"</span>,</span>
-<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"log(valores ajustados)"</span>, <span class="at">ylab =</span> <span class="st">"log(residuos)"</span>)</span>
-<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothSEcurve</span>(log.resid, pred.lin)</span>
-<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">exp</span>(log.resid), <span class="at">dist =</span> <span class="st">"logis"</span>,</span>
-<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="at">scale =</span> leuc.logl.sel<span class="sc">$</span>scale,</span>
-<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Grafico Q-Q"</span>, <span class="at">xlab =</span> <span class="st">"Quantis teoricos"</span>, <span class="at">ylab =</span> <span class="st">"Quantis Empiricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(leuc.logl.sel, <span class="at">type =</span> <span class="st">"lp"</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>tempo[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">"Grafico TA"</span>,</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"log(valores ajustados)"</span>, <span class="at">ylab =</span> <span class="st">"log(residuos)"</span>)</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothSEcurve</span>(log.resid, pred.lin)</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">exp</span>(log.resid), <span class="at">dist =</span> <span class="st">"logis"</span>,</span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="at">scale =</span> leuc.logl.sel<span class="sc">$</span>scale,</span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Grafico Q-Q"</span>, <span class="at">xlab =</span> <span class="st">"Quantis teoricos"</span>, <span class="at">ylab =</span> <span class="st">"Quantis Empiricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula07_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="960"></p>
+<p><img src="Aula07_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="960"></p>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 28 26</code></pre>
@@ -918,49 +911,49 @@ n= 42 </code></pre>
 <section id="comparação-dos-modelos" class="level2">
 <h2 class="anchored" data-anchor-id="comparação-dos-modelos">Comparação dos modelos</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>aic.exp <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.exp.sel)</span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>aic.wei <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.wei.sel)</span>
-<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>aic.ln <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.logn.sel)</span>
-<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>aic.ll <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.logl.sel)</span>
-<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>aic <span class="ot">&lt;-</span> <span class="fu">c</span>(aic.exp, aic.wei, aic.ln, aic.ll)</span>
-<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>delta.aic <span class="ot">&lt;-</span> aic <span class="sc">-</span> <span class="fu">min</span>(aic)</span>
-<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>delta.aic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>aic.exp <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.exp.sel)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>aic.wei <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.wei.sel)</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>aic.ln <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.logn.sel)</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>aic.ll <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.logl.sel)</span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>aic <span class="ot">&lt;-</span> <span class="fu">c</span>(aic.exp, aic.wei, aic.ln, aic.ll)</span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>delta.aic <span class="ot">&lt;-</span> aic <span class="sc">-</span> <span class="fu">min</span>(aic)</span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>delta.aic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 19.420362  0.000000  7.755986  4.535873</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>peso.aic <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>delta.aic)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>delta.aic))</span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(peso.aic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>peso.aic <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>delta.aic)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>delta.aic))</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(peso.aic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>modelos <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">modelos=</span><span class="fu">c</span>(<span class="st">"Exponencial"</span>, <span class="st">"Weibull"</span>,</span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Lognormal"</span>, <span class="st">"Loglogistico"</span>),</span>
-<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">p_Akaike =</span> peso.aic)</span>
-<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>modelos <span class="sc">%&gt;%</span> <span class="fu">gt</span>() <span class="sc">%&gt;%</span> <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">contains</span>(<span class="st">"Akaike"</span>),</span>
-<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>                                <span class="at">decimals =</span> <span class="dv">3</span>,</span>
-<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>                                <span class="at">use_seps =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>modelos <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">modelos=</span><span class="fu">c</span>(<span class="st">"Exponencial"</span>, <span class="st">"Weibull"</span>,</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Lognormal"</span>, <span class="st">"Loglogistico"</span>),</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">p_Akaike =</span> peso.aic)</span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>modelos <span class="sc">%&gt;%</span> <span class="fu">gt</span>() <span class="sc">%&gt;%</span> <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">contains</span>(<span class="st">"Akaike"</span>),</span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>                                <span class="at">decimals =</span> <span class="dv">3</span>,</span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a>                                <span class="at">use_seps =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div id="zzfwgfwmws" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#zzfwgfwmws table {
+<div id="yvwyiaeigm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yvwyiaeigm table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#zzfwgfwmws thead, #zzfwgfwmws tbody, #zzfwgfwmws tfoot, #zzfwgfwmws tr, #zzfwgfwmws td, #zzfwgfwmws th {
+#yvwyiaeigm thead, #yvwyiaeigm tbody, #yvwyiaeigm tfoot, #yvwyiaeigm tr, #yvwyiaeigm td, #yvwyiaeigm th {
   border-style: none;
 }
 
-#zzfwgfwmws p {
+#yvwyiaeigm p {
   margin: 0;
   padding: 0;
 }
 
-#zzfwgfwmws .gt_table {
+#yvwyiaeigm .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -986,12 +979,12 @@ n= 42 </code></pre>
   border-left-color: #D3D3D3;
 }
 
-#zzfwgfwmws .gt_caption {
+#yvwyiaeigm .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zzfwgfwmws .gt_title {
+#yvwyiaeigm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1003,7 +996,7 @@ n= 42 </code></pre>
   border-bottom-width: 0;
 }
 
-#zzfwgfwmws .gt_subtitle {
+#yvwyiaeigm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1015,7 +1008,7 @@ n= 42 </code></pre>
   border-top-width: 0;
 }
 
-#zzfwgfwmws .gt_heading {
+#yvwyiaeigm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1027,13 +1020,13 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zzfwgfwmws .gt_bottom_border {
+#yvwyiaeigm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zzfwgfwmws .gt_col_headings {
+#yvwyiaeigm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1048,7 +1041,7 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zzfwgfwmws .gt_col_heading {
+#yvwyiaeigm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1068,7 +1061,7 @@ n= 42 </code></pre>
   overflow-x: hidden;
 }
 
-#zzfwgfwmws .gt_column_spanner_outer {
+#yvwyiaeigm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1080,15 +1073,15 @@ n= 42 </code></pre>
   padding-right: 4px;
 }
 
-#zzfwgfwmws .gt_column_spanner_outer:first-child {
+#yvwyiaeigm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zzfwgfwmws .gt_column_spanner_outer:last-child {
+#yvwyiaeigm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zzfwgfwmws .gt_column_spanner {
+#yvwyiaeigm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1100,11 +1093,11 @@ n= 42 </code></pre>
   width: 100%;
 }
 
-#zzfwgfwmws .gt_spanner_row {
+#yvwyiaeigm .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#zzfwgfwmws .gt_group_heading {
+#yvwyiaeigm .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1130,7 +1123,7 @@ n= 42 </code></pre>
   text-align: left;
 }
 
-#zzfwgfwmws .gt_empty_group_heading {
+#yvwyiaeigm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1145,15 +1138,15 @@ n= 42 </code></pre>
   vertical-align: middle;
 }
 
-#zzfwgfwmws .gt_from_md > :first-child {
+#yvwyiaeigm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zzfwgfwmws .gt_from_md > :last-child {
+#yvwyiaeigm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zzfwgfwmws .gt_row {
+#yvwyiaeigm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1172,7 +1165,7 @@ n= 42 </code></pre>
   overflow-x: hidden;
 }
 
-#zzfwgfwmws .gt_stub {
+#yvwyiaeigm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1185,7 +1178,7 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-#zzfwgfwmws .gt_stub_row_group {
+#yvwyiaeigm .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1199,15 +1192,15 @@ n= 42 </code></pre>
   vertical-align: top;
 }
 
-#zzfwgfwmws .gt_row_group_first td {
+#yvwyiaeigm .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zzfwgfwmws .gt_row_group_first th {
+#yvwyiaeigm .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#zzfwgfwmws .gt_summary_row {
+#yvwyiaeigm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1217,16 +1210,16 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-#zzfwgfwmws .gt_first_summary_row {
+#yvwyiaeigm .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zzfwgfwmws .gt_first_summary_row.thick {
+#yvwyiaeigm .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zzfwgfwmws .gt_last_summary_row {
+#yvwyiaeigm .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1236,7 +1229,7 @@ n= 42 </code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#zzfwgfwmws .gt_grand_summary_row {
+#yvwyiaeigm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1246,7 +1239,7 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-#zzfwgfwmws .gt_first_grand_summary_row {
+#yvwyiaeigm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1256,7 +1249,7 @@ n= 42 </code></pre>
   border-top-color: #D3D3D3;
 }
 
-#zzfwgfwmws .gt_last_grand_summary_row_top {
+#yvwyiaeigm .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1266,11 +1259,11 @@ n= 42 </code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#zzfwgfwmws .gt_striped {
+#yvwyiaeigm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zzfwgfwmws .gt_table_body {
+#yvwyiaeigm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1279,7 +1272,7 @@ n= 42 </code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#zzfwgfwmws .gt_footnotes {
+#yvwyiaeigm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1293,7 +1286,7 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zzfwgfwmws .gt_footnote {
+#yvwyiaeigm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1302,7 +1295,7 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-#zzfwgfwmws .gt_sourcenotes {
+#yvwyiaeigm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1316,7 +1309,7 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-#zzfwgfwmws .gt_sourcenote {
+#yvwyiaeigm .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1324,63 +1317,63 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-#zzfwgfwmws .gt_left {
+#yvwyiaeigm .gt_left {
   text-align: left;
 }
 
-#zzfwgfwmws .gt_center {
+#yvwyiaeigm .gt_center {
   text-align: center;
 }
 
-#zzfwgfwmws .gt_right {
+#yvwyiaeigm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zzfwgfwmws .gt_font_normal {
+#yvwyiaeigm .gt_font_normal {
   font-weight: normal;
 }
 
-#zzfwgfwmws .gt_font_bold {
+#yvwyiaeigm .gt_font_bold {
   font-weight: bold;
 }
 
-#zzfwgfwmws .gt_font_italic {
+#yvwyiaeigm .gt_font_italic {
   font-style: italic;
 }
 
-#zzfwgfwmws .gt_super {
+#yvwyiaeigm .gt_super {
   font-size: 65%;
 }
 
-#zzfwgfwmws .gt_footnote_marks {
+#yvwyiaeigm .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#zzfwgfwmws .gt_asterisk {
+#yvwyiaeigm .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zzfwgfwmws .gt_indent_1 {
+#yvwyiaeigm .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zzfwgfwmws .gt_indent_2 {
+#yvwyiaeigm .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zzfwgfwmws .gt_indent_3 {
+#yvwyiaeigm .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zzfwgfwmws .gt_indent_4 {
+#yvwyiaeigm .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zzfwgfwmws .gt_indent_5 {
+#yvwyiaeigm .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
