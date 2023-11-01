@@ -103,17 +103,42 @@ A mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1
 
 ## Novos dados
 
+Vamos obter o tempo mediano até o evento apenas variando a clínica, as demias variáveis serão mantidas fixas.
+
 ```{r}
 #| echo: fenced
 novosdados <- data.frame(clinic = c("1", "2"),
                          prison = c(0, 0), dose = c(60, 60))
 previs <- predict(TFAExp1, type = "quantile", newdata = novosdados, p = 0.5)
 previs
+```
+
+## Razão entre os tempos medianos
+
+Aqui calculamos a razão entre os tempos mediano da clinica 2 dividido pelo tempo mediano da clinica 1
+
+```{r}
 previs[2]/previs[1]
+```
+
+
+## Outro quantil
+
+```{r}
 previs <- predict(TFAExp1, type = "quantile", 
                   newdata = novosdados, p = 0.7)
 previs
+
+```
+
+## Razão entre os tempos medianos
+
+Aqui calculamos a razão entre os tempos mediano da clinica 2 dividido pelo tempo mediano da clinica 1
+
+```{r}
 previs[2]/previs[1]
 ```
+
+
 
 Veja que no modelo TFA a proporcionalidade é verificada em diferentes quantis da curva de sobrevivência

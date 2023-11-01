@@ -396,7 +396,7 @@
     "href": "semanas/Aula06x.html#novos-dados",
     "title": "Análise de Sobrevivência",
     "section": "Novos dados",
-    "text": "Novos dados\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = c(0, 0), dose = c(60, 60))\nprevis &lt;- predict(TFAExp1, type = \"quantile\", newdata = novosdados, p = 0.5)\nprevis\nprevis[2]/previs[1]\nprevis &lt;- predict(TFAExp1, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\nprevis[2]/previs[1]\n```\n\n#&gt;        1        2 \n#&gt; 156.4648 377.4406 \n#&gt;        2 \n#&gt; 2.412303 \n#&gt;        1        2 \n#&gt; 271.7740 655.6013 \n#&gt;        2 \n#&gt; 2.412303\n\n\nVeja que no modelo TFA a proporcionalidade é verificada em diferentes quantis da curva de sobrevivência"
+    "text": "Novos dados\nVamos obter o tempo mediano até o evento apenas variando a clínica, as demias variáveis serão mantidas fixas.\n\n```{r}\nnovosdados &lt;- data.frame(clinic = c(\"1\", \"2\"),\n                         prison = c(0, 0), dose = c(60, 60))\nprevis &lt;- predict(TFAExp1, type = \"quantile\", newdata = novosdados, p = 0.5)\nprevis\n```\n\n#&gt;        1        2 \n#&gt; 156.4648 377.4406"
   },
   {
     "objectID": "semanas/Aula05.html",
@@ -2014,5 +2014,26 @@
     "title": "Análise de Sobrevivência",
     "section": "Razão das previsões",
     "text": "Razão das previsões\n\nprevis[2]/previs[1]\n\n#&gt;        2 \n#&gt; 1.787106"
+  },
+  {
+    "objectID": "semanas/Aula06x.html#razão-entre-os-tempos-medianos",
+    "href": "semanas/Aula06x.html#razão-entre-os-tempos-medianos",
+    "title": "Análise de Sobrevivência",
+    "section": "Razão entre os tempos medianos",
+    "text": "Razão entre os tempos medianos\nAqui calculamos a razão entre os tempos mediano da clinica 2 dividido pelo tempo mediano da clinica 1\n\nprevis[2]/previs[1]\n\n#&gt;        2 \n#&gt; 2.412303"
+  },
+  {
+    "objectID": "semanas/Aula06x.html#outro-quantil",
+    "href": "semanas/Aula06x.html#outro-quantil",
+    "title": "Análise de Sobrevivência",
+    "section": "Outro quantil",
+    "text": "Outro quantil\n\nprevis &lt;- predict(TFAExp1, type = \"quantile\", \n                  newdata = novosdados, p = 0.7)\nprevis\n\n#&gt;        1        2 \n#&gt; 271.7740 655.6013"
+  },
+  {
+    "objectID": "semanas/Aula06x.html#razão-entre-os-tempos-medianos-1",
+    "href": "semanas/Aula06x.html#razão-entre-os-tempos-medianos-1",
+    "title": "Análise de Sobrevivência",
+    "section": "Razão entre os tempos medianos",
+    "text": "Razão entre os tempos medianos\nAqui calculamos a razão entre os tempos mediano da clinica 2 dividido pelo tempo mediano da clinica 1\n\nprevis[2]/previs[1]\n\n#&gt;        2 \n#&gt; 2.412303\n\n\nVeja que no modelo TFA a proporcionalidade é verificada em diferentes quantis da curva de sobrevivência"
   }
 ]

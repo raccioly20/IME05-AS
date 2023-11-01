@@ -304,6 +304,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#m%C3%A9todo-de-kaplan-meier" id="toc-método-de-kaplan-meier" class="nav-link" data-scroll-target="#m%C3%A9todo-de-kaplan-meier">Método de Kaplan-Meier</a></li>
   <li><a href="#avalia%C3%A7%C3%A3o-dos-resultados" id="toc-avaliação-dos-resultados" class="nav-link" data-scroll-target="#avalia%C3%A7%C3%A3o-dos-resultados">Avaliação dos resultados</a></li>
   <li><a href="#novos-dados" id="toc-novos-dados" class="nav-link" data-scroll-target="#novos-dados">Novos dados</a></li>
+  <li><a href="#raz%C3%A3o-entre-os-tempos-medianos" id="toc-razão-entre-os-tempos-medianos" class="nav-link" data-scroll-target="#raz%C3%A3o-entre-os-tempos-medianos">Razão entre os tempos medianos</a></li>
+  <li><a href="#outro-quantil" id="toc-outro-quantil" class="nav-link" data-scroll-target="#outro-quantil">Outro quantil</a></li>
+  <li><a href="#raz%C3%A3o-entre-os-tempos-medianos-1" id="toc-razão-entre-os-tempos-medianos-1" class="nav-link" data-scroll-target="#raz%C3%A3o-entre-os-tempos-medianos-1">Razão entre os tempos medianos</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -466,26 +469,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A prisão anterior reduziu o tempo até o evento, o fator foi de 0,78, ou seja, o tempo foi acelerado.</p>
 <p>A mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1,03</p>
 </section><section id="novos-dados" class="level2"><h2 class="anchored" data-anchor-id="novos-dados">Novos dados</h2>
+<p>Vamos obter o tempo mediano até o evento apenas variando a clínica, as demias variáveis serão mantidas fixas.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>novosdados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">clinic =</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"2"</span>),</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">prison =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">dose =</span> <span class="fu">c</span>(<span class="dv">60</span>, <span class="dv">60</span>))</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFAExp1, <span class="at">type =</span> <span class="st">"quantile"</span>, <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.5</span>)</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>previs</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFAExp1, <span class="at">type =</span> <span class="st">"quantile"</span>, </span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>                  <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.7</span>)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>previs</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;        1        2 
-#&gt; 156.4648 377.4406 
-#&gt;        2 
-#&gt; 2.412303 
-#&gt;        1        2 
-#&gt; 271.7740 655.6013 
-#&gt;        2 
+#&gt; 156.4648 377.4406</code></pre>
+</div>
+</div>
+</section><section id="razão-entre-os-tempos-medianos" class="level2"><h2 class="anchored" data-anchor-id="razão-entre-os-tempos-medianos">Razão entre os tempos medianos</h2>
+<p>Aqui calculamos a razão entre os tempos mediano da clinica 2 dividido pelo tempo mediano da clinica 1</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">previs</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">previs</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        2 
+#&gt; 2.412303</code></pre>
+</div>
+</div>
+</section><section id="outro-quantil" class="level2"><h2 class="anchored" data-anchor-id="outro-quantil">Outro quantil</h2>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">previs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">TFAExp1</span>, type <span class="op">=</span> <span class="st">"quantile"</span>, </span>
+<span>                  newdata <span class="op">=</span> <span class="va">novosdados</span>, p <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span>
+<span><span class="va">previs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        1        2 
+#&gt; 271.7740 655.6013</code></pre>
+</div>
+</div>
+</section><section id="razão-entre-os-tempos-medianos-1" class="level2"><h2 class="anchored" data-anchor-id="razão-entre-os-tempos-medianos-1">Razão entre os tempos medianos</h2>
+<p>Aqui calculamos a razão entre os tempos mediano da clinica 2 dividido pelo tempo mediano da clinica 1</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">previs</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">previs</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        2 
 #&gt; 2.412303</code></pre>
 </div>
 </div>
