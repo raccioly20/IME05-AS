@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="quarto-1.3.433" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+<meta name="author" content="Ricardo Accioly" />
+
+<title>IME05-12532 – Análise de Sobrevivência</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<!-- htmldependencies:E3FAD763 -->
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn"
+      data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" 
+      aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+      onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <h1 class="quarto-secondary-nav-title"></h1>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" 
+      aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+      onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="/index.html" class="sidebar-logo-link">
+      <img src="/images/anasobre.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"/>
+      </a>
+      <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/raccioly20" rel="" title="GitHub" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/r_accioly" rel="" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Informação da disciplina</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/visao-do-curso.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visão Geral</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cronograma</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Sobre</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Sobre</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">RStudio Cloud</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/acesso-rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acesso</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Conteúdo Semanal</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula01</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula02A.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula02A</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula02B.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula02B</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula02C.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula02C</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula03</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula04</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Aula06</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula06x.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TFA1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula06x1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">TFA2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">TFA3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cox 1</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cox 2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cox 3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cox 4</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/semanas/Aula12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cox 5</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" ></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <div id="quarto-toc-target"></div>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Análise de Sobrevivência</h1>
+<p class="subtitle lead">Modelos Paramétricos TFA (AFT)</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ricardo Accioly </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#modelos-tfa" id="toc-modelos-tfa">Modelos TFA</a></li>
+  <li><a href="#carregando-os-dados" id="toc-carregando-os-dados">Carregando os dados</a></li>
+  <li><a href="#avaliando-presença-de-dados-ausentes" id="toc-avaliando-presença-de-dados-ausentes">Avaliando presença de dados ausentes</a></li>
+  <li><a href="#modelo-exponencial" id="toc-modelo-exponencial">Modelo Exponencial</a></li>
+  <li><a href="#modelo-weibull" id="toc-modelo-weibull">Modelo Weibull</a></li>
+  <li><a href="#previsão-na-mediana-do-tempo-entre-eventos" id="toc-previsão-na-mediana-do-tempo-entre-eventos">Previsão na mediana do tempo entre eventos</a></li>
+  <li><a href="#razão-entre-as-previsões-dos-dois-grupos" id="toc-razão-entre-as-previsões-dos-dois-grupos">Razão entre as previsões dos dois grupos</a></li>
+  <li><a href="#previsão-em-outro-quantil" id="toc-previsão-em-outro-quantil">Previsão em outro Quantil</a></li>
+  <li><a href="#razão-entre-as-previsões-dos-dois-grupos-1" id="toc-razão-entre-as-previsões-dos-dois-grupos-1">Razão entre as previsões dos dois grupos</a></li>
+  <li><a href="#função-auxiliar" id="toc-função-auxiliar">Função auxiliar</a></li>
+  <li><a href="#diagnóstico-do-modelo" id="toc-diagnóstico-do-modelo">Diagnóstico do Modelo</a></li>
+  <li><a href="#modelo-lognormal" id="toc-modelo-lognormal">Modelo Lognormal</a></li>
+  <li><a href="#previsões-na-mediana" id="toc-previsões-na-mediana">Previsões na mediana</a></li>
+  <li><a href="#razão-das-previsões-na-mediana" id="toc-razão-das-previsões-na-mediana">Razão das previsões na mediana</a></li>
+  <li><a href="#outro-quantil" id="toc-outro-quantil">Outro Quantil</a></li>
+  <li><a href="#razão-das-previsões-noutro-quantil" id="toc-razão-das-previsões-noutro-quantil">Razão das previsões noutro quantil</a></li>
+  <li><a href="#diagnóstico-do-modelo-1" id="toc-diagnóstico-do-modelo-1">Diagnóstico do Modelo</a></li>
+  <li><a href="#modelo-loglogistico" id="toc-modelo-loglogistico">Modelo Loglogistico</a></li>
+  <li><a href="#previsões-na-mediana-1" id="toc-previsões-na-mediana-1">Previsões na mediana</a></li>
+  <li><a href="#razão-das-previsões-na-mediana-1" id="toc-razão-das-previsões-na-mediana-1">Razão das previsões na mediana</a></li>
+  <li><a href="#outro-quantil-1" id="toc-outro-quantil-1">Outro quantil</a></li>
+  <li><a href="#razão-das-previsões" id="toc-razão-das-previsões">Razão das previsões</a></li>
+  <li><a href="#diagnóstico-do-modelo-2" id="toc-diagnóstico-do-modelo-2">Diagnóstico do Modelo</a></li>
+  </ul>
+</nav>
+<section id="modelos-tfa" class="level2">
+<h2>Modelos TFA</h2>
+<p>O conjunto de dados carregados a seguir são de 238 pacientes viciados com heroína.</p>
+<p>Os pacientes foram tratados em duas clínicas (1 e 2), além disso foram coletadas informações sobre dose de medicamento ministrado no tratamento e se o paciente já havia sido preso ou não.</p>
+<p>Os tempos (<code>survt</code>) são em dias e o evento analisado foi o tempo até a saída da clínica (status=1) ou o tempo até o término de estudo (tempo censurado (status=0).</p>
+<ul>
+<li>id: Identificação do paciente</li>
+<li>clinic: clinica em que ocorreu o tratamento</li>
+<li>survt: tempo até a saída da clínica (dias)</li>
+<li>status: censoring status 0=censored (censurado), 1=evento</li>
+<li>prison: 0= se nunca foi preso e 1= se já foi preso</li>
+<li>dose: dose do medicamento ministradp</li>
+</ul>
+</section>
+<section id="carregando-os-dados" class="level2">
+<h2>Carregando os dados</h2>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown cell-code"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">&quot;heroina.xlsx&quot;</span>, <span class="at">col_names =</span> <span class="cn">TRUE</span> )</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dados)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        id             clinic          status           survt       
+#&gt;  Min.   :  1.00   Min.   :1.000   Min.   :0.0000   Min.   :   2.0  
+#&gt;  1st Qu.: 65.25   1st Qu.:1.000   1st Qu.:0.0000   1st Qu.: 171.2  
+#&gt;  Median :131.50   Median :1.000   Median :1.0000   Median : 367.5  
+#&gt;  Mean   :134.13   Mean   :1.315   Mean   :0.6303   Mean   : 402.6  
+#&gt;  3rd Qu.:205.75   3rd Qu.:2.000   3rd Qu.:1.0000   3rd Qu.: 585.5  
+#&gt;  Max.   :266.00   Max.   :2.000   Max.   :1.0000   Max.   :1076.0  
+#&gt;      prison            dose      
+#&gt;  Min.   :0.0000   Min.   : 20.0  
+#&gt;  1st Qu.:0.0000   1st Qu.: 50.0  
+#&gt;  Median :0.0000   Median : 60.0  
+#&gt;  Mean   :0.4664   Mean   : 60.4  
+#&gt;  3rd Qu.:1.0000   3rd Qu.: 70.0  
+#&gt;  Max.   :1.0000   Max.   :110.0</code></pre>
+</div>
+</div>
+</section>
+<section id="avaliando-presença-de-dados-ausentes" class="level2">
+<h2>Avaliando presença de dados ausentes</h2>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="sourceCode markdown cell-code"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(dados)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">complete.cases</span>(dados))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 238
+#&gt; [1] 238</code></pre>
+</div>
+</div>
+</section>
+<section id="modelo-exponencial" class="level2">
+<h2>Modelo Exponencial</h2>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="sourceCode markdown cell-code"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>TFAExp <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(survt,status)<span class="sc">~</span> clinic <span class="sc">+</span> prison <span class="sc">+</span> dose,<span class="at">dist=</span><span class="st">&#39;exponential&#39;</span>, <span class="at">data=</span>dados)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(TFAExp)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, 
+#&gt;     data = dados, dist = &quot;exponential&quot;)
+#&gt;                Value Std. Error     z       p
+#&gt; (Intercept)  3.68434    0.43072  8.55 &lt; 2e-16
+#&gt; clinic       0.88058    0.21063  4.18 2.9e-05
+#&gt; prison      -0.25265    0.16489 -1.53    0.13
+#&gt; dose         0.02892    0.00614  4.71 2.5e-06
+#&gt; 
+#&gt; Scale fixed at 1 
+#&gt; 
+#&gt; Exponential distribution
+#&gt; Loglik(model)= -1094   Loglik(intercept only)= -1118.9
+#&gt;  Chisq= 49.91 on 3 degrees of freedom, p= 8.3e-11 
+#&gt; Number of Newton-Raphson Iterations: 5 
+#&gt; n= 238</code></pre>
+</div>
+</div>
+</section>
+<section id="modelo-weibull" class="level2">
+<h2>Modelo Weibull</h2>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="sourceCode markdown cell-code"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>TFAWei <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(survt, status) <span class="sc">~</span> clinic <span class="sc">+</span> prison <span class="sc">+</span> dose,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dist =</span> <span class="st">&quot;weibull&quot;</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data=</span>dados)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(TFAWei)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, 
+#&gt;     data = dados, dist = &quot;weibull&quot;)
+#&gt;                Value Std. Error     z       p
+#&gt; (Intercept)  4.10485    0.32806 12.51 &lt; 2e-16
+#&gt; clinic       0.70904    0.15722  4.51 6.5e-06
+#&gt; prison      -0.22947    0.12079 -1.90   0.057
+#&gt; dose         0.02443    0.00459  5.32 1.0e-07
+#&gt; Log(scale)  -0.31495    0.06756 -4.66 3.1e-06
+#&gt; 
+#&gt; Scale= 0.73 
+#&gt; 
+#&gt; Weibull distribution
+#&gt; Loglik(model)= -1084.5   Loglik(intercept only)= -1114.9
+#&gt;  Chisq= 60.89 on 3 degrees of freedom, p= 3.8e-13 
+#&gt; Number of Newton-Raphson Iterations: 7 
+#&gt; n= 238</code></pre>
+</div>
+</div>
+</section>
+<section id="previsão-na-mediana-do-tempo-entre-eventos" class="level2">
+<h2>Previsão na mediana do tempo entre eventos</h2>
+<p>Aqui estamos mantendo as variáveis prisão e dose fixas somente variando a clínica</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="sourceCode markdown cell-code"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>novosdados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">clinic =</span> <span class="fu">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">prison =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">dose =</span> <span class="fu">c</span>(<span class="dv">60</span>, <span class="dv">60</span>))</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFAWei, <span class="at">type =</span> <span class="st">&quot;quantile&quot;</span>, </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.5</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>previs</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        1        2 
+#&gt; 200.9142 408.2661</code></pre>
+</div>
+</div>
+</section>
+<section id="razão-entre-as-previsões-dos-dois-grupos" class="level2">
+<h2>Razão entre as previsões dos dois grupos</h2>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        2 
+#&gt; 2.032042</code></pre>
+</div>
+</div>
+</section>
+<section id="previsão-em-outro-quantil" class="level2">
+<h2>Previsão em outro Quantil</h2>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFAWei, <span class="at">type =</span> <span class="st">&quot;quantile&quot;</span>, </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.7</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>previs</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        1        2 
+#&gt; 300.6186 610.8697</code></pre>
+</div>
+</div>
+</section>
+<section id="razão-entre-as-previsões-dos-dois-grupos-1" class="level2">
+<h2>Razão entre as previsões dos dois grupos</h2>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        2 
+#&gt; 2.032042</code></pre>
+</div>
+</div>
+</section>
+<section id="função-auxiliar" class="level2">
+<h2>Função auxiliar</h2>
+<p>Uma função para suavizar os pontos da nuvem de resíduos do modelo</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>smoothSEcurve <span class="ot">&lt;-</span> <span class="cf">function</span>(yy, xx) {</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># usar depois de chamar um grafico</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajusta um curva lowess curve com IC de 95%</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Facilita a avaliação dos resíduos</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>xx.list <span class="ot">&lt;-</span> <span class="fu">min</span>(xx) <span class="sc">+</span> ((<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span>)<span class="sc">/</span><span class="dv">100</span>)<span class="sc">*</span>(<span class="fu">max</span>(xx) <span class="sc">-</span> <span class="fu">min</span>(xx))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>yy.xx <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">loess</span>(yy <span class="sc">~</span> xx), <span class="at">se=</span>T,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">xx=</span>xx.list))</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">~</span> xx.list, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">-</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, yy.xx<span class="sc">$</span>df)<span class="sc">*</span>yy.xx<span class="sc">$</span>se.fit <span class="sc">~</span> xx.list, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">+</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, yy.xx<span class="sc">$</span>df)<span class="sc">*</span>yy.xx<span class="sc">$</span>se.fit <span class="sc">~</span> xx.list, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+</section>
+<section id="diagnóstico-do-modelo" class="level2">
+<h2>Diagnóstico do Modelo</h2>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Carregando pacotes exigidos: carData</code></pre>
+</div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFAWei, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>survt[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">&quot;Grafico TA&quot;</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">&quot;log(valores ajustados)&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;log(residuos)&quot;</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothSEcurve</span>(log.resid, pred.lin)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">exp</span>(log.resid), <span class="at">dist =</span> <span class="st">&quot;weibull&quot;</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="at">shape =</span> <span class="dv">1</span><span class="sc">/</span>TFAWei<span class="sc">$</span>scale,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">&quot;Grafico Q-Q&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Quantis teoricos Weibull&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Quantis empiricos&quot;</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula06x1_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" style="width:90.0%" /></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 69  8</code></pre>
+</div>
+</div>
+</section>
+<section id="modelo-lognormal" class="level2">
+<h2>Modelo Lognormal</h2>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="sourceCode markdown cell-code"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>TFALn <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(survt, status) <span class="sc">~</span> clinic <span class="sc">+</span> prison <span class="sc">+</span> dose,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dist =</span> <span class="st">&quot;lognormal&quot;</span>, </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data=</span>dados)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(TFALn)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, 
+#&gt;     data = dados, dist = &quot;lognormal&quot;)
+#&gt;                Value Std. Error     z      p
+#&gt; (Intercept)  3.40684    0.39769  8.57 &lt;2e-16
+#&gt; clinic       0.57649    0.17648  3.27 0.0011
+#&gt; prison      -0.30904    0.15431 -2.00 0.0452
+#&gt; dose         0.03367    0.00568  5.93  3e-09
+#&gt; Log(scale)   0.07476    0.05930  1.26 0.2074
+#&gt; 
+#&gt; Scale= 1.08 
+#&gt; 
+#&gt; Log Normal distribution
+#&gt; Loglik(model)= -1097.8   Loglik(intercept only)= -1123.7
+#&gt;  Chisq= 51.85 on 3 degrees of freedom, p= 3.2e-11 
+#&gt; Number of Newton-Raphson Iterations: 4 
+#&gt; n= 238</code></pre>
+</div>
+</div>
+</section>
+<section id="previsões-na-mediana" class="level2">
+<h2>Previsões na mediana</h2>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="sourceCode markdown cell-code"><code class="sourceCode markdown"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFALn, <span class="at">type =</span> <span class="st">&quot;quantile&quot;</span>, </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.5</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>previs</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        1        2 
+#&gt; 227.5381 404.9681</code></pre>
+</div>
+</div>
+</section>
+<section id="razão-das-previsões-na-mediana" class="level2">
+<h2>Razão das previsões na mediana</h2>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        2 
+#&gt; 1.779782</code></pre>
+</div>
+</div>
+</section>
+<section id="outro-quantil" class="level2">
+<h2>Outro Quantil</h2>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFALn, <span class="at">type =</span> <span class="st">&quot;quantile&quot;</span>, </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.7</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>previs</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        1        2 
+#&gt; 400.3836 712.5953</code></pre>
+</div>
+</div>
+</section>
+<section id="razão-das-previsões-noutro-quantil" class="level2">
+<h2>Razão das previsões noutro quantil</h2>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        2 
+#&gt; 1.779782</code></pre>
+</div>
+</div>
+</section>
+<section id="diagnóstico-do-modelo-1" class="level2">
+<h2>Diagnóstico do Modelo</h2>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="sourceCode markdown cell-code"><code class="sourceCode markdown"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFALn, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>survt[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">&quot;Grafico TA&quot;</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">&quot;log(valores ajustados)&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;log(residuos)&quot;</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothSEcurve</span>(log.resid, pred.lin)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(log.resid, <span class="at">dist =</span> <span class="st">&quot;norm&quot;</span>, <span class="at">sd=</span>TFALn<span class="sc">$</span>scale, </span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">&quot;Grafico Q-Q&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Quantis teoricos Lognormal&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Quantis empiricos&quot;</span>)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1]  86 110</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Aula06x1_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" style="width:90.0%" /></p>
+</div>
+</div>
+</section>
+<section id="modelo-loglogistico" class="level2">
+<h2>Modelo Loglogistico</h2>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="sourceCode markdown cell-code"><code class="sourceCode markdown"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>TFALl <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(survt, status) <span class="sc">~</span> clinic <span class="sc">+</span> prison <span class="sc">+</span> dose,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dist =</span> <span class="st">&quot;loglogistic&quot;</span>, </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">data=</span>dados)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(TFALl)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(survt, status) ~ clinic + prison + dose, 
+#&gt;     data = dados, dist = &quot;loglogistic&quot;)
+#&gt;                Value Std. Error     z       p
+#&gt; (Intercept)  3.56327    0.38945  9.15 &lt; 2e-16
+#&gt; clinic       0.58060    0.17157  3.38 0.00071
+#&gt; prison      -0.29127    0.14396 -2.02 0.04305
+#&gt; dose         0.03161    0.00552  5.73 1.0e-08
+#&gt; Log(scale)  -0.53314    0.06863 -7.77 7.9e-15
+#&gt; 
+#&gt; Scale= 0.587 
+#&gt; 
+#&gt; Log logistic distribution
+#&gt; Loglik(model)= -1093.9   Loglik(intercept only)= -1120
+#&gt;  Chisq= 52.18 on 3 degrees of freedom, p= 2.7e-11 
+#&gt; Number of Newton-Raphson Iterations: 4 
+#&gt; n= 238</code></pre>
+</div>
+</div>
+</section>
+<section id="previsões-na-mediana-1" class="level2">
+<h2>Previsões na mediana</h2>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="sourceCode markdown cell-code"><code class="sourceCode markdown"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFALl, <span class="at">type =</span> <span class="st">&quot;quantile&quot;</span>, </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.5</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>previs</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        1        2 
+#&gt; 235.1125 420.1710</code></pre>
+</div>
+</div>
+</section>
+<section id="razão-das-previsões-na-mediana-1" class="level2">
+<h2>Razão das previsões na mediana</h2>
+<div class="cell">
+<div class="sourceCode" id="cb38"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        2 
+#&gt; 1.787106</code></pre>
+</div>
+</div>
+</section>
+<section id="outro-quantil-1" class="level2">
+<h2>Outro quantil</h2>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>previs <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFALl, <span class="at">type =</span> <span class="st">&quot;quantile&quot;</span>, </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">newdata =</span> novosdados, <span class="at">p =</span> <span class="fl">0.7</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>previs</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        1        2 
+#&gt; 386.5353 690.7797</code></pre>
+</div>
+</div>
+</section>
+<section id="razão-das-previsões" class="level2">
+<h2>Razão das previsões</h2>
+<div class="cell">
+<div class="sourceCode" id="cb42"><pre class="sourceCode r cell-code"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>previs[<span class="dv">2</span>]<span class="sc">/</span>previs[<span class="dv">1</span>]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt;        2 
+#&gt; 1.787106</code></pre>
+</div>
+</div>
+</section>
+<section id="diagnóstico-do-modelo-2" class="level2">
+<h2>Diagnóstico do Modelo</h2>
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="sourceCode markdown cell-code"><code class="sourceCode markdown"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(TFALl, <span class="at">type =</span> <span class="st">&quot;lp&quot;</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>survt[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">&quot;Grafico TA&quot;</span>,</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">&quot;log(valores ajustados)&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;log(residuos)&quot;</span>)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothSEcurve</span>(log.resid, pred.lin)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(log.resid, <span class="at">dist =</span> <span class="st">&quot;logis&quot;</span>, </span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">&quot;Grafico Q-Q&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Quantis teoricos Logistica&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Quantis empiricos&quot;</span>)</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1]  86 110</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="Aula06x1_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" style="width:90.0%" /></p>
+</div>
+</div>
+<div id="quarto-navigation-envelope" class="hidden">
+<p><span class="hidden" data-render-id="quarto-int-sidebar-title">IME05-12532</span> <span class="hidden" data-render-id="quarto-int-navbar-title">IME05-12532</span> <span class="hidden" data-render-id="quarto-int-next">TFA3</span> <span class="hidden" data-render-id="quarto-int-prev">TFA1</span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-1">Informação da disciplina</span> <span class="hidden" data-render-id="quarto-int-sidebar:/visao-do-curso.html">Visão Geral</span> <span class="hidden" data-render-id="quarto-int-sidebar:/index.html">Cronograma</span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-2">Sobre</span> <span class="hidden" data-render-id="quarto-int-sidebar:/about.html">Sobre</span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-3">RStudio Cloud</span> <span class="hidden" data-render-id="quarto-int-sidebar:/acesso-rstudio.html">Acesso</span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-4">Conteúdo Semanal</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula01.html">Aula01</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula02A.html">Aula02A</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula02B.html">Aula02B</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula02C.html">Aula02C</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula03.html">Aula03</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula04.html">Aula04</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula06.html">Aula06</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula06x.html">TFA1</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula06x1.html">TFA2</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula07.html">TFA3</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula08.html">Cox 1</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula09.html">Cox 2</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula10.html">Cox 3</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula11.html">Cox 4</span> <span class="hidden" data-render-id="quarto-int-sidebar:/semanas/Aula12.html">Cox 5</span> <span class="hidden" data-render-id="footer-left">Baseado em https://sta210-s22.github.io/website/</span> <span class="hidden" data-render-id="quarto-breadcrumbs-0ccf3bc3437a7eaabf0cad43269ffbef">Conteúdo Semanal</span> <span class="hidden" data-render-id="quarto-breadcrumbs-49b4f961579b84d5c8a1ddd6622280ec">TFA2</span></p>
+</div>
+<div id="quarto-meta-markdown" class="hidden">
+<p><span class="hidden" data-render-id="quarto-metatitle">IME05-12532 - Análise de Sobrevivência</span> <span class="hidden" data-render-id="quarto-twittercardtitle">IME05-12532 - Análise de Sobrevivência</span> <span class="hidden" data-render-id="quarto-ogcardtitle">IME05-12532 - Análise de Sobrevivência</span> <span class="hidden" data-render-id="quarto-metasitename">IME05-12532</span> <span class="hidden" data-render-id="quarto-twittercarddesc">Modelos Paramétricos TFA (AFT)</span> <span class="hidden" data-render-id="quarto-ogcardddesc">Modelos Paramétricos TFA (AFT)</span></p>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id = "quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a  href="/semanas/Aula06x.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">TFA1</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a  href="/semanas/Aula07.html" class="pagination-link">
+        <span class="nav-page-text">TFA3</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <div class='footer-contents'>Baseado em https://sta210-s22.github.io/website/</div>  
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>

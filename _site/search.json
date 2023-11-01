@@ -389,7 +389,7 @@
     "href": "semanas/Aula06x.html#avaliação-dos-resultados",
     "title": "Análise de Sobrevivência",
     "section": "Avaliação dos resultados",
-    "text": "Avaliação dos resultados\nFator de aceleração/desacelaração obtido\n\n```{r}\ncoefExp &lt;- coef(TFAExp1)\nexp(coefExp[2])\nexp(coefExp[3])\nexp(coefExp[4])\n```\n\n#&gt;   clinic \n#&gt; 2.412303 \n#&gt;    prison \n#&gt; 0.7767404 \n#&gt;     dose \n#&gt; 1.029339\n\n\nA mudança da clinica 1 para a clinica 2 teve um fator de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1, ou seja, desacelerou.\nA prisão anterior reduziu o tempo até o evento, o fator foi de 0,77, ou seja, o tempo foi acelerado.\nA mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1,02"
+    "text": "Avaliação dos resultados\nFator de aceleração/desacelaração obtido\n\n```{r}\ncoefExp &lt;- coef(TFAExp1)\nexp(coefExp[2])\nexp(coefExp[3])\nexp(coefExp[4])\n```\n\n#&gt;   clinic \n#&gt; 2.412303 \n#&gt;    prison \n#&gt; 0.7767404 \n#&gt;     dose \n#&gt; 1.029339\n\n\nA mudança da clinica 1 para a clinica 2 teve um fator de 2,41, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,41 vezes maior do que na clínica 1, ou seja, desacelerou.\nA prisão anterior reduziu o tempo até o evento, o fator foi de 0,78, ou seja, o tempo foi acelerado.\nA mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1,03"
   },
   {
     "objectID": "semanas/Aula06x.html#novos-dados",

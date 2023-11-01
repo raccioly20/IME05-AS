@@ -95,11 +95,11 @@ exp(coefExp[3])
 exp(coefExp[4])
 ```
 
-A mudança da clinica 1 para a clinica 2 teve um fator de 2,35, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,35 vezes maior do que na clínica 1, ou seja, desacelerou.
+A mudança da clinica 1 para a clinica 2 teve um fator de 2,41, ou seja, na mesma probabilidade o tempo até o evento na clinica 2 é 2,41 vezes maior do que na clínica 1, ou seja, desacelerou.
 
-A prisão anterior reduziu o tempo até o evento, o fator foi de 0,77, ou seja, o tempo foi acelerado.
+A prisão anterior reduziu o tempo até o evento, o fator foi de 0,78, ou seja, o tempo foi acelerado.
 
-A mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1,02
+A mudança na dose aumentou ligeiramente o tempo até o evento, o fator foi de 1,03
 
 ## Novos dados
 
