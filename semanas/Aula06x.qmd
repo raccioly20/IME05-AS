@@ -59,6 +59,22 @@ summary(TFAExp)
 
 A variável prison é marginalmente significativa considerando um nível de significância de 0,10.
 
+## Teste da Rzão de Verossimilhança
+
+Vamos usar o teste da razão da verssimilhança para avaliar a exclusão da variável prison
+
+```{r}
+TFAExp1 <- survreg(Surv(survt, status) ~ clinic + dose,
+                   dist = "exponential", 
+                   data=dados)
+summary(TFAExp1)
+# H0: beta de prison=0  H1: beta de prison diferente de zero
+TRVe <- 2*(TFAExp$loglik - TFAExp1$loglik)
+pchisq(TRVe,1, lower.tail = F)
+anova(TFAExp, TFAExp1, test="Chisq")
+```
+
+
 ## Usando o AIC
 
 Vamos usar o AIC para selecionar variáveis e verificar se devemos retirar a variável prison
@@ -69,7 +85,9 @@ TFAExp1 <- stepAIC(TFAExp, trace = FALSE)
 summary(TFAExp1)
 ```
 
-Vemos que através do AIC não há evidências de que devemos retirar prison do modelo.
+Vemos que através do AIC não chegamos ao mesmo resultado, ou seja, pelo AIC prison foi mantida no modelo.
+
+O teste da razão de verossimilhança permite uma conclusão mais robusta que o AIC.
 
 ## Método de Kaplan-Meier
 
@@ -121,7 +139,6 @@ Aqui calculamos a razão entre os tempos mediano da clinica 2 dividido pelo temp
 previs[2]/previs[1]
 ```
 
-
 ## Outro quantil
 
 ```{r}
@@ -138,7 +155,5 @@ Aqui calculamos a razão entre os tempos mediano da clinica 2 dividido pelo temp
 ```{r}
 previs[2]/previs[1]
 ```
-
-
 
 Veja que no modelo TFA a proporcionalidade é verificada em diferentes quantis da curva de sobrevivência

@@ -98,7 +98,6 @@ previs
 previs[2]/previs[1]
 ```
 
-
 ## Função auxiliar
 
 Uma função para suavizar os pontos da nuvem de resíduos do modelo
@@ -160,7 +159,6 @@ previs[2]/previs[1]
 
 ```
 
-
 ## Outro Quantil
 
 ```{r}
@@ -174,7 +172,6 @@ previs
 ```{r}
 previs[2]/previs[1]
 ```
-
 
 ## Diagnóstico do Modelo
 
@@ -209,7 +206,6 @@ previs <- predict(TFALl, type = "quantile",
 previs
 ```
 
-
 ## Razão das previsões na mediana
 
 ```{r}
@@ -224,12 +220,11 @@ previs <- predict(TFALl, type = "quantile",
 previs
 ```
 
-## Razão das previsões 
+## Razão das previsões
 
 ```{r}
 previs[2]/previs[1]
 ```
-
 
 ## Diagnóstico do Modelo
 
