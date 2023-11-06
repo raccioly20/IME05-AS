@@ -79,7 +79,6 @@ loglog = TRUE, logt=TRUE, xlab = "Tempo", ylab = "log(-log(S))")
 
 ```
 
-
 ## Curva de Sobrevivência
 
 ```{r}
