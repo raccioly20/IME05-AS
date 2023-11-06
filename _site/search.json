@@ -179,7 +179,7 @@
     "href": "semanas/Aula07.html",
     "title": "Análise de Sobrevivência",
     "section": "",
-    "text": "Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.\nOs modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).\nO conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).\nDuas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar)."
+    "text": "Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.\nOs modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).\nO conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão.\nA variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).\nDuas outras variáveis para controle como potenciais confundidores são:\n\na contagem de glóbulos brancos em escala lgarítimica (ou seja, logwbc)\nsexo: 0 - mulher 1- homem\n\nO evento (status) é definido pela recaída do paciente (0 se censurado, 1 se ocorrer o evento)."
   },
   {
     "objectID": "semanas/Aula07.html#modelo-exponencial",
@@ -200,21 +200,21 @@
     "href": "semanas/Aula07.html#fazendo-previsões",
     "title": "Análise de Sobrevivência",
     "section": "Fazendo Previsões",
-    "text": "Fazendo Previsões\n\nnovosdados &lt;- data.frame(logwbc=c(2,2), Rx=c(0,1))\npredict(leuc.exp.sel, type=\"lp\", newdata=novosdados)\n\n       1        2 \n4.189084 3.096010"
+    "text": "Fazendo Previsões\nAqui mantivemos fixo o logwbc e temos o tratamento novo (Rx-0) e o tratamento padrão (Rx=1)\n\nn_dados_1 &lt;- data.frame(logwbc=c(2,2), Rx=c(0,1))\nn_dados_1\n\n  logwbc Rx\n1      2  0\n2      2  1"
   },
   {
     "objectID": "semanas/Aula07.html#tempo-mediano",
     "href": "semanas/Aula07.html#tempo-mediano",
     "title": "Análise de Sobrevivência",
     "section": "Tempo Mediano",
-    "text": "Tempo Mediano\n\nprev1 &lt;-predict(leuc.exp.sel, type=\"quantile\", newdata=novosdados, p=0.5)\nprev1\n\n       1        2 \n45.72161 15.32518 \n\nprev1[2]/prev1[1]\n\n        2 \n0.3351846"
+    "text": "Tempo Mediano\n\nprev1 &lt;-predict(leuc.exp.sel, type=\"quantile\", newdata=n_dados_1, p=0.5)\nprev1\n\n       1        2 \n45.72161 15.32518 \n\nprev1[2]/prev1[1]\n\n        2 \n0.3351846 \n\n\nVeja que o tempo até a recaída é menor para quem recebeu o tratamento padrão e maior para quem recebeu o novo tratamento"
   },
   {
     "objectID": "semanas/Aula07.html#comparando-com-outro-quantil",
     "href": "semanas/Aula07.html#comparando-com-outro-quantil",
     "title": "Análise de Sobrevivência",
     "section": "Comparando com outro quantil",
-    "text": "Comparando com outro quantil\n\nprev2 &lt;-predict(leuc.exp.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n79.41687 26.61931 \n\nprev2[2]/prev2[1]\n\n        2 \n0.3351846"
+    "text": "Comparando com outro quantil\n\nprev2 &lt;-predict(leuc.wei.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n47.85133 24.75747 \n\nprev2[2]/prev2[1]\n\n        2 \n0.5173831"
   },
   {
     "objectID": "semanas/Aula07.html#verificando-o-modelo",
@@ -249,7 +249,7 @@
     "href": "semanas/Aula07.html#comparando-com-outro-quantil-1",
     "title": "Análise de Sobrevivência",
     "section": "Comparando com outro quantil",
-    "text": "Comparando com outro quantil\n\nprev2 &lt;-predict(leuc.wei.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n47.85133 24.75747 \n\nprev2[2]/prev2[1]\n\n        2 \n0.5173831"
+    "text": "Comparando com outro quantil\n\nprev2 &lt;-predict(leuc.logn.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n48.83742 20.91977 \n\nprev2[2]/prev2[1]\n\n        2 \n0.4283554"
   },
   {
     "objectID": "semanas/Aula07.html#verificando-o-modelo-1",
@@ -284,7 +284,7 @@
     "href": "semanas/Aula07.html#comparando-com-outro-quantil-2",
     "title": "Análise de Sobrevivência",
     "section": "Comparando com outro quantil",
-    "text": "Comparando com outro quantil\n\nprev2 &lt;-predict(leuc.logn.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n48.83742 20.91977 \n\nprev2[2]/prev2[1]\n\n        2 \n0.4283554"
+    "text": "Comparando com outro quantil\n\nprev2 &lt;-predict(leuc.logl.sel, type=\"quantile\", newdata=novosdados, p=0.7)\nprev2\n\n       1        2 \n45.97221 21.87818 \n\nprev2[2]/prev2[1]\n\n     2 \n0.4759"
   },
   {
     "objectID": "semanas/Aula07.html#verificando-o-modelo-2",
@@ -1692,5 +1692,33 @@
     "title": "Análise de Sobrevivência",
     "section": "Grafico",
     "text": "Grafico\n\n```{r}\najuste_aux1 &lt;- survfit(ajusteCoxE1)\nplot(ajuste_aux1, mark.time=FALSE, col=c(1:3), lwd=3, las=1, bty='n', xlab='Tempo (anos)', ylab='Sobrevivência')\nlegend(\"topright\", levels(dados$fkarno), lwd=3, col=c(1:3))\n```"
+  },
+  {
+    "objectID": "semanas/Aula07.html#ajuste-não-paramétrico-só-com-tratamento",
+    "href": "semanas/Aula07.html#ajuste-não-paramétrico-só-com-tratamento",
+    "title": "Análise de Sobrevivência",
+    "section": "Ajuste Não Paramétrico só com tratamento",
+    "text": "Ajuste Não Paramétrico só com tratamento\n\nekm &lt;- survfit(Surv(tempo,status)~Rx, data=dados)\ntempo &lt;- ekm$time\nst &lt;- ekm$surv\nsummary(ekm)\n\nCall: survfit(formula = Surv(tempo, status) ~ Rx, data = dados)\n\n                Rx=0 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     21       3    0.857  0.0764        0.720        1.000\n    7     17       1    0.807  0.0869        0.653        0.996\n   10     15       1    0.753  0.0963        0.586        0.968\n   13     12       1    0.690  0.1068        0.510        0.935\n   16     11       1    0.627  0.1141        0.439        0.896\n   22      7       1    0.538  0.1282        0.337        0.858\n   23      6       1    0.448  0.1346        0.249        0.807\n\n                Rx=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     21       2   0.9048  0.0641      0.78754        1.000\n    2     19       2   0.8095  0.0857      0.65785        0.996\n    3     17       1   0.7619  0.0929      0.59988        0.968\n    4     16       2   0.6667  0.1029      0.49268        0.902\n    5     14       2   0.5714  0.1080      0.39455        0.828\n    8     12       4   0.3810  0.1060      0.22085        0.657\n   11      8       2   0.2857  0.0986      0.14529        0.562\n   12      6       2   0.1905  0.0857      0.07887        0.460\n   15      4       1   0.1429  0.0764      0.05011        0.407\n   17      3       1   0.0952  0.0641      0.02549        0.356\n   22      2       1   0.0476  0.0465      0.00703        0.322\n   23      1       1   0.0000     NaN           NA           NA\n\nplot(ekm, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=2:3)\nlegend(\"topright\",c(\"Rx=0\",\"Rx=1\"), lty = 2:3)"
+  },
+  {
+    "objectID": "semanas/Aula07.html#ajuste-np-km---tratamento-sexo",
+    "href": "semanas/Aula07.html#ajuste-np-km---tratamento-sexo",
+    "title": "Análise de Sobrevivência",
+    "section": "Ajuste NP KM - tratamento + sexo",
+    "text": "Ajuste NP KM - tratamento + sexo\n\nekm &lt;- survfit(Surv(tempo,status)~Rx + sexo, data=dados)\ntempo &lt;- ekm$time\nst &lt;- ekm$surv\nsummary(ekm)\n\nCall: survfit(formula = Surv(tempo, status) ~ Rx + sexo, data = dados)\n\n                Rx=0, sexo=0 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     11       2    0.818   0.116        0.619            1\n    7      8       1    0.716   0.140        0.488            1\n   10      6       1    0.597   0.159        0.353            1\n   13      3       1    0.398   0.194        0.153            1\n\n                Rx=0, sexo=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    6     10       1    0.900  0.0949        0.732            1\n   16      9       1    0.800  0.1265        0.587            1\n   22      7       1    0.686  0.1515        0.445            1\n   23      6       1    0.571  0.1638        0.326            1\n\n                Rx=1, sexo=0 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    5     11       1   0.9091  0.0867       0.7541        1.000\n    8     10       3   0.6364  0.1450       0.4071        0.995\n   11      7       2   0.4545  0.1501       0.2379        0.868\n   12      5       2   0.2727  0.1343       0.1039        0.716\n   15      3       1   0.1818  0.1163       0.0519        0.637\n   17      2       1   0.0909  0.0867       0.0140        0.589\n   22      1       1   0.0000     NaN           NA           NA\n\n                Rx=1, sexo=1 \n time n.risk n.event survival std.err lower 95% CI upper 95% CI\n    1     10       2      0.8  0.1265       0.5868        1.000\n    2      8       2      0.6  0.1549       0.3617        0.995\n    3      6       1      0.5  0.1581       0.2690        0.929\n    4      5       2      0.3  0.1449       0.1164        0.773\n    5      3       1      0.2  0.1265       0.0579        0.691\n    8      2       1      0.1  0.0949       0.0156        0.642\n   23      1       1      0.0     NaN           NA           NA\n\nplot(ekm, xlab=\"T(semanas)\",ylab=\"S(t)\", lty=1:4)\nlegend(\"topright\",c(\"Rx=0 e M\", \"Rx=0 e H\", \"Rx=1 e M\", \"Rx=1 e H\"), lty = 1:4)"
+  },
+  {
+    "objectID": "semanas/Aula07.html#automatizando-ajuste-com-stepaic",
+    "href": "semanas/Aula07.html#automatizando-ajuste-com-stepaic",
+    "title": "Análise de Sobrevivência",
+    "section": "Automatizando ajuste com StepAIC",
+    "text": "Automatizando ajuste com StepAIC\n\nlibrary(MASS)\nleuc.exp.sel &lt;- stepAIC(leuc.exp.comp, direction=\"backward\", trace=FALSE)\nsummary(leuc.exp.sel)\n\n\nCall:\nsurvreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, \n    dist = \"exponential\")\n             Value Std. Error     z       p\n(Intercept)  5.958      0.699  8.52 &lt; 2e-16\nlogwbc      -0.884      0.216 -4.10 4.2e-05\nRx          -1.093      0.413 -2.65  0.0082\n\nScale fixed at 1 \n\nExponential distribution\nLoglik(model)= -100.8   Loglik(intercept only)= -116.8\n    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 \nNumber of Newton-Raphson Iterations: 4 \nn= 42 \n\ncoefExp &lt;- coef(leuc.exp.sel)\nexp(coefExp[2])\n\n   logwbc \n0.4129641 \n\nexp(coefExp[3])\n\n       Rx \n0.3351846 \n\n\nAs variáveis que foram selecionadas através do StepAIC foram o tratameno (Rx) e o log do número de células brancas.\nObserve que os dois coeficiente deram negativos, logo exp(beta) &lt; 1, o que faz com que a mudança de nível, por exemplo Rx=0 para Rx=1, implique que os eventos ocorrem mais cedo na escala de tempo, ou seja, o tempo é acelerado.\nNo caso do logwbc o aumento de uma unidade implica na redução do tempo até o evento de 0,41, ou seja, a recaída ocorre mais cedo.\nNo caso do tratamento padrão Rx=1 faz com que a recaída ocorra mais cedo, ou seja, em 0,34 do tempo de quem recebeu o novo tratamento."
+  },
+  {
+    "objectID": "semanas/Aula07.html#fixando-o-tratamento-e-alterando-logwbc",
+    "href": "semanas/Aula07.html#fixando-o-tratamento-e-alterando-logwbc",
+    "title": "Análise de Sobrevivência",
+    "section": "Fixando o tratamento e alterando logwbc",
+    "text": "Fixando o tratamento e alterando logwbc\n\nn_dados_2 &lt;- data.frame(logwbc=c(2,3), Rx=c(0,0))\nprev2 &lt;-predict(leuc.exp.sel, type=\"quantile\", newdata=n_dados_2, p=0.5)\nprev2\n\n       1        2 \n45.72161 18.88139 \n\nprev2[2]/prev2[1]\n\n        2 \n0.4129641 \n\n\nVeja que o tempo até a recaída é menor para quem tem maior número de células brancas."
   }
 ]

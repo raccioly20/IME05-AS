@@ -11,9 +11,17 @@ Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.
 
 Os modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).
 
-O conjunto de dados a seguir chamado "anderson.xlsx" consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão. A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).
+O conjunto de dados a seguir chamado "anderson.xlsx" consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão.
 
-Duas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar).
+A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).
+
+Duas outras variáveis para controle como potenciais confundidores são:
+
+-   a contagem de glóbulos brancos em escala lgarítimica (ou seja, logwbc)
+
+-   sexo: 0 - mulher 1- homem
+
+O evento (status) é definido pela recaída do paciente (0 se censurado, 1 se ocorrer o evento).
 
 ### Carregando os dados
 
@@ -22,12 +30,13 @@ library(survival)
 library(readxl)
 dados <- read_xlsx("anderson.xlsx", col_names = TRUE )
 summary(dados)
-
+table(dados$Rx)
+table(dados$sexo)
 ```
 
-### Ajuste Não Paramétrico
+## Ajuste Não Paramétrico só com tratamento
 
-```{r ex_2}
+```{r}
 ekm <- survfit(Surv(tempo,status)~Rx, data=dados)
 tempo <- ekm$time
 st <- ekm$surv
@@ -36,6 +45,18 @@ plot(ekm, xlab="T(semanas)",ylab="S(t)", lty=2:3)
 legend("topright",c("Rx=0","Rx=1"), lty = 2:3)
 ```
 
+## Ajuste NP KM - tratamento + sexo
+
+```{r}
+ekm <- survfit(Surv(tempo,status)~Rx + sexo, data=dados)
+tempo <- ekm$time
+st <- ekm$surv
+summary(ekm)
+plot(ekm, xlab="T(semanas)",ylab="S(t)", lty=1:4)
+legend("topright",c("Rx=0 e M", "Rx=0 e H", "Rx=1 e M", "Rx=1 e H"), lty = 1:4)
+```
+
+
 ## Modelo Exponencial
 
 ```{r}
@@ -43,36 +64,58 @@ leuc.exp.comp <- survreg(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados,
 summary(leuc.exp.comp)
 ```
 
-## Automatizando ajuste
+## Automatizando ajuste com StepAIC
 
 ```{r}
 library(MASS)
 leuc.exp.sel <- stepAIC(leuc.exp.comp, direction="backward", trace=FALSE)
 summary(leuc.exp.sel)
+coefExp <- coef(leuc.exp.sel)
+exp(coefExp[2])
+exp(coefExp[3])
 ```
+
+As variáveis que foram selecionadas através do StepAIC foram o tratameno (Rx) e o log do número de células brancas.
+
+Observe que os dois coeficiente deram negativos, logo exp(beta) < 1, o que faz com que a mudança de nível, por exemplo Rx=0 para Rx=1, implique que os eventos ocorrem mais cedo na escala de tempo, ou seja, o tempo é acelerado.
+
+No caso do logwbc o aumento de uma unidade implica na redução do tempo até o evento de 0,41, ou seja, a recaída ocorre mais cedo.
+
+No caso do tratamento padrão Rx=1 faz com que a recaída ocorra mais cedo, ou seja, em 0,34 do tempo de quem recebeu o novo tratamento.
+
 
 ## Fazendo Previsões
 
+Aqui mantivemos fixo o logwbc e temos o tratamento novo (Rx-0) e o tratamento padrão (Rx=1)
+
 ```{r}
-novosdados <- data.frame(logwbc=c(2,2), Rx=c(0,1))
-predict(leuc.exp.sel, type="lp", newdata=novosdados)
+n_dados_1 <- data.frame(logwbc=c(2,2), Rx=c(0,1))
+n_dados_1
 ```
 
 ## Tempo Mediano
 
 ```{r}
-prev1 <-predict(leuc.exp.sel, type="quantile", newdata=novosdados, p=0.5)
+prev1 <-predict(leuc.exp.sel, type="quantile", newdata=n_dados_1, p=0.5)
 prev1
 prev1[2]/prev1[1]
 ```
 
-## Comparando com outro quantil
+Veja que o tempo até a recaída é menor para quem recebeu o tratamento padrão e maior para quem recebeu o novo tratamento
+
+
+## Fixando o tratamento e alterando logwbc
+
 
 ```{r}
-prev2 <-predict(leuc.exp.sel, type="quantile", newdata=novosdados, p=0.7)
+n_dados_2 <- data.frame(logwbc=c(2,3), Rx=c(0,0))
+prev2 <-predict(leuc.exp.sel, type="quantile", newdata=n_dados_2, p=0.5)
 prev2
 prev2[2]/prev2[1]
 ```
+
+Veja que o tempo até a recaída é menor para quem tem maior número de células brancas.
+
 
 ## Verificando o modelo
 
