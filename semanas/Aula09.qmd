@@ -2,7 +2,16 @@
 title: "Análise de Sobrevivência"
 subtitle: "Modelos semi-paramétrico de Cox"
 author: "Ricardo Accioly"
-format: html
+format:
+ html:
+    code-link: true
+    fig-width: 9
+    fig-height: 7
+    fig-dpi: 300
+knitr:
+  opts_chunk: 
+    out.width: 90%
+    comment: "#>"
 ---
 
 ### Introdução
@@ -44,9 +53,9 @@ summary(dados)
 ### Verificação de dados faltantes
 
 ```{r ex_2}
+nrow(lung)
 sum(complete.cases(lung))
-library(dplyr)
-dados <- dados %>% na.omit(dados)
+dados <- na.omit(dados)
 summary(dados)
 ```
 
@@ -119,9 +128,7 @@ row.names(dif_met) <- c("Efron", "Breslow", "Exact")
 knitr::kable(dif_met)
 ```
 
-
-Observe que as diferenças entre os métodos são pequenas, não afetando a interpretação. 
-
+Observe que as diferenças entre os métodos são pequenas, não afetando a interpretação.
 
 ## Avaliando Ajuste
 
@@ -142,7 +149,6 @@ legend("bottomright", bty = "n", lty = 1, col = c(1,2,3,4),
 legend = sprintf("Ecog %d", 0:3))
 
 ```
-
 
 Não temos indicação gráfica de não proporcionalidade das taxas de falhas
 
@@ -165,7 +171,7 @@ par(mfrow=c(1,3))
 plot(resid.sch)
 ```
 
-Não há indicação significativa de não proporcionalidade. 
+Não há indicação significativa de não proporcionalidade.
 
 Somente ph.ecog apresenta um p valor mais baixo indicando um potencial comportamento de não proporcionalidade. A hipótese nula é que o coeficiente angular é zero.
 
@@ -183,8 +189,7 @@ plot(dev, ylab="res",pch=20)
 title("Residuos Deviance")
 ```
 
-Não temos indicações claras em nenhum dos dois resíduos 
-
+Não temos indicações claras em nenhum dos dois resíduos
 
 ## Modelo de Cox Estratificado
 

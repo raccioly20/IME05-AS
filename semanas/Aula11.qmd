@@ -3,13 +3,15 @@ title: "Análise de Sobrevivência"
 subtitle: "Modelos SemiParamétrico de Cox"
 author: "Ricardo Accioly"
 format:
-  revealjs:
-    theme: dark
-    slide-number: true
-    chalkboard: 
-      buttons: false
-    preview-links: auto
-    css: styles.css
+ html:
+    code-link: true
+    fig-width: 9
+    fig-height: 7
+    fig-dpi: 300
+knitr:
+  opts_chunk: 
+    out.width: 90%
+    comment: "#>"
 ---
 
 ## Diagnóstico do modelo de Cox {.smaller .scrollable}
@@ -114,4 +116,13 @@ cox.zph(ajuste1)
 resid.sch <- cox.zph(ajuste1)
 par(mfrow=c(1,3))
 plot(resid.sch)
+```
+
+
+## Estratificação
+
+```{r}
+ajusteCoxE <-coxph(Surv(survt,status) ~ strata(clinic) + prison + dose,
+                 ties= "efron", data=dados)
+summary(ajusteCoxE)
 ```

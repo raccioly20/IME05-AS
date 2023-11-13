@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.433">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Ricardo Accioly">
-
 <title>IME05-12532 - Análise de Sobrevivência</title>
 <style>
 code{white-space: pre-wrap;}
@@ -57,7 +54,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -76,8 +72,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -97,21 +92,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-
-
 <meta name="twitter:title" content="IME05-12532 - Análise de Sobrevivência">
 <meta name="twitter:description" content="Modelos de regressão paramétricos">
 <meta name="twitter:image" content="images/anasobre.png">
 <meta name="twitter:creator" content="@r_accioly">
 <meta name="twitter:card" content="summary_large_image">
 </head>
-
 <body class="nav-sidebar docked">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -122,16 +112,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-center sidebar-header">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../images/anasobre.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
-      </a>
+      <img src="../images/anasobre.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
       <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/raccioly20" rel="" title="GitHub" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
     <a href="https://twitter.com/r_accioly" rel="" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
@@ -145,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item sidebar-item-section">
+<li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
  <span class="menu-text">Informação da disciplina</span></a>
@@ -153,8 +138,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../visao-do-curso.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Visão Geral</span></a>
@@ -167,7 +152,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
@@ -176,15 +161,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Sobre</span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
@@ -193,15 +178,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../acesso-rstudio.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Acesso</span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
@@ -210,8 +195,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../semanas/Aula01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Aula01</span></a>
@@ -302,51 +287,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução">Introdução</a></li>
+<li><a href="#introdu%C3%A7%C3%A3o" id="toc-introdução" class="nav-link active" data-scroll-target="#introdu%C3%A7%C3%A3o">Introdução</a></li>
   <li><a href="#carregando-os-dados" id="toc-carregando-os-dados" class="nav-link" data-scroll-target="#carregando-os-dados">Carregando os dados</a></li>
-  <li><a href="#ajuste-não-paramétrico-só-com-tratamento" id="toc-ajuste-não-paramétrico-só-com-tratamento" class="nav-link" data-scroll-target="#ajuste-não-paramétrico-só-com-tratamento">Ajuste Não Paramétrico só com tratamento</a></li>
+  <li><a href="#ajuste-n%C3%A3o-param%C3%A9trico-s%C3%B3-com-tratamento" id="toc-ajuste-não-paramétrico-só-com-tratamento" class="nav-link" data-scroll-target="#ajuste-n%C3%A3o-param%C3%A9trico-s%C3%B3-com-tratamento">Ajuste Não Paramétrico só com tratamento</a></li>
   <li><a href="#ajuste-np-km---tratamento-sexo" id="toc-ajuste-np-km---tratamento-sexo" class="nav-link" data-scroll-target="#ajuste-np-km---tratamento-sexo">Ajuste NP KM - tratamento + sexo</a></li>
   <li><a href="#modelo-exponencial" id="toc-modelo-exponencial" class="nav-link" data-scroll-target="#modelo-exponencial">Modelo Exponencial</a></li>
   <li><a href="#automatizando-ajuste-com-stepaic" id="toc-automatizando-ajuste-com-stepaic" class="nav-link" data-scroll-target="#automatizando-ajuste-com-stepaic">Automatizando ajuste com StepAIC</a></li>
-  <li><a href="#fazendo-previsões" id="toc-fazendo-previsões" class="nav-link" data-scroll-target="#fazendo-previsões">Fazendo Previsões</a></li>
+  <li><a href="#fazendo-previs%C3%B5es" id="toc-fazendo-previsões" class="nav-link" data-scroll-target="#fazendo-previs%C3%B5es">Fazendo Previsões</a></li>
   <li><a href="#tempo-mediano" id="toc-tempo-mediano" class="nav-link" data-scroll-target="#tempo-mediano">Tempo Mediano</a></li>
   <li><a href="#fixando-o-tratamento-e-alterando-logwbc" id="toc-fixando-o-tratamento-e-alterando-logwbc" class="nav-link" data-scroll-target="#fixando-o-tratamento-e-alterando-logwbc">Fixando o tratamento e alterando logwbc</a></li>
   <li><a href="#verificando-o-modelo" id="toc-verificando-o-modelo" class="nav-link" data-scroll-target="#verificando-o-modelo">Verificando o modelo</a></li>
   <li><a href="#modelo-weibull" id="toc-modelo-weibull" class="nav-link" data-scroll-target="#modelo-weibull">Modelo Weibull</a></li>
-  <li><a href="#fazendo-previsões-1" id="toc-fazendo-previsões-1" class="nav-link" data-scroll-target="#fazendo-previsões-1">Fazendo Previsões</a></li>
+  <li><a href="#fazendo-previs%C3%B5es-1" id="toc-fazendo-previsões-1" class="nav-link" data-scroll-target="#fazendo-previs%C3%B5es-1">Fazendo Previsões</a></li>
   <li><a href="#tempo-mediano-1" id="toc-tempo-mediano-1" class="nav-link" data-scroll-target="#tempo-mediano-1">Tempo Mediano</a></li>
   <li><a href="#comparando-com-outro-quantil" id="toc-comparando-com-outro-quantil" class="nav-link" data-scroll-target="#comparando-com-outro-quantil">Comparando com outro quantil</a></li>
   <li><a href="#verificando-o-modelo-1" id="toc-verificando-o-modelo-1" class="nav-link" data-scroll-target="#verificando-o-modelo-1">Verificando o modelo</a></li>
   <li><a href="#modelo-lognormal" id="toc-modelo-lognormal" class="nav-link" data-scroll-target="#modelo-lognormal">Modelo Lognormal</a></li>
-  <li><a href="#fazendo-previsões-2" id="toc-fazendo-previsões-2" class="nav-link" data-scroll-target="#fazendo-previsões-2">Fazendo Previsões</a></li>
+  <li><a href="#fazendo-previs%C3%B5es-2" id="toc-fazendo-previsões-2" class="nav-link" data-scroll-target="#fazendo-previs%C3%B5es-2">Fazendo Previsões</a></li>
   <li><a href="#tempo-mediano-2" id="toc-tempo-mediano-2" class="nav-link" data-scroll-target="#tempo-mediano-2">Tempo Mediano</a></li>
   <li><a href="#comparando-com-outro-quantil-1" id="toc-comparando-com-outro-quantil-1" class="nav-link" data-scroll-target="#comparando-com-outro-quantil-1">Comparando com outro quantil</a></li>
   <li><a href="#verificando-o-modelo-2" id="toc-verificando-o-modelo-2" class="nav-link" data-scroll-target="#verificando-o-modelo-2">Verificando o modelo</a></li>
   <li><a href="#modelo-loglogistico" id="toc-modelo-loglogistico" class="nav-link" data-scroll-target="#modelo-loglogistico">Modelo Loglogistico</a></li>
-  <li><a href="#fazendo-previsões-3" id="toc-fazendo-previsões-3" class="nav-link" data-scroll-target="#fazendo-previsões-3">Fazendo Previsões</a></li>
+  <li><a href="#fazendo-previs%C3%B5es-3" id="toc-fazendo-previsões-3" class="nav-link" data-scroll-target="#fazendo-previs%C3%B5es-3">Fazendo Previsões</a></li>
   <li><a href="#tempo-mediano-3" id="toc-tempo-mediano-3" class="nav-link" data-scroll-target="#tempo-mediano-3">Tempo Mediano</a></li>
   <li><a href="#comparando-com-outro-quantil-2" id="toc-comparando-com-outro-quantil-2" class="nav-link" data-scroll-target="#comparando-com-outro-quantil-2">Comparando com outro quantil</a></li>
   <li><a href="#verificando-o-modelo-3" id="toc-verificando-o-modelo-3" class="nav-link" data-scroll-target="#verificando-o-modelo-3">Verificando o modelo</a></li>
-  <li><a href="#comparação-dos-modelos" id="toc-comparação-dos-modelos" class="nav-link" data-scroll-target="#comparação-dos-modelos">Comparação dos modelos</a></li>
-  </ul>
-</nav>
+  <li><a href="#compara%C3%A7%C3%A3o-dos-modelos" id="toc-comparação-dos-modelos" class="nav-link" data-scroll-target="#compara%C3%A7%C3%A3o-dos-modelos">Comparação dos modelos</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Análise de Sobrevivência</h1>
 <p class="subtitle lead">Modelos de regressão paramétricos</p>
 </div>
@@ -367,10 +346,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header>
-
-<section id="introdução" class="level3">
-<h3 class="anchored" data-anchor-id="introdução">Introdução</h3>
+</header><section id="introdução" class="level3"><h3 class="anchored" data-anchor-id="introdução">Introdução</h3>
 <p>Nesta etapa vamos começar a trabalhar com modelos de regressão paramétricos.</p>
 <p>Os modelos que vamos ver se denominam modelos de tempo de falha (vida) acelerado TFA (AFT).</p>
 <p>O conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão.</p>
@@ -381,669 +357,619 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>sexo: 0 - mulher 1- homem</p></li>
 </ul>
 <p>O evento (status) é definido pela recaída do paciente (0 se censurado, 1 se ocorrer o evento).</p>
-</section>
-<section id="carregando-os-dados" class="level3">
-<h3 class="anchored" data-anchor-id="carregando-os-dados">Carregando os dados</h3>
+</section><section id="carregando-os-dados" class="level3"><h3 class="anchored" data-anchor-id="carregando-os-dados">Carregando os dados</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"anderson.xlsx"</span>, <span class="at">col_names =</span> <span class="cn">TRUE</span> )</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span>
+<span><span class="va">dados</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_xlsx</a></span><span class="op">(</span><span class="st">"anderson.xlsx"</span>, col_names <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">dados</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     tempo           status            sexo            logwbc     
- Min.   : 1.00   Min.   :0.0000   Min.   :0.0000   Min.   :1.450  
- 1st Qu.: 6.00   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:2.303  
- Median :10.50   Median :1.0000   Median :0.0000   Median :2.800  
- Mean   :12.88   Mean   :0.7143   Mean   :0.4762   Mean   :2.930  
- 3rd Qu.:18.50   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:3.490  
- Max.   :35.00   Max.   :1.0000   Max.   :1.0000   Max.   :5.000  
-       Rx     
- Min.   :0.0  
- 1st Qu.:0.0  
- Median :0.5  
- Mean   :0.5  
- 3rd Qu.:1.0  
- Max.   :1.0  </code></pre>
+<pre><code>#&gt;      tempo           status            sexo            logwbc     
+#&gt;  Min.   : 1.00   Min.   :0.0000   Min.   :0.0000   Min.   :1.450  
+#&gt;  1st Qu.: 6.00   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:2.303  
+#&gt;  Median :10.50   Median :1.0000   Median :0.0000   Median :2.800  
+#&gt;  Mean   :12.88   Mean   :0.7143   Mean   :0.4762   Mean   :2.930  
+#&gt;  3rd Qu.:18.50   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:3.490  
+#&gt;  Max.   :35.00   Max.   :1.0000   Max.   :1.0000   Max.   :5.000  
+#&gt;        Rx     
+#&gt;  Min.   :0.0  
+#&gt;  1st Qu.:0.0  
+#&gt;  Median :0.5  
+#&gt;  Mean   :0.5  
+#&gt;  3rd Qu.:1.0  
+#&gt;  Max.   :1.0</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dados<span class="sc">$</span>Rx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">Rx</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
- 0  1 
-21 21 </code></pre>
+<pre><code>#&gt; 
+#&gt;  0  1 
+#&gt; 21 21</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dados<span class="sc">$</span>sexo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">sexo</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
- 0  1 
-22 20 </code></pre>
+<pre><code>#&gt; 
+#&gt;  0  1 
+#&gt; 22 20</code></pre>
 </div>
 </div>
-</section>
-<section id="ajuste-não-paramétrico-só-com-tratamento" class="level2">
-<h2 class="anchored" data-anchor-id="ajuste-não-paramétrico-só-com-tratamento">Ajuste Não Paramétrico só com tratamento</h2>
+</section><section id="ajuste-não-paramétrico-só-com-tratamento" class="level2"><h2 class="anchored" data-anchor-id="ajuste-não-paramétrico-só-com-tratamento">Ajuste Não Paramétrico só com tratamento</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ekm <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempo,status)<span class="sc">~</span>Rx, <span class="at">data=</span>dados)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>tempo <span class="ot">&lt;-</span> ekm<span class="sc">$</span>time</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>st <span class="ot">&lt;-</span> ekm<span class="sc">$</span>surv</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ekm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ekm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="va">Rx</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
+<span><span class="va">tempo</span> <span class="op">&lt;-</span> <span class="va">ekm</span><span class="op">$</span><span class="va">time</span></span>
+<span><span class="va">st</span> <span class="op">&lt;-</span> <span class="va">ekm</span><span class="op">$</span><span class="va">surv</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ekm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Call: survfit(formula = Surv(tempo, status) ~ Rx, data = dados)
-
-                Rx=0 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    6     21       3    0.857  0.0764        0.720        1.000
-    7     17       1    0.807  0.0869        0.653        0.996
-   10     15       1    0.753  0.0963        0.586        0.968
-   13     12       1    0.690  0.1068        0.510        0.935
-   16     11       1    0.627  0.1141        0.439        0.896
-   22      7       1    0.538  0.1282        0.337        0.858
-   23      6       1    0.448  0.1346        0.249        0.807
-
-                Rx=1 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    1     21       2   0.9048  0.0641      0.78754        1.000
-    2     19       2   0.8095  0.0857      0.65785        0.996
-    3     17       1   0.7619  0.0929      0.59988        0.968
-    4     16       2   0.6667  0.1029      0.49268        0.902
-    5     14       2   0.5714  0.1080      0.39455        0.828
-    8     12       4   0.3810  0.1060      0.22085        0.657
-   11      8       2   0.2857  0.0986      0.14529        0.562
-   12      6       2   0.1905  0.0857      0.07887        0.460
-   15      4       1   0.1429  0.0764      0.05011        0.407
-   17      3       1   0.0952  0.0641      0.02549        0.356
-   22      2       1   0.0476  0.0465      0.00703        0.322
-   23      1       1   0.0000     NaN           NA           NA</code></pre>
+<pre><code>#&gt; Call: survfit(formula = Surv(tempo, status) ~ Rx, data = dados)
+#&gt; 
+#&gt;                 Rx=0 
+#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+#&gt;     6     21       3    0.857  0.0764        0.720        1.000
+#&gt;     7     17       1    0.807  0.0869        0.653        0.996
+#&gt;    10     15       1    0.753  0.0963        0.586        0.968
+#&gt;    13     12       1    0.690  0.1068        0.510        0.935
+#&gt;    16     11       1    0.627  0.1141        0.439        0.896
+#&gt;    22      7       1    0.538  0.1282        0.337        0.858
+#&gt;    23      6       1    0.448  0.1346        0.249        0.807
+#&gt; 
+#&gt;                 Rx=1 
+#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+#&gt;     1     21       2   0.9048  0.0641      0.78754        1.000
+#&gt;     2     19       2   0.8095  0.0857      0.65785        0.996
+#&gt;     3     17       1   0.7619  0.0929      0.59988        0.968
+#&gt;     4     16       2   0.6667  0.1029      0.49268        0.902
+#&gt;     5     14       2   0.5714  0.1080      0.39455        0.828
+#&gt;     8     12       4   0.3810  0.1060      0.22085        0.657
+#&gt;    11      8       2   0.2857  0.0986      0.14529        0.562
+#&gt;    12      6       2   0.1905  0.0857      0.07887        0.460
+#&gt;    15      4       1   0.1429  0.0764      0.05011        0.407
+#&gt;    17      3       1   0.0952  0.0641      0.02549        0.356
+#&gt;    22      2       1   0.0476  0.0465      0.00703        0.322
+#&gt;    23      1       1   0.0000     NaN           NA           NA</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ekm, <span class="at">xlab=</span><span class="st">"T(semanas)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"Rx=0"</span>,<span class="st">"Rx=1"</span>), <span class="at">lty =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ekm</span>, xlab<span class="op">=</span><span class="st">"T(semanas)"</span>,ylab<span class="op">=</span><span class="st">"S(t)"</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Rx=0"</span>,<span class="st">"Rx=1"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula07_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="960"></p>
+<p><img src="Aula07_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section>
-<section id="ajuste-np-km---tratamento-sexo" class="level2">
-<h2 class="anchored" data-anchor-id="ajuste-np-km---tratamento-sexo">Ajuste NP KM - tratamento + sexo</h2>
+</section><section id="ajuste-np-km---tratamento-sexo" class="level2"><h2 class="anchored" data-anchor-id="ajuste-np-km---tratamento-sexo">Ajuste NP KM - tratamento + sexo</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ekm <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempo,status)<span class="sc">~</span>Rx <span class="sc">+</span> sexo, <span class="at">data=</span>dados)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>tempo <span class="ot">&lt;-</span> ekm<span class="sc">$</span>time</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>st <span class="ot">&lt;-</span> ekm<span class="sc">$</span>surv</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ekm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ekm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="va">Rx</span> <span class="op">+</span> <span class="va">sexo</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
+<span><span class="va">tempo</span> <span class="op">&lt;-</span> <span class="va">ekm</span><span class="op">$</span><span class="va">time</span></span>
+<span><span class="va">st</span> <span class="op">&lt;-</span> <span class="va">ekm</span><span class="op">$</span><span class="va">surv</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ekm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Call: survfit(formula = Surv(tempo, status) ~ Rx + sexo, data = dados)
-
-                Rx=0, sexo=0 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    6     11       2    0.818   0.116        0.619            1
-    7      8       1    0.716   0.140        0.488            1
-   10      6       1    0.597   0.159        0.353            1
-   13      3       1    0.398   0.194        0.153            1
-
-                Rx=0, sexo=1 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    6     10       1    0.900  0.0949        0.732            1
-   16      9       1    0.800  0.1265        0.587            1
-   22      7       1    0.686  0.1515        0.445            1
-   23      6       1    0.571  0.1638        0.326            1
-
-                Rx=1, sexo=0 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    5     11       1   0.9091  0.0867       0.7541        1.000
-    8     10       3   0.6364  0.1450       0.4071        0.995
-   11      7       2   0.4545  0.1501       0.2379        0.868
-   12      5       2   0.2727  0.1343       0.1039        0.716
-   15      3       1   0.1818  0.1163       0.0519        0.637
-   17      2       1   0.0909  0.0867       0.0140        0.589
-   22      1       1   0.0000     NaN           NA           NA
-
-                Rx=1, sexo=1 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    1     10       2      0.8  0.1265       0.5868        1.000
-    2      8       2      0.6  0.1549       0.3617        0.995
-    3      6       1      0.5  0.1581       0.2690        0.929
-    4      5       2      0.3  0.1449       0.1164        0.773
-    5      3       1      0.2  0.1265       0.0579        0.691
-    8      2       1      0.1  0.0949       0.0156        0.642
-   23      1       1      0.0     NaN           NA           NA</code></pre>
+<pre><code>#&gt; Call: survfit(formula = Surv(tempo, status) ~ Rx + sexo, data = dados)
+#&gt; 
+#&gt;                 Rx=0, sexo=0 
+#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+#&gt;     6     11       2    0.818   0.116        0.619            1
+#&gt;     7      8       1    0.716   0.140        0.488            1
+#&gt;    10      6       1    0.597   0.159        0.353            1
+#&gt;    13      3       1    0.398   0.194        0.153            1
+#&gt; 
+#&gt;                 Rx=0, sexo=1 
+#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+#&gt;     6     10       1    0.900  0.0949        0.732            1
+#&gt;    16      9       1    0.800  0.1265        0.587            1
+#&gt;    22      7       1    0.686  0.1515        0.445            1
+#&gt;    23      6       1    0.571  0.1638        0.326            1
+#&gt; 
+#&gt;                 Rx=1, sexo=0 
+#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+#&gt;     5     11       1   0.9091  0.0867       0.7541        1.000
+#&gt;     8     10       3   0.6364  0.1450       0.4071        0.995
+#&gt;    11      7       2   0.4545  0.1501       0.2379        0.868
+#&gt;    12      5       2   0.2727  0.1343       0.1039        0.716
+#&gt;    15      3       1   0.1818  0.1163       0.0519        0.637
+#&gt;    17      2       1   0.0909  0.0867       0.0140        0.589
+#&gt;    22      1       1   0.0000     NaN           NA           NA
+#&gt; 
+#&gt;                 Rx=1, sexo=1 
+#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+#&gt;     1     10       2      0.8  0.1265       0.5868        1.000
+#&gt;     2      8       2      0.6  0.1549       0.3617        0.995
+#&gt;     3      6       1      0.5  0.1581       0.2690        0.929
+#&gt;     4      5       2      0.3  0.1449       0.1164        0.773
+#&gt;     5      3       1      0.2  0.1265       0.0579        0.691
+#&gt;     8      2       1      0.1  0.0949       0.0156        0.642
+#&gt;    23      1       1      0.0     NaN           NA           NA</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ekm, <span class="at">xlab=</span><span class="st">"T(semanas)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"Rx=0 e M"</span>, <span class="st">"Rx=0 e H"</span>, <span class="st">"Rx=1 e M"</span>, <span class="st">"Rx=1 e H"</span>), <span class="at">lty =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ekm</span>, xlab<span class="op">=</span><span class="st">"T(semanas)"</span>,ylab<span class="op">=</span><span class="st">"S(t)"</span>, lty<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Rx=0 e M"</span>, <span class="st">"Rx=0 e H"</span>, <span class="st">"Rx=1 e M"</span>, <span class="st">"Rx=1 e H"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula07_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="960"></p>
+<p><img src="Aula07_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section>
-<section id="modelo-exponencial" class="level2">
-<h2 class="anchored" data-anchor-id="modelo-exponencial">Modelo Exponencial</h2>
+</section><section id="modelo-exponencial" class="level2"><h2 class="anchored" data-anchor-id="modelo-exponencial">Modelo Exponencial</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>leuc.exp.comp <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> sexo <span class="sc">+</span> logwbc <span class="sc">+</span> Rx, <span class="at">data =</span> dados, <span class="at">dist =</span> <span class="st">"exponential"</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.exp.comp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">leuc.exp.comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sexo</span> <span class="op">+</span> <span class="va">logwbc</span> <span class="op">+</span> <span class="va">Rx</span>, data <span class="op">=</span> <span class="va">dados</span>, dist <span class="op">=</span> <span class="st">"exponential"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">leuc.exp.comp</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-survreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, 
-    dist = "exponential")
-              Value Std. Error     z      p
-(Intercept)  5.9741     0.6965  8.58 &lt;2e-16
-sexo        -0.0859     0.3834 -0.22  0.823
-logwbc      -0.8723     0.2212 -3.94  8e-05
-Rx          -1.1156     0.4270 -2.61  0.009
-
-Scale fixed at 1 
-
-Exponential distribution
-Loglik(model)= -100.7   Loglik(intercept only)= -116.8
-    Chisq= 32.04 on 3 degrees of freedom, p= 5.1e-07 
-Number of Newton-Raphson Iterations: 4 
-n= 42 </code></pre>
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, 
+#&gt;     dist = "exponential")
+#&gt;               Value Std. Error     z      p
+#&gt; (Intercept)  5.9741     0.6965  8.58 &lt;2e-16
+#&gt; sexo        -0.0859     0.3834 -0.22  0.823
+#&gt; logwbc      -0.8723     0.2212 -3.94  8e-05
+#&gt; Rx          -1.1156     0.4270 -2.61  0.009
+#&gt; 
+#&gt; Scale fixed at 1 
+#&gt; 
+#&gt; Exponential distribution
+#&gt; Loglik(model)= -100.7   Loglik(intercept only)= -116.8
+#&gt;  Chisq= 32.04 on 3 degrees of freedom, p= 5.1e-07 
+#&gt; Number of Newton-Raphson Iterations: 4 
+#&gt; n= 42</code></pre>
 </div>
 </div>
-</section>
-<section id="automatizando-ajuste-com-stepaic" class="level2">
-<h2 class="anchored" data-anchor-id="automatizando-ajuste-com-stepaic">Automatizando ajuste com StepAIC</h2>
+</section><section id="automatizando-ajuste-com-stepaic" class="level2"><h2 class="anchored" data-anchor-id="automatizando-ajuste-com-stepaic">Automatizando ajuste com StepAIC</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>leuc.exp.sel <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(leuc.exp.comp, <span class="at">direction=</span><span class="st">"backward"</span>, <span class="at">trace=</span><span class="cn">FALSE</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.exp.sel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span></span>
+<span><span class="va">leuc.exp.sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html">stepAIC</a></span><span class="op">(</span><span class="va">leuc.exp.comp</span>, direction<span class="op">=</span><span class="st">"backward"</span>, trace<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">leuc.exp.sel</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
-    dist = "exponential")
-             Value Std. Error     z       p
-(Intercept)  5.958      0.699  8.52 &lt; 2e-16
-logwbc      -0.884      0.216 -4.10 4.2e-05
-Rx          -1.093      0.413 -2.65  0.0082
-
-Scale fixed at 1 
-
-Exponential distribution
-Loglik(model)= -100.8   Loglik(intercept only)= -116.8
-    Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 
-Number of Newton-Raphson Iterations: 4 
-n= 42 </code></pre>
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
+#&gt;     dist = "exponential")
+#&gt;              Value Std. Error     z       p
+#&gt; (Intercept)  5.958      0.699  8.52 &lt; 2e-16
+#&gt; logwbc      -0.884      0.216 -4.10 4.2e-05
+#&gt; Rx          -1.093      0.413 -2.65  0.0082
+#&gt; 
+#&gt; Scale fixed at 1 
+#&gt; 
+#&gt; Exponential distribution
+#&gt; Loglik(model)= -100.8   Loglik(intercept only)= -116.8
+#&gt;  Chisq= 31.99 on 2 degrees of freedom, p= 1.1e-07 
+#&gt; Number of Newton-Raphson Iterations: 4 
+#&gt; n= 42</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>coefExp <span class="ot">&lt;-</span> <span class="fu">coef</span>(leuc.exp.sel)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(coefExp[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">coefExp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">leuc.exp.sel</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">coefExp</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   logwbc 
-0.4129641 </code></pre>
+<pre><code>#&gt;    logwbc 
+#&gt; 0.4129641</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(coefExp[<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">coefExp</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       Rx 
-0.3351846 </code></pre>
+<pre><code>#&gt;        Rx 
+#&gt; 0.3351846</code></pre>
 </div>
 </div>
 <p>As variáveis que foram selecionadas através do StepAIC foram o tratameno (Rx) e o log do número de células brancas.</p>
 <p>Observe que os dois coeficiente deram negativos, logo exp(beta) &lt; 1, o que faz com que a mudança de nível, por exemplo Rx=0 para Rx=1, implique que os eventos ocorrem mais cedo na escala de tempo, ou seja, o tempo é acelerado.</p>
 <p>No caso do logwbc o aumento de uma unidade implica na redução do tempo até o evento de 0,41, ou seja, a recaída ocorre mais cedo.</p>
 <p>No caso do tratamento padrão Rx=1 faz com que a recaída ocorra mais cedo, ou seja, em 0,34 do tempo de quem recebeu o novo tratamento.</p>
-</section>
-<section id="fazendo-previsões" class="level2">
-<h2 class="anchored" data-anchor-id="fazendo-previsões">Fazendo Previsões</h2>
+</section><section id="fazendo-previsões" class="level2"><h2 class="anchored" data-anchor-id="fazendo-previsões">Fazendo Previsões</h2>
 <p>Aqui mantivemos fixo o logwbc e temos o tratamento novo (Rx-0) e o tratamento padrão (Rx=1)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>n_dados_1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">logwbc=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">Rx=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>n_dados_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n_dados_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>logwbc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, Rx<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">n_dados_1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  logwbc Rx
-1      2  0
-2      2  1</code></pre>
+<pre><code>#&gt;   logwbc Rx
+#&gt; 1      2  0
+#&gt; 2      2  1</code></pre>
 </div>
 </div>
-</section>
-<section id="tempo-mediano" class="level2">
-<h2 class="anchored" data-anchor-id="tempo-mediano">Tempo Mediano</h2>
+</section><section id="tempo-mediano" class="level2"><h2 class="anchored" data-anchor-id="tempo-mediano">Tempo Mediano</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>prev1 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.exp.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>n_dados_1, <span class="at">p=</span><span class="fl">0.5</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>prev1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev1</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.exp.sel</span>, type<span class="op">=</span><span class="st">"quantile"</span>, newdata<span class="op">=</span><span class="va">n_dados_1</span>, p<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="va">prev1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       1        2 
-45.72161 15.32518 </code></pre>
+<pre><code>#&gt;        1        2 
+#&gt; 45.72161 15.32518</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>prev1[<span class="dv">2</span>]<span class="sc">/</span>prev1[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev1</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">prev1</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        2 
-0.3351846 </code></pre>
+<pre><code>#&gt;         2 
+#&gt; 0.3351846</code></pre>
 </div>
 </div>
 <p>Veja que o tempo até a recaída é menor para quem recebeu o tratamento padrão e maior para quem recebeu o novo tratamento</p>
-</section>
-<section id="fixando-o-tratamento-e-alterando-logwbc" class="level2">
-<h2 class="anchored" data-anchor-id="fixando-o-tratamento-e-alterando-logwbc">Fixando o tratamento e alterando logwbc</h2>
+</section><section id="fixando-o-tratamento-e-alterando-logwbc" class="level2"><h2 class="anchored" data-anchor-id="fixando-o-tratamento-e-alterando-logwbc">Fixando o tratamento e alterando logwbc</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>n_dados_2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">logwbc=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>), <span class="at">Rx=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>))</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>prev2 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.exp.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>n_dados_2, <span class="at">p=</span><span class="fl">0.5</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>prev2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n_dados_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>logwbc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, Rx<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">prev2</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.exp.sel</span>, type<span class="op">=</span><span class="st">"quantile"</span>, newdata<span class="op">=</span><span class="va">n_dados_2</span>, p<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="va">prev2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       1        2 
-45.72161 18.88139 </code></pre>
+<pre><code>#&gt;        1        2 
+#&gt; 45.72161 18.88139</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>prev2[<span class="dv">2</span>]<span class="sc">/</span>prev2[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev2</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">prev2</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        2 
-0.4129641 </code></pre>
+<pre><code>#&gt;         2 
+#&gt; 0.4129641</code></pre>
 </div>
 </div>
 <p>Veja que o tempo até a recaída é menor para quem tem maior número de células brancas.</p>
-</section>
-<section id="verificando-o-modelo" class="level2">
-<h2 class="anchored" data-anchor-id="verificando-o-modelo">Verificando o modelo</h2>
+</section><section id="verificando-o-modelo" class="level2"><h2 class="anchored" data-anchor-id="verificando-o-modelo">Verificando o modelo</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>smoothSEcurve <span class="ot">&lt;-</span> <span class="cf">function</span>(yy, xx) {</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># usar depois de chamar um grafico</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajusta um curva lowess curve com IC de 95%</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Facilita a avaliação dos resíduos</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>xx.list <span class="ot">&lt;-</span> <span class="fu">min</span>(xx) <span class="sc">+</span> ((<span class="dv">0</span><span class="sc">:</span><span class="dv">100</span>)<span class="sc">/</span><span class="dv">100</span>)<span class="sc">*</span>(<span class="fu">max</span>(xx) <span class="sc">-</span> <span class="fu">min</span>(xx))</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>yy.xx <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">loess</span>(yy <span class="sc">~</span> xx), <span class="at">se=</span>T,</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="at">newdata=</span><span class="fu">data.frame</span>(<span class="at">xx=</span>xx.list))</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">~</span> xx.list, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">-</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, yy.xx<span class="sc">$</span>df)<span class="sc">*</span>yy.xx<span class="sc">$</span>se.fit <span class="sc">~</span> xx.list, <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(yy.xx<span class="sc">$</span>fit <span class="sc">+</span></span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, yy.xx<span class="sc">$</span>df)<span class="sc">*</span>yy.xx<span class="sc">$</span>se.fit <span class="sc">~</span> xx.list, <span class="at">lty=</span><span class="dv">2</span>)</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">smoothSEcurve</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">yy</span>, <span class="va">xx</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="co"># usar depois de chamar um grafico</span></span>
+<span><span class="co"># Ajusta um curva lowess curve com IC de 95%</span></span>
+<span><span class="co">## Facilita a avaliação dos resíduos</span></span>
+<span><span class="va">xx.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span><span class="op">/</span><span class="fl">100</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">xx</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">yy.xx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/loess.html">loess</a></span><span class="op">(</span><span class="va">yy</span> <span class="op">~</span> <span class="va">xx</span><span class="op">)</span>, se<span class="op">=</span><span class="cn">T</span>,</span>
+<span>newdata<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>xx<span class="op">=</span><span class="va">xx.list</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">yy.xx</span><span class="op">$</span><span class="va">fit</span> <span class="op">~</span> <span class="va">xx.list</span>, lwd<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">yy.xx</span><span class="op">$</span><span class="va">fit</span> <span class="op">-</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, <span class="va">yy.xx</span><span class="op">$</span><span class="va">df</span><span class="op">)</span><span class="op">*</span><span class="va">yy.xx</span><span class="op">$</span><span class="va">se.fit</span> <span class="op">~</span> <span class="va">xx.list</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">yy.xx</span><span class="op">$</span><span class="va">fit</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/TDist.html">qt</a></span><span class="op">(</span><span class="fl">0.975</span>, <span class="va">yy.xx</span><span class="op">$</span><span class="va">df</span><span class="op">)</span><span class="op">*</span><span class="va">yy.xx</span><span class="op">$</span><span class="va">se.fit</span> <span class="op">~</span> <span class="va">xx.list</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-forge.r-project.org/projects/car/">car</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Carregando pacotes exigidos: carData</code></pre>
+<pre><code>#&gt; Carregando pacotes exigidos: carData</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(leuc.exp.sel, <span class="at">type =</span> <span class="st">"lp"</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>tempo[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">"Grafico TA"</span>,</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"log(valores ajustados)"</span>, <span class="at">ylab =</span> <span class="st">"log(residuos)"</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothSEcurve</span>(log.resid, pred.lin)</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">exp</span>(log.resid), <span class="at">dist =</span> <span class="st">"weibull"</span>,</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="at">shape =</span> <span class="dv">1</span>,</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Grafico Q-Q"</span>, <span class="at">xlab =</span> <span class="st">"Quantis teoricos"</span>, <span class="at">ylab =</span> <span class="st">"Quantis Empiricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span><span class="va">pred.lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.exp.sel</span>, type <span class="op">=</span> <span class="st">"lp"</span><span class="op">)</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">log.resid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">tempo</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">-</span> <span class="va">pred.lin</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pred.lin</span>, <span class="va">log.resid</span>, main <span class="op">=</span> <span class="st">"Grafico TA"</span>,</span>
+<span>xlab <span class="op">=</span> <span class="st">"log(valores ajustados)"</span>, ylab <span class="op">=</span> <span class="st">"log(residuos)"</span><span class="op">)</span></span>
+<span><span class="fu">smoothSEcurve</span><span class="op">(</span><span class="va">log.resid</span>, <span class="va">pred.lin</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">log.resid</span><span class="op">)</span>, dist <span class="op">=</span> <span class="st">"weibull"</span>,</span>
+<span>shape <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>main <span class="op">=</span> <span class="st">"Grafico Q-Q"</span>, xlab <span class="op">=</span> <span class="st">"Quantis teoricos"</span>, ylab <span class="op">=</span> <span class="st">"Quantis Empiricos"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula07_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="960"></p>
+<p><img src="Aula07_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 28 19</code></pre>
+<pre><code>#&gt; [1] 28 19</code></pre>
 </div>
 </div>
-</section>
-<section id="modelo-weibull" class="level2">
-<h2 class="anchored" data-anchor-id="modelo-weibull">Modelo Weibull</h2>
+</section><section id="modelo-weibull" class="level2"><h2 class="anchored" data-anchor-id="modelo-weibull">Modelo Weibull</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>leuc.wei.comp <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> sexo <span class="sc">+</span> logwbc <span class="sc">+</span> Rx, <span class="at">data =</span> dados, <span class="at">dist =</span> <span class="st">"weibull"</span>)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.wei.comp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">leuc.wei.comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sexo</span> <span class="op">+</span> <span class="va">logwbc</span> <span class="op">+</span> <span class="va">Rx</span>, data <span class="op">=</span> <span class="va">dados</span>, dist <span class="op">=</span> <span class="st">"weibull"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">leuc.wei.comp</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-survreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, 
-    dist = "weibull")
-             Value Std. Error     z       p
-(Intercept)  5.462      0.351 15.58 &lt; 2e-16
-sexo        -0.156      0.179 -0.87 0.38350
-logwbc      -0.792      0.105 -7.54 4.8e-14
-Rx          -0.722      0.201 -3.59 0.00034
-Log(scale)  -0.815      0.144 -5.65 1.6e-08
-
-Scale= 0.443 
-
-Weibull distribution
-Loglik(model)= -89.7   Loglik(intercept only)= -116.4
-    Chisq= 53.42 on 3 degrees of freedom, p= 1.5e-11 
-Number of Newton-Raphson Iterations: 7 
-n= 42 </code></pre>
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, 
+#&gt;     dist = "weibull")
+#&gt;              Value Std. Error     z       p
+#&gt; (Intercept)  5.462      0.351 15.58 &lt; 2e-16
+#&gt; sexo        -0.156      0.179 -0.87 0.38350
+#&gt; logwbc      -0.792      0.105 -7.54 4.8e-14
+#&gt; Rx          -0.722      0.201 -3.59 0.00034
+#&gt; Log(scale)  -0.815      0.144 -5.65 1.6e-08
+#&gt; 
+#&gt; Scale= 0.443 
+#&gt; 
+#&gt; Weibull distribution
+#&gt; Loglik(model)= -89.7   Loglik(intercept only)= -116.4
+#&gt;  Chisq= 53.42 on 3 degrees of freedom, p= 1.5e-11 
+#&gt; Number of Newton-Raphson Iterations: 7 
+#&gt; n= 42</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>leuc.wei.sel <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(leuc.wei.comp, <span class="at">direction=</span><span class="st">"backward"</span>, <span class="at">trace=</span><span class="cn">FALSE</span>)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.wei.sel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">leuc.wei.sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html">stepAIC</a></span><span class="op">(</span><span class="va">leuc.wei.comp</span>, direction<span class="op">=</span><span class="st">"backward"</span>, trace<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">leuc.wei.sel</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
-    dist = "weibull")
-             Value Std. Error     z       p
-(Intercept)  5.399      0.364 14.84 &lt; 2e-16
-logwbc      -0.807      0.108 -7.45 9.7e-14
-Rx          -0.659      0.189 -3.49 0.00049
-Log(scale)  -0.793      0.142 -5.58 2.5e-08
-
-Scale= 0.452 
-
-Weibull distribution
-Loglik(model)= -90.1   Loglik(intercept only)= -116.4
-    Chisq= 52.68 on 2 degrees of freedom, p= 3.6e-12 
-Number of Newton-Raphson Iterations: 7 
-n= 42 </code></pre>
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
+#&gt;     dist = "weibull")
+#&gt;              Value Std. Error     z       p
+#&gt; (Intercept)  5.399      0.364 14.84 &lt; 2e-16
+#&gt; logwbc      -0.807      0.108 -7.45 9.7e-14
+#&gt; Rx          -0.659      0.189 -3.49 0.00049
+#&gt; Log(scale)  -0.793      0.142 -5.58 2.5e-08
+#&gt; 
+#&gt; Scale= 0.452 
+#&gt; 
+#&gt; Weibull distribution
+#&gt; Loglik(model)= -90.1   Loglik(intercept only)= -116.4
+#&gt;  Chisq= 52.68 on 2 degrees of freedom, p= 3.6e-12 
+#&gt; Number of Newton-Raphson Iterations: 7 
+#&gt; n= 42</code></pre>
 </div>
 </div>
-</section>
-<section id="fazendo-previsões-1" class="level2">
-<h2 class="anchored" data-anchor-id="fazendo-previsões-1">Fazendo Previsões</h2>
+</section><section id="fazendo-previsões-1" class="level2"><h2 class="anchored" data-anchor-id="fazendo-previsões-1">Fazendo Previsões</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>novosdados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">logwbc=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">Rx=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(leuc.wei.sel, <span class="at">type=</span><span class="st">"lp"</span>, <span class="at">newdata=</span>novosdados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">novosdados</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>logwbc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, Rx<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.wei.sel</span>, type<span class="op">=</span><span class="st">"lp"</span>, newdata<span class="op">=</span><span class="va">novosdados</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       1        2 
-3.784108 3.125137 </code></pre>
+<pre><code>#&gt;        1        2 
+#&gt; 3.784108 3.125137</code></pre>
 </div>
 </div>
-</section>
-<section id="tempo-mediano-1" class="level2">
-<h2 class="anchored" data-anchor-id="tempo-mediano-1">Tempo Mediano</h2>
+</section><section id="tempo-mediano-1" class="level2"><h2 class="anchored" data-anchor-id="tempo-mediano-1">Tempo Mediano</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>prev1 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.wei.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.5</span>)</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>prev1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev1</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.wei.sel</span>, type<span class="op">=</span><span class="st">"quantile"</span>, newdata<span class="op">=</span><span class="va">novosdados</span>, p<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="va">prev1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       1        2 
-37.27311 19.28448 </code></pre>
+<pre><code>#&gt;        1        2 
+#&gt; 37.27311 19.28448</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>prev1[<span class="dv">2</span>]<span class="sc">/</span>prev1[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev1</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">prev1</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        2 
-0.5173831 </code></pre>
+<pre><code>#&gt;         2 
+#&gt; 0.5173831</code></pre>
 </div>
 </div>
-</section>
-<section id="comparando-com-outro-quantil" class="level2">
-<h2 class="anchored" data-anchor-id="comparando-com-outro-quantil">Comparando com outro quantil</h2>
+</section><section id="comparando-com-outro-quantil" class="level2"><h2 class="anchored" data-anchor-id="comparando-com-outro-quantil">Comparando com outro quantil</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>prev2 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.wei.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.7</span>)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>prev2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev2</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.wei.sel</span>, type<span class="op">=</span><span class="st">"quantile"</span>, newdata<span class="op">=</span><span class="va">novosdados</span>, p<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></span>
+<span><span class="va">prev2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       1        2 
-47.85133 24.75747 </code></pre>
+<pre><code>#&gt;        1        2 
+#&gt; 47.85133 24.75747</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>prev2[<span class="dv">2</span>]<span class="sc">/</span>prev2[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev2</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">prev2</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        2 
-0.5173831 </code></pre>
+<pre><code>#&gt;         2 
+#&gt; 0.5173831</code></pre>
 </div>
 </div>
-</section>
-<section id="verificando-o-modelo-1" class="level2">
-<h2 class="anchored" data-anchor-id="verificando-o-modelo-1">Verificando o modelo</h2>
+</section><section id="verificando-o-modelo-1" class="level2"><h2 class="anchored" data-anchor-id="verificando-o-modelo-1">Verificando o modelo</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(leuc.wei.sel, <span class="at">type =</span> <span class="st">"lp"</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>tempo[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">"Grafico TA"</span>,</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"log(valores ajustados)"</span>, <span class="at">ylab =</span> <span class="st">"log(residuos)"</span>)</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothSEcurve</span>(log.resid, pred.lin)</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">exp</span>(log.resid), <span class="at">dist =</span> <span class="st">"weibull"</span>,</span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="at">shape =</span> <span class="dv">1</span><span class="sc">/</span>leuc.wei.sel<span class="sc">$</span>scale,</span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Grafico Q-Q"</span>, <span class="at">xlab =</span> <span class="st">"Quantis teoricos"</span>, <span class="at">ylab =</span> <span class="st">"Quantis Empiricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span><span class="va">pred.lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.wei.sel</span>, type <span class="op">=</span> <span class="st">"lp"</span><span class="op">)</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">log.resid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">tempo</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">-</span> <span class="va">pred.lin</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pred.lin</span>, <span class="va">log.resid</span>, main <span class="op">=</span> <span class="st">"Grafico TA"</span>,</span>
+<span>xlab <span class="op">=</span> <span class="st">"log(valores ajustados)"</span>, ylab <span class="op">=</span> <span class="st">"log(residuos)"</span><span class="op">)</span></span>
+<span><span class="fu">smoothSEcurve</span><span class="op">(</span><span class="va">log.resid</span>, <span class="va">pred.lin</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">log.resid</span><span class="op">)</span>, dist <span class="op">=</span> <span class="st">"weibull"</span>,</span>
+<span>shape <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">leuc.wei.sel</span><span class="op">$</span><span class="va">scale</span>,</span>
+<span>main <span class="op">=</span> <span class="st">"Grafico Q-Q"</span>, xlab <span class="op">=</span> <span class="st">"Quantis teoricos"</span>, ylab <span class="op">=</span> <span class="st">"Quantis Empiricos"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula07_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="960"></p>
+<p><img src="Aula07_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 28 19</code></pre>
+<pre><code>#&gt; [1] 28 19</code></pre>
 </div>
 </div>
-</section>
-<section id="modelo-lognormal" class="level2">
-<h2 class="anchored" data-anchor-id="modelo-lognormal">Modelo Lognormal</h2>
+</section><section id="modelo-lognormal" class="level2"><h2 class="anchored" data-anchor-id="modelo-lognormal">Modelo Lognormal</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>leuc.logn.comp <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> sexo <span class="sc">+</span> logwbc <span class="sc">+</span> Rx, <span class="at">data =</span> dados, <span class="at">dist =</span> <span class="st">"lognormal"</span>)</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.logn.comp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">leuc.logn.comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sexo</span> <span class="op">+</span> <span class="va">logwbc</span> <span class="op">+</span> <span class="va">Rx</span>, data <span class="op">=</span> <span class="va">dados</span>, dist <span class="op">=</span> <span class="st">"lognormal"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">leuc.logn.comp</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-survreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, 
-    dist = "lognormal")
-              Value Std. Error     z       p
-(Intercept)  4.9975     0.3924 12.74 &lt; 2e-16
-sexo        -0.0947     0.2211 -0.43 0.66862
-logwbc      -0.7051     0.1251 -5.64 1.7e-08
-Rx          -0.8539     0.2311 -3.69 0.00022
-Log(scale)  -0.4424     0.1293 -3.42 0.00062
-
-Scale= 0.642 
-
-Log Normal distribution
-Loglik(model)= -93.9   Loglik(intercept only)= -115.4
-    Chisq= 43.08 on 3 degrees of freedom, p= 2.4e-09 
-Number of Newton-Raphson Iterations: 6 
-n= 42 </code></pre>
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, 
+#&gt;     dist = "lognormal")
+#&gt;               Value Std. Error     z       p
+#&gt; (Intercept)  4.9975     0.3924 12.74 &lt; 2e-16
+#&gt; sexo        -0.0947     0.2211 -0.43 0.66862
+#&gt; logwbc      -0.7051     0.1251 -5.64 1.7e-08
+#&gt; Rx          -0.8539     0.2311 -3.69 0.00022
+#&gt; Log(scale)  -0.4424     0.1293 -3.42 0.00062
+#&gt; 
+#&gt; Scale= 0.642 
+#&gt; 
+#&gt; Log Normal distribution
+#&gt; Loglik(model)= -93.9   Loglik(intercept only)= -115.4
+#&gt;  Chisq= 43.08 on 3 degrees of freedom, p= 2.4e-09 
+#&gt; Number of Newton-Raphson Iterations: 6 
+#&gt; n= 42</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>leuc.logn.sel <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(leuc.logn.comp, <span class="at">direction=</span><span class="st">"backward"</span>, <span class="at">trace=</span><span class="cn">FALSE</span>)</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.logn.sel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">leuc.logn.sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html">stepAIC</a></span><span class="op">(</span><span class="va">leuc.logn.comp</span>, direction<span class="op">=</span><span class="st">"backward"</span>, trace<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">leuc.logn.sel</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
-    dist = "lognormal")
-             Value Std. Error     z       p
-(Intercept)  4.982      0.394 12.65 &lt; 2e-16
-logwbc      -0.716      0.123 -5.80 6.6e-09
-Rx          -0.848      0.232 -3.66 0.00025
-Log(scale)  -0.437      0.129 -3.39 0.00070
-
-Scale= 0.646 
-
-Log Normal distribution
-Loglik(model)= -93.9   Loglik(intercept only)= -115.4
-    Chisq= 42.9 on 2 degrees of freedom, p= 4.8e-10 
-Number of Newton-Raphson Iterations: 6 
-n= 42 </code></pre>
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
+#&gt;     dist = "lognormal")
+#&gt;              Value Std. Error     z       p
+#&gt; (Intercept)  4.982      0.394 12.65 &lt; 2e-16
+#&gt; logwbc      -0.716      0.123 -5.80 6.6e-09
+#&gt; Rx          -0.848      0.232 -3.66 0.00025
+#&gt; Log(scale)  -0.437      0.129 -3.39 0.00070
+#&gt; 
+#&gt; Scale= 0.646 
+#&gt; 
+#&gt; Log Normal distribution
+#&gt; Loglik(model)= -93.9   Loglik(intercept only)= -115.4
+#&gt;  Chisq= 42.9 on 2 degrees of freedom, p= 4.8e-10 
+#&gt; Number of Newton-Raphson Iterations: 6 
+#&gt; n= 42</code></pre>
 </div>
 </div>
-</section>
-<section id="fazendo-previsões-2" class="level2">
-<h2 class="anchored" data-anchor-id="fazendo-previsões-2">Fazendo Previsões</h2>
+</section><section id="fazendo-previsões-2" class="level2"><h2 class="anchored" data-anchor-id="fazendo-previsões-2">Fazendo Previsões</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>novosdados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">logwbc=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">Rx=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(leuc.logn.sel, <span class="at">type=</span><span class="st">"lp"</span>, <span class="at">newdata=</span>novosdados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">novosdados</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>logwbc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, Rx<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.logn.sel</span>, type<span class="op">=</span><span class="st">"lp"</span>, newdata<span class="op">=</span><span class="va">novosdados</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       1        2 
-3.549821 2.702019 </code></pre>
+<pre><code>#&gt;        1        2 
+#&gt; 3.549821 2.702019</code></pre>
 </div>
 </div>
-</section>
-<section id="tempo-mediano-2" class="level2">
-<h2 class="anchored" data-anchor-id="tempo-mediano-2">Tempo Mediano</h2>
+</section><section id="tempo-mediano-2" class="level2"><h2 class="anchored" data-anchor-id="tempo-mediano-2">Tempo Mediano</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>prev1 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logn.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.5</span>)</span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>prev1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev1</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.logn.sel</span>, type<span class="op">=</span><span class="st">"quantile"</span>, newdata<span class="op">=</span><span class="va">novosdados</span>, p<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="va">prev1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       1        2 
-34.80708 14.90980 </code></pre>
+<pre><code>#&gt;        1        2 
+#&gt; 34.80708 14.90980</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>prev1[<span class="dv">2</span>]<span class="sc">/</span>prev1[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev1</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">prev1</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        2 
-0.4283554 </code></pre>
+<pre><code>#&gt;         2 
+#&gt; 0.4283554</code></pre>
 </div>
 </div>
-</section>
-<section id="comparando-com-outro-quantil-1" class="level2">
-<h2 class="anchored" data-anchor-id="comparando-com-outro-quantil-1">Comparando com outro quantil</h2>
+</section><section id="comparando-com-outro-quantil-1" class="level2"><h2 class="anchored" data-anchor-id="comparando-com-outro-quantil-1">Comparando com outro quantil</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>prev2 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logn.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.7</span>)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>prev2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev2</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.logn.sel</span>, type<span class="op">=</span><span class="st">"quantile"</span>, newdata<span class="op">=</span><span class="va">novosdados</span>, p<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></span>
+<span><span class="va">prev2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       1        2 
-48.83742 20.91977 </code></pre>
+<pre><code>#&gt;        1        2 
+#&gt; 48.83742 20.91977</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>prev2[<span class="dv">2</span>]<span class="sc">/</span>prev2[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev2</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">prev2</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        2 
-0.4283554 </code></pre>
+<pre><code>#&gt;         2 
+#&gt; 0.4283554</code></pre>
 </div>
 </div>
-</section>
-<section id="verificando-o-modelo-2" class="level2">
-<h2 class="anchored" data-anchor-id="verificando-o-modelo-2">Verificando o modelo</h2>
+</section><section id="verificando-o-modelo-2" class="level2"><h2 class="anchored" data-anchor-id="verificando-o-modelo-2">Verificando o modelo</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(leuc.logn.sel, <span class="at">type =</span> <span class="st">"lp"</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>tempo[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">"Grafico TA"</span>,</span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"log(valores ajustados)"</span>, <span class="at">ylab =</span> <span class="st">"log(residuos)"</span>)</span>
-<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothSEcurve</span>(log.resid, pred.lin)</span>
-<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">exp</span>(log.resid), <span class="at">dist =</span> <span class="st">"norm"</span>,</span>
-<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a><span class="at">sd =</span> leuc.logn.sel<span class="sc">$</span>scale,</span>
-<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Grafico Q-Q"</span>, <span class="at">xlab =</span> <span class="st">"Quantis teoricos"</span>, <span class="at">ylab =</span> <span class="st">"Quantis Empiricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span><span class="va">pred.lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.logn.sel</span>, type <span class="op">=</span> <span class="st">"lp"</span><span class="op">)</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">log.resid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">tempo</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">-</span> <span class="va">pred.lin</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pred.lin</span>, <span class="va">log.resid</span>, main <span class="op">=</span> <span class="st">"Grafico TA"</span>,</span>
+<span>xlab <span class="op">=</span> <span class="st">"log(valores ajustados)"</span>, ylab <span class="op">=</span> <span class="st">"log(residuos)"</span><span class="op">)</span></span>
+<span><span class="fu">smoothSEcurve</span><span class="op">(</span><span class="va">log.resid</span>, <span class="va">pred.lin</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">log.resid</span><span class="op">)</span>, dist <span class="op">=</span> <span class="st">"norm"</span>,</span>
+<span>sd <span class="op">=</span> <span class="va">leuc.logn.sel</span><span class="op">$</span><span class="va">scale</span>,</span>
+<span>main <span class="op">=</span> <span class="st">"Grafico Q-Q"</span>, xlab <span class="op">=</span> <span class="st">"Quantis teoricos"</span>, ylab <span class="op">=</span> <span class="st">"Quantis Empiricos"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula07_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="960"></p>
+<p><img src="Aula07_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 28 26</code></pre>
+<pre><code>#&gt; [1] 28 26</code></pre>
 </div>
 </div>
-</section>
-<section id="modelo-loglogistico" class="level2">
-<h2 class="anchored" data-anchor-id="modelo-loglogistico">Modelo Loglogistico</h2>
+</section><section id="modelo-loglogistico" class="level2"><h2 class="anchored" data-anchor-id="modelo-loglogistico">Modelo Loglogistico</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>leuc.logl.comp <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> sexo <span class="sc">+</span> logwbc <span class="sc">+</span> Rx, <span class="at">data =</span> dados, <span class="at">dist =</span> <span class="st">"loglogistic"</span>)</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.logl.comp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">leuc.logl.comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survreg.html">survreg</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sexo</span> <span class="op">+</span> <span class="va">logwbc</span> <span class="op">+</span> <span class="va">Rx</span>, data <span class="op">=</span> <span class="va">dados</span>, dist <span class="op">=</span> <span class="st">"loglogistic"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">leuc.logl.comp</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-survreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, 
-    dist = "loglogistic")
-              Value Std. Error     z       p
-(Intercept)  5.0190     0.3518 14.27 &lt; 2e-16
-sexo        -0.0408     0.2027 -0.20 0.84065
-logwbc      -0.7278     0.1098 -6.63 3.4e-11
-Rx          -0.7494     0.2133 -3.51 0.00044
-Log(scale)  -1.0894     0.1509 -7.22 5.1e-13
-
-Scale= 0.336 
-
-Log logistic distribution
-Loglik(model)= -92.3   Loglik(intercept only)= -115.4
-    Chisq= 46.08 on 3 degrees of freedom, p= 5.5e-10 
-Number of Newton-Raphson Iterations: 6 
-n= 42 </code></pre>
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados, 
+#&gt;     dist = "loglogistic")
+#&gt;               Value Std. Error     z       p
+#&gt; (Intercept)  5.0190     0.3518 14.27 &lt; 2e-16
+#&gt; sexo        -0.0408     0.2027 -0.20 0.84065
+#&gt; logwbc      -0.7278     0.1098 -6.63 3.4e-11
+#&gt; Rx          -0.7494     0.2133 -3.51 0.00044
+#&gt; Log(scale)  -1.0894     0.1509 -7.22 5.1e-13
+#&gt; 
+#&gt; Scale= 0.336 
+#&gt; 
+#&gt; Log logistic distribution
+#&gt; Loglik(model)= -92.3   Loglik(intercept only)= -115.4
+#&gt;  Chisq= 46.08 on 3 degrees of freedom, p= 5.5e-10 
+#&gt; Number of Newton-Raphson Iterations: 6 
+#&gt; n= 42</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>leuc.logl.sel <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(leuc.logl.comp, <span class="at">direction=</span><span class="st">"backward"</span>, <span class="at">trace=</span><span class="cn">FALSE</span>)</span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.logl.sel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">leuc.logl.sel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html">stepAIC</a></span><span class="op">(</span><span class="va">leuc.logl.comp</span>, direction<span class="op">=</span><span class="st">"backward"</span>, trace<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">leuc.logl.sel</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
-    dist = "loglogistic")
-             Value Std. Error     z       p
-(Intercept)  5.008      0.348 14.40 &lt; 2e-16
-logwbc      -0.733      0.108 -6.81 9.8e-12
-Rx          -0.743      0.210 -3.54   4e-04
-Log(scale)  -1.089      0.151 -7.22 5.3e-13
-
-Scale= 0.337 
-
-Log logistic distribution
-Loglik(model)= -92.3   Loglik(intercept only)= -115.4
-    Chisq= 46.04 on 2 degrees of freedom, p= 1e-10 
-Number of Newton-Raphson Iterations: 6 
-n= 42 </code></pre>
+<pre><code>#&gt; 
+#&gt; Call:
+#&gt; survreg(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados, 
+#&gt;     dist = "loglogistic")
+#&gt;              Value Std. Error     z       p
+#&gt; (Intercept)  5.008      0.348 14.40 &lt; 2e-16
+#&gt; logwbc      -0.733      0.108 -6.81 9.8e-12
+#&gt; Rx          -0.743      0.210 -3.54   4e-04
+#&gt; Log(scale)  -1.089      0.151 -7.22 5.3e-13
+#&gt; 
+#&gt; Scale= 0.337 
+#&gt; 
+#&gt; Log logistic distribution
+#&gt; Loglik(model)= -92.3   Loglik(intercept only)= -115.4
+#&gt;  Chisq= 46.04 on 2 degrees of freedom, p= 1e-10 
+#&gt; Number of Newton-Raphson Iterations: 6 
+#&gt; n= 42</code></pre>
 </div>
 </div>
-</section>
-<section id="fazendo-previsões-3" class="level2">
-<h2 class="anchored" data-anchor-id="fazendo-previsões-3">Fazendo Previsões</h2>
-</section>
-<section id="tempo-mediano-3" class="level2">
-<h2 class="anchored" data-anchor-id="tempo-mediano-3">Tempo Mediano</h2>
+</section><section id="fazendo-previsões-3" class="level2"><h2 class="anchored" data-anchor-id="fazendo-previsões-3">Fazendo Previsões</h2>
+</section><section id="tempo-mediano-3" class="level2"><h2 class="anchored" data-anchor-id="tempo-mediano-3">Tempo Mediano</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>novosdados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">logwbc=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">Rx=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>prev1 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logl.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.5</span>)</span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>prev1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">novosdados</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>logwbc<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, Rx<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">prev1</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.logl.sel</span>, type<span class="op">=</span><span class="st">"quantile"</span>, newdata<span class="op">=</span><span class="va">novosdados</span>, p<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="va">prev1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       1        2 
-34.56680 16.45034 </code></pre>
+<pre><code>#&gt;        1        2 
+#&gt; 34.56680 16.45034</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>prev1[<span class="dv">2</span>]<span class="sc">/</span>prev1[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev1</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">prev1</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     2 
-0.4759 </code></pre>
+<pre><code>#&gt;      2 
+#&gt; 0.4759</code></pre>
 </div>
 </div>
-</section>
-<section id="comparando-com-outro-quantil-2" class="level2">
-<h2 class="anchored" data-anchor-id="comparando-com-outro-quantil-2">Comparando com outro quantil</h2>
+</section><section id="comparando-com-outro-quantil-2" class="level2"><h2 class="anchored" data-anchor-id="comparando-com-outro-quantil-2">Comparando com outro quantil</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>prev2 <span class="ot">&lt;-</span><span class="fu">predict</span>(leuc.logl.sel, <span class="at">type=</span><span class="st">"quantile"</span>, <span class="at">newdata=</span>novosdados, <span class="at">p=</span><span class="fl">0.7</span>)</span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>prev2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev2</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.logl.sel</span>, type<span class="op">=</span><span class="st">"quantile"</span>, newdata<span class="op">=</span><span class="va">novosdados</span>, p<span class="op">=</span><span class="fl">0.7</span><span class="op">)</span></span>
+<span><span class="va">prev2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       1        2 
-45.97221 21.87818 </code></pre>
+<pre><code>#&gt;        1        2 
+#&gt; 45.97221 21.87818</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>prev2[<span class="dv">2</span>]<span class="sc">/</span>prev2[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">prev2</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">prev2</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     2 
-0.4759 </code></pre>
+<pre><code>#&gt;      2 
+#&gt; 0.4759</code></pre>
 </div>
 </div>
-</section>
-<section id="verificando-o-modelo-3" class="level2">
-<h2 class="anchored" data-anchor-id="verificando-o-modelo-3">Verificando o modelo</h2>
+</section><section id="verificando-o-modelo-3" class="level2"><h2 class="anchored" data-anchor-id="verificando-o-modelo-3">Verificando o modelo</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">cex =</span> <span class="fl">0.6</span>)</span>
-<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>pred.lin <span class="ot">&lt;-</span> <span class="fu">predict</span>(leuc.logl.sel, <span class="at">type =</span> <span class="st">"lp"</span>)[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]</span>
-<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>log.resid <span class="ot">&lt;-</span> <span class="fu">log</span>(dados<span class="sc">$</span>tempo[dados<span class="sc">$</span>status <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> pred.lin</span>
-<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(pred.lin, log.resid, <span class="at">main =</span> <span class="st">"Grafico TA"</span>,</span>
-<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"log(valores ajustados)"</span>, <span class="at">ylab =</span> <span class="st">"log(residuos)"</span>)</span>
-<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a><span class="fu">smoothSEcurve</span>(log.resid, pred.lin)</span>
-<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a><span class="fu">qqPlot</span>(<span class="fu">exp</span>(log.resid), <span class="at">dist =</span> <span class="st">"logis"</span>,</span>
-<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a><span class="at">scale =</span> leuc.logl.sel<span class="sc">$</span>scale,</span>
-<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a><span class="at">main =</span> <span class="st">"Grafico Q-Q"</span>, <span class="at">xlab =</span> <span class="st">"Quantis teoricos"</span>, <span class="at">ylab =</span> <span class="st">"Quantis Empiricos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span><span class="va">pred.lin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">leuc.logl.sel</span>, type <span class="op">=</span> <span class="st">"lp"</span><span class="op">)</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="va">log.resid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">tempo</span><span class="op">[</span><span class="va">dados</span><span class="op">$</span><span class="va">status</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op">-</span> <span class="va">pred.lin</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pred.lin</span>, <span class="va">log.resid</span>, main <span class="op">=</span> <span class="st">"Grafico TA"</span>,</span>
+<span>xlab <span class="op">=</span> <span class="st">"log(valores ajustados)"</span>, ylab <span class="op">=</span> <span class="st">"log(residuos)"</span><span class="op">)</span></span>
+<span><span class="fu">smoothSEcurve</span><span class="op">(</span><span class="va">log.resid</span>, <span class="va">pred.lin</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/qqPlot.html">qqPlot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">log.resid</span><span class="op">)</span>, dist <span class="op">=</span> <span class="st">"logis"</span>,</span>
+<span>scale <span class="op">=</span> <span class="va">leuc.logl.sel</span><span class="op">$</span><span class="va">scale</span>,</span>
+<span>main <span class="op">=</span> <span class="st">"Grafico Q-Q"</span>, xlab <span class="op">=</span> <span class="st">"Quantis teoricos"</span>, ylab <span class="op">=</span> <span class="st">"Quantis Empiricos"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula07_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="960"></p>
+<p><img src="Aula07_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 28 26</code></pre>
+<pre><code>#&gt; [1] 28 26</code></pre>
 </div>
 </div>
-</section>
-<section id="comparação-dos-modelos" class="level2">
-<h2 class="anchored" data-anchor-id="comparação-dos-modelos">Comparação dos modelos</h2>
+</section><section id="comparação-dos-modelos" class="level2"><h2 class="anchored" data-anchor-id="comparação-dos-modelos">Comparação dos modelos</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>aic.exp <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.exp.sel)</span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>aic.wei <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.wei.sel)</span>
-<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>aic.ln <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.logn.sel)</span>
-<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>aic.ll <span class="ot">&lt;-</span> <span class="fu">AIC</span>(leuc.logl.sel)</span>
-<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>aic <span class="ot">&lt;-</span> <span class="fu">c</span>(aic.exp, aic.wei, aic.ln, aic.ll)</span>
-<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a>delta.aic <span class="ot">&lt;-</span> aic <span class="sc">-</span> <span class="fu">min</span>(aic)</span>
-<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>delta.aic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aic.exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">leuc.exp.sel</span><span class="op">)</span></span>
+<span><span class="va">aic.wei</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">leuc.wei.sel</span><span class="op">)</span></span>
+<span><span class="va">aic.ln</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">leuc.logn.sel</span><span class="op">)</span></span>
+<span><span class="va">aic.ll</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="va">leuc.logl.sel</span><span class="op">)</span></span>
+<span><span class="va">aic</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">aic.exp</span>, <span class="va">aic.wei</span>, <span class="va">aic.ln</span>, <span class="va">aic.ll</span><span class="op">)</span></span>
+<span><span class="va">delta.aic</span> <span class="op">&lt;-</span> <span class="va">aic</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">aic</span><span class="op">)</span></span>
+<span><span class="va">delta.aic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 19.420362  0.000000  7.755986  4.535873</code></pre>
+<pre><code>#&gt; [1] 19.420362  0.000000  7.755986  4.535873</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>peso.aic <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>delta.aic)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">exp</span>(<span class="sc">-</span><span class="fl">0.5</span><span class="sc">*</span>delta.aic))</span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(peso.aic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">peso.aic</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span><span class="op">*</span><span class="va">delta.aic</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span><span class="op">*</span><span class="va">delta.aic</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">peso.aic</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1</code></pre>
+<pre><code>#&gt; [1] 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>modelos <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">modelos=</span><span class="fu">c</span>(<span class="st">"Exponencial"</span>, <span class="st">"Weibull"</span>,</span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"Lognormal"</span>, <span class="st">"Loglogistico"</span>),</span>
-<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">p_Akaike =</span> peso.aic)</span>
-<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>modelos <span class="sc">%&gt;%</span> <span class="fu">gt</span>() <span class="sc">%&gt;%</span> <span class="fu">fmt_number</span>(<span class="at">columns =</span> <span class="fu">contains</span>(<span class="st">"Akaike"</span>),</span>
-<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>                                <span class="at">decimals =</span> <span class="dv">3</span>,</span>
-<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a>                                <span class="at">use_seps =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">modelos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>modelos<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Exponencial"</span>, <span class="st">"Weibull"</span>,</span>
+<span>                                <span class="st">"Lognormal"</span>, <span class="st">"Loglogistico"</span><span class="op">)</span>,</span>
+<span>                      p_Akaike <span class="op">=</span> <span class="va">peso.aic</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://gt.rstudio.com/">gt</a></span><span class="op">)</span></span>
+<span><span class="va">modelos</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://gt.rstudio.com/reference/fmt_number.html">fmt_number</a></span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">contains</a></span><span class="op">(</span><span class="st">"Akaike"</span><span class="op">)</span>,</span>
+<span>                                decimals <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>                                use_seps <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div id="xgvwtvefmv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#xgvwtvefmv table {
+<div id="owipcfzhod" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#owipcfzhod table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#xgvwtvefmv thead, #xgvwtvefmv tbody, #xgvwtvefmv tfoot, #xgvwtvefmv tr, #xgvwtvefmv td, #xgvwtvefmv th {
+#owipcfzhod thead, #owipcfzhod tbody, #owipcfzhod tfoot, #owipcfzhod tr, #owipcfzhod td, #owipcfzhod th {
   border-style: none;
 }
 
-#xgvwtvefmv p {
+#owipcfzhod p {
   margin: 0;
   padding: 0;
 }
 
-#xgvwtvefmv .gt_table {
+#owipcfzhod .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1069,12 +995,12 @@ n= 42 </code></pre>
   border-left-color: #D3D3D3;
 }
 
-#xgvwtvefmv .gt_caption {
+#owipcfzhod .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#xgvwtvefmv .gt_title {
+#owipcfzhod .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1086,7 +1012,7 @@ n= 42 </code></pre>
   border-bottom-width: 0;
 }
 
-#xgvwtvefmv .gt_subtitle {
+#owipcfzhod .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1098,7 +1024,7 @@ n= 42 </code></pre>
   border-top-width: 0;
 }
 
-#xgvwtvefmv .gt_heading {
+#owipcfzhod .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1110,13 +1036,13 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-#xgvwtvefmv .gt_bottom_border {
+#owipcfzhod .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xgvwtvefmv .gt_col_headings {
+#owipcfzhod .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1131,7 +1057,7 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-#xgvwtvefmv .gt_col_heading {
+#owipcfzhod .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1151,7 +1077,7 @@ n= 42 </code></pre>
   overflow-x: hidden;
 }
 
-#xgvwtvefmv .gt_column_spanner_outer {
+#owipcfzhod .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1163,15 +1089,15 @@ n= 42 </code></pre>
   padding-right: 4px;
 }
 
-#xgvwtvefmv .gt_column_spanner_outer:first-child {
+#owipcfzhod .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xgvwtvefmv .gt_column_spanner_outer:last-child {
+#owipcfzhod .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xgvwtvefmv .gt_column_spanner {
+#owipcfzhod .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1183,11 +1109,11 @@ n= 42 </code></pre>
   width: 100%;
 }
 
-#xgvwtvefmv .gt_spanner_row {
+#owipcfzhod .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#xgvwtvefmv .gt_group_heading {
+#owipcfzhod .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1213,7 +1139,7 @@ n= 42 </code></pre>
   text-align: left;
 }
 
-#xgvwtvefmv .gt_empty_group_heading {
+#owipcfzhod .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1228,15 +1154,15 @@ n= 42 </code></pre>
   vertical-align: middle;
 }
 
-#xgvwtvefmv .gt_from_md > :first-child {
+#owipcfzhod .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xgvwtvefmv .gt_from_md > :last-child {
+#owipcfzhod .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xgvwtvefmv .gt_row {
+#owipcfzhod .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1255,7 +1181,7 @@ n= 42 </code></pre>
   overflow-x: hidden;
 }
 
-#xgvwtvefmv .gt_stub {
+#owipcfzhod .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1268,7 +1194,7 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-#xgvwtvefmv .gt_stub_row_group {
+#owipcfzhod .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1282,15 +1208,15 @@ n= 42 </code></pre>
   vertical-align: top;
 }
 
-#xgvwtvefmv .gt_row_group_first td {
+#owipcfzhod .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#xgvwtvefmv .gt_row_group_first th {
+#owipcfzhod .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#xgvwtvefmv .gt_summary_row {
+#owipcfzhod .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1300,16 +1226,16 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-#xgvwtvefmv .gt_first_summary_row {
+#owipcfzhod .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#xgvwtvefmv .gt_first_summary_row.thick {
+#owipcfzhod .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#xgvwtvefmv .gt_last_summary_row {
+#owipcfzhod .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1319,7 +1245,7 @@ n= 42 </code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#xgvwtvefmv .gt_grand_summary_row {
+#owipcfzhod .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1329,7 +1255,7 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-#xgvwtvefmv .gt_first_grand_summary_row {
+#owipcfzhod .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1339,7 +1265,7 @@ n= 42 </code></pre>
   border-top-color: #D3D3D3;
 }
 
-#xgvwtvefmv .gt_last_grand_summary_row_top {
+#owipcfzhod .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1349,11 +1275,11 @@ n= 42 </code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#xgvwtvefmv .gt_striped {
+#owipcfzhod .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xgvwtvefmv .gt_table_body {
+#owipcfzhod .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1362,7 +1288,7 @@ n= 42 </code></pre>
   border-bottom-color: #D3D3D3;
 }
 
-#xgvwtvefmv .gt_footnotes {
+#owipcfzhod .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1376,7 +1302,7 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-#xgvwtvefmv .gt_footnote {
+#owipcfzhod .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1385,7 +1311,7 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-#xgvwtvefmv .gt_sourcenotes {
+#owipcfzhod .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1399,7 +1325,7 @@ n= 42 </code></pre>
   border-right-color: #D3D3D3;
 }
 
-#xgvwtvefmv .gt_sourcenote {
+#owipcfzhod .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1407,96 +1333,96 @@ n= 42 </code></pre>
   padding-right: 5px;
 }
 
-#xgvwtvefmv .gt_left {
+#owipcfzhod .gt_left {
   text-align: left;
 }
 
-#xgvwtvefmv .gt_center {
+#owipcfzhod .gt_center {
   text-align: center;
 }
 
-#xgvwtvefmv .gt_right {
+#owipcfzhod .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xgvwtvefmv .gt_font_normal {
+#owipcfzhod .gt_font_normal {
   font-weight: normal;
 }
 
-#xgvwtvefmv .gt_font_bold {
+#owipcfzhod .gt_font_bold {
   font-weight: bold;
 }
 
-#xgvwtvefmv .gt_font_italic {
+#owipcfzhod .gt_font_italic {
   font-style: italic;
 }
 
-#xgvwtvefmv .gt_super {
+#owipcfzhod .gt_super {
   font-size: 65%;
 }
 
-#xgvwtvefmv .gt_footnote_marks {
+#owipcfzhod .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#xgvwtvefmv .gt_asterisk {
+#owipcfzhod .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#xgvwtvefmv .gt_indent_1 {
+#owipcfzhod .gt_indent_1 {
   text-indent: 5px;
 }
 
-#xgvwtvefmv .gt_indent_2 {
+#owipcfzhod .gt_indent_2 {
   text-indent: 10px;
 }
 
-#xgvwtvefmv .gt_indent_3 {
+#owipcfzhod .gt_indent_3 {
   text-indent: 15px;
 }
 
-#xgvwtvefmv .gt_indent_4 {
+#owipcfzhod .gt_indent_4 {
   text-indent: 20px;
 }
 
-#xgvwtvefmv .gt_indent_5 {
+#owipcfzhod .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-  <thead>
-    
-    <tr class="gt_col_headings">
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="modelos">modelos</th>
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="modelos">modelos</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="p_Akaike">p_Akaike</th>
-    </tr>
-  </thead>
-  <tbody class="gt_table_body">
-    <tr><td headers="modelos" class="gt_row gt_left">Exponencial</td>
-<td headers="p_Akaike" class="gt_row gt_right">0.000</td></tr>
-    <tr><td headers="modelos" class="gt_row gt_left">Weibull</td>
-<td headers="p_Akaike" class="gt_row gt_right">0.889</td></tr>
-    <tr><td headers="modelos" class="gt_row gt_left">Lognormal</td>
-<td headers="p_Akaike" class="gt_row gt_right">0.018</td></tr>
-    <tr><td headers="modelos" class="gt_row gt_left">Loglogistico</td>
-<td headers="p_Akaike" class="gt_row gt_right">0.092</td></tr>
-  </tbody>
-  
-  
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="modelos" class="gt_row gt_left">Exponencial</td>
+<td headers="p_Akaike" class="gt_row gt_right">0.000</td>
+</tr>
+<tr>
+<td headers="modelos" class="gt_row gt_left">Weibull</td>
+<td headers="p_Akaike" class="gt_row gt_right">0.889</td>
+</tr>
+<tr>
+<td headers="modelos" class="gt_row gt_left">Lognormal</td>
+<td headers="p_Akaike" class="gt_row gt_right">0.018</td>
+</tr>
+<tr>
+<td headers="modelos" class="gt_row gt_left">Loglogistico</td>
+<td headers="p_Akaike" class="gt_row gt_right">0.092</td>
+</tr>
+</tbody>
 </table>
 </div>
 </div>
 </div>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1843,9 +1769,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../semanas/Aula06x1.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">TFA2</span>
       </a>          
@@ -1857,8 +1781,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">Baseado em https://sta210-s22.github.io/website/</div>   
     <div class="nav-footer-center">
       &nbsp;
@@ -1868,7 +1791,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-
 
 
 </body></html>

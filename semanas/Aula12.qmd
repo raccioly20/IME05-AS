@@ -3,13 +3,15 @@ title: "Análise de Sobrevivência"
 subtitle: "Estratificação no Modelo de Cox"
 author: "Ricardo Accioly"
 format:
-  revealjs:
-    theme: dark
-    slide-number: true
-    chalkboard: 
-      buttons: false
-    preview-links: auto
-    css: styles.css
+ html:
+    code-link: true
+    fig-width: 9
+    fig-height: 7
+    fig-dpi: 300
+knitr:
+  opts_chunk: 
+    out.width: 90%
+    comment: "#>"
 ---
 
 ## Estratificação no Modelo de Cox {.smaller .scrollable}

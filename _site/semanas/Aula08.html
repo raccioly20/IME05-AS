@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.433">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Ricardo Accioly">
-
 <title>IME05-12532 - Análise de Sobrevivência</title>
 <style>
 code{white-space: pre-wrap;}
@@ -57,7 +54,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -76,8 +72,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -97,21 +92,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-
-
 <meta name="twitter:title" content="IME05-12532 - Análise de Sobrevivência">
 <meta name="twitter:description" content="Modelos semi-paramétrico de Cox">
 <meta name="twitter:image" content="images/anasobre.png">
 <meta name="twitter:creator" content="@r_accioly">
 <meta name="twitter:card" content="summary_large_image">
 </head>
-
 <body class="nav-sidebar docked">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -122,16 +112,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
-    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto"><div class="pt-lg-2 mt-2 text-center sidebar-header">
       <a href="../index.html" class="sidebar-logo-link">
-      <img src="../images/anasobre.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
-      </a>
+      <img src="../images/anasobre.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none"></a>
       <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/raccioly20" rel="" title="GitHub" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
     <a href="https://twitter.com/r_accioly" rel="" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
@@ -145,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item sidebar-item-section">
+<li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
  <span class="menu-text">Informação da disciplina</span></a>
@@ -153,8 +138,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../visao-do-curso.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Visão Geral</span></a>
@@ -167,7 +152,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
@@ -176,15 +161,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Sobre</span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
@@ -193,15 +178,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../acesso-rstudio.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Acesso</span></a>
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
@@ -210,8 +195,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../semanas/Aula01.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Aula01</span></a>
@@ -302,34 +287,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução">Introdução</a></li>
+<li><a href="#introdu%C3%A7%C3%A3o" id="toc-introdução" class="nav-link active" data-scroll-target="#introdu%C3%A7%C3%A3o">Introdução</a></li>
   <li><a href="#carregando-os-dados" id="toc-carregando-os-dados" class="nav-link" data-scroll-target="#carregando-os-dados">Carregando os dados</a></li>
-  <li><a href="#ajuste-não-paramétrico" id="toc-ajuste-não-paramétrico" class="nav-link" data-scroll-target="#ajuste-não-paramétrico">Ajuste Não Paramétrico</a></li>
-  <li><a href="#modelo-semi-paramétrico-de-cox" id="toc-modelo-semi-paramétrico-de-cox" class="nav-link" data-scroll-target="#modelo-semi-paramétrico-de-cox">Modelo Semi-paramétrico de Cox</a></li>
+  <li><a href="#ajuste-n%C3%A3o-param%C3%A9trico" id="toc-ajuste-não-paramétrico" class="nav-link" data-scroll-target="#ajuste-n%C3%A3o-param%C3%A9trico">Ajuste Não Paramétrico</a></li>
+  <li><a href="#modelo-semi-param%C3%A9trico-de-cox" id="toc-modelo-semi-paramétrico-de-cox" class="nav-link" data-scroll-target="#modelo-semi-param%C3%A9trico-de-cox">Modelo Semi-paramétrico de Cox</a></li>
   <li><a href="#automatizando-ajuste" id="toc-automatizando-ajuste" class="nav-link" data-scroll-target="#automatizando-ajuste">Automatizando ajuste</a></li>
-  <li><a href="#informações-do-ajuste" id="toc-informações-do-ajuste" class="nav-link" data-scroll-target="#informações-do-ajuste">Informações do Ajuste</a></li>
+  <li><a href="#informa%C3%A7%C3%B5es-do-ajuste" id="toc-informações-do-ajuste" class="nav-link" data-scroll-target="#informa%C3%A7%C3%B5es-do-ajuste">Informações do Ajuste</a></li>
   <li><a href="#avaliando-o-ajuste-1" id="toc-avaliando-o-ajuste-1" class="nav-link" data-scroll-target="#avaliando-o-ajuste-1">Avaliando o ajuste 1</a></li>
   <li><a href="#avaliando-o-ajuste-2" id="toc-avaliando-o-ajuste-2" class="nav-link" data-scroll-target="#avaliando-o-ajuste-2">Avaliando o ajuste 2</a></li>
-  <li><a href="#curva-de-sobrevivência" id="toc-curva-de-sobrevivência" class="nav-link" data-scroll-target="#curva-de-sobrevivência">Curva de Sobrevivência</a></li>
-  </ul>
-</nav>
+  <li><a href="#curva-de-sobreviv%C3%AAncia" id="toc-curva-de-sobrevivência" class="nav-link" data-scroll-target="#curva-de-sobreviv%C3%AAncia">Curva de Sobrevivência</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Análise de Sobrevivência</h1>
 <p class="subtitle lead">Modelos semi-paramétrico de Cox</p>
 </div>
@@ -350,204 +329,182 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header>
-
-<section id="introdução" class="level2">
-<h2 class="anchored" data-anchor-id="introdução">Introdução</h2>
+</header><section id="introdução" class="level2"><h2 class="anchored" data-anchor-id="introdução">Introdução</h2>
 <p>Nesta etapa vamos começar a trabalhar com o modelo semi-paramétrico de Cox</p>
 <p>O conjunto de dados a seguir chamado “anderson.xlsx” consiste em tempos de remissão (em semanas) em 42 pacientes com leucemia, metade dos quais recebem uma certa nova terapia de tratamento e a outra metade recebe uma terapia de tratamento padrão.</p>
 <p>A variável de exposição de interesse é o tratamento (Rx = 0 se novo tratamento, Rx = 1 se tratamento padrão).</p>
 <p>Duas outras variáveis para controle como potenciais confundidores são a contagem de glóbulos brancos (ou seja, logwbc) e sexo. O status de falha é definido pela variável recaída (0 se censurado, 1 se falhar).</p>
-</section>
-<section id="carregando-os-dados" class="level2">
-<h2 class="anchored" data-anchor-id="carregando-os-dados">Carregando os dados</h2>
+</section><section id="carregando-os-dados" class="level2"><h2 class="anchored" data-anchor-id="carregando-os-dados">Carregando os dados</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(<span class="st">"anderson.xlsx"</span>, <span class="at">col_names =</span> <span class="cn">TRUE</span> )</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span>
+<span><span class="va">dados</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_xlsx</a></span><span class="op">(</span><span class="st">"anderson.xlsx"</span>, col_names <span class="op">=</span> <span class="cn">TRUE</span> <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">dados</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     tempo           status            sexo            logwbc     
- Min.   : 1.00   Min.   :0.0000   Min.   :0.0000   Min.   :1.450  
- 1st Qu.: 6.00   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:2.303  
- Median :10.50   Median :1.0000   Median :0.0000   Median :2.800  
- Mean   :12.88   Mean   :0.7143   Mean   :0.4762   Mean   :2.930  
- 3rd Qu.:18.50   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:3.490  
- Max.   :35.00   Max.   :1.0000   Max.   :1.0000   Max.   :5.000  
-       Rx     
- Min.   :0.0  
- 1st Qu.:0.0  
- Median :0.5  
- Mean   :0.5  
- 3rd Qu.:1.0  
- Max.   :1.0  </code></pre>
+<pre><code>#&gt;      tempo           status            sexo            logwbc     
+#&gt;  Min.   : 1.00   Min.   :0.0000   Min.   :0.0000   Min.   :1.450  
+#&gt;  1st Qu.: 6.00   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:2.303  
+#&gt;  Median :10.50   Median :1.0000   Median :0.0000   Median :2.800  
+#&gt;  Mean   :12.88   Mean   :0.7143   Mean   :0.4762   Mean   :2.930  
+#&gt;  3rd Qu.:18.50   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:3.490  
+#&gt;  Max.   :35.00   Max.   :1.0000   Max.   :1.0000   Max.   :5.000  
+#&gt;        Rx     
+#&gt;  Min.   :0.0  
+#&gt;  1st Qu.:0.0  
+#&gt;  Median :0.5  
+#&gt;  Mean   :0.5  
+#&gt;  3rd Qu.:1.0  
+#&gt;  Max.   :1.0</code></pre>
 </div>
 </div>
-</section>
-<section id="ajuste-não-paramétrico" class="level2">
-<h2 class="anchored" data-anchor-id="ajuste-não-paramétrico">Ajuste Não Paramétrico</h2>
+</section><section id="ajuste-não-paramétrico" class="level2"><h2 class="anchored" data-anchor-id="ajuste-não-paramétrico">Ajuste Não Paramétrico</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ekm <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(tempo,status)<span class="sc">~</span>Rx, <span class="at">data=</span>dados)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>tempo <span class="ot">&lt;-</span> ekm<span class="sc">$</span>time</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>st <span class="ot">&lt;-</span> ekm<span class="sc">$</span>surv</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ekm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ekm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>,<span class="va">status</span><span class="op">)</span><span class="op">~</span><span class="va">Rx</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
+<span><span class="va">tempo</span> <span class="op">&lt;-</span> <span class="va">ekm</span><span class="op">$</span><span class="va">time</span></span>
+<span><span class="va">st</span> <span class="op">&lt;-</span> <span class="va">ekm</span><span class="op">$</span><span class="va">surv</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ekm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Call: survfit(formula = Surv(tempo, status) ~ Rx, data = dados)
-
-                Rx=0 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    6     21       3    0.857  0.0764        0.720        1.000
-    7     17       1    0.807  0.0869        0.653        0.996
-   10     15       1    0.753  0.0963        0.586        0.968
-   13     12       1    0.690  0.1068        0.510        0.935
-   16     11       1    0.627  0.1141        0.439        0.896
-   22      7       1    0.538  0.1282        0.337        0.858
-   23      6       1    0.448  0.1346        0.249        0.807
-
-                Rx=1 
- time n.risk n.event survival std.err lower 95% CI upper 95% CI
-    1     21       2   0.9048  0.0641      0.78754        1.000
-    2     19       2   0.8095  0.0857      0.65785        0.996
-    3     17       1   0.7619  0.0929      0.59988        0.968
-    4     16       2   0.6667  0.1029      0.49268        0.902
-    5     14       2   0.5714  0.1080      0.39455        0.828
-    8     12       4   0.3810  0.1060      0.22085        0.657
-   11      8       2   0.2857  0.0986      0.14529        0.562
-   12      6       2   0.1905  0.0857      0.07887        0.460
-   15      4       1   0.1429  0.0764      0.05011        0.407
-   17      3       1   0.0952  0.0641      0.02549        0.356
-   22      2       1   0.0476  0.0465      0.00703        0.322
-   23      1       1   0.0000     NaN           NA           NA</code></pre>
+<pre><code>#&gt; Call: survfit(formula = Surv(tempo, status) ~ Rx, data = dados)
+#&gt; 
+#&gt;                 Rx=0 
+#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+#&gt;     6     21       3    0.857  0.0764        0.720        1.000
+#&gt;     7     17       1    0.807  0.0869        0.653        0.996
+#&gt;    10     15       1    0.753  0.0963        0.586        0.968
+#&gt;    13     12       1    0.690  0.1068        0.510        0.935
+#&gt;    16     11       1    0.627  0.1141        0.439        0.896
+#&gt;    22      7       1    0.538  0.1282        0.337        0.858
+#&gt;    23      6       1    0.448  0.1346        0.249        0.807
+#&gt; 
+#&gt;                 Rx=1 
+#&gt;  time n.risk n.event survival std.err lower 95% CI upper 95% CI
+#&gt;     1     21       2   0.9048  0.0641      0.78754        1.000
+#&gt;     2     19       2   0.8095  0.0857      0.65785        0.996
+#&gt;     3     17       1   0.7619  0.0929      0.59988        0.968
+#&gt;     4     16       2   0.6667  0.1029      0.49268        0.902
+#&gt;     5     14       2   0.5714  0.1080      0.39455        0.828
+#&gt;     8     12       4   0.3810  0.1060      0.22085        0.657
+#&gt;    11      8       2   0.2857  0.0986      0.14529        0.562
+#&gt;    12      6       2   0.1905  0.0857      0.07887        0.460
+#&gt;    15      4       1   0.1429  0.0764      0.05011        0.407
+#&gt;    17      3       1   0.0952  0.0641      0.02549        0.356
+#&gt;    22      2       1   0.0476  0.0465      0.00703        0.322
+#&gt;    23      1       1   0.0000     NaN           NA           NA</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ekm, <span class="at">xlab=</span><span class="st">"T(semanas)"</span>,<span class="at">ylab=</span><span class="st">"S(t)"</span>, <span class="at">lty=</span><span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"Rx=0"</span>,<span class="st">"Rx=1"</span>), <span class="at">lty =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ekm</span>, xlab<span class="op">=</span><span class="st">"T(semanas)"</span>,ylab<span class="op">=</span><span class="st">"S(t)"</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Rx=0"</span>,<span class="st">"Rx=1"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula08_files/figure-html/ex_2-1.png" class="img-fluid" width="960"></p>
+<p><img src="Aula08_files/figure-html/ex_2-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section>
-<section id="modelo-semi-paramétrico-de-cox" class="level2">
-<h2 class="anchored" data-anchor-id="modelo-semi-paramétrico-de-cox">Modelo Semi-paramétrico de Cox</h2>
+</section><section id="modelo-semi-paramétrico-de-cox" class="level2"><h2 class="anchored" data-anchor-id="modelo-semi-paramétrico-de-cox">Modelo Semi-paramétrico de Cox</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>leuc.cox1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> sexo <span class="sc">+</span> logwbc <span class="sc">+</span> Rx, <span class="at">data =</span> dados)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.cox1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">leuc.cox1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sexo</span> <span class="op">+</span> <span class="va">logwbc</span> <span class="op">+</span> <span class="va">Rx</span>, data <span class="op">=</span> <span class="va">dados</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">leuc.cox1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Call:
-coxph(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados)
-
-  n= 42, number of events= 30 
-
-         coef exp(coef) se(coef)     z Pr(&gt;|z|)    
-sexo   0.3147    1.3698   0.4545 0.692  0.48872    
-logwbc 1.6819    5.3760   0.3366 4.997 5.82e-07 ***
-Rx     1.5036    4.4978   0.4615 3.258  0.00112 ** 
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-       exp(coef) exp(-coef) lower .95 upper .95
-sexo       1.370     0.7300    0.5621     3.338
-logwbc     5.376     0.1860    2.7794    10.398
-Rx         4.498     0.2223    1.8204    11.113
-
-Concordance= 0.851  (se = 0.041 )
-Likelihood ratio test= 47.19  on 3 df,   p=3e-10
-Wald test            = 33.54  on 3 df,   p=2e-07
-Score (logrank) test = 48.01  on 3 df,   p=2e-10</code></pre>
+<pre><code>#&gt; Call:
+#&gt; coxph(formula = Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados)
+#&gt; 
+#&gt;   n= 42, number of events= 30 
+#&gt; 
+#&gt;          coef exp(coef) se(coef)     z Pr(&gt;|z|)    
+#&gt; sexo   0.3147    1.3698   0.4545 0.692  0.48872    
+#&gt; logwbc 1.6819    5.3760   0.3366 4.997 5.82e-07 ***
+#&gt; Rx     1.5036    4.4978   0.4615 3.258  0.00112 ** 
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt;        exp(coef) exp(-coef) lower .95 upper .95
+#&gt; sexo       1.370     0.7300    0.5621     3.338
+#&gt; logwbc     5.376     0.1860    2.7794    10.398
+#&gt; Rx         4.498     0.2223    1.8204    11.113
+#&gt; 
+#&gt; Concordance= 0.851  (se = 0.041 )
+#&gt; Likelihood ratio test= 47.19  on 3 df,   p=3e-10
+#&gt; Wald test            = 33.54  on 3 df,   p=2e-07
+#&gt; Score (logrank) test = 48.01  on 3 df,   p=2e-10</code></pre>
 </div>
 </div>
-</section>
-<section id="automatizando-ajuste" class="level2">
-<h2 class="anchored" data-anchor-id="automatizando-ajuste">Automatizando ajuste</h2>
+</section><section id="automatizando-ajuste" class="level2"><h2 class="anchored" data-anchor-id="automatizando-ajuste">Automatizando ajuste</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>leuc.cox2 <span class="ot">&lt;-</span> <span class="fu">stepAIC</span>(leuc.cox1, <span class="at">direction=</span><span class="st">"backward"</span>, <span class="at">trace=</span><span class="cn">FALSE</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuc.cox2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span></span>
+<span><span class="va">leuc.cox2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html">stepAIC</a></span><span class="op">(</span><span class="va">leuc.cox1</span>, direction<span class="op">=</span><span class="st">"backward"</span>, trace<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">leuc.cox2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Call:
-coxph(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados)
-
-  n= 42, number of events= 30 
-
-         coef exp(coef) se(coef)     z Pr(&gt;|z|)    
-logwbc 1.6909    5.4243   0.3359 5.034  4.8e-07 ***
-Rx     1.3861    3.9991   0.4248 3.263   0.0011 ** 
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-       exp(coef) exp(-coef) lower .95 upper .95
-logwbc     5.424     0.1844     2.808    10.478
-Rx         3.999     0.2501     1.739     9.195
-
-Concordance= 0.852  (se = 0.04 )
-Likelihood ratio test= 46.71  on 2 df,   p=7e-11
-Wald test            = 33.6  on 2 df,   p=5e-08
-Score (logrank) test = 46.07  on 2 df,   p=1e-10</code></pre>
+<pre><code>#&gt; Call:
+#&gt; coxph(formula = Surv(tempo, status) ~ logwbc + Rx, data = dados)
+#&gt; 
+#&gt;   n= 42, number of events= 30 
+#&gt; 
+#&gt;          coef exp(coef) se(coef)     z Pr(&gt;|z|)    
+#&gt; logwbc 1.6909    5.4243   0.3359 5.034  4.8e-07 ***
+#&gt; Rx     1.3861    3.9991   0.4248 3.263   0.0011 ** 
+#&gt; ---
+#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#&gt; 
+#&gt;        exp(coef) exp(-coef) lower .95 upper .95
+#&gt; logwbc     5.424     0.1844     2.808    10.478
+#&gt; Rx         3.999     0.2501     1.739     9.195
+#&gt; 
+#&gt; Concordance= 0.852  (se = 0.04 )
+#&gt; Likelihood ratio test= 46.71  on 2 df,   p=7e-11
+#&gt; Wald test            = 33.6  on 2 df,   p=5e-08
+#&gt; Score (logrank) test = 46.07  on 2 df,   p=1e-10</code></pre>
 </div>
 </div>
-</section>
-<section id="informações-do-ajuste" class="level2">
-<h2 class="anchored" data-anchor-id="informações-do-ajuste">Informações do Ajuste</h2>
+</section><section id="informações-do-ajuste" class="level2"><h2 class="anchored" data-anchor-id="informações-do-ajuste">Informações do Ajuste</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(leuc.cox2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">leuc.cox2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  logwbc       Rx 
-1.690890 1.386076 </code></pre>
+<pre><code>#&gt;   logwbc       Rx 
+#&gt; 1.690890 1.386076</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logLik</span>(leuc.cox2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html">logLik</a></span><span class="op">(</span><span class="va">leuc.cox2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>'log Lik.' -69.8281 (df=2)</code></pre>
+<pre><code>#&gt; 'log Lik.' -69.8281 (df=2)</code></pre>
 </div>
 </div>
-</section>
-<section id="avaliando-o-ajuste-1" class="level2">
-<h2 class="anchored" data-anchor-id="avaliando-o-ajuste-1">Avaliando o ajuste 1</h2>
+</section><section id="avaliando-o-ajuste-1" class="level2"><h2 class="anchored" data-anchor-id="avaliando-o-ajuste-1">Avaliando o ajuste 1</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rms)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">survplot</span>(<span class="fu">npsurv</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> Rx, <span class="at">data =</span> dados),</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="at">loglog =</span> <span class="cn">TRUE</span>, <span class="at">logt=</span><span class="cn">TRUE</span>, <span class="at">xlab =</span> <span class="st">"Tempo"</span>, <span class="at">ylab =</span> <span class="st">"log(-log(S))"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://hbiostat.org/R/rms/">rms</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/rms/man/survplot.html">survplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rms/man/npsurv.html">npsurv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">Rx</span>, data <span class="op">=</span> <span class="va">dados</span><span class="op">)</span>,</span>
+<span>loglog <span class="op">=</span> <span class="cn">TRUE</span>, logt<span class="op">=</span><span class="cn">TRUE</span>, xlab <span class="op">=</span> <span class="st">"Tempo"</span>, ylab <span class="op">=</span> <span class="st">"log(-log(S))"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula08_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="960"></p>
+<p><img src="Aula08_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section>
-<section id="avaliando-o-ajuste-2" class="level2">
-<h2 class="anchored" data-anchor-id="avaliando-o-ajuste-2">Avaliando o ajuste 2</h2>
+</section><section id="avaliando-o-ajuste-2" class="level2"><h2 class="anchored" data-anchor-id="avaliando-o-ajuste-2">Avaliando o ajuste 2</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>ponto <span class="ot">&lt;-</span> <span class="fu">surv_cutpoint</span>(dados, <span class="at">time =</span> <span class="st">"tempo"</span>, <span class="at">event =</span> <span class="st">"status"</span>, <span class="at">variables =</span> <span class="st">"logwbc"</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ponto<span class="sc">$</span>cutpoint[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/survminer/index.html">survminer</a></span><span class="op">)</span></span>
+<span><span class="va">ponto</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survminer/man/surv_cutpoint.html">surv_cutpoint</a></span><span class="op">(</span><span class="va">dados</span>, time <span class="op">=</span> <span class="st">"tempo"</span>, event <span class="op">=</span> <span class="st">"status"</span>, variables <span class="op">=</span> <span class="st">"logwbc"</span><span class="op">)</span></span>
+<span><span class="va">ponto</span><span class="op">$</span><span class="va">cutpoint</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       cutpoint
-logwbc     2.73</code></pre>
+<pre><code>#&gt;        cutpoint
+#&gt; logwbc     2.73</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>dados<span class="sc">$</span>grupolwbc <span class="ot">&lt;-</span> <span class="fu">cut</span>(dados<span class="sc">$</span>logwbc,ponto<span class="sc">$</span>cutpoint[<span class="dv">1</span>])</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">survplot</span>(<span class="fu">npsurv</span>(<span class="fu">Surv</span>(tempo, status) <span class="sc">~</span> grupolwbc, <span class="at">data =</span> dados),</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="at">loglog =</span> <span class="cn">TRUE</span>, <span class="at">logt=</span><span class="cn">TRUE</span>, <span class="at">xlab =</span> <span class="st">"Tempo"</span>, <span class="at">ylab =</span> <span class="st">"log(-log(S))"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dados</span><span class="op">$</span><span class="va">grupolwbc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">logwbc</span>,<span class="va">ponto</span><span class="op">$</span><span class="va">cutpoint</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/rms/man/survplot.html">survplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rms/man/npsurv.html">npsurv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">grupolwbc</span>, data <span class="op">=</span> <span class="va">dados</span><span class="op">)</span>,</span>
+<span>loglog <span class="op">=</span> <span class="cn">TRUE</span>, logt<span class="op">=</span><span class="cn">TRUE</span>, xlab <span class="op">=</span> <span class="st">"Tempo"</span>, ylab <span class="op">=</span> <span class="st">"log(-log(S))"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula08_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="960"></p>
+<p><img src="Aula08_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
-</section>
-<section id="curva-de-sobrevivência" class="level2">
-<h2 class="anchored" data-anchor-id="curva-de-sobrevivência">Curva de Sobrevivência</h2>
+</section><section id="curva-de-sobrevivência" class="level2"><h2 class="anchored" data-anchor-id="curva-de-sobrevivência">Curva de Sobrevivência</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>amostra <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="at">Rx =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">logwbc =</span> <span class="fu">rep</span>(<span class="fu">mean</span>(dados<span class="sc">$</span>logwbc), <span class="dv">2</span>))</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>amostra.surv <span class="ot">&lt;-</span> <span class="fu">survfit</span>(leuc.cox2, <span class="at">newdata =</span> amostra)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(amostra.surv, <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">conf.int =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="at">xlab =</span> <span class="st">"Tempo"</span>, <span class="at">ylab =</span> <span class="st">"S(t)"</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomleft"</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="at">legend =</span> <span class="fu">sprintf</span>(<span class="st">"Rx %d"</span>, <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">amostra</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>Rx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, logwbc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">logwbc</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">amostra.surv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="va">leuc.cox2</span>, newdata <span class="op">=</span> <span class="va">amostra</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">amostra.surv</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>xlab <span class="op">=</span> <span class="st">"Tempo"</span>, ylab <span class="op">=</span> <span class="st">"S(t)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"bottomleft"</span>, bty <span class="op">=</span> <span class="st">"n"</span>, lty <span class="op">=</span> <span class="fl">1</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,</span>
+<span>legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Rx %d"</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula08_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="960"></p>
+<p><img src="Aula08_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -894,9 +851,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="../semanas/Aula07.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">TFA3</span>
       </a>          
@@ -908,8 +863,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">Baseado em https://sta210-s22.github.io/website/</div>   
     <div class="nav-footer-center">
       &nbsp;
@@ -919,7 +873,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-
 
 
 </body></html>

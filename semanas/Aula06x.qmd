@@ -74,7 +74,6 @@ pchisq(TRVe,1, lower.tail = F)
 anova(TFAExp, TFAExp1, test="Chisq")
 ```
 
-
 ## Usando o AIC
 
 Vamos usar o AIC para selecionar variáveis e verificar se devemos retirar a variável prison

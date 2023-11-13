@@ -2,7 +2,16 @@
 title: "Análise de Sobrevivência"
 subtitle: "Modelos de regressão paramétricos"
 author: "Ricardo Accioly"
-format: html
+format:
+ html:
+    code-link: true
+    fig-width: 9
+    fig-height: 7
+    fig-dpi: 300
+knitr:
+  opts_chunk: 
+    out.width: 90%
+    comment: "#>"
 ---
 
 ### Introdução
@@ -56,7 +65,6 @@ plot(ekm, xlab="T(semanas)",ylab="S(t)", lty=1:4)
 legend("topright",c("Rx=0 e M", "Rx=0 e H", "Rx=1 e M", "Rx=1 e H"), lty = 1:4)
 ```
 
-
 ## Modelo Exponencial
 
 ```{r}
@@ -77,12 +85,11 @@ exp(coefExp[3])
 
 As variáveis que foram selecionadas através do StepAIC foram o tratameno (Rx) e o log do número de células brancas.
 
-Observe que os dois coeficiente deram negativos, logo exp(beta) < 1, o que faz com que a mudança de nível, por exemplo Rx=0 para Rx=1, implique que os eventos ocorrem mais cedo na escala de tempo, ou seja, o tempo é acelerado.
+Observe que os dois coeficiente deram negativos, logo exp(beta) \< 1, o que faz com que a mudança de nível, por exemplo Rx=0 para Rx=1, implique que os eventos ocorrem mais cedo na escala de tempo, ou seja, o tempo é acelerado.
 
 No caso do logwbc o aumento de uma unidade implica na redução do tempo até o evento de 0,41, ou seja, a recaída ocorre mais cedo.
 
 No caso do tratamento padrão Rx=1 faz com que a recaída ocorra mais cedo, ou seja, em 0,34 do tempo de quem recebeu o novo tratamento.
-
 
 ## Fazendo Previsões
 
@@ -103,9 +110,7 @@ prev1[2]/prev1[1]
 
 Veja que o tempo até a recaída é menor para quem recebeu o tratamento padrão e maior para quem recebeu o novo tratamento
 
-
 ## Fixando o tratamento e alterando logwbc
-
 
 ```{r}
 n_dados_2 <- data.frame(logwbc=c(2,3), Rx=c(0,0))
@@ -115,7 +120,6 @@ prev2[2]/prev2[1]
 ```
 
 Veja que o tempo até a recaída é menor para quem tem maior número de células brancas.
-
 
 ## Verificando o modelo
 

@@ -2,7 +2,16 @@
 title: "Análise de Sobrevivência"
 subtitle: "Modelos semi-paramétrico de Cox"
 author: "Ricardo Accioly"
-format: html
+format:
+ html:
+    code-link: true
+    fig-width: 9
+    fig-height: 7
+    fig-dpi: 300
+knitr:
+  opts_chunk: 
+    out.width: 90%
+    comment: "#>"
 ---
 
 ## Introdução
