@@ -118,11 +118,18 @@ par(mfrow=c(1,3))
 plot(resid.sch)
 ```
 
-
 ## Estratificação
 
 ```{r}
 ajusteCoxE <-coxph(Surv(survt,status) ~ strata(clinic) + prison + dose,
                  ties= "efron", data=dados)
 summary(ajusteCoxE)
+```
+
+## Grafico
+
+```{r}
+ajuste_aux1 <- survfit(ajusteCoxE)
+plot(ajuste_aux1, mark.time=FALSE, col=c(1:2), lwd=3, las=1, bty='n', xlab='Tempo (anos)', ylab='S(t)')
+legend("topright", levels(as.factor(dados$clinic)), lwd=3, col=c(1:3))
 ```

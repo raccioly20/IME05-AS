@@ -309,6 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#res%C3%ADduos-de-schoenfeld" id="toc-resíduos-de-schoenfeld" class="nav-link" data-scroll-target="#res%C3%ADduos-de-schoenfeld">Resíduos de Schoenfeld</a></li>
   <li><a href="#res%C3%ADduos-de-schoenfeld-1" id="toc-resíduos-de-schoenfeld-1" class="nav-link" data-scroll-target="#res%C3%ADduos-de-schoenfeld-1">Resíduos de Schoenfeld</a></li>
   <li><a href="#estratifica%C3%A7%C3%A3o" id="toc-estratificação" class="nav-link" data-scroll-target="#estratifica%C3%A7%C3%A3o">Estratificação</a></li>
+  <li><a href="#grafico" id="toc-grafico" class="nav-link" data-scroll-target="#grafico">Grafico</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -517,6 +518,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; Likelihood ratio test= 33.91  on 2 df,   p=4e-08
 #&gt; Wald test            = 32.66  on 2 df,   p=8e-08
 #&gt; Score (logrank) test = 33.33  on 2 df,   p=6e-08</code></pre>
+</div>
+</div>
+</section><section id="grafico" class="level2"><h2 class="anchored" data-anchor-id="grafico">Grafico</h2>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajuste_aux1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="va">ajusteCoxE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ajuste_aux1</span>, mark.time<span class="op">=</span><span class="cn">FALSE</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">3</span>, las<span class="op">=</span><span class="fl">1</span>, bty<span class="op">=</span><span class="st">'n'</span>, xlab<span class="op">=</span><span class="st">'Tempo (anos)'</span>, ylab<span class="op">=</span><span class="st">'S(t)'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">clinic</span><span class="op">)</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">3</span>, col<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aula11_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
 

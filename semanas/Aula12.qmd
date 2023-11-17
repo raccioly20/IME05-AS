@@ -121,6 +121,6 @@ summary(ajusteCoxE1)
 ```{r}
 #| echo: fenced
 ajuste_aux1 <- survfit(ajusteCoxE1)
-plot(ajuste_aux1, mark.time=FALSE, col=c(1:3), lwd=3, las=1, bty='n', xlab='Tempo (anos)', ylab='Sobrevivência')
+plot(ajuste_aux1, mark.time=FALSE, col=c(1:3), lwd=3, las=1, bty='n', xlab='Tempo (anos)', ylab='S(t)')
 legend("topright", levels(dados$fkarno), lwd=3, col=c(1:3))
 ```
