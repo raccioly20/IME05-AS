@@ -52,6 +52,24 @@ leuc.cox1 <- coxph(Surv(tempo, status) ~ sexo + logwbc + Rx, data = dados)
 summary(leuc.cox1)
 ```
 
+Veja que pelo teste de Wald a variável sexo não tem indicação de significância no nível de significância de 5%.
+
+## Usando o teste da razão de verossimilhança
+
+O teste de Wald avalia a estatística z, que no caso acima indicou que a variável sexo não tem indicação de significância.
+
+Vamos eliminar a variável sexo e fazer o teste da razão de verossimilhança para confirmarmos a indicaçaõ de que ela não é estatísticamente significativa.
+
+```{r}
+leuc.cox2 <- coxph(Surv(tempo, status) ~ logwbc + Rx, data = dados)
+logLik(leuc.cox2)
+
+TRV <- 2*(logLik(leuc.cox1) - logLik(leuc.cox2))
+pchisq(TRV[1],1, lower.tail = FALSE)
+```
+
+O resultado acima confirma que o modelo não é afetado pela retirada da variável sexo.
+
 ## Automatizando ajuste
 
 ```{r}
@@ -68,6 +86,10 @@ logLik(leuc.cox2)
 ```
 
 ## Avaliando o ajuste 1
+
+O modelo de Cox pressupoe que a razão de risco (hazerd ratio) seja constante entre dois grupos (=níveis de uma variável explanatória).
+
+Isto implica que tenhamos uma deslocamento constante entre o log(-log(S(t))) de dois grupos.
 
 ```{r, message=FALSE}
 library(rms)

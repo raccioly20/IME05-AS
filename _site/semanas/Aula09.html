@@ -429,6 +429,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt;  Max.   :2600.0   Max.   : 68.000</code></pre>
 </div>
 </div>
+<p>Veja que existem dados ausentes, mas não são muitos. Vamos retirar as linhas com dados ausentes.</p>
 </section><section id="modelo-semi-paramétrico-de-cox" class="level2"><h2 class="anchored" data-anchor-id="modelo-semi-paramétrico-de-cox">Modelo Semi-paramétrico de Cox</h2>
 <div class="cell">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajuste1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">ph.ecog</span> <span class="op">+</span></span>
@@ -471,6 +472,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>#&gt; 'log Lik.' -494.0344 (df=7)</code></pre>
 </div>
 </div>
+<p>Veja que pelo teste de Wald as variáveis age, pat.karno e meal.cal não tem indicação de significãncia estatística (p-valor &gt; 0,05).</p>
+<p>Vamos utilizar o teste da razão da verossimilhança para confirmar este resultado.</p>
 </section><section id="usando-o-teste-de-wald-e-da-razão-de-verossimilhança" class="level2"><h2 class="anchored" data-anchor-id="usando-o-teste-de-wald-e-da-razão-de-verossimilhança">Usando o teste de Wald e da razão de verossimilhança</h2>
 <p>O teste de Wald avalia a estatística z, que no caso acima indica que diversas variáveis não são significativas, por exemplo, meat.cal, age, pat.karno.</p>
 <p>Vamos eliminar somente meat.cal e fazer o teste da razão de verossimilhança para confirmarmos que ela não é estatísticamente significativa.</p>
@@ -522,6 +525,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; Score (logrank) test = 27.64  on 5 df,   p=4e-05</code></pre>
 </div>
 </div>
+<p>Na busca por um modelo mais parcimonioso de forma automatizada podemos usar a funçaõ StepAiC do pacote MASS.</p>
 <p>Veja que wt.loss e ph.karno são marginalmente significativas. pat.karno tem p-valor acima de 0,10 o que normalmente indicaria sua retirada do modelo.</p>
 </section><section id="usando-o-bic" class="level2"><h2 class="anchored" data-anchor-id="usando-o-bic">Usando o BIC</h2>
 <div class="cell">
@@ -550,6 +554,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; Score (logrank) test = 19.62  on 2 df,   p=5e-05</code></pre>
 </div>
 </div>
+<p>O BIC é uma medida de ajuste que penaliza modelos com muitas variáveis. O modelo com menor BIC é o mais parcimonioso.</p>
 </section><section id="informações-do-ajuste" class="level2"><h2 class="anchored" data-anchor-id="informações-do-ajuste">Informações do Ajuste</h2>
 <div class="cell">
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">ajuste4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -676,7 +681,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Não temos indicações claras em nenhum dos dois resíduos</p>
 </section><section id="modelo-de-cox-estratificado" class="level2"><h2 class="anchored" data-anchor-id="modelo-de-cox-estratificado">Modelo de Cox Estratificado</h2>
-<p>Na eventiualidade de termos um termo claramente violando a proporcionalidade das taxas de falhas, podemos contornar este problema usando a variável como um estrato.</p>
+<p>Na eventualidade de termos um termo claramente violando a proporcionalidade das taxas de falhas, podemos contornar este problema usando a variável como um estrato.</p>
 <div class="cell">
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajuste4_E</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html">strata</a></span><span class="op">(</span><span class="va">ph.ecog</span><span class="op">)</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ajuste4_E</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

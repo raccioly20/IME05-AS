@@ -300,6 +300,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#carregando-os-dados" id="toc-carregando-os-dados" class="nav-link" data-scroll-target="#carregando-os-dados">Carregando os dados</a></li>
   <li><a href="#ajuste-n%C3%A3o-param%C3%A9trico" id="toc-ajuste-não-paramétrico" class="nav-link" data-scroll-target="#ajuste-n%C3%A3o-param%C3%A9trico">Ajuste Não Paramétrico</a></li>
   <li><a href="#modelo-semi-param%C3%A9trico-de-cox" id="toc-modelo-semi-paramétrico-de-cox" class="nav-link" data-scroll-target="#modelo-semi-param%C3%A9trico-de-cox">Modelo Semi-paramétrico de Cox</a></li>
+  <li><a href="#usando-o-teste-da-raz%C3%A3o-de-verossimilhan%C3%A7a" id="toc-usando-o-teste-da-razão-de-verossimilhança" class="nav-link" data-scroll-target="#usando-o-teste-da-raz%C3%A3o-de-verossimilhan%C3%A7a">Usando o teste da razão de verossimilhança</a></li>
   <li><a href="#automatizando-ajuste" id="toc-automatizando-ajuste" class="nav-link" data-scroll-target="#automatizando-ajuste">Automatizando ajuste</a></li>
   <li><a href="#informa%C3%A7%C3%B5es-do-ajuste" id="toc-informações-do-ajuste" class="nav-link" data-scroll-target="#informa%C3%A7%C3%B5es-do-ajuste">Informações do Ajuste</a></li>
   <li><a href="#avaliando-o-ajuste-1" id="toc-avaliando-o-ajuste-1" class="nav-link" data-scroll-target="#avaliando-o-ajuste-1">Avaliando o ajuste 1</a></li>
@@ -425,9 +426,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; Score (logrank) test = 48.01  on 3 df,   p=2e-10</code></pre>
 </div>
 </div>
+<p>Veja que pelo teste de Wald a variável sexo não tem indicação de significância no nível de significância de 5%.</p>
+</section><section id="usando-o-teste-da-razão-de-verossimilhança" class="level2"><h2 class="anchored" data-anchor-id="usando-o-teste-da-razão-de-verossimilhança">Usando o teste da razão de verossimilhança</h2>
+<p>O teste de Wald avalia a estatística z, que no caso acima indicou que a variável sexo não tem indicação de significância.</p>
+<p>Vamos eliminar a variável sexo e fazer o teste da razão de verossimilhança para confirmarmos a indicaçaõ de que ela não é estatísticamente significativa.</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">leuc.cox2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">logwbc</span> <span class="op">+</span> <span class="va">Rx</span>, data <span class="op">=</span> <span class="va">dados</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html">logLik</a></span><span class="op">(</span><span class="va">leuc.cox2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; 'log Lik.' -69.8281 (df=2)</code></pre>
+</div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">TRV</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">*</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html">logLik</a></span><span class="op">(</span><span class="va">leuc.cox1</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/stats/logLik.html">logLik</a></span><span class="op">(</span><span class="va">leuc.cox2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html">pchisq</a></span><span class="op">(</span><span class="va">TRV</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,<span class="fl">1</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 0.4905878</code></pre>
+</div>
+</div>
+<p>O resultado acima confirma que o modelo não é afetado pela retirada da variável sexo.</p>
 </section><section id="automatizando-ajuste" class="level2"><h2 class="anchored" data-anchor-id="automatizando-ajuste">Automatizando ajuste</h2>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span></span>
 <span><span class="va">leuc.cox2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MASS/man/stepAIC.html">stepAIC</a></span><span class="op">(</span><span class="va">leuc.cox1</span>, direction<span class="op">=</span><span class="st">"backward"</span>, trace<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">leuc.cox2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -454,44 +472,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section><section id="informações-do-ajuste" class="level2"><h2 class="anchored" data-anchor-id="informações-do-ajuste">Informações do Ajuste</h2>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">leuc.cox2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">leuc.cox2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;   logwbc       Rx 
 #&gt; 1.690890 1.386076</code></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html">logLik</a></span><span class="op">(</span><span class="va">leuc.cox2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html">logLik</a></span><span class="op">(</span><span class="va">leuc.cox2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; 'log Lik.' -69.8281 (df=2)</code></pre>
 </div>
 </div>
 </section><section id="avaliando-o-ajuste-1" class="level2"><h2 class="anchored" data-anchor-id="avaliando-o-ajuste-1">Avaliando o ajuste 1</h2>
+<p>O modelo de Cox pressupoe que a razão de risco (hazerd ratio) seja constante entre dois grupos (=níveis de uma variável explanatória).</p>
+<p>Isto implica que tenhamos uma deslocamento constante entre o log(-log(S(t))) de dois grupos.</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://hbiostat.org/R/rms/">rms</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://hbiostat.org/R/rms/">rms</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rms/man/survplot.html">survplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rms/man/npsurv.html">npsurv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">Rx</span>, data <span class="op">=</span> <span class="va">dados</span><span class="op">)</span>,</span>
 <span>loglog <span class="op">=</span> <span class="cn">TRUE</span>, logt<span class="op">=</span><span class="cn">TRUE</span>, xlab <span class="op">=</span> <span class="st">"Tempo"</span>, ylab <span class="op">=</span> <span class="st">"log(-log(S))"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula08_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" style="width:90.0%"></p>
+<p><img src="Aula08_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
 </section><section id="avaliando-o-ajuste-2" class="level2"><h2 class="anchored" data-anchor-id="avaliando-o-ajuste-2">Avaliando o ajuste 2</h2>
 <div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/survminer/index.html">survminer</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/survminer/index.html">survminer</a></span><span class="op">)</span></span>
 <span><span class="va">ponto</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survminer/man/surv_cutpoint.html">surv_cutpoint</a></span><span class="op">(</span><span class="va">dados</span>, time <span class="op">=</span> <span class="st">"tempo"</span>, event <span class="op">=</span> <span class="st">"status"</span>, variables <span class="op">=</span> <span class="st">"logwbc"</span><span class="op">)</span></span>
 <span><span class="va">ponto</span><span class="op">$</span><span class="va">cutpoint</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;        cutpoint
 #&gt; logwbc     2.73</code></pre>
 </div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dados</span><span class="op">$</span><span class="va">grupolwbc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">logwbc</span>,<span class="va">ponto</span><span class="op">$</span><span class="va">cutpoint</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dados</span><span class="op">$</span><span class="va">grupolwbc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">logwbc</span>,<span class="va">ponto</span><span class="op">$</span><span class="va">cutpoint</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/rms/man/survplot.html">survplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rms/man/npsurv.html">npsurv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">grupolwbc</span>, data <span class="op">=</span> <span class="va">dados</span><span class="op">)</span>,</span>
 <span>loglog <span class="op">=</span> <span class="cn">TRUE</span>, logt<span class="op">=</span><span class="cn">TRUE</span>, xlab <span class="op">=</span> <span class="st">"Tempo"</span>, ylab <span class="op">=</span> <span class="st">"log(-log(S))"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula08_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" style="width:90.0%"></p>
+<p><img src="Aula08_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
 </section><section id="curva-de-sobrevivência" class="level2"><h2 class="anchored" data-anchor-id="curva-de-sobrevivência">Curva de Sobrevivência</h2>
 <div class="cell">
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">amostra</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">amostra</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
 <span>Rx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, logwbc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">logwbc</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">amostra.surv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/survfit.html">survfit</a></span><span class="op">(</span><span class="va">leuc.cox2</span>, newdata <span class="op">=</span> <span class="va">amostra</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">amostra.surv</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -499,7 +519,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"bottomleft"</span>, bty <span class="op">=</span> <span class="st">"n"</span>, lty <span class="op">=</span> <span class="fl">1</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,</span>
 <span>legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Rx %d"</span>, <span class="fl">0</span><span class="op">:</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aula08_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" style="width:90.0%"></p>
+<p><img src="Aula08_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
 

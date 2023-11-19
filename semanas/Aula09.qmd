@@ -59,6 +59,8 @@ dados <- na.omit(dados)
 summary(dados)
 ```
 
+Veja que existem dados ausentes, mas não são muitos. Vamos retirar as linhas com dados ausentes.
+
 ## Modelo Semi-paramétrico de Cox
 
 ```{r}
@@ -68,6 +70,10 @@ summary(ajuste1)
 logLik(ajuste1)
 
 ```
+
+Veja que pelo teste de Wald as variáveis age, pat.karno e meal.cal não tem indicação de significãncia estatística (p-valor \> 0,05).
+
+Vamos utilizar o teste da razão da verossimilhança para confirmar este resultado.
 
 ## Usando o teste de Wald e da razão de verossimilhança
 
@@ -94,6 +100,8 @@ ajuste3 <- stepAIC(ajuste1, direction="backward", trace=FALSE)
 summary(ajuste3)
 ```
 
+Na busca por um modelo mais parcimonioso de forma automatizada podemos usar a funçaõ StepAiC do pacote MASS.
+
 Veja que wt.loss e ph.karno são marginalmente significativas. pat.karno tem p-valor acima de 0,10 o que normalmente indicaria sua retirada do modelo.
 
 ## Usando o BIC
@@ -103,6 +111,8 @@ n_eventos <- sum(dados$status)
 ajuste4 <- stepAIC(ajuste1, direction="backward", k= log(n_eventos), trace=FALSE)
 summary(ajuste4)
 ```
+
+O BIC é uma medida de ajuste que penaliza modelos com muitas variáveis. O modelo com menor BIC é o mais parcimonioso.
 
 ## Informações do Ajuste
 
@@ -193,7 +203,7 @@ Não temos indicações claras em nenhum dos dois resíduos
 
 ## Modelo de Cox Estratificado
 
-Na eventiualidade de termos um termo claramente violando a proporcionalidade das taxas de falhas, podemos contornar este problema usando a variável como um estrato.
+Na eventualidade de termos um termo claramente violando a proporcionalidade das taxas de falhas, podemos contornar este problema usando a variável como um estrato.
 
 ```{r}
 ajuste4_E <- coxph(Surv(time, status) ~ sex + strata(ph.ecog), data=dados)

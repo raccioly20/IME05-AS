@@ -431,6 +431,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="Aula11_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
+<p>Veja que as curvas se cruzam em alguns pontos, o que é uma indicação de não proporcionalidade.</p>
 </section><section id="avaliando-o-modelo-1" class="level2"><h2 class="anchored" data-anchor-id="avaliando-o-modelo-1">Avaliando o modelo</h2>
 <div class="cell">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/rms/man/survplot.html">survplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/rms/man/npsurv.html">npsurv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">survt</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">prison</span>, data <span class="op">=</span> <span class="va">dados</span><span class="op">)</span>,</span>
@@ -439,6 +440,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="Aula11_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
+<p>Veja que as curvas se cruzam em alguns pontos, o que é uma indicação de não proporcionalidade.</p>
 </section><section id="avaliando-o-modelo-2" class="level2"><h2 class="anchored" data-anchor-id="avaliando-o-modelo-2">Avaliando o modelo</h2>
 <div class="cell">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dados</span><span class="op">$</span><span class="va">dose_60</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">dados</span><span class="op">$</span><span class="va">dose</span><span class="op">&lt;=</span><span class="fl">60</span><span class="op">)</span></span>
@@ -492,6 +494,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="Aula11_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" style="width:90.0%"></p>
 </div>
 </div>
+<p>Pelos resíduos de Schoenfeld somente a variável clinic tem indicação clara de não proporcionalidade.</p>
+<p>Uma possível solução para este problema é estratificar esta variável.</p>
 </section><section id="estratificação" class="level2"><h2 class="anchored" data-anchor-id="estratificação">Estratificação</h2>
 <div class="cell">
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajusteCoxE</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">survt</span>,<span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html">strata</a></span><span class="op">(</span><span class="va">clinic</span><span class="op">)</span> <span class="op">+</span> <span class="va">prison</span> <span class="op">+</span> <span class="va">dose</span>,</span>

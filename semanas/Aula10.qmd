@@ -16,71 +16,9 @@ knitr:
 
 ## Modelo SemiParamétrico de Cox
 
-Vamos usar neste exemplo dados de pacientes com leucemia.
-
-O objetivo é verificar se o novo tratamento proposto, 6MP, tem efeito sobre a doença. (Rx=1 ou Rx=0)
-
-Existem dois grupos de pacientes. 21 receberam o novo tratamento (Rx=0) e os outros 21 receberam tratamento padrão (Rx=1).
-
-Além do tipo de tratamento foram coletadas informações sobre o sexo dos pacientes e do log do número de células brancas (logwbc).
-
-O evento falha aqui é ocorrer uma recaída na doença.
-
-## Leitura dos Dados
-
 ```{r}
-#| echo: true
 library(survival)
-library(readxl)
-dados <- read_xlsx("anderson.xlsx")
-gt::gt(head(dados))
 ```
-
-## Ajuste do Modelo de Cox
-
-```{r}
-#| echo: true
-# Somente com a variável Rx
-ajuste1 <- coxph(Surv(tempo,status) ~ Rx,data=dados)
-ajuste1
-```
-
-Como Rx é uma variável binária, a mudança de 0 para 1 implica num aumenta da taxa de falhas.
-
-Neste caso Rx=0 é o novo tratamento e Rx=1 é o tratamento padrão.
-
-## Ajuste do Modelo de Cox
-
-```{r}
-#| echo: true
-# Com a variável Rx e logwbc
-ajuste2 <- coxph(Surv(tempo,status) ~ Rx + logwbc,data=dados)
-ajuste2
-```
-
-O aumento do log do número de células brancas também aumenta a taxa de falhas.
-
-## Ajuste do Modelo de Cox
-
-```{r}
-#| echo: true
-# Com a variável Rx, logwbc e sexo
-ajuste3 <- coxph(Surv(tempo,status) ~ Rx + logwbc + sexo,data=dados)
-ajuste3
-```
-
-O modelo não indicou que a variável sexo é estatísticamente significativa.
-
-## Ajuste do Modelo de Cox
-
-```{r}
-#| echo: true
-## Ajuste do Modelo de Cox com sexo como fator
-ajuste4 <- coxph(Surv(tempo,status) ~ Rx + logwbc + factor(sexo), data=dados)
-ajuste4
-```
-
-Mesmo transformado a variável sexo em fator, ela permaneceu sem significância estatística.
 
 ## Outro conjunto de dados {.smaller}
 

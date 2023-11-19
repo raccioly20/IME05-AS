@@ -297,14 +297,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li><a href="#modelo-semiparam%C3%A9trico-de-cox" id="toc-modelo-semiparamétrico-de-cox" class="nav-link active" data-scroll-target="#modelo-semiparam%C3%A9trico-de-cox">Modelo SemiParamétrico de Cox</a></li>
-  <li><a href="#leitura-dos-dados" id="toc-leitura-dos-dados" class="nav-link" data-scroll-target="#leitura-dos-dados">Leitura dos Dados</a></li>
-  <li><a href="#ajuste-do-modelo-de-cox" id="toc-ajuste-do-modelo-de-cox" class="nav-link" data-scroll-target="#ajuste-do-modelo-de-cox">Ajuste do Modelo de Cox</a></li>
-  <li><a href="#ajuste-do-modelo-de-cox-1" id="toc-ajuste-do-modelo-de-cox-1" class="nav-link" data-scroll-target="#ajuste-do-modelo-de-cox-1">Ajuste do Modelo de Cox</a></li>
-  <li><a href="#ajuste-do-modelo-de-cox-2" id="toc-ajuste-do-modelo-de-cox-2" class="nav-link" data-scroll-target="#ajuste-do-modelo-de-cox-2">Ajuste do Modelo de Cox</a></li>
-  <li><a href="#ajuste-do-modelo-de-cox-3" id="toc-ajuste-do-modelo-de-cox-3" class="nav-link" data-scroll-target="#ajuste-do-modelo-de-cox-3">Ajuste do Modelo de Cox</a></li>
   <li><a href="#outro-conjunto-de-dados" id="toc-outro-conjunto-de-dados" class="nav-link" data-scroll-target="#outro-conjunto-de-dados">Outro conjunto de dados</a></li>
-  <li><a href="#leitura-dos-dados-1" id="toc-leitura-dos-dados-1" class="nav-link" data-scroll-target="#leitura-dos-dados-1">Leitura dos dados</a></li>
-  <li><a href="#ajuste-do-modelo-de-cox-4" id="toc-ajuste-do-modelo-de-cox-4" class="nav-link" data-scroll-target="#ajuste-do-modelo-de-cox-4">Ajuste do Modelo de Cox</a></li>
+  <li><a href="#leitura-dos-dados" id="toc-leitura-dos-dados" class="nav-link" data-scroll-target="#leitura-dos-dados">Leitura dos dados</a></li>
+  <li><a href="#ajuste-do-modelo-de-cox" id="toc-ajuste-do-modelo-de-cox" class="nav-link" data-scroll-target="#ajuste-do-modelo-de-cox">Ajuste do Modelo de Cox</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -330,610 +325,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 </header><section id="modelo-semiparamétrico-de-cox" class="level2"><h2 class="anchored" data-anchor-id="modelo-semiparamétrico-de-cox">Modelo SemiParamétrico de Cox</h2>
-<p>Vamos usar neste exemplo dados de pacientes com leucemia.</p>
-<p>O objetivo é verificar se o novo tratamento proposto, 6MP, tem efeito sobre a doença. (Rx=1 ou Rx=0)</p>
-<p>Existem dois grupos de pacientes. 21 receberam o novo tratamento (Rx=0) e os outros 21 receberam tratamento padrão (Rx=1).</p>
-<p>Além do tipo de tratamento foram coletadas informações sobre o sexo dos pacientes e do log do número de células brancas (logwbc).</p>
-<p>O evento falha aqui é ocorrer uma recaída na doença.</p>
-</section><section id="leitura-dos-dados" class="level2"><h2 class="anchored" data-anchor-id="leitura-dos-dados">Leitura dos Dados</h2>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span>
-<span><span class="va">dados</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_xlsx</a></span><span class="op">(</span><span class="st">"anderson.xlsx"</span><span class="op">)</span></span>
-<span><span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dados</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-
-<div id="awkgatfksa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#awkgatfksa table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#awkgatfksa thead, #awkgatfksa tbody, #awkgatfksa tfoot, #awkgatfksa tr, #awkgatfksa td, #awkgatfksa th {
-  border-style: none;
-}
-
-#awkgatfksa p {
-  margin: 0;
-  padding: 0;
-}
-
-#awkgatfksa .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#awkgatfksa .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#awkgatfksa .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#awkgatfksa .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#awkgatfksa .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#awkgatfksa .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#awkgatfksa .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#awkgatfksa .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#awkgatfksa .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#awkgatfksa .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#awkgatfksa .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#awkgatfksa .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#awkgatfksa .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#awkgatfksa .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#awkgatfksa .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#awkgatfksa .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#awkgatfksa .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#awkgatfksa .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#awkgatfksa .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#awkgatfksa .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#awkgatfksa .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#awkgatfksa .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#awkgatfksa .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#awkgatfksa .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#awkgatfksa .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#awkgatfksa .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#awkgatfksa .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#awkgatfksa .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#awkgatfksa .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#awkgatfksa .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#awkgatfksa .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#awkgatfksa .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#awkgatfksa .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#awkgatfksa .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#awkgatfksa .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#awkgatfksa .gt_left {
-  text-align: left;
-}
-
-#awkgatfksa .gt_center {
-  text-align: center;
-}
-
-#awkgatfksa .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#awkgatfksa .gt_font_normal {
-  font-weight: normal;
-}
-
-#awkgatfksa .gt_font_bold {
-  font-weight: bold;
-}
-
-#awkgatfksa .gt_font_italic {
-  font-style: italic;
-}
-
-#awkgatfksa .gt_super {
-  font-size: 65%;
-}
-
-#awkgatfksa .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#awkgatfksa .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#awkgatfksa .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#awkgatfksa .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#awkgatfksa .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#awkgatfksa .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#awkgatfksa .gt_indent_5 {
-  text-indent: 25px;
-}
-</style>
-<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<thead><tr class="gt_col_headings">
-<th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="tempo">tempo</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="status">status</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="sexo">sexo</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="logwbc">logwbc</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Rx">Rx</th>
-    </tr></thead>
-<tbody class="gt_table_body">
-<tr>
-<td headers="tempo" class="gt_row gt_right">1</td>
-<td headers="status" class="gt_row gt_right">1</td>
-<td headers="sexo" class="gt_row gt_right">1</td>
-<td headers="logwbc" class="gt_row gt_right">2.80</td>
-<td headers="Rx" class="gt_row gt_right">1</td>
-</tr>
-<tr>
-<td headers="tempo" class="gt_row gt_right">1</td>
-<td headers="status" class="gt_row gt_right">1</td>
-<td headers="sexo" class="gt_row gt_right">1</td>
-<td headers="logwbc" class="gt_row gt_right">5.00</td>
-<td headers="Rx" class="gt_row gt_right">1</td>
-</tr>
-<tr>
-<td headers="tempo" class="gt_row gt_right">2</td>
-<td headers="status" class="gt_row gt_right">1</td>
-<td headers="sexo" class="gt_row gt_right">1</td>
-<td headers="logwbc" class="gt_row gt_right">4.91</td>
-<td headers="Rx" class="gt_row gt_right">1</td>
-</tr>
-<tr>
-<td headers="tempo" class="gt_row gt_right">2</td>
-<td headers="status" class="gt_row gt_right">1</td>
-<td headers="sexo" class="gt_row gt_right">1</td>
-<td headers="logwbc" class="gt_row gt_right">4.48</td>
-<td headers="Rx" class="gt_row gt_right">1</td>
-</tr>
-<tr>
-<td headers="tempo" class="gt_row gt_right">3</td>
-<td headers="status" class="gt_row gt_right">1</td>
-<td headers="sexo" class="gt_row gt_right">1</td>
-<td headers="logwbc" class="gt_row gt_right">4.01</td>
-<td headers="Rx" class="gt_row gt_right">1</td>
-</tr>
-<tr>
-<td headers="tempo" class="gt_row gt_right">4</td>
-<td headers="status" class="gt_row gt_right">1</td>
-<td headers="sexo" class="gt_row gt_right">1</td>
-<td headers="logwbc" class="gt_row gt_right">4.36</td>
-<td headers="Rx" class="gt_row gt_right">1</td>
-</tr>
-</tbody>
-</table>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/therneau/survival">survival</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</div>
-</section><section id="ajuste-do-modelo-de-cox" class="level2"><h2 class="anchored" data-anchor-id="ajuste-do-modelo-de-cox">Ajuste do Modelo de Cox</h2>
-<div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Somente com a variável Rx</span></span>
-<span><span class="va">ajuste1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>,<span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">Rx</span>,data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
-<span><span class="va">ajuste1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Call:
-#&gt; coxph(formula = Surv(tempo, status) ~ Rx, data = dados)
-#&gt; 
-#&gt;      coef exp(coef) se(coef)     z        p
-#&gt; Rx 1.5721    4.8169   0.4124 3.812 0.000138
-#&gt; 
-#&gt; Likelihood ratio test=16.35  on 1 df, p=5.261e-05
-#&gt; n= 42, number of events= 30</code></pre>
-</div>
-</div>
-<p>Como Rx é uma variável binária, a mudança de 0 para 1 implica num aumenta da taxa de falhas.</p>
-<p>Neste caso Rx=0 é o novo tratamento e Rx=1 é o tratamento padrão.</p>
-</section><section id="ajuste-do-modelo-de-cox-1" class="level2"><h2 class="anchored" data-anchor-id="ajuste-do-modelo-de-cox-1">Ajuste do Modelo de Cox</h2>
-<div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Com a variável Rx e logwbc</span></span>
-<span><span class="va">ajuste2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>,<span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">Rx</span> <span class="op">+</span> <span class="va">logwbc</span>,data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
-<span><span class="va">ajuste2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Call:
-#&gt; coxph(formula = Surv(tempo, status) ~ Rx + logwbc, data = dados)
-#&gt; 
-#&gt;          coef exp(coef) se(coef)     z       p
-#&gt; Rx     1.3861    3.9991   0.4248 3.263  0.0011
-#&gt; logwbc 1.6909    5.4243   0.3359 5.034 4.8e-07
-#&gt; 
-#&gt; Likelihood ratio test=46.71  on 2 df, p=7.187e-11
-#&gt; n= 42, number of events= 30</code></pre>
-</div>
-</div>
-<p>O aumento do log do número de células brancas também aumenta a taxa de falhas.</p>
-</section><section id="ajuste-do-modelo-de-cox-2" class="level2"><h2 class="anchored" data-anchor-id="ajuste-do-modelo-de-cox-2">Ajuste do Modelo de Cox</h2>
-<div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Com a variável Rx, logwbc e sexo</span></span>
-<span><span class="va">ajuste3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>,<span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">Rx</span> <span class="op">+</span> <span class="va">logwbc</span> <span class="op">+</span> <span class="va">sexo</span>,data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
-<span><span class="va">ajuste3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Call:
-#&gt; coxph(formula = Surv(tempo, status) ~ Rx + logwbc + sexo, data = dados)
-#&gt; 
-#&gt;          coef exp(coef) se(coef)     z        p
-#&gt; Rx     1.5036    4.4978   0.4615 3.258  0.00112
-#&gt; logwbc 1.6819    5.3760   0.3366 4.997 5.82e-07
-#&gt; sexo   0.3147    1.3698   0.4545 0.692  0.48872
-#&gt; 
-#&gt; Likelihood ratio test=47.19  on 3 df, p=3.171e-10
-#&gt; n= 42, number of events= 30</code></pre>
-</div>
-</div>
-<p>O modelo não indicou que a variável sexo é estatísticamente significativa.</p>
-</section><section id="ajuste-do-modelo-de-cox-3" class="level2"><h2 class="anchored" data-anchor-id="ajuste-do-modelo-de-cox-3">Ajuste do Modelo de Cox</h2>
-<div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## Ajuste do Modelo de Cox com sexo como fator</span></span>
-<span><span class="va">ajuste4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempo</span>,<span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">Rx</span> <span class="op">+</span> <span class="va">logwbc</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">sexo</span><span class="op">)</span>, data<span class="op">=</span><span class="va">dados</span><span class="op">)</span></span>
-<span><span class="va">ajuste4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Call:
-#&gt; coxph(formula = Surv(tempo, status) ~ Rx + logwbc + factor(sexo), 
-#&gt;     data = dados)
-#&gt; 
-#&gt;                 coef exp(coef) se(coef)     z        p
-#&gt; Rx            1.5036    4.4978   0.4615 3.258  0.00112
-#&gt; logwbc        1.6819    5.3760   0.3366 4.997 5.82e-07
-#&gt; factor(sexo)1 0.3147    1.3698   0.4545 0.692  0.48872
-#&gt; 
-#&gt; Likelihood ratio test=47.19  on 3 df, p=3.171e-10
-#&gt; n= 42, number of events= 30</code></pre>
-</div>
-</div>
-<p>Mesmo transformado a variável sexo em fator, ela permaneceu sem significância estatística.</p>
 </section><section id="outro-conjunto-de-dados" class="level2 smaller"><h2 class="smaller anchored" data-anchor-id="outro-conjunto-de-dados">Outro conjunto de dados</h2>
 <p>Neste exemplo os dados considerados referem-se a um estudo, descrito em Klein e Moeschberger (1997), realizado com 90 pacientes do sexo masculino diagnosticados no período de 1970-1978 com cancer de laringe e que foram acompanhados até 01/01/1983.</p>
 <p>Para cada paciente foram registrados, no diagnóstico, a idade (em anos) e o estágio da doença (I = tumor primário, II = desenvolvimento de nódulos, III = metástases e IV = combinação dos 3 estágiosanteriores) bem como seus respectivos tempos de falha ou censura (em meses).</p>
 <p>Os estágios encontram-se ordenados pelo grau de seriedade da doença (menos sério para mais sério).</p>
-</section><section id="leitura-dos-dados-1" class="level2"><h2 class="anchored" data-anchor-id="leitura-dos-dados-1">Leitura dos dados</h2>
+</section><section id="leitura-dos-dados" class="level2"><h2 class="anchored" data-anchor-id="leitura-dos-dados">Leitura dos dados</h2>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>#&gt; ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 #&gt; ✔ dplyr     1.1.3     ✔ readr     2.1.4
 #&gt; ✔ forcats   1.0.0     ✔ stringr   1.5.0
-#&gt; ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
-#&gt; ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+#&gt; ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
+#&gt; ✔ lubridate 1.9.3     ✔ tidyr     1.3.0
 #&gt; ✔ purrr     1.0.2     
 #&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 #&gt; ✖ dplyr::filter() masks stats::filter()
 #&gt; ✖ dplyr::lag()    masks stats::lag()
 #&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dados2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_table.html">read_table</a></span><span class="op">(</span><span class="st">"laringe.txt"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dados2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_table.html">read_table</a></span><span class="op">(</span><span class="st">"laringe.txt"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>#&gt; 
 #&gt; ── Column specification ────────────────────────────────────────────────────────
@@ -956,26 +370,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #&gt; ... ... ......... ......... .............
 #&gt; See problems(...) for more details.</code></pre>
 </div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dados2</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dados2</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
-<div id="dgomitypsz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dgomitypsz table {
+<div id="vpurvhgpzb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vpurvhgpzb table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dgomitypsz thead, #dgomitypsz tbody, #dgomitypsz tfoot, #dgomitypsz tr, #dgomitypsz td, #dgomitypsz th {
+#vpurvhgpzb thead, #vpurvhgpzb tbody, #vpurvhgpzb tfoot, #vpurvhgpzb tr, #vpurvhgpzb td, #vpurvhgpzb th {
   border-style: none;
 }
 
-#dgomitypsz p {
+#vpurvhgpzb p {
   margin: 0;
   padding: 0;
 }
 
-#dgomitypsz .gt_table {
+#vpurvhgpzb .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1001,12 +415,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#dgomitypsz .gt_caption {
+#vpurvhgpzb .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dgomitypsz .gt_title {
+#vpurvhgpzb .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1018,7 +432,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#dgomitypsz .gt_subtitle {
+#vpurvhgpzb .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1030,7 +444,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#dgomitypsz .gt_heading {
+#vpurvhgpzb .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1042,13 +456,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dgomitypsz .gt_bottom_border {
+#vpurvhgpzb .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dgomitypsz .gt_col_headings {
+#vpurvhgpzb .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1063,7 +477,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dgomitypsz .gt_col_heading {
+#vpurvhgpzb .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1083,7 +497,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#dgomitypsz .gt_column_spanner_outer {
+#vpurvhgpzb .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1095,15 +509,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#dgomitypsz .gt_column_spanner_outer:first-child {
+#vpurvhgpzb .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dgomitypsz .gt_column_spanner_outer:last-child {
+#vpurvhgpzb .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dgomitypsz .gt_column_spanner {
+#vpurvhgpzb .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1115,11 +529,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#dgomitypsz .gt_spanner_row {
+#vpurvhgpzb .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dgomitypsz .gt_group_heading {
+#vpurvhgpzb .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1145,7 +559,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#dgomitypsz .gt_empty_group_heading {
+#vpurvhgpzb .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1160,15 +574,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#dgomitypsz .gt_from_md > :first-child {
+#vpurvhgpzb .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dgomitypsz .gt_from_md > :last-child {
+#vpurvhgpzb .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dgomitypsz .gt_row {
+#vpurvhgpzb .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1187,7 +601,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#dgomitypsz .gt_stub {
+#vpurvhgpzb .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1200,7 +614,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dgomitypsz .gt_stub_row_group {
+#vpurvhgpzb .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1214,15 +628,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#dgomitypsz .gt_row_group_first td {
+#vpurvhgpzb .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dgomitypsz .gt_row_group_first th {
+#vpurvhgpzb .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dgomitypsz .gt_summary_row {
+#vpurvhgpzb .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1232,16 +646,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dgomitypsz .gt_first_summary_row {
+#vpurvhgpzb .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dgomitypsz .gt_first_summary_row.thick {
+#vpurvhgpzb .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dgomitypsz .gt_last_summary_row {
+#vpurvhgpzb .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1251,7 +665,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dgomitypsz .gt_grand_summary_row {
+#vpurvhgpzb .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1261,7 +675,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dgomitypsz .gt_first_grand_summary_row {
+#vpurvhgpzb .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1271,7 +685,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#dgomitypsz .gt_last_grand_summary_row_top {
+#vpurvhgpzb .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1281,11 +695,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dgomitypsz .gt_striped {
+#vpurvhgpzb .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dgomitypsz .gt_table_body {
+#vpurvhgpzb .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1294,7 +708,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#dgomitypsz .gt_footnotes {
+#vpurvhgpzb .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1308,7 +722,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dgomitypsz .gt_footnote {
+#vpurvhgpzb .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1317,7 +731,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dgomitypsz .gt_sourcenotes {
+#vpurvhgpzb .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1331,7 +745,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#dgomitypsz .gt_sourcenote {
+#vpurvhgpzb .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1339,63 +753,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#dgomitypsz .gt_left {
+#vpurvhgpzb .gt_left {
   text-align: left;
 }
 
-#dgomitypsz .gt_center {
+#vpurvhgpzb .gt_center {
   text-align: center;
 }
 
-#dgomitypsz .gt_right {
+#vpurvhgpzb .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dgomitypsz .gt_font_normal {
+#vpurvhgpzb .gt_font_normal {
   font-weight: normal;
 }
 
-#dgomitypsz .gt_font_bold {
+#vpurvhgpzb .gt_font_bold {
   font-weight: bold;
 }
 
-#dgomitypsz .gt_font_italic {
+#vpurvhgpzb .gt_font_italic {
   font-style: italic;
 }
 
-#dgomitypsz .gt_super {
+#vpurvhgpzb .gt_super {
   font-size: 65%;
 }
 
-#dgomitypsz .gt_footnote_marks {
+#vpurvhgpzb .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dgomitypsz .gt_asterisk {
+#vpurvhgpzb .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dgomitypsz .gt_indent_1 {
+#vpurvhgpzb .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dgomitypsz .gt_indent_2 {
+#vpurvhgpzb .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dgomitypsz .gt_indent_3 {
+#vpurvhgpzb .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dgomitypsz .gt_indent_4 {
+#vpurvhgpzb .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dgomitypsz .gt_indent_5 {
+#vpurvhgpzb .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1455,9 +869,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-</section><section id="ajuste-do-modelo-de-cox-4" class="level2"><h2 class="anchored" data-anchor-id="ajuste-do-modelo-de-cox-4">Ajuste do Modelo de Cox</h2>
+</section><section id="ajuste-do-modelo-de-cox" class="level2"><h2 class="anchored" data-anchor-id="ajuste-do-modelo-de-cox">Ajuste do Modelo de Cox</h2>
 <div class="cell">
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajuste5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>,<span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">estagio</span><span class="op">)</span>,data<span class="op">=</span><span class="va">dados2</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ajuste5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/coxph.html">coxph</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">tempos</span>,<span class="va">cens</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">estagio</span><span class="op">)</span>,data<span class="op">=</span><span class="va">dados2</span><span class="op">)</span></span>
 <span><span class="va">ajuste5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt; Call:
