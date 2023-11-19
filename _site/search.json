@@ -914,7 +914,7 @@
     "href": "index.html",
     "title": "IME05-12532 - Análise de Sobrevivência",
     "section": "",
-    "text": "Bom dia / Boa tarde / Boa Noite,\nAqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do R. O objetivo é mostrar as possibilidades de aplicação do R nesta disciplina.\nOs códigos apresentados em aula serão colocado por aqui também.\n[📖] Aula01\n[📖] Aula02A\n[📖] Aula02B\n[📖] Aula02C\n[📖] Aula03\n[📖] Aula04\n[📖] Aula06\n[📖] TFA1\n[📖] TFA2\n[📖] TFA3\n[📖] Cox 1\n[📖] Cox 2\n[📖] Cox 3\n[📖] Cox 4\n[📖] Cox 5"
+    "text": "Bom dia / Boa tarde / Boa Noite,\nAqui vocês vão encontrar alguns dos exemplos apresentados em aula, com uso do R. O objetivo é mostrar as possibilidades de aplicação do R nesta disciplina.\nOs códigos apresentados em aula serão colocado por aqui também.\n[📖] Aula01\n[📖] Aula02A\n[📖] Aula02B\n[📖] Aula02C\n[📖] Aula03\n[📖] Aula04\n[📖] Aula06\n[📖] TFA1\n[📖] TFA2\n[📖] TFA3\n[📖] Cox 1\n[📖] Cox 2\n[📖] Cox 3\n[📖] Cox 4"
   },
   {
     "objectID": "semanas/Aula02A.html",
@@ -1610,6 +1610,13 @@
     "text": "library(survival)"
   },
   {
+    "objectID": "semanas/Aula10.html#outro-conjunto-de-dados",
+    "href": "semanas/Aula10.html#outro-conjunto-de-dados",
+    "title": "Análise de Sobrevivência",
+    "section": "Outro conjunto de dados",
+    "text": "Outro conjunto de dados\nNeste exemplo os dados considerados referem-se a um estudo, descrito em Klein e Moeschberger (1997), realizado com 90 pacientes do sexo masculino diagnosticados no período de 1970-1978 com cancer de laringe e que foram acompanhados até 01/01/1983.\nPara cada paciente foram registrados, no diagnóstico, a idade (em anos) e o estágio da doença (I = tumor primário, II = desenvolvimento de nódulos, III = metástases e IV = combinação dos 3 estágiosanteriores) bem como seus respectivos tempos de falha ou censura (em meses).\nOs estágios encontram-se ordenados pelo grau de seriedade da doença (menos sério para mais sério)."
+  },
+  {
     "objectID": "semanas/Aula10.html#leitura-dos-dados",
     "href": "semanas/Aula10.html#leitura-dos-dados",
     "title": "Análise de Sobrevivência",
@@ -1619,48 +1626,6 @@
   {
     "objectID": "semanas/Aula10.html#ajuste-do-modelo-de-cox",
     "href": "semanas/Aula10.html#ajuste-do-modelo-de-cox",
-    "title": "Análise de Sobrevivência",
-    "section": "Ajuste do Modelo de Cox",
-    "text": "Ajuste do Modelo de Cox\n\najuste5 &lt;- coxph(Surv(tempos,cens) ~ factor(estagio),data=dados2)\najuste5\n\n#&gt; Call:\n#&gt; coxph(formula = Surv(tempos, cens) ~ factor(estagio), data = dados2)\n#&gt; \n#&gt;                     coef exp(coef) se(coef)     z        p\n#&gt; factor(estagio)2 0.06481   1.06696  0.45843 0.141   0.8876\n#&gt; factor(estagio)3 0.61481   1.84930  0.35519 1.731   0.0835\n#&gt; factor(estagio)4 1.73490   5.66838  0.41939 4.137 3.52e-05\n#&gt; \n#&gt; Likelihood ratio test=16.49  on 3 df, p=0.0009016\n#&gt; n= 90, number of events= 50 \n#&gt;    (1 observation deleted due to missingness)\n\n\nA medida que o estágio aumenta, aumenta a taxa de mortalidade dos pacientes."
-  },
-  {
-    "objectID": "semanas/Aula10.html#ajuste-do-modelo-de-cox-1",
-    "href": "semanas/Aula10.html#ajuste-do-modelo-de-cox-1",
-    "title": "Análise de Sobrevivência",
-    "section": "Ajuste do Modelo de Cox",
-    "text": "Ajuste do Modelo de Cox\n\n# Com a variável Rx e logwbc\najuste2 &lt;- coxph(Surv(tempo,status) ~ Rx + logwbc,data=dados)\najuste2\n\n#&gt; Call:\n#&gt; coxph(formula = Surv(tempo, status) ~ Rx + logwbc, data = dados)\n#&gt; \n#&gt;          coef exp(coef) se(coef)     z       p\n#&gt; Rx     1.3861    3.9991   0.4248 3.263  0.0011\n#&gt; logwbc 1.6909    5.4243   0.3359 5.034 4.8e-07\n#&gt; \n#&gt; Likelihood ratio test=46.71  on 2 df, p=7.187e-11\n#&gt; n= 42, number of events= 30\n\n\nO aumento do log do número de células brancas também aumenta a taxa de falhas."
-  },
-  {
-    "objectID": "semanas/Aula10.html#ajuste-do-modelo-de-cox-2",
-    "href": "semanas/Aula10.html#ajuste-do-modelo-de-cox-2",
-    "title": "Análise de Sobrevivência",
-    "section": "Ajuste do Modelo de Cox",
-    "text": "Ajuste do Modelo de Cox\n\n# Com a variável Rx, logwbc e sexo\najuste3 &lt;- coxph(Surv(tempo,status) ~ Rx + logwbc + sexo,data=dados)\najuste3\n\n#&gt; Call:\n#&gt; coxph(formula = Surv(tempo, status) ~ Rx + logwbc + sexo, data = dados)\n#&gt; \n#&gt;          coef exp(coef) se(coef)     z        p\n#&gt; Rx     1.5036    4.4978   0.4615 3.258  0.00112\n#&gt; logwbc 1.6819    5.3760   0.3366 4.997 5.82e-07\n#&gt; sexo   0.3147    1.3698   0.4545 0.692  0.48872\n#&gt; \n#&gt; Likelihood ratio test=47.19  on 3 df, p=3.171e-10\n#&gt; n= 42, number of events= 30\n\n\nO modelo não indicou que a variável sexo é estatísticamente significativa."
-  },
-  {
-    "objectID": "semanas/Aula10.html#ajuste-do-modelo-de-cox-3",
-    "href": "semanas/Aula10.html#ajuste-do-modelo-de-cox-3",
-    "title": "Análise de Sobrevivência",
-    "section": "Ajuste do Modelo de Cox",
-    "text": "Ajuste do Modelo de Cox\n\n## Ajuste do Modelo de Cox com sexo como fator\najuste4 &lt;- coxph(Surv(tempo,status) ~ Rx + logwbc + factor(sexo), data=dados)\najuste4\n\n#&gt; Call:\n#&gt; coxph(formula = Surv(tempo, status) ~ Rx + logwbc + factor(sexo), \n#&gt;     data = dados)\n#&gt; \n#&gt;                 coef exp(coef) se(coef)     z        p\n#&gt; Rx            1.5036    4.4978   0.4615 3.258  0.00112\n#&gt; logwbc        1.6819    5.3760   0.3366 4.997 5.82e-07\n#&gt; factor(sexo)1 0.3147    1.3698   0.4545 0.692  0.48872\n#&gt; \n#&gt; Likelihood ratio test=47.19  on 3 df, p=3.171e-10\n#&gt; n= 42, number of events= 30\n\n\nMesmo transformado a variável sexo em fator, ela permaneceu sem significância estatística."
-  },
-  {
-    "objectID": "semanas/Aula10.html#outro-conjunto-de-dados",
-    "href": "semanas/Aula10.html#outro-conjunto-de-dados",
-    "title": "Análise de Sobrevivência",
-    "section": "Outro conjunto de dados",
-    "text": "Outro conjunto de dados\nNeste exemplo os dados considerados referem-se a um estudo, descrito em Klein e Moeschberger (1997), realizado com 90 pacientes do sexo masculino diagnosticados no período de 1970-1978 com cancer de laringe e que foram acompanhados até 01/01/1983.\nPara cada paciente foram registrados, no diagnóstico, a idade (em anos) e o estágio da doença (I = tumor primário, II = desenvolvimento de nódulos, III = metástases e IV = combinação dos 3 estágiosanteriores) bem como seus respectivos tempos de falha ou censura (em meses).\nOs estágios encontram-se ordenados pelo grau de seriedade da doença (menos sério para mais sério)."
-  },
-  {
-    "objectID": "semanas/Aula10.html#leitura-dos-dados-1",
-    "href": "semanas/Aula10.html#leitura-dos-dados-1",
-    "title": "Análise de Sobrevivência",
-    "section": "Leitura dos dados",
-    "text": "Leitura dos dados\n\nlibrary(tidyverse)\n\n#&gt; ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n#&gt; ✔ dplyr     1.1.3     ✔ readr     2.1.4\n#&gt; ✔ forcats   1.0.0     ✔ stringr   1.5.0\n#&gt; ✔ ggplot2   3.4.3     ✔ tibble    3.2.1\n#&gt; ✔ lubridate 1.9.2     ✔ tidyr     1.3.0\n#&gt; ✔ purrr     1.0.2     \n#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n#&gt; ✖ dplyr::filter() masks stats::filter()\n#&gt; ✖ dplyr::lag()    masks stats::lag()\n#&gt; ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\ndados2 &lt;- read_table(\"laringe.txt\")\n\n#&gt; \n#&gt; ── Column specification ────────────────────────────────────────────────────────\n#&gt; cols(\n#&gt;   id = col_double(),\n#&gt;   tempos = col_double(),\n#&gt;   cens = col_double(),\n#&gt;   idade = col_double(),\n#&gt;   estagio = col_double()\n#&gt; )\n\n\n#&gt; Warning: 91 parsing failures.\n#&gt; row col  expected    actual          file\n#&gt;   1  -- 5 columns 6 columns 'laringe.txt'\n#&gt;   2  -- 5 columns 6 columns 'laringe.txt'\n#&gt;   3  -- 5 columns 6 columns 'laringe.txt'\n#&gt;   4  -- 5 columns 6 columns 'laringe.txt'\n#&gt;   5  -- 5 columns 6 columns 'laringe.txt'\n#&gt; ... ... ......... ......... .............\n#&gt; See problems(...) for more details.\n\ngt::gt(head(dados2))\n\n\n\n\n\n\nid\n      tempos\n      cens\n      idade\n      estagio\n    \n\n\n1\n0.6\n1\n77\n1\n\n\n2\n1.3\n1\n53\n1\n\n\n3\n2.4\n1\n45\n1\n\n\n4\n3.2\n1\n58\n1\n\n\n5\n3.3\n1\n76\n1\n\n\n6\n3.5\n1\n43\n1"
-  },
-  {
-    "objectID": "semanas/Aula10.html#ajuste-do-modelo-de-cox-4",
-    "href": "semanas/Aula10.html#ajuste-do-modelo-de-cox-4",
     "title": "Análise de Sobrevivência",
     "section": "Ajuste do Modelo de Cox",
     "text": "Ajuste do Modelo de Cox\n\najuste5 &lt;- coxph(Surv(tempos,cens) ~ factor(estagio),data=dados2)\najuste5\n\n#&gt; Call:\n#&gt; coxph(formula = Surv(tempos, cens) ~ factor(estagio), data = dados2)\n#&gt; \n#&gt;                     coef exp(coef) se(coef)     z        p\n#&gt; factor(estagio)2 0.06481   1.06696  0.45843 0.141   0.8876\n#&gt; factor(estagio)3 0.61481   1.84930  0.35519 1.731   0.0835\n#&gt; factor(estagio)4 1.73490   5.66838  0.41939 4.137 3.52e-05\n#&gt; \n#&gt; Likelihood ratio test=16.49  on 3 df, p=0.0009016\n#&gt; n= 90, number of events= 50 \n#&gt;    (1 observation deleted due to missingness)\n\n\nA medida que o estágio aumenta, aumenta a taxa de mortalidade dos pacientes."

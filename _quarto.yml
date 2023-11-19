@@ -80,8 +80,6 @@ website:
             text: "Cox 3"
           - href: semanas/Aula11.qmd
             text: "Cox 4"
-          - href: semanas/Aula12.qmd
-            text: "Cox 5"
 
  
 format:

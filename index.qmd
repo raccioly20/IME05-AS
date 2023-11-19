@@ -35,5 +35,3 @@ Os códigos apresentados em aula serão colocado por aqui também.
 \[📖\] <a href="./semanas/Aula10.html" class="link">Cox 3</a>
 
 \[📖\] <a href="./semanas/Aula11.html" class="link">Cox 4</a>
-
-\[📖\] <a href="./semanas/Aula12.html" class="link">Cox 5</a>
